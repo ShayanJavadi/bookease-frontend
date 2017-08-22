@@ -4,7 +4,14 @@ import { Entypo } from '@expo/vector-icons';
 import { styles, ICON_SIZE} from './styles';
 import { Button } from 'react-native-elements';
 
-const { buttonStyle, slideTextStyle, slideStyle, slideLogoStyle, slideDotsStyle } = styles;
+const {
+  buttonStyle,
+  buttonTextStyle,
+  slideTextStyle,
+  slideStyle,
+  slideLogoStyle,
+  slideDotsStyle
+} = styles;
 
 export default class Slides extends Component {
   renderBottomIcon(index) {
@@ -12,8 +19,10 @@ export default class Slides extends Component {
       return (
         <Button
           raised
-          buttonStyle={{backgroundColor: '#ff003d'}}
-          textStyle={{textAlign: 'center'}}
+          large
+          onPress={this.props.onComplete}
+          buttonStyle={buttonStyle}
+          textStyle={buttonTextStyle}
           title={`Get Started`}
         />
       )
@@ -22,7 +31,7 @@ export default class Slides extends Component {
   }
   renderSlides() {
     return this.props.data.map((slide, index) => {
-      return(
+      return (
         <View  key={slide.text} style={[slideStyle, { backgroundColor: slide.color }]}>
           <View>
             <Entypo name="book" size={ICON_SIZE} style={slideLogoStyle} />

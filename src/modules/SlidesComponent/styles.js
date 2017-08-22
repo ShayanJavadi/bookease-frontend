@@ -11,14 +11,18 @@ export const styles = {
     width: SCREEN_WIDTH
   },
   slideTextStyle: {
-    fontSize: 22,
+    fontSize: 21,
+    fontWeight: '700',
     textAlign: 'center',
     color: '#fff',
     marginBottom: 70
   },
   buttonStyle: {
-    backgroundColor: '#ff003d',
-    marginTop: 10
+    backgroundColor: '#A100FF',
+  },
+  buttonTextStyle: {
+    textAlign: 'center',
+    fontWeight: '700'
   },
   slideLogoStyle: {
     color:"#fff",
