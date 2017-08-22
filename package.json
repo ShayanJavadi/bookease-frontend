@@ -16,7 +16,7 @@
     "expo": "^20.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-20.0.0.tar.gz",
-    "react-native-elements": "^0.16.0",
+    "react-native-material-ui": "^1.12.0",
     "react-navigation": "^1.0.0-beta.12",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -26,5 +26,10 @@
     "eslint": "^4.5.0",
     "eslint-plugin-react": "^7.2.1",
     "jest-expo": "^20.0.0"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
   }
 }

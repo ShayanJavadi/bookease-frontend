@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { styles, ICON_SIZE} from './styles';
-import { Button } from 'react-native-elements';
+import { Button } from 'react-native-material-ui';
 
 const {
   buttonStyle,
@@ -19,11 +19,10 @@ export default class Slides extends Component {
       return (
         <Button
           raised
-          large
+          primary
+          style={{text: buttonTextStyle}}
+          text="I'm ready!"
           onPress={this.props.onComplete}
-          buttonStyle={buttonStyle}
-          textStyle={buttonTextStyle}
-          title={`Get Started`}
         />
       )
     }

@@ -5,13 +5,17 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './src/store';
 import MainNavigator from './src/router';
+import { COLOR, ThemeProvider } from 'react-native-material-ui';
+import uiTheme from './src/common/styles';
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <MainNavigator />
+          <ThemeProvider uiTheme={uiTheme}>
+            <MainNavigator />
+          </ThemeProvider>
         </View>
       </Provider>
     );
