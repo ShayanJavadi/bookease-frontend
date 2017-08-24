@@ -5,7 +5,7 @@ import { SLIDE_DATA } from './consts';
 
 export default class WelcomeScreen extends Component {
   onSlidesComplete = () => {
-    this.props.navigation.navigate('schoolSelection');
+    this.props.navigation.navigate('authScreen');
   }
 
   render() {

@@ -3,7 +3,8 @@ import {
 } from 'react-navigation';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SchoolSelectionScreen from '../screens/SchoolSelectionScreen';
-import AuthScreen from '../screens/AuthScreen';
+import AuthScreen from '../screens/AuthScreenContainer';
+import HomeScreen from '../screens/HomeScreen';
 
 const SchoolSelectionNavigator = StackNavigator({
   schoolSelection: {
@@ -17,7 +18,7 @@ const AuthNavigator = StackNavigator({
   auth: {
     screen: AuthScreen
   },
-  schoolSelection: {
+  schoolSelectionScreen: {
     screen: SchoolSelectionNavigator
   }
 }, {
