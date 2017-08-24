@@ -17,6 +17,10 @@ const {
 } = styles;
 
 export default class AuthScreen extends Component {
+  onComplete() {
+    this.props.navigation.navigate('authScreen');
+  }
+
   render() {
     return (
       <View style={screenStyle}>
@@ -37,7 +41,7 @@ export default class AuthScreen extends Component {
             }}
             icon={<Entypo name="facebook" size={ICON_SIZE} style={buttonIconStyle} />}
             text="Sign In with Facebook"
-            onPress={this.props.onComplete}
+            onPress={() => this.onComplete}
           />
           <Button
             raised
@@ -49,7 +53,7 @@ export default class AuthScreen extends Component {
             }}
             icon={<Entypo name="google-" size={ICON_SIZE} style={buttonIconStyle} />}
             text="Sign In with Google"
-            onPress={this.props.onComplete}
+            onPress={() => this.onComplete}
           />
           <Button
             raised
@@ -61,7 +65,7 @@ export default class AuthScreen extends Component {
             }}
             icon={<Entypo name="twitter" size={ICON_SIZE} style={buttonIconStyle} />}
             text="Sign In with Twitter"
-            onPress={this.props.onComplete}
+            onPress={() => this.onComplete}
           />
         </View>
       </View>
