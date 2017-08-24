@@ -6,11 +6,15 @@ import { styles } from './styles';
 const { screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle } = styles;
 
 export default class SchoolSelectionScreen extends Component {
+  onComplete() {
+    this.props.navigation.navigate('authScreen');
+  }
+
   render() {
     return (
       <View style={screenStyle}>
         <View>
-          <Text style={headerStyle} >Select Your School</Text>
+          <Text style={headerStyle}>Select Your School</Text>
         </View>
         <View>
           <TextInput
@@ -23,7 +27,7 @@ export default class SchoolSelectionScreen extends Component {
             primary
             style={{container: buttonStyle, text: buttonTextStyle}}
             text="Select"
-            onPress={this.props.onComplete}
+            onPress={() => this.onComplete()}
           />
         </View>
       </View>
