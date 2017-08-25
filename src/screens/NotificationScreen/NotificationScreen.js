@@ -4,12 +4,12 @@ import { styles } from './styles';
 
 const { screenStyle } = styles;
 
-export default class HomeScreen extends Component {
+export default class NotificationScreen extends Component {
 
   render() {
     return (
       <View style={screenStyle}>
-        <Text>Home Screen</Text>
+        <Text>Notifcation Screen</Text>
       </View>
     );
   }
