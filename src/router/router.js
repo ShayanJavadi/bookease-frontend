@@ -10,6 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MyBooksScreen from '../screens/MyBooksScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import AccountScreen from '../screens/AccountScreen';
+import SellBooksScreen from '../screens/SellBooksScreen';
 import TabBarComponent from '../modules/TabBarComponent';
 
 
@@ -19,6 +20,9 @@ const HomeNavigator = TabNavigator({
   },
   myBooks: {
     screen: MyBooksScreen
+  },
+  sellBooks: {
+    screen: SellBooksScreen
   },
   notifications: {
     screen: NotificationScreen
@@ -66,4 +70,4 @@ const MainNavigator = StackNavigator({
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default HomeNavigator;
+export default MainNavigator;

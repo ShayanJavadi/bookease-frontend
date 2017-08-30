@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 import AuthScreen from '../AuthScreen';
 
-const AuthScreenContainer = () => {
-  return (
-    <AuthScreen />
-  )
-}
-
+// move to another
 const mapStateToProps = ({ facebookAuthReducer }) => {
+  console.log(facebookAuthReducer);
   return { facebookAuthToken: facebookAuthReducer.token };
 }
 
+// pick out actions
 export default connect(mapStateToProps, actions)(AuthScreen);
