@@ -4,13 +4,13 @@ import * as actions from './actions';
 import AuthScreen from '../AuthScreen';
 
 // move to another
-const mapStateToProps = (reducers) => {
-  console.log(reducers);
-  //console.log(facebookAuthReducer.facebookAuthReducer);
-  //console.log(facebookAuthReducer.googleAuthReducer);
+const mapStateToProps = ({facebookAuthReducer, googleAuthReducer}) => {
+  console.log(facebookAuthReducer);
+  console.log(googleAuthReducer);
+
   return {
-    facebookAuthToken: facebookAuthReducer.facebookAuthReducer.token,
-    // googleAuthToken: googleAuthReducer.token
+    facebookAuthToken: facebookAuthReducer.token,
+    googleAuthToken: googleAuthReducer.token
    };
 }
 
