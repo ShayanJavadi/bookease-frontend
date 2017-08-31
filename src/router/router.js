@@ -70,4 +70,4 @@ const MainNavigator = StackNavigator({
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default MainNavigator;
+export default HomeNavigator;
