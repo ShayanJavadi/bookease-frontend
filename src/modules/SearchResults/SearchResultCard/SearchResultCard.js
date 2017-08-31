@@ -1,5 +1,24 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import { Button } from 'react-native-material-ui';
+import { styles } from './styles';
+
+const {
+  searchResultCardWrapper,
+  upperSectionWrapper,
+  upperSectionTopWrapper,
+  upperSectionBottomWrapper,
+  middleSectionWrapper,
+  lowerLowerWrapper,
+  buttonTextStyle,
+  bookNameStyle,
+  bookEditionStyle,
+  bookCondititonStyle,
+  bookIsbnStyle,
+  bookOwnerStyle,
+  bookUniversityStyle,
+  bookPriceStyle
+} = styles;
 
 export default class SearchResultCard extends Component {
 
@@ -15,13 +34,33 @@ export default class SearchResultCard extends Component {
     } = this.props.book;
 
     return (
-      <View style={{ flex: 1, height: 300 }}>
-        <View style={{ flex: 2, backgroundColor: '#222' }}>
-          <Text>{name}</Text>
+      <View style={searchResultCardWrapper}>
+        <View style={upperSectionWrapper}>
+          <View style={upperSectionTopWrapper}>
+            <Text style={bookNameStyle}>{name}</Text>
+          </View>
+          <View style={upperSectionBottomWrapper}>
+            <Text style={bookEditionStyle}>{edition}</Text>
+            <Text style={bookCondititonStyle}>{condititon}</Text>
+            <Text style={bookIsbnStyle}>{isbn}</Text>
+          </View>
         </View>
-        <View style={{ flex: 8, backgroundColor: '#ccc' }}>
+        <View style={middleSectionWrapper}>
         </View>
-        <View style={{ flex: 2, backgroundColor: '#eee'}}>
+        <View style={lowerLowerWrapper}>
+          <View>
+            <Text style={bookOwnerStyle}>{owner}</Text>
+            <Text style={bookUniversityStyle}>{university}</Text>
+          </View>
+          <View>
+            <Text style={bookPriceStyle}>{price}</Text>
+            <Button
+              raised
+              primary
+              style={{text: buttonTextStyle}}
+              text="Buy"
+            />
+          </View>
         </View>
       </View>
     )
