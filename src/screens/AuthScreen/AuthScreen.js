@@ -18,7 +18,6 @@ const {
 
 export default class AuthScreen extends Component {
   componentDidMount() {
-    console.log('CDM');
     // temporary line for debugging that removes token each time
     AsyncStorage.removeItem('fb_token');
     AsyncStorage.removeItem('google_token');
@@ -26,7 +25,6 @@ export default class AuthScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('CWRP');
     this.onAuthenticated(nextProps);
   }
 
