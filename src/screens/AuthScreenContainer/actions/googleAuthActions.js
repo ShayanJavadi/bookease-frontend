@@ -15,6 +15,20 @@ export const googleLogin = () => async dispatch => {
   }
 };
 
+export const getGoogleUserData = async (token) => {
+  const userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+    headers: { Authorization: `Bearer ${token}`},
+  });
+  const userInfoJson = await userInfoResponse.json();
+
+  return {
+    email: userInfoJson.email,
+    name: userInfoJson.name,
+    uid: userInfoJson.id,
+    picture: userInfoJson.picture
+  };
+}
+
 const doGoogleLogin = async dispatch => {
   try {
     const result = await Expo.Google.logInAsync({
