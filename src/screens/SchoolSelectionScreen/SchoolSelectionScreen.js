@@ -7,6 +7,11 @@ import { styles } from './styles';
 const { screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle } = styles;
 
 export default class SchoolSelectionScreen extends Component {
+  componentDidMount() {
+    console.log('componentDidMount');
+    this.props.searchForSchool();
+  }
+
   onComplete() {
     this.props.navigation.navigate('authScreen');
   }
@@ -18,16 +23,7 @@ export default class SchoolSelectionScreen extends Component {
           <Text style={headerStyle}>Select Your School</Text>
         </View>
         <View>
-          <Autocomplete
-            data={['abc','def']}
-            defaultValue={'abc'}
-            onChangeText={text => { }}
-            renderItem={data => (
-              <TouchableOpacity onPress={() => { }}>
-                <Text>{data}</Text>
-              </TouchableOpacity>
-            )}
-          />
+
         </View>
         <View>
           <Button
