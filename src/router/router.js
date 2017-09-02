@@ -5,21 +5,36 @@ import {
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SchoolSelectionScreen from '../screens/SchoolSelectionScreen';
 import AuthScreen from '../screens/AuthScreenContainer';
-
 import HomeScreen from '../screens/HomeScreen';
-import MyBooksScreen from '../screens/MyBooksScreen';
+import MyBooksListingsScreen from '../screens/MyBooksListingsScreen';
+import MyBooksOrdersScreen from '../screens/MyBooksOrdersScreen';
+import MyBooksBookmarksScreen from '../screens/MyBooksBookmarksScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import AccountScreen from '../screens/AccountScreen';
 import SellBooksScreen from '../screens/SellBooksScreen';
-import TabBarComponent from '../modules/TabBarComponent';
 
+import TabBarComponent from '../modules/TabBarComponent';
+const myBooksNavigator = TabNavigator({
+  myBooksListings: {
+    screen: MyBooksListingsScreen
+  },
+  myBooksOrders: {
+    screen: MyBooksOrdersScreen
+  },
+  myBooksBookmarks: {
+    screen: MyBooksBookmarksScreen
+  },
+}, {
+    tabBarPosition: 'top',
+    tabBarComponent: TabBarComponent
+});
 
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen
   },
   myBooks: {
-    screen: MyBooksScreen
+    screen: myBooksNavigator
   },
   sellBooks: {
     screen: SellBooksScreen

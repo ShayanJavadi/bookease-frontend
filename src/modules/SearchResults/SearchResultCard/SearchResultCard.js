@@ -9,7 +9,9 @@ const {
   upperSectionTopWrapper,
   upperSectionBottomWrapper,
   middleSectionWrapper,
-  lowerLowerWrapper,
+  lowerSectionWrapper,
+  lowerSectionLeftWrapper,
+  lowerSectionRightWrapper,
   buttonTextStyle,
   bookNameStyle,
   bookEditionStyle,
@@ -40,24 +42,25 @@ export default class SearchResultCard extends Component {
             <Text style={bookNameStyle}>{name}</Text>
           </View>
           <View style={upperSectionBottomWrapper}>
-            <Text style={bookEditionStyle}>{edition}</Text>
-            <Text style={bookCondititonStyle}>{condititon}</Text>
-            <Text style={bookIsbnStyle}>{isbn}</Text>
+            <Text style={bookEditionStyle}>Edition: {edition}</Text>
+            <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
+            {// <Text style={bookIsbnStyle}>{isbn}</Text>
+          }
           </View>
         </View>
         <View style={middleSectionWrapper}>
         </View>
-        <View style={lowerLowerWrapper}>
-          <View>
+        <View style={lowerSectionWrapper}>
+          <View style={lowerSectionLeftWrapper}>
             <Text style={bookOwnerStyle}>{owner}</Text>
             <Text style={bookUniversityStyle}>{university}</Text>
           </View>
-          <View>
-            <Text style={bookPriceStyle}>{price}</Text>
+          <View style={lowerSectionRightWrapper}>
+            <Text style={bookPriceStyle}>${price}</Text>
             <Button
               raised
               primary
-              style={{text: buttonTextStyle}}
+              style={{text: buttonTextStyle, container: { backgroundColor: '#222', width: 65 }}}
               text="Buy"
             />
           </View>

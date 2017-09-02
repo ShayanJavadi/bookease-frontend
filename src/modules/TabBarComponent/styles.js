@@ -12,7 +12,7 @@ export const styles = {
     height: PLUS_ICON_WIDTH,
     position: 'absolute',
     right: (SCREEN_WIDTH / 2) - PLUS_ICON_WIDTH + 6,
-    bottom: -21,
+    bottom: -19.7,
     backgroundColor: '#222',
     zIndex: 9999,
   },

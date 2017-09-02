@@ -14,45 +14,66 @@ export const styles = {
     flexDirection: 'column',
   },
   upperSectionTopWrapper: {
-
+    paddingTop: 3
   },
   upperSectionBottomWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 10,
+    paddingBottom: 5,
+    paddingLeft: 3
   },
   middleSectionWrapper: {
     flex: 8,
     backgroundColor: '#ccc',
   },
-  lowerLowerWrapper: {
+  lowerSectionWrapper: {
     flex: 2,
     backgroundColor: '#eee',
+    flexDirection: 'row',
+  },
+  lowerSectionLeftWrapper: {
+    justifyContent: 'center',
+    textAlign: 'left',
+    flex: 2,
+    paddingLeft: 10,
+    paddingTop: 15,
+    paddingBottom: 22
+  },
+  lowerSectionRightWrapper: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingRight: 15,
+    flex: 1
   },
   buttonTextStyle: {
     textAlign: 'center',
-    fontWeight: '100',
+    fontSize: 12,
+    fontWeight: '700',
   },
   bookNameStyle: {
+    fontSize: 16,
+    fontWeight: '700',
     color: '#fff',
   },
   bookEditionStyle: {
     color: '#fff',
-    fontSize: 10,
   },
   bookCondititonStyle: {
     color: '#fff',
+    paddingLeft: 15
   },
   bookIsbnStyle: {
     color: '#fff',
   },
   bookOwnerStyle: {
-    color: '#fff',
+    color: '#222',
+    fontSize: 20,
   },
   bookUniversityStyle: {
-    color: '#fff',
+    color: '#444',
   },
   bookPriceStyle: {
-    color: '#fff',
+    color: '#222',
+    fontSize: 19
   }
 }

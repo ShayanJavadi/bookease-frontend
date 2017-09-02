@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import SearchResultCard from './SearchResultCard';
 
 const bookResults = [
@@ -31,23 +31,24 @@ const bookResults = [
 ]
 
 export default class SearchResults extends Component {
-  renderSearchReults(bookResults) {
-    return bookResults.map((book, index) => {
+  renderSearchReults(book) {
+    console.log(book);
       return (
         <SearchResultCard
           key={book.isbn}
           book={book}
         />
       )
-    });
   }
 
   render() {
     return (
       <View style={{ flex: 6 }}>
-        <ScrollView>
-          {this.renderSearchReults(bookResults)}
-        </ScrollView>
+        <FlatList
+          data={bookResults}
+          renderItem={({item}) => this.renderSearchReults(item)}
+          keyExtractor={item => item.isbn}
+        />
       </View>
     )
   }
