@@ -43,12 +43,6 @@
       "./assets/fonts"
     ]
   },
-  "babel": {
-    "presets": [
-      "es2017",
-      "stage-0"
-    ]
-  },
   "eslintConfig": {
     "extends": "airbnb",
     "rules": {
