@@ -6,7 +6,7 @@ import {
 } from "./consts";
 
 export const facebookLogin = () => async (dispatch) => {
-  const token = await AsyncStorage.getItem("fb_token");
+  let token = await AsyncStorage.getItem("fb_token");
 
   if (token) {
     dispatch({FACEBOOK_LOGIN_SUCCESS, paylod: token});
@@ -16,7 +16,7 @@ export const facebookLogin = () => async (dispatch) => {
 };
 
 const doFacebookLogin = async (dispatch) => {
-  const {type, token} = await Facebook.logInWithReadPermissionsAsync("122107125107711", {
+  let {type, token} = await Facebook.logInWithReadPermissionsAsync("122107125107711", {
     permissions: ["public_profile"],
   });
 

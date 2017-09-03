@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import MaterialTabs from 'react-native-material-tabs'
+import { Text, View } from 'react-native';
+import MaterialTabs from 'react-native-material-tabs';
+import { styles } from './styles';
+
+const { headerStyle, headerTextStyle } = styles;
 
 export default class MyBooksTabBarComponent extends Component {
   state = {
@@ -26,7 +30,7 @@ export default class MyBooksTabBarComponent extends Component {
     if (nextState.selectedTab === this.state.selectedTab) {
       return;
     }
-    
+
     if (nextState.selectedTab === 0) {
       this.onListingsPress();
     }
@@ -42,14 +46,19 @@ export default class MyBooksTabBarComponent extends Component {
 
   render() {
     return (
-      <MaterialTabs
-        items={['Listings', 'Orders', 'Bookmarks']}
-        selectedIndex={this.state.selectedTab}
-        onChange={(tabIndex) => this.setTab(tabIndex)}
-        barColor="#1fbcd2"
-        indicatorColor="#fffe94"
-        activeTextColor="white"
-      />
+      <View>
+        <View style={headerStyle}>
+          <Text style={headerTextStyle}>My Books</Text>
+        </View>
+        <MaterialTabs
+          items={['Listings', 'Orders', 'Bookmarks']}
+          selectedIndex={this.state.selectedTab}
+          onChange={(tabIndex) => this.setTab(tabIndex)}
+          barColor="#999"
+          indicatorColor="#222"
+          activeTextColor="#222"
+        />
+      </View>
     );
   }
 }

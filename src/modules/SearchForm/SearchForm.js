@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {View} from "react-native";
 import SearchBar from "./SearchBar";
 import SearchFilters from "./SearchFilters";
-import styles from "./styles";
+import {styles} from "./styles";
 
 const {searchFormWrapperStyle} = styles;
 
