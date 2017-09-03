@@ -5,7 +5,6 @@ import AuthScreen from '../AuthScreen';
 
 // move to another
 const mapStateToProps = ({ facebookAuthReducer }) => {
-  console.log(facebookAuthReducer);
   return { facebookAuthToken: facebookAuthReducer.token };
 }
 

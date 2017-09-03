@@ -6,7 +6,6 @@ import {
 } from './consts';
 
 export const facebookLogin = () => async dispatch => {
-  console.log(Facebook);
   let token = await AsyncStorage.getItem('fb_token');
 
   if (token) {

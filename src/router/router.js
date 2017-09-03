@@ -14,6 +14,8 @@ import AccountScreen from '../screens/AccountScreen';
 import SellBooksScreen from '../screens/SellBooksScreen';
 
 import TabBarComponent from '../modules/TabBarComponent';
+import MyBooksTabBarComponent from '../modules/MyBooksTabBarComponent';
+
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
     screen: MyBooksListingsScreen
@@ -26,7 +28,7 @@ const myBooksNavigator = TabNavigator({
   },
 }, {
     tabBarPosition: 'top',
-    tabBarComponent: TabBarComponent
+    tabBarComponent: MyBooksTabBarComponent
 });
 
 const HomeNavigator = TabNavigator({

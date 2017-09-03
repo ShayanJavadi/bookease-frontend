@@ -9,7 +9,7 @@ export default class MyBooksBookmarksScreen extends Component {
   render() {
     return (
       <View style={screenStyle}>
-        <Text>My Orders</Text>
+        <Text>My Bookmarks</Text>
       </View>
     );
   }

@@ -32,7 +32,6 @@ const bookResults = [
 
 export default class SearchResults extends Component {
   renderSearchReults(book) {
-    console.log(book);
       return (
         <SearchResultCard
           key={book.isbn}
