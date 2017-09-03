@@ -1,88 +1,88 @@
 import {
   StackNavigator,
-  TabNavigator
-} from 'react-navigation';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import SchoolSelectionScreen from '../screens/SchoolSelectionScreen';
-import AuthScreen from '../screens/AuthScreenContainer';
-import HomeScreen from '../screens/HomeScreen';
-import MyBooksListingsScreen from '../screens/MyBooksListingsScreen';
-import MyBooksOrdersScreen from '../screens/MyBooksOrdersScreen';
-import MyBooksBookmarksScreen from '../screens/MyBooksBookmarksScreen';
-import NotificationScreen from '../screens/NotificationScreen';
-import AccountScreen from '../screens/AccountScreen';
-import SellBooksScreen from '../screens/SellBooksScreen';
+  TabNavigator,
+} from "react-navigation";
+import WelcomeScreen from "../screens/WelcomeScreen";
+import SchoolSelectionScreen from "../screens/SchoolSelectionScreen";
+import AuthScreen from "../screens/AuthScreenContainer";
+import HomeScreen from "../screens/HomeScreen";
+import MyBooksListingsScreen from "../screens/MyBooksListingsScreen";
+import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
+import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import AccountScreen from "../screens/AccountScreen";
+import SellBooksScreen from "../screens/SellBooksScreen";
 
-import TabBarComponent from '../modules/TabBarComponent';
-import MyBooksTabBarComponent from '../modules/MyBooksTabBarComponent';
+import TabBarComponent from "../modules/TabBarComponent";
+import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
-    screen: MyBooksListingsScreen
+    screen: MyBooksListingsScreen,
   },
   myBooksOrders: {
-    screen: MyBooksOrdersScreen
+    screen: MyBooksOrdersScreen,
   },
   myBooksBookmarks: {
-    screen: MyBooksBookmarksScreen
+    screen: MyBooksBookmarksScreen,
   },
 }, {
-    tabBarPosition: 'top',
-    tabBarComponent: MyBooksTabBarComponent
+  tabBarPosition: "top",
+  tabBarComponent: MyBooksTabBarComponent,
 });
 
 const HomeNavigator = TabNavigator({
   home: {
-    screen: HomeScreen
+    screen: HomeScreen,
   },
   myBooks: {
-    screen: myBooksNavigator
+    screen: myBooksNavigator,
   },
   sellBooks: {
-    screen: SellBooksScreen
+    screen: SellBooksScreen,
   },
   notifications: {
-    screen: NotificationScreen
+    screen: NotificationScreen,
   },
   account: {
-    screen: AccountScreen
-  }
+    screen: AccountScreen,
+  },
 }, {
-    tabBarPosition: 'bottom',
-    tabBarComponent: TabBarComponent
+  tabBarPosition: "bottom",
+  tabBarComponent: TabBarComponent,
 });
 
 const SchoolSelectionNavigator = StackNavigator({
   schoolSelection: {
-    screen: SchoolSelectionScreen
+    screen: SchoolSelectionScreen,
   },
   homeScreen: {
-    screen: HomeNavigator
-  }
+    screen: HomeNavigator,
+  },
 }, {
-  headerMode: 'none',
+  headerMode: "none",
 });
 
 const AuthNavigator = StackNavigator({
   auth: {
-    screen: AuthScreen
+    screen: AuthScreen,
   },
   schoolSelectionScreen: {
-    screen: SchoolSelectionNavigator
-  }
+    screen: SchoolSelectionNavigator,
+  },
 }, {
-  headerMode: 'none',
+  headerMode: "none",
 });
 
 const MainNavigator = StackNavigator({
   welcome: {
-    screen: WelcomeScreen
+    screen: WelcomeScreen,
   },
   authScreen: {
-    screen: AuthNavigator
+    screen: AuthNavigator,
   },
 }, {
-   headerMode: 'none'
+  headerMode: "none",
 });
 
 // temporary changed to HomeNavigator for debugging

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'react-native-material-ui';
-import { styles } from './styles';
+import React, {Component} from "react";
+import {Text, View} from "react-native";
+import {Button} from "react-native-material-ui";
+import {styles} from "./styles";
 
 const {
   searchResultCardWrapper,
@@ -19,11 +19,10 @@ const {
   bookIsbnStyle,
   bookOwnerStyle,
   bookUniversityStyle,
-  bookPriceStyle
+  bookPriceStyle,
 } = styles;
 
 export default class SearchResultCard extends Component {
-
   render() {
     const {
       name,
@@ -45,11 +44,10 @@ export default class SearchResultCard extends Component {
             <Text style={bookEditionStyle}>Edition: {edition}</Text>
             <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
             {// <Text style={bookIsbnStyle}>{isbn}</Text>
-          }
+            }
           </View>
         </View>
-        <View style={middleSectionWrapper}>
-        </View>
+        <View style={middleSectionWrapper} />
         <View style={lowerSectionWrapper}>
           <View style={lowerSectionLeftWrapper}>
             <Text style={bookOwnerStyle}>{owner}</Text>
@@ -60,12 +58,12 @@ export default class SearchResultCard extends Component {
             <Button
               raised
               primary
-              style={{text: buttonTextStyle, container: { backgroundColor: '#222', width: 65 }}}
+              style={{text: buttonTextStyle, container: {backgroundColor: "#222", width: 65}}}
               text="Buy"
             />
           </View>
         </View>
       </View>
-    )
+    );
   }
 }

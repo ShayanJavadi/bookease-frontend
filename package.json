@@ -6,7 +6,9 @@
   "license": "",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "test": "node ./node_modules/jest/bin/jest.js --watch"
+    "test": "node ./node_modules/jest/bin/jest.js --watch",
+    "lint": "./node_modules/.bin/eslint src",
+    "lint:fix": "./node_modules/.bin/eslint --fix src"
   },
   "jest": {
     "preset": "jest-expo"
@@ -17,7 +19,7 @@
     "lodash": "^4.17.4",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-20.0.0.tar.gz",
-    "react-native-material-tabs": "^3.0.2",
+    "react-native-material-tabs": "^3.0.3",
     "react-native-material-ui": "^1.12.0",
     "react-navigation": "^1.0.0-beta.12",
     "react-redux": "^5.0.6",
@@ -25,13 +27,39 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "eslint": "^4.5.0",
-    "eslint-plugin-react": "^7.2.1",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2017": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-loader": "^1.8.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.1.0",
     "jest-expo": "^20.0.0"
   },
   "rnpm": {
     "assets": [
       "./assets/fonts"
     ]
+  },
+  "babel": {
+    "presets": [
+      "es2017",
+      "stage-0"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "rules": {
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ]
+    }
   }
 }

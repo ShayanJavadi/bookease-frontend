@@ -1,3 +1,3 @@
-import facebookAuthReducer from './facebookAuthReducer';
+import facebookAuthReducer from "./facebookAuthReducer";
 
 export default facebookAuthReducer;

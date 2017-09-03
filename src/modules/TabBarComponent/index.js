@@ -1,3 +1,3 @@
-import TabBarComponent from './TabBarComponent';
+import TabBarComponent from "./TabBarComponent";
 
 export default TabBarComponent;

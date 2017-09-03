@@ -1,3 +1,3 @@
-import MyBooksTabBarComponent from './MyBooksTabBarComponent';
+import MyBooksTabBarComponent from "./MyBooksTabBarComponent";
 
 export default MyBooksTabBarComponent;

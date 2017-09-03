@@ -1,3 +1,3 @@
-import SchoolSelectionScreen from './SchoolSelectionScreen';
+import SchoolSelectionScreen from "./SchoolSelectionScreen";
 
 export default SchoolSelectionScreen;

@@ -1,3 +1,3 @@
-import SellBooksScreen from './SellBooksScreen';
+import SellBooksScreen from "./SellBooksScreen";
 
 export default SellBooksScreen;

@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Text, View, TextInput} from 'react-native';
-import { Button } from 'react-native-material-ui';
-import { styles } from './styles';
+import React, {Component} from "react";
+import {Text, View, TextInput} from "react-native";
+import {Button} from "react-native-material-ui";
+import {styles} from "./styles";
 
-const { screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle } = styles;
+const {screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle} = styles;
 
 export default class SchoolSelectionScreen extends Component {
   onComplete() {
-    this.props.navigation.navigate('authScreen');
+    this.props.navigation.navigate("authScreen");
   }
 
   render() {

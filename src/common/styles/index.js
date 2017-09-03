@@ -1,3 +1,3 @@
-import uiTheme from './uiTheme';
+import uiTheme from "./uiTheme";
 
 export default uiTheme;

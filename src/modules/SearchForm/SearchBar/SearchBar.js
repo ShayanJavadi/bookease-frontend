@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Text, View, TextInput } from 'react-native';
-import { FontAwesome, EvilIcons } from '@expo/vector-icons';
+import React, {Component} from "react";
+import {Text, View, TextInput} from "react-native";
+import {FontAwesome, EvilIcons} from "@expo/vector-icons";
 
-import { styles } from './styles';
+import {styles} from "./styles";
 
 const {
   searchBarWrapperStyle,
   inputWrapperStyle,
   inputStyle,
   searchIconStyle,
-  barCodeIconStyle
+  barCodeIconStyle,
 } = styles;
 
 export default class SearchBar extends Component {
@@ -22,10 +22,10 @@ export default class SearchBar extends Component {
             style={inputStyle}
             placeholder="Search for textbooks"
             underlineColorAndroid="transparent"
-           />
-           <FontAwesome name="barcode" size={30} style={barCodeIconStyle} />
+          />
+          <FontAwesome name="barcode" size={30} style={barCodeIconStyle} />
         </View>
       </View>
-    )
+    );
   }
 }
