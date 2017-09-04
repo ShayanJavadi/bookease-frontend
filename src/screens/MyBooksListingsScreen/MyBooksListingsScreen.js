@@ -1,8 +1,7 @@
-import React, {Component} from "react";
-import {Text, View, FlatList} from "react-native";
-import {styles} from "./styles";
-import {Button} from "react-native-material-ui";
-import Swipeout from 'react-native-swipeout';
+import React, { Component } from "react";
+import { Text, View, FlatList } from "react-native";
+import Swipeout from "react-native-swipeout";
+import { styles } from "./styles";
 
 const {
   screenStyle,
@@ -10,9 +9,7 @@ const {
   sortTextStyle,
   listingsWrapperStyle,
   listingWrapperStyle,
-  listingTextStyle,
   listingDetailsWrapperStyle,
-  listingButtonWrapperStyle,
   listingNameWrapperStyle,
   listingNameTextStyle,
   listingDetailsTopWrapperStyle,
@@ -25,7 +22,7 @@ const {
   listingIsbnTextStyle,
   listingConditionTextStyle,
   listingStatusTextStyle,
-  listingAuthorTextStyle
+  listingAuthorTextStyle,
 } = styles;
 
 const listings = [
@@ -77,20 +74,22 @@ export default class MyBooksListingsScreen extends Component {
       timePosted,
       price,
       status,
-      author
+      author,
     } = listing;
-    
+
     const swipeBtns = [{
-        text: 'Delete',
-        backgroundColor: 'red',
-        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-        onPress: () => { console.log('delete') }
+      text: "Delete",
+      backgroundColor: "red",
+      underlayColor: "rgba(0, 0, 0, 1, 0.6)",
+      onPress: () => { console.log("delete"); },
     }];
 
     return (
-      <Swipeout right={swipeBtns}
-       autoClose='true'
-       backgroundColor= 'transparent'>
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+      >
         <View style={listingWrapperStyle}>
           <View style={listingDetailsWrapperStyle}>
             <View style={listingNameWrapperStyle}>
@@ -101,7 +100,7 @@ export default class MyBooksListingsScreen extends Component {
               <Text style={[listingSmallDetailsTextStyle, listingAuthorTextStyle]}>author: {author}</Text>
             </View>
             <View style={listingDetailsBottomWrapperStyle}>
-            <Text style={[listingSmallDetailsTextStyle, listingConditionTextStyle]}>condition: {condition}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingConditionTextStyle]}>condition: {condition}</Text>
               <Text style={[listingSmallDetailsTextStyle, listingIsbnTextStyle]}>isbn: {isbn}</Text>
             </View>
             <View style={listingDateWrapperStyle}>
@@ -125,7 +124,7 @@ export default class MyBooksListingsScreen extends Component {
         <View style={listingsWrapperStyle}>
           <FlatList
             data={listings}
-            renderItem={({item}) => this.renderMyListings(item)}
+            renderItem={({ item }) => this.renderMyListings(item)}
             keyExtractor={listing => listing.isbn}
           />
         </View>

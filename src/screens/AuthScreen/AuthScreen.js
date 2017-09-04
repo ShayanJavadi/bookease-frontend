@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {Entypo, EvilIcons} from "@expo/vector-icons";
-import {Button} from "react-native-material-ui";
-import {Text, View, AsyncStorage} from "react-native";
-import {styles, ICON_SIZE, LOGO_ICON_SIZE} from "./styles";
+import React, { Component } from "react";
+import { Entypo } from "@expo/vector-icons";
+import { Button } from "react-native-material-ui";
+import { Text, View, AsyncStorage } from "react-native";
+import { styles, ICON_SIZE, LOGO_ICON_SIZE } from "./styles";
 
 const {
   screenStyle,

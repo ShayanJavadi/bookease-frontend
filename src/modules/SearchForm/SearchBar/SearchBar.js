@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {Text, View, TextInput} from "react-native";
-import {FontAwesome, EvilIcons} from "@expo/vector-icons";
+import React, { Component } from "react";
+import { View, TextInput } from "react-native";
+import { FontAwesome, EvilIcons } from "@expo/vector-icons";
 
-import {styles} from "./styles";
+import { styles } from "./styles";
 
 const {
   searchBarWrapperStyle,

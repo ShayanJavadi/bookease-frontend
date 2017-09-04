@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Text, View, TextInput} from "react-native";
-import {Button} from "react-native-material-ui";
-import {styles} from "./styles";
+import React, { Component } from "react";
+import { Text, View, TextInput } from "react-native";
+import { Button } from "react-native-material-ui";
+import { styles } from "./styles";
 
-const {screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle} = styles;
+const { screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle } = styles;
 
 export default class SchoolSelectionScreen extends Component {
   onComplete() {
@@ -25,7 +25,7 @@ export default class SchoolSelectionScreen extends Component {
           <Button
             raised
             primary
-            style={{container: buttonStyle, text: buttonTextStyle}}
+            style={{ container: buttonStyle, text: buttonTextStyle }}
             text="Select"
             onPress={() => this.onComplete()}
           />

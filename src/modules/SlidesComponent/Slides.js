@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {Text, View, ScrollView, Dimensions} from "react-native";
-import {Entypo} from "@expo/vector-icons";
-import {styles, ICON_SIZE} from "./styles";
-import {Button} from "react-native-material-ui";
+import React, { Component } from "react";
+import { Text, View, ScrollView } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import { Button } from "react-native-material-ui";
+import { styles, ICON_SIZE } from "./styles";
 
 const {
   buttonStyle,
@@ -20,7 +20,7 @@ export default class Slides extends Component {
         <Button
           raised
           primary
-          style={{text: buttonTextStyle}}
+          style={{ text: buttonTextStyle }}
           text="I'm ready!"
           onPress={this.props.onComplete}
         />
@@ -30,7 +30,7 @@ export default class Slides extends Component {
   }
   renderSlides() {
     return this.props.data.map((slide, index) => (
-      <View key={slide.text} style={[slideStyle, {backgroundColor: slide.color}]}>
+      <View key={slide.text} style={[slideStyle, { backgroundColor: slide.color }]}>
         <View>
           <Entypo name="book" size={ICON_SIZE} style={slideLogoStyle} />
         </View>
@@ -49,7 +49,7 @@ export default class Slides extends Component {
       <ScrollView
         horizontal
         pagingEnabled
-        style={{flex: 1}}
+        style={{ flex: 1 }}
       >
         {this.renderSlides()}
       </ScrollView>

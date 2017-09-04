@@ -1,4 +1,4 @@
-import {Dimensions} from "react-native";
+import { Dimensions } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -15,7 +15,7 @@ export const styles = {
     backgroundColor: "#fff",
     height: 40,
     shadowColor: "#000",
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
     zIndex: 9999,

@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Text, View, FlatList} from "react-native";
+import React, { Component } from "react";
+import { View, FlatList } from "react-native";
 import SearchResultCard from "./SearchResultCard";
 
 const bookResults = [
@@ -42,10 +42,10 @@ export default class SearchResults extends Component {
 
   render() {
     return (
-      <View style={{flex: 6}}>
+      <View style={{ flex: 6 }}>
         <FlatList
           data={bookResults}
-          renderItem={({item}) => this.renderSearchReults(item)}
+          renderItem={({ item }) => this.renderSearchReults(item)}
           keyExtractor={item => item.isbn}
         />
       </View>

@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {Text, View} from "react-native";
-import {Button} from "react-native-material-ui";
-import {styles} from "./styles";
+import React, { Component } from "react";
+import { Text, View } from "react-native";
+import { Button } from "react-native-material-ui";
+import { styles } from "./styles";
 
 const {
   searchResultCardWrapper,
@@ -58,7 +58,7 @@ export default class SearchResultCard extends Component {
             <Button
               raised
               primary
-              style={{text: buttonTextStyle, container: {backgroundColor: "#222", width: 65}}}
+              style={{ text: buttonTextStyle, container: { backgroundColor: "#222", width: 65 } }}
               text="Buy"
             />
           </View>
