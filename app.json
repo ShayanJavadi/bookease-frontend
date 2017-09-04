@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "textbook-trading",
+    "name": "bookease",
     "description": "No description",
-    "slug": "textbook-trading",
+    "slug": "bookease",
     "privacy": "public",
     "sdkVersion": "20.0.0",
     "version": "1.0.0",
