@@ -31,7 +31,7 @@ const bookResults = [
 ];
 
 export default class SearchResults extends Component {
-  renderSearchReults(book) {
+  renderSearchResults(book) {
     return (
       <SearchResultCard
         key={book.isbn}
@@ -45,7 +45,7 @@ export default class SearchResults extends Component {
       <View style={{ flex: 6 }}>
         <FlatList
           data={bookResults}
-          renderItem={({ item }) => this.renderSearchReults(item)}
+          renderItem={({ item }) => this.renderSearchResults(item)}
           keyExtractor={item => item.isbn}
         />
       </View>

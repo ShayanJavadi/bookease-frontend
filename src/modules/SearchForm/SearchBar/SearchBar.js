@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput } from "react-native";
-import { FontAwesome, EvilIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
@@ -17,13 +17,13 @@ export default class SearchBar extends Component {
     return (
       <View style={searchBarWrapperStyle}>
         <View style={inputWrapperStyle}>
-          <EvilIcons name="search" size={23} style={searchIconStyle} />
+          <MaterialIcons name="search" size={23} style={searchIconStyle} />
           <TextInput
             style={inputStyle}
             placeholder="Search for textbooks"
             underlineColorAndroid="transparent"
           />
-          <FontAwesome name="barcode" size={30} style={barCodeIconStyle} />
+          <MaterialCommunityIcons name="barcode-scan" size={30} style={barCodeIconStyle} />
         </View>
       </View>
     );
