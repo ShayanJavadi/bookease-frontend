@@ -54,9 +54,10 @@ export default class MyBooksTabBarComponent extends Component {
           items={['Listings', 'Orders', 'Bookmarks']}
           selectedIndex={this.state.selectedTab}
           onChange={(tabIndex) => this.setTab(tabIndex)}
-          barColor="#999"
+          barColor="#eee"
           indicatorColor="#222"
           activeTextColor="#222"
+          inactiveTextColor="#888"
         />
       </View>
     );

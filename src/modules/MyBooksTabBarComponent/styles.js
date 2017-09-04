@@ -3,7 +3,7 @@ export const styles = {
     height: 55,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#999',
+    backgroundColor: '#eee',
     paddingTop: 25,
   },
   headerTextStyle: {

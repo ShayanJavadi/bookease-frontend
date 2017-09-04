@@ -1,3 +1,4 @@
+/* eslint-disable prefer-consts */
 import {AsyncStorage} from "react-native";
 import {Facebook} from "expo";
 import {
