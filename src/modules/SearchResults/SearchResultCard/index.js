@@ -1,3 +1,3 @@
-import SearchResultCard from './SearchResultCard';
+import SearchResultCard from "./SearchResultCard";
 
 export default SearchResultCard;

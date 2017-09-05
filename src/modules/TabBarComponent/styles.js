@@ -1,6 +1,6 @@
-import { Dimensions } from 'react-native';
+import { Dimensions } from "react-native";
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 const PLUS_ICON_WIDTH = 55;
 
 export const ICON_SIZE = 27;
@@ -10,14 +10,14 @@ export const styles = {
   sellBooksButtonStyle: {
     width: PLUS_ICON_WIDTH,
     height: PLUS_ICON_WIDTH,
-    position: 'absolute',
+    position: "absolute",
     right: (SCREEN_WIDTH / 2) - PLUS_ICON_WIDTH + 6,
-    bottom: -21,
-    backgroundColor: '#222',
+    bottom: -19.7,
+    backgroundColor: "#222",
     zIndex: 9999,
   },
   sellBooksButtonIconStyle: {
-    fontWeight: '700',
-    color: '#fff',
+    fontWeight: "700",
+    color: "#fff",
   },
-}
+};

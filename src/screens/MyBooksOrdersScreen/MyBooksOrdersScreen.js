@@ -4,11 +4,11 @@ import { styles } from "./styles";
 
 const { screenStyle } = styles;
 
-export default class SellBooksScreen extends Component {
+export default class MyBooksOrdersScreen extends Component {
   render() {
     return (
       <View style={screenStyle}>
-        <Text>SellBooksScreen</Text>
+        <Text>My Orders</Text>
       </View>
     );
   }

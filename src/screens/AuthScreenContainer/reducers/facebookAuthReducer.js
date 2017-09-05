@@ -1,11 +1,11 @@
 import {
   FACEBOOK_LOGIN_SUCCESS,
-  FACEBOOK_LOGIN_FAIL
-} from '../actions/consts';
+  FACEBOOK_LOGIN_FAIL,
+} from "../actions/consts";
 
 const INITIAL_STATE = {
   token: undefined,
-}
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -16,4 +16,4 @@ export default (state = INITIAL_STATE, action) => {
     default:
       return state;
   }
-}
+};

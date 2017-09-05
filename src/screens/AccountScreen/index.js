@@ -1,3 +1,3 @@
-import AccountScreen from './AccountScreen';
+import AccountScreen from "./AccountScreen";
 
 export default AccountScreen;

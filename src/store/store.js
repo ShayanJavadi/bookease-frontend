@@ -1,10 +1,9 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { combineReducers } from 'redux';
-import facebookAuthReducer from '../screens/AuthScreenContainer/reducers';
+import { createStore, compose, applyMiddleware, combineReducers } from "redux";
+import thunk from "redux-thunk";
+import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
 
 const reducers = combineReducers({
-  facebookAuthReducer
+  facebookAuthReducer,
 });
 
 
@@ -12,8 +11,8 @@ const store = createStore(
   reducers,
   {},
   compose(
-    applyMiddleware(thunk)
-  )
+    applyMiddleware(thunk),
+  ),
 );
 
 export default store;
