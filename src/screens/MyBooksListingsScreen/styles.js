@@ -1,3 +1,6 @@
+import { Dimensions } from "react-native";
+const SCREEN_WIDTH = Dimensions.get("window").width;
+export const SWIPE_OUT_ICON_SIZE = 25;
 export const styles = {
   screenStyle: {
     flex: 1,
@@ -27,7 +30,6 @@ export const styles = {
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-
   },
   listingTextStyle: {
     color: "#222",
@@ -94,7 +96,7 @@ export const styles = {
   swipeOutStyle: {
     flex: 1,
     justifyContent: 'center',
-    paddingLeft: 16,
+    paddingLeft: 25,
   },
   swipeOutTextStyle: {
     color: '#fff',

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import Swipeable from 'react-native-swipeable';
-import { styles } from "./styles";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { styles, SWIPE_OUT_ICON_SIZE } from "./styles";
 
 const {
   screenStyle,
@@ -23,7 +24,6 @@ const {
   listingConditionTextStyle,
   listingStatusTextStyle,
   listingAuthorTextStyle,
-  leftSwipeItem,
   swipeOutStyle,
   swipeOutTextStyle,
 } = styles;
@@ -65,7 +65,6 @@ const listings = [
   },
 ];
 
-
 export default class MyBooksListingsScreen extends Component {
   renderMyListings(listing) {
     const {
@@ -84,10 +83,18 @@ export default class MyBooksListingsScreen extends Component {
       <Swipeable
         rightButtons={[
           <TouchableOpacity style={[swipeOutStyle, { backgroundColor: '#00BFA5' }]}>
-            <Text style={[swipeOutTextStyle, { paddingLeft: 7 }]}>Edit</Text>
+            <MaterialIcons
+              name="edit"
+              size={SWIPE_OUT_ICON_SIZE}
+              style={swipeOutTextStyle}
+            />
           </TouchableOpacity>,
           <TouchableOpacity style={[swipeOutStyle, {backgroundColor: '#ff003d'}]}>
-            <Text style={swipeOutTextStyle}>Delete</Text>
+          <MaterialCommunityIcons
+            name="delete"
+            size={SWIPE_OUT_ICON_SIZE}
+            style={swipeOutTextStyle}
+          />
           </TouchableOpacity>
         ]}
       >
