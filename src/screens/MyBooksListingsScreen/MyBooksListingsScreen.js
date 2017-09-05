@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, FlatList } from "react-native";
-import Swipeout from "react-native-swipeout";
+import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import Swipeable from 'react-native-swipeable';
 import { styles } from "./styles";
 
 const {
@@ -23,6 +23,9 @@ const {
   listingConditionTextStyle,
   listingStatusTextStyle,
   listingAuthorTextStyle,
+  leftSwipeItem,
+  swipeOutStyle,
+  swipeOutTextStyle,
 } = styles;
 
 const listings = [
@@ -77,18 +80,16 @@ export default class MyBooksListingsScreen extends Component {
       author,
     } = listing;
 
-    const swipeBtns = [{
-      text: "Delete",
-      backgroundColor: "red",
-      underlayColor: "rgba(0, 0, 0, 1, 0.6)",
-      onPress: () => { console.log("delete"); },
-    }];
-
     return (
-      <Swipeout
-        right={swipeBtns}
-        autoClose="true"
-        backgroundColor="transparent"
+      <Swipeable
+        rightButtons={[
+          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: '#00BFA5' }]}>
+            <Text style={[swipeOutTextStyle, { paddingLeft: 7 }]}>Edit</Text>
+          </TouchableOpacity>,
+          <TouchableOpacity style={[swipeOutStyle, {backgroundColor: '#ff003d'}]}>
+            <Text style={swipeOutTextStyle}>Delete</Text>
+          </TouchableOpacity>
+        ]}
       >
         <View style={listingWrapperStyle}>
           <View style={listingDetailsWrapperStyle}>
@@ -96,12 +97,12 @@ export default class MyBooksListingsScreen extends Component {
               <Text style={listingNameTextStyle}>{name}</Text>
             </View>
             <View style={listingDetailsTopWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>status: {status}</Text>
-              <Text style={[listingSmallDetailsTextStyle, listingAuthorTextStyle]}>author: {author}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>Status: {status}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingAuthorTextStyle]}>Author: {author}</Text>
             </View>
             <View style={listingDetailsBottomWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, listingConditionTextStyle]}>condition: {condition}</Text>
-              <Text style={[listingSmallDetailsTextStyle, listingIsbnTextStyle]}>isbn: {isbn}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingConditionTextStyle]}>Condition: {condition}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingIsbnTextStyle]}>Isbn: {isbn}</Text>
             </View>
             <View style={listingDateWrapperStyle}>
               <Text style={listingDateTextStyle}>{timePosted}</Text>
@@ -111,7 +112,7 @@ export default class MyBooksListingsScreen extends Component {
             <Text style={listingPriceTextStyle}>${price}</Text>
           </View>
         </View>
-      </Swipeout>
+      </Swipeable>
     );
   }
 

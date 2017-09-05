@@ -18,7 +18,7 @@ export const styles = {
     backgroundColor: "#fff",
   },
   listingWrapperStyle: {
-    height: 70,
+    height: 75,
     marginTop: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
@@ -39,21 +39,22 @@ export const styles = {
   listingNameWrapperStyle: {
     flexDirection: "row",
     paddingLeft: 20,
-    paddingTop: 2,
+    paddingBottom: 1,
   },
   listingDetailsTopWrapperStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 28,
+    paddingLeft: 23,
   },
   listingDetailsBottomWrapperStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 28,
+    paddingLeft: 23,
   },
   listingDateWrapperStyle: {
     flexDirection: "row",
-    paddingLeft: 20,
+    paddingLeft: 21,
+    paddingTop: 1,
   },
   listingPriceWrapperStyle: {
     backgroundColor: "#eee",
@@ -63,6 +64,8 @@ export const styles = {
   },
   listingNameTextStyle: {
     fontSize: 14,
+    fontWeight: '700',
+    color: '#444'
   },
   listingSmallDetailsTextStyle: {
     color: "#333",
@@ -71,7 +74,7 @@ export const styles = {
   },
   listingDateTextStyle: {
     fontSize: 12,
-    color: "#444",
+    color: "#555",
   },
   listingPriceTextStyle: {
     fontSize: 15,
@@ -88,5 +91,14 @@ export const styles = {
   },
   listingStatusTextStyle: {
     flex: 2,
+  },
+  swipeOutStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 16,
+  },
+  swipeOutTextStyle: {
+    color: '#fff',
+    fontWeight: '700'
   },
 };
