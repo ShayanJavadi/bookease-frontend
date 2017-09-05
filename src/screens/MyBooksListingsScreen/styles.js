@@ -1,6 +1,7 @@
 export const styles = {
   screenStyle: {
     flex: 1,
+    backgroundColor: '#fafafa',
   },
   sortWrapperStyle: {
     flex: 1,
@@ -22,19 +23,19 @@ export const styles = {
     marginTop: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+
   },
   listingTextStyle: {
     color: "#222",
   },
   listingDetailsWrapperStyle: {
     flex: 6,
-    backgroundColor: "#eee",
+    backgroundColor: "#fff",
     justifyContent: "center",
-  },
-  listingButtonWrapperStyle: {
-    flex: 1,
-    backgroundColor: "#ddd",
-    marginLeft: 1,
   },
   listingNameWrapperStyle: {
     flexDirection: "row",
@@ -57,28 +58,26 @@ export const styles = {
     paddingTop: 1,
   },
   listingPriceWrapperStyle: {
-    backgroundColor: "#eee",
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
   },
+  listingPriceTextStyle: {
+    fontWeight: "100"
+  },
   listingNameTextStyle: {
     fontSize: 14,
-    fontWeight: '700',
     color: '#444'
   },
   listingSmallDetailsTextStyle: {
     color: "#333",
     fontSize: 12,
     flex: 1,
+    fontWeight: "100",
   },
   listingDateTextStyle: {
     fontSize: 12,
     color: "#555",
-  },
-  listingPriceTextStyle: {
-    fontSize: 15,
-    color: "#222",
   },
   listingIsbnTextStyle: {
     flex: 3,

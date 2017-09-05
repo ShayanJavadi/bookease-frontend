@@ -39,7 +39,7 @@ const listings = [
     price: "12",
     timePosted: "5m",
     author: "Thomas H. Cormen",
-    status: "active",
+    status: "Active",
   }, {
     name: "Algorithms and Something",
     edition: "2nd",
@@ -50,7 +50,7 @@ const listings = [
     price: "30",
     timePosted: "3h",
     author: "Ronald McDonald",
-    status: "sold",
+    status: "Sold",
   }, {
     name: "Modern Webapps with COBOL and Fortran",
     edition: "12nd",
@@ -61,7 +61,7 @@ const listings = [
     price: "100",
     timePosted: "2w",
     author: "Miller Levine",
-    status: "sold",
+    status: "Sold",
   },
 ];
 
