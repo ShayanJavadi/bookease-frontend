@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 import SchoolSelectionScreen from '../SchoolSelectionScreen';
 
-const mapStateToProps = () => {
+const mapStateToProps = ({ schoolSelectionReducer }) => {
   return {
-
-  };
+    schools: schoolSelectionReducer.schools,
+   };
 }
 
 export default connect(mapStateToProps, actions)(SchoolSelectionScreen);

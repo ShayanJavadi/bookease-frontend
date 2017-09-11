@@ -20,15 +20,28 @@ export const styles = {
   },
   inputStyle: {
     height: 40,
-    width: SCREEN_WIDTH * .7,
+    width: SCREEN_WIDTH * .9,
     borderColor: 'gray',
     borderWidth: 1
   },
+  schoolNameStyle: {
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  schoolAddressStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontStyle: "italic"
+  },
   buttonStyle: {
+    height: SCREEN_WIDTH * .1,
     width: SCREEN_WIDTH * .7,
     backgroundColor: '#222'
   },
   buttonTextStyle: {
     fontWeight: '700'
   },
+  noButtonPaddingStyle: {
+    height: SCREEN_WIDTH * .1,
+  }
 }
