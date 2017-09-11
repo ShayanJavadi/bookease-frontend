@@ -1,10 +1,11 @@
 import { Dimensions } from "react-native";
+
 const SCREEN_WIDTH = Dimensions.get("window").width;
 export const SWIPE_OUT_ICON_SIZE = 25;
 export const styles = {
   screenStyle: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: "#fafafa",
   },
   sortWrapperStyle: {
     flex: 1,
@@ -26,7 +27,7 @@ export const styles = {
     marginTop: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -65,11 +66,11 @@ export const styles = {
     flex: 1,
   },
   listingPriceTextStyle: {
-    fontWeight: "100"
+    fontWeight: "100",
   },
   listingNameTextStyle: {
     fontSize: 14,
-    color: '#444'
+    color: "#444",
   },
   listingSmallDetailsTextStyle: {
     color: "#333",
@@ -95,11 +96,11 @@ export const styles = {
   },
   swipeOutStyle: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingLeft: 25,
   },
   swipeOutTextStyle: {
-    color: '#fff',
-    fontWeight: '700'
+    color: "#fff",
+    fontWeight: "700",
   },
 };

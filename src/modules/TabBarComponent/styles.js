@@ -20,9 +20,9 @@ export const styles = {
   bottomNavigationStyle: {
     height: 56,
     elevation: 8,
-    position: 'relative',
+    position: "relative",
     left: 0,
     bottom: 0,
     right: 0,
-  }
+  },
 };
