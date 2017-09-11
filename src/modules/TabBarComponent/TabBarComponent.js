@@ -106,7 +106,7 @@ export default class TabBarComponent extends Component {
           position="right"
         >
           <Item
-            buttonColor='#ff9900'
+            buttonColor="#ff9900"
             title="Manually Enter Book"
             style={{ height: 2}}
           >
