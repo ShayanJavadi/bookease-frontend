@@ -69,7 +69,7 @@ export default class TabBarComponent extends Component {
               title="Manually Enter Info"
               style={{ height: 2}}
             >
-              <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff" }}/>
+              <MaterialCommunityIcons name="edit" size={23} style={{ color: "#fff" }}/>
             </Item>
             <Item
               buttonColor='#A100FF'
