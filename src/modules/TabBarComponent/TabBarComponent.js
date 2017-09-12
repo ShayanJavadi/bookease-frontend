@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import ActionButton from "react-native-action-button";
 import { Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { BottomNavigation } from 'react-native-material-ui';
-import { styles, ICON_SIZE, PLUS_ICON_SIZE } from './styles';
-import ActionButton from 'react-native-action-button';
+import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation'
+import { styles, ICON_SIZE, PLUS_ICON_SIZE, BOTTOM_NAVIGATION_ICON_SIZE } from './styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 const {
   sellBooksButtonStyle,
-  sellBooksButtonIconStyle
+  sellBooksButtonIconStyle,
+  bottomNavigationStyle,
  } = styles;
 
 export default class TabBarComponent extends Component {
+  state = {
+    selectedTab: 0
+  }
+
   onHomePress = () => {
     this.props.navigation.navigate('home');
   }
@@ -30,55 +37,97 @@ export default class TabBarComponent extends Component {
     this.props.navigation.navigate('account');
   }
 
-  render() {
-    const { Action } = BottomNavigation;
-    const { Item } = ActionButton;
+  setTab = (tabIndex) => {
+    this.setState({selectedTab: tabIndex})
+  }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.selectedTab === this.state.selectedTab) {
+      return;
+    }
+
+    if (nextState.selectedTab === 0) {
+      this.onHomePress();
+    }
+
+    if (nextState.selectedTab === 1) {
+      this.onMyBooksPress();
+    }
+
+    if (nextState.selectedTab === 2) {
+      this.onNotificationsPress();
+    }
+
+    if (nextState.selectedTab === 3) {
+      this.onAccountPress();
+    }
+  }
+
+  renderBottomNavigation() {
+    return (
+      <BottomNavigation
+        activeTab={this.state.selectedTab}
+        labelColor="white"
+        rippleColor="white"
+        shifting={false}
+        style={bottomNavigationStyle}
+        onTabChange={(newTabIndex) => this.setTab(newTabIndex)}
+      >
+        <Tab
+          barBackgroundColor="#37474F"
+          label="Home"
+          icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="home" />}
+        />
+        <Tab
+          barBackgroundColor="#00796B"
+          label="My Books"
+          icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="book-open-variant" />}
+        />
+        <Tab
+          barBackgroundColor="#5D4037"
+          label="Notifications"
+          icon={<MaterialIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="mail" />}
+        />
+        <Tab
+          barBackgroundColor="#3E2723"
+          label="Account"
+          icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="account" />}
+        />
+      </BottomNavigation>
+    )
+  }
+
+  renderActionButton() {
+    const { Item } = ActionButton;
+    return (
+      <View style={sellBooksButtonStyle}>
+        <ActionButton
+          buttonColor="#EB2A5D"
+          position="right"
+        >
+          <Item
+            buttonColor="#ff9900"
+            title="Manually Enter Book"
+            style={{ height: 2}}
+          >
+            <MaterialIcons name="edit" size={23} style={{ color: "#fff" }}/>
+          </Item>
+          <Item
+            buttonColor='#A100FF'
+            title="Scan Book"
+          >
+            <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff"}}/>
+          </Item>
+        </ActionButton>
+      </View>
+    )
+  }
+
+  render() {
     return (
       <View>
-        <BottomNavigation hidden={false}>
-          <Action
-              key="home"
-              icon={<Entypo name="home" size={ICON_SIZE} style={{color:"#fff"}} />}
-              onPress={() => this.onHomePress()}
-          />
-          <Action
-              key="myBooks"
-              icon={<Entypo name="book" size={ICON_SIZE} style={{ color:"#fff" }} />}
-              onPress={() => this.onMyBooksPress()}
-          />
-          <Action
-              key="mail"
-              icon={<Entypo name="mail" size={ICON_SIZE} style={{ color:"#fff" }} />}
-              onPress={() => this.onNotificationsPress()}
-          />
-          <Action
-              key="account"
-              icon={<MaterialCommunityIcons name="account" size={ICON_SIZE} style={{color:"#fff"}} />}
-              onPress={() => this.onAccountPress()}
-          />
-        </BottomNavigation>
-        <View style={sellBooksButtonStyle}>
-          <ActionButton
-            buttonColor="#EB2A5D"
-            onPress={() => { console.log("hi")}}
-            position="right"
-          >
-            <Item
-              buttonColor='#ff9900'
-              title="Manually Enter Info"
-              style={{ height: 2}}
-            >
-              <MaterialCommunityIcons name="edit" size={23} style={{ color: "#fff" }}/>
-            </Item>
-            <Item
-              buttonColor='#A100FF'
-              title="Scan Book"
-            >
-              <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff"}}/>
-            </Item>
-          </ActionButton>
-        </View>
+        {this.renderBottomNavigation()}
+        {this.renderActionButton()}
       </View>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
-import Swipeable from 'react-native-swipeable';
+import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { styles, SWIPE_OUT_ICON_SIZE } from "./styles";
 
@@ -82,20 +82,20 @@ export default class MyBooksListingsScreen extends Component {
     return (
       <Swipeable
         rightButtons={[
-          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: '#00BFA5' }]}>
+          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]}>
             <MaterialIcons
               name="edit"
               size={SWIPE_OUT_ICON_SIZE}
               style={swipeOutTextStyle}
             />
           </TouchableOpacity>,
-          <TouchableOpacity style={[swipeOutStyle, {backgroundColor: '#ff003d'}]}>
-          <MaterialCommunityIcons
-            name="delete"
-            size={SWIPE_OUT_ICON_SIZE}
-            style={swipeOutTextStyle}
-          />
-          </TouchableOpacity>
+          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#ff003d" }]}>
+            <MaterialCommunityIcons
+              name="delete"
+              size={SWIPE_OUT_ICON_SIZE}
+              style={swipeOutTextStyle}
+            />
+          </TouchableOpacity>,
         ]}
       >
         <View style={listingWrapperStyle}>
