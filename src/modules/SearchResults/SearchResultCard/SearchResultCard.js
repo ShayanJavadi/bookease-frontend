@@ -3,6 +3,7 @@ import { Text, View, Image } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "./styles";
+
 const {
   searchResultCardWrapper,
   upperSectionWrapper,
@@ -21,7 +22,7 @@ const {
   bookOwnerStyle,
   bookUniversityStyle,
   bookPriceStyle,
-  horizantalLineStyle
+  horizantalLineStyle,
 } = styles;
 
 export default class SearchResultCard extends Component {
@@ -39,27 +40,27 @@ export default class SearchResultCard extends Component {
 
     return (
       <View style={searchResultCardWrapper}>
-        <View style={horizantalLineStyle}></View>
+        <View style={horizantalLineStyle} />
         <View style={upperSectionWrapper}>
           <View style={upperSectionTopWrapper}>
             <Text style={bookNameStyle}>{name}</Text>
           </View>
           <View style={upperSectionBottomWrapper}>
-            <View style={{ flexDirection: "row", flex: 1}}>
+            <View style={{ flexDirection: "row", flex: 1 }}>
               <Text style={bookEditionStyle}>Edition: {edition}</Text>
               <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
             </View>
           </View>
         </View>
         <Image
-         style={middleSectionWrapper}
-         source={{uri: thumbnail}}
-         resizeMode={'contain'}
+          style={middleSectionWrapper}
+          source={{ uri: thumbnail }}
+          resizeMode={"contain"}
         />
         <View style={lowerSectionWrapper}>
           <View style={lowerSectionLeftWrapper}>
-            <View style={{ flex: 1}}>
-              <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc"}}/>
+            <View style={{ flex: 1 }}>
+              <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
             </View>
             <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
               <Text style={bookOwnerStyle}>{owner}</Text>
@@ -70,7 +71,7 @@ export default class SearchResultCard extends Component {
             <Text style={bookPriceStyle}>${price}</Text>
             <Button
               raised
-              style={{ text: buttonTextStyle, container: buttonContainerStyle}}
+              style={{ text: buttonTextStyle, container: buttonContainerStyle }}
               text="Buy"
             />
           </View>

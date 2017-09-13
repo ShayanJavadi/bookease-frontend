@@ -3,7 +3,7 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const PLUS_ICON_WIDTH = 56;
-const { palette } =  uiTheme;
+const { palette } = uiTheme;
 const {
   tertiaryColorDark,
 } = palette;

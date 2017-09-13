@@ -1,5 +1,6 @@
 import uiTheme from "src/common/styles/uiTheme";
-const { palette } =  uiTheme;
+
+const { palette } = uiTheme;
 const {
   primaryColorLight,
   tertiaryColorLight,
@@ -25,7 +26,7 @@ export const styles = {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
-    zIndex: 9999
+    zIndex: 9999,
   },
   upperSectionTopWrapper: {
     paddingTop: 3,
@@ -69,12 +70,12 @@ export const styles = {
   },
   buttonContainerStyle: {
     backgroundColor: primaryColorLight,
-    width: 75
+    width: 75,
   },
   bookNameStyle: {
     fontSize: 17,
     color: "#333",
-    fontWeight: "100"
+    fontWeight: "100",
   },
   bookEditionStyle: {
     fontSize: 12,
@@ -115,6 +116,6 @@ export const styles = {
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.5,
     shadowRadius: 1,
-    zIndex: 99999
-  }
+    zIndex: 99999,
+  },
 };

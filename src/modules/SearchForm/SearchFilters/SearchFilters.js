@@ -12,7 +12,7 @@ const {
   searchIconStyle,
   barCodeIconStyle,
   resultsWrapperStyle,
-  resultsTextStyle
+  resultsTextStyle,
 } = styles;
 
 export default class SearchFilters extends Component {

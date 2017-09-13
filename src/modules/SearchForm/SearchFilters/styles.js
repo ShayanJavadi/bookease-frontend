@@ -1,9 +1,10 @@
 import { Dimensions, StyleSheet } from "react-native";
+
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
   searchFilterWrapperStyle: {
-    flex: .6,
+    flex: 0.6,
     flexDirection: "row",
     paddingRight: 10,
   },
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   filterStyle: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 40,
     fontSize: 14,
     backgroundColor: "#fff",
@@ -36,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   filterTextStyle: {
     paddingLeft: 15,
-    color: "#555"
+    color: "#555",
   },
   searchIconStyle: {
     color: "#444",
@@ -53,6 +54,6 @@ export const styles = StyleSheet.create({
     textAlign: "left",
     paddingLeft: 11,
     fontWeight: "100",
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 });
