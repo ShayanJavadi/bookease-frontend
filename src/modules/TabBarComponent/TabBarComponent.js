@@ -3,7 +3,14 @@ import { Text, View } from 'react-native';
 import ActionButton from "react-native-action-button";
 import { Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation'
-import { styles, ICON_SIZE, PLUS_ICON_SIZE, BOTTOM_NAVIGATION_ICON_SIZE } from './styles';
+import {
+  styles,
+  ICON_SIZE,
+  PLUS_ICON_SIZE,
+  BOTTOM_NAVIGATION_ICON_SIZE,
+  ACTION_BUTTON_COLOR,
+  FIRST_TAB_COLOR
+} from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const {
@@ -65,6 +72,7 @@ export default class TabBarComponent extends Component {
 
   renderBottomNavigation() {
     return (
+
       <BottomNavigation
         activeTab={this.state.selectedTab}
         labelColor="white"
@@ -74,22 +82,22 @@ export default class TabBarComponent extends Component {
         onTabChange={(newTabIndex) => this.setTab(newTabIndex)}
       >
         <Tab
-          barBackgroundColor="#37474F"
+          barBackgroundColor={FIRST_TAB_COLOR}
           label="Home"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="home" />}
         />
         <Tab
-          barBackgroundColor="#00796B"
+          barBackgroundColor="#783393"
           label="My Books"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="book-open-variant" />}
         />
         <Tab
-          barBackgroundColor="#5D4037"
+          barBackgroundColor="#ff003d"
           label="Notifications"
           icon={<MaterialIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="mail" />}
         />
         <Tab
-          barBackgroundColor="#3E2723"
+          barBackgroundColor="#4DDDA1"
           label="Account"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="account" />}
         />
@@ -102,7 +110,7 @@ export default class TabBarComponent extends Component {
     return (
       <View style={sellBooksButtonStyle}>
         <ActionButton
-          buttonColor="#EB2A5D"
+          buttonColor={ACTION_BUTTON_COLOR}
           position="right"
         >
           <Item

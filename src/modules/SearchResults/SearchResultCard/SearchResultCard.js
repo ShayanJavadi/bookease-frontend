@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import { Button } from "react-native-material-ui";
+import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "./styles";
-
 const {
   searchResultCardWrapper,
   upperSectionWrapper,
@@ -13,6 +13,7 @@ const {
   lowerSectionLeftWrapper,
   lowerSectionRightWrapper,
   buttonTextStyle,
+  buttonContainerStyle,
   bookNameStyle,
   bookEditionStyle,
   bookCondititonStyle,
@@ -20,6 +21,7 @@ const {
   bookOwnerStyle,
   bookUniversityStyle,
   bookPriceStyle,
+  horizantalLineStyle
 } = styles;
 
 export default class SearchResultCard extends Component {
@@ -32,33 +34,43 @@ export default class SearchResultCard extends Component {
       owner,
       university,
       price,
+      thumbnail,
     } = this.props.book;
 
     return (
       <View style={searchResultCardWrapper}>
+        <View style={horizantalLineStyle}></View>
         <View style={upperSectionWrapper}>
           <View style={upperSectionTopWrapper}>
             <Text style={bookNameStyle}>{name}</Text>
           </View>
           <View style={upperSectionBottomWrapper}>
-            <Text style={bookEditionStyle}>Edition: {edition}</Text>
-            <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
-            {// <Text style={bookIsbnStyle}>{isbn}</Text>
-            }
+            <View style={{ flexDirection: "row", flex: 1}}>
+              <Text style={bookEditionStyle}>Edition: {edition}</Text>
+              <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
+            </View>
           </View>
         </View>
-        <View style={middleSectionWrapper} />
+        <Image
+         style={middleSectionWrapper}
+         source={{uri: thumbnail}}
+         resizeMode={'contain'}
+        />
         <View style={lowerSectionWrapper}>
           <View style={lowerSectionLeftWrapper}>
-            <Text style={bookOwnerStyle}>{owner}</Text>
-            <Text style={bookUniversityStyle}>{university}</Text>
+            <View style={{ flex: 1}}>
+              <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc"}}/>
+            </View>
+            <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
+              <Text style={bookOwnerStyle}>{owner}</Text>
+              <Text style={bookUniversityStyle}>Posted 3 hours ago</Text>
+            </View>
           </View>
           <View style={lowerSectionRightWrapper}>
             <Text style={bookPriceStyle}>${price}</Text>
             <Button
               raised
-              primary
-              style={{ text: buttonTextStyle, container: { backgroundColor: "#222", width: 65 } }}
+              style={{ text: buttonTextStyle, container: buttonContainerStyle}}
               text="Buy"
             />
           </View>

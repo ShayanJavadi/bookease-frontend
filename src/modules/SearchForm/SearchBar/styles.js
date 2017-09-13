@@ -1,13 +1,12 @@
-import { Dimensions } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export const styles = {
+export const styles = StyleSheet.create({
   searchBarWrapperStyle: {
     flex: 1,
     flexDirection: "row",
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   inputWrapperStyle: {
     flex: 1,
@@ -44,4 +43,4 @@ export const styles = {
     marginTop: 5,
     marginRight: 8,
   },
-};
+});
