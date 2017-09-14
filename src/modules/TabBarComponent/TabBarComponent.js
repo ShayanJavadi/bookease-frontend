@@ -117,6 +117,7 @@ export default class TabBarComponent extends Component {
             buttonColor="#ff9900"
             title="Manually Enter Book"
             style={{ height: 2}}
+            onPress={() => this.onSellBooksPress()}
           >
             <MaterialIcons name="edit" size={23} style={{ color: "#fff" }}/>
           </Item>

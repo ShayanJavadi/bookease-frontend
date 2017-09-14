@@ -7,6 +7,10 @@ import SearchResults from "../../modules/SearchResults";
 const { screenStyle } = styles;
 
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  }
+
   render() {
     return (
       <View style={screenStyle}>
