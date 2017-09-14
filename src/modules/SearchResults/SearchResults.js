@@ -11,6 +11,7 @@ const bookResults = [
     owner: "John Doe",
     university: "University of North Texas",
     price: "12",
+    thumbnail: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg",
   }, {
     name: "Algorithms and Something",
     edition: "2nd",
@@ -19,6 +20,7 @@ const bookResults = [
     owner: "Jane Doe",
     university: "University of North Texas",
     price: "30",
+    thumbnail: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg",
   }, {
     name: "Modern Webapps with COBOL and Fortran",
     edition: "12nd",
@@ -27,6 +29,7 @@ const bookResults = [
     owner: "Some Guy",
     university: "University of North Texas",
     price: "100",
+    thumbnail: "http://i.ebayimg.com/images/g/X~YAAOSwqYZZp0QO/s-l1600.jpg",
   },
 ];
 
