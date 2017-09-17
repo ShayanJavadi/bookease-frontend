@@ -1,3 +1,3 @@
-import store from "./store";
+import Provider from "./Provider";
 
-export default store;
+export default Provider;
