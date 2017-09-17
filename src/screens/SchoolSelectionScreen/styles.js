@@ -13,7 +13,7 @@ export const styles = {
     paddingLeft: 60,
     paddingRight: 60,
   },
-  headerAutocompleteContainerStyle: {
+  topContainerStyle: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -30,6 +30,13 @@ export const styles = {
     width: SCREEN_WIDTH * 0.9,
     borderColor: "gray",
     borderWidth: 1,
+  },
+  dropDownStyle : {
+    width: SCREEN_WIDTH * 0.9,
+  },
+  dropDownItemStyle : {
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
   },
   buttonStyle: {
     height: SCREEN_WIDTH * 0.1,

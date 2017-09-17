@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Keyboard } from 'react-native'
 import { Button } from "react-native-material-ui";
-import Autocomplete from "react-native-autocomplete-input";
 import { styles } from "./styles";
 
-const { screenStyle, headerAutocompleteContainerStyle, headerStyle, inputStyle, schoolNameStyle, schoolAddressStyle, buttonStyle, buttonTextStyle, noButtonPaddingStyle } = styles;
+const { screenStyle, topContainerStyle, headerStyle, inputStyle, dropDownStyle, dropDownItemStyle, schoolNameStyle, schoolAddressStyle, buttonStyle, buttonTextStyle, noButtonPaddingStyle } = styles;
 
 export default class SchoolSelectionScreen extends Component {
   componentWillMount() {
@@ -15,42 +15,33 @@ export default class SchoolSelectionScreen extends Component {
     this.props.navigation.navigate("home");
   }
 
+  onChangeText(text) {
+    this.setState({ selectedSchool: {
+      name: text,
+      address: "",
+      id: -1,
+    } });
+    this.props.searchForSchool(text);
+  }
+
+  onSelectSchool(school) {
+    Keyboard.dismiss();
+    this.setState({ selectedSchool: school });
+  }
+
   render() {
     return (
       <View style={screenStyle}>
-        <View style={headerAutocompleteContainerStyle}>
+        <View style={topContainerStyle}>
           <Text style={headerStyle}>Select Your School</Text>
-          <Autocomplete
+          <TextInput
             style={inputStyle}
-            autoCorrect={false}
-            keyboardShouldPersistTaps="never"
-            placeholder="Type here"
-            data={this.state.selectedSchool.id !== -1 ? [] : this.props.schools}
-            defaultValue={this.state.selectedSchool.name}
-            onChangeText={(text) => {
-              this.setState({ selectedSchool: {
-                name: text,
-                address: "",
-                id: -1,
-              } });
-              this.props.searchForSchool(text);
-            }
-            }
-            renderItem={school =>
-              (<TouchableOpacity onPress={() => this.setState({ selectedSchool: school })}>
-                <Text style={schoolNameStyle}>{school.name}</Text>
-                <Text style={schoolAddressStyle}>{school.address}</Text>
-              </TouchableOpacity>)
-            }
-            renderSeparator={() =>
-              (<View
-                style={{
-                  borderBottomColor: "black",
-                  borderBottomWidth: 1,
-                }}
-              />)
-            }
+            value={this.state.selectedSchool.name}
+            onChangeText={text => this.onChangeText(text)}
           />
+          <View style={dropDownStyle}>
+            {this.renderSchoolList()}
+          </View>
         </View>
         <View>
           {this.state.selectedSchool.id !== -1 &&
@@ -67,6 +58,17 @@ export default class SchoolSelectionScreen extends Component {
           }
         </View>
       </View>
+    );
+  }
+
+  renderSchoolList() {
+    if(this.state.selectedSchool.id !== -1) return [];
+
+    return this.props.schools.map((school, index) =>
+      <TouchableOpacity key={index} style={dropDownItemStyle} onPress={() => this.onSelectSchool(school)}>
+        <Text style={schoolNameStyle}>{school.name}</Text>
+        <Text style={schoolAddressStyle}>{school.address}</Text>
+      </TouchableOpacity>
     );
   }
 }
