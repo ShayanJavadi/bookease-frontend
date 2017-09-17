@@ -32,8 +32,12 @@ export default class TabBarComponent extends Component {
     this.props.navigation.navigate('myBooks');
   }
 
-  onSellBooksPress = () => {
+  onManuallyEnterBookPress = () => {
     this.props.navigation.navigate('sellBooks');
+  }
+
+  onScanBookPress = () => {
+    this.props.navigation.navigate('scanBook');
   }
 
   onNotificationsPress = () => {
@@ -117,12 +121,14 @@ export default class TabBarComponent extends Component {
             buttonColor="#ff9900"
             title="Manually Enter Book"
             style={{ height: 2}}
+            onPress={() => this.onManuallyEnterBookPress()}
           >
             <MaterialIcons name="edit" size={23} style={{ color: "#fff" }}/>
           </Item>
           <Item
             buttonColor='#A100FF'
             title="Scan Book"
+            onPress={() => this.onScanBookPress()}
           >
             <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff"}}/>
           </Item>

@@ -66,6 +66,10 @@ const listings = [
 ];
 
 export default class MyBooksListingsScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  }
+
   renderMyListings(listing) {
     const {
       name,
