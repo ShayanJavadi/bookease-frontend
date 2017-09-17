@@ -13,7 +13,7 @@ export const styles = {
     alignItems: "center",
   },
   inputWrapperStyle: {
-    flex: .3,
+    flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 15,
@@ -25,11 +25,11 @@ export const styles = {
     zIndex: 9999,
   },
   inputValidStyle: {
-    borderColor: '#53E69D',
+    borderColor: "#53E69D",
     borderWidth: 1,
   },
   inputInvalidStyle: {
-    borderColor: '#F55E64',
+    borderColor: "#F55E64",
     borderWidth: 1,
   },
 };

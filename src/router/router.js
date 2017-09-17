@@ -23,8 +23,8 @@ const SellBooksNavigator = TabNavigator({
   },
   scanBook: {
     screen: ScanBookScreen,
-  }
-})
+  },
+});
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
@@ -57,7 +57,7 @@ const HomeNavigator = TabNavigator({
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
-})
+});
 
 const MainNavigator = StackNavigator({
   mainScreen: {

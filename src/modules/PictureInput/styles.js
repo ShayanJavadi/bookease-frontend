@@ -17,6 +17,6 @@ export const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: 260,
-    zIndex: 9999
+    zIndex: 9999,
   },
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from "react-navigation";
 import { styles } from "./styles";
 
 const {
@@ -15,7 +15,7 @@ export default class PictureInput extends Component {
     return (
       <View style={pictureInputWrapperStyle}>
         <TouchableOpacity style={pictureInputStyle}>
-          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#ccc" }}/>
+          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#ccc" }} />
         </TouchableOpacity>
       </View>
     );

@@ -2,7 +2,7 @@ export const styles = {
   backButtonWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   backButtonTextStyle: {
     color: "#fff",
@@ -11,5 +11,5 @@ export const styles = {
   backButtonIconStyle: {
     color: "#ccc",
     paddingTop: 4,
-  }
+  },
 };

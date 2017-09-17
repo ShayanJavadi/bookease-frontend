@@ -2,7 +2,7 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  tertiaryColorDark
+  tertiaryColorDark,
 } = palette;
 
 export const styles = {
@@ -17,6 +17,6 @@ export const styles = {
   headerTitleStyle: {
     color: "#fff",
     fontWeight: "100",
-    fontSize: 13
+    fontSize: 13,
   },
 };

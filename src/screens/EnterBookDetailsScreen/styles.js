@@ -3,7 +3,7 @@ import uiTheme from "src/common/styles/uiTheme";
 const { palette } = uiTheme;
 const {
   primaryColorLight,
-  tertiaryColorDark
+  tertiaryColorDark,
 } = palette;
 
 export const styles = {
@@ -18,7 +18,7 @@ export const styles = {
   headerTitleStyle: {
     color: "#fff",
     fontWeight: "100",
-    fontSize: 13
+    fontSize: 13,
   },
   pictureInputWrapperStyle: {
     flex: 5.5,
@@ -41,7 +41,7 @@ export const styles = {
     alignItems: "center",
     flexDirection: "row",
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
 
   },
   buttonTextStyle: {
@@ -64,7 +64,7 @@ export const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: 260,
-    zIndex: 9999
+    zIndex: 9999,
   },
   inputStyle: {
     flex: 1,
@@ -78,7 +78,7 @@ export const styles = {
     borderRightColor: "rgba(0,0,0,0.3)",
   },
   inputWrapperStyle: {
-    flex: .3,
+    flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 15,

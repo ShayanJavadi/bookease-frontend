@@ -9,7 +9,7 @@ export const styles = {
   formWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   textInputWrapperStyle: {
     flex: 4,
@@ -19,7 +19,7 @@ export const styles = {
     paddingLeft: 20,
   },
   inputWrapperStyle: {
-    flex: .3,
+    flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 15,
@@ -36,7 +36,7 @@ export const styles = {
     alignItems: "center",
     flexDirection: "row",
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
 
   },
   buttonTextStyle: {

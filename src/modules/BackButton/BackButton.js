@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from "react-navigation";
 import { styles } from "./styles";
 
 const {
   backButtonWrapperStyle,
   backButtonTextStyle,
-  backButtonIconStyle
+  backButtonIconStyle,
 } = styles;
 
 export default class BackButton extends Component {
@@ -17,7 +17,8 @@ export default class BackButton extends Component {
     return (
       <TouchableOpacity
         style={backButtonWrapperStyle}
-        onPress={() => navigation.dispatch(NavigationActions.back())}>
+        onPress={() => navigation.dispatch(NavigationActions.back())}
+      >
         <MaterialCommunityIcons name="chevron-left" size={24} style={backButtonIconStyle} />
         <Text style={backButtonTextStyle}>{buttonText}</Text>
       </TouchableOpacity>
