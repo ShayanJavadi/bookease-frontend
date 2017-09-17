@@ -1,9 +1,9 @@
 {
   "name": "bookease",
-  "version": "0.0.0",
-  "description": "Hello Expo!",
-  "author": null,
-  "license": "",
+  "version": "0.1.0",
+  "description": "The painless, no-frills textbook exchange!",
+  "author": "Bookease Team <team@bookeaseapp.com>",
+  "license": "UNLICENSED",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "test": "node ./node_modules/jest/bin/jest.js --watch",
