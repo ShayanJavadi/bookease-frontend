@@ -8,4 +8,6 @@ pipelines:
         script:
           - npm install
           - npm run lint
-          - npm run exp:doctor
+          - npm install exp -g
+          - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+          - exp doctor
