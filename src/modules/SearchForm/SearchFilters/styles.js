@@ -1,6 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   searchFilterWrapperStyle: {

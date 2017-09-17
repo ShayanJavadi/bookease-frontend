@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { BarCodeScanner, Permissions } from 'expo';
+import { BarCodeScanner, Permissions } from "expo";
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
 
 const {
-  screenStyle,
   headerStyle,
   headerTitleStyle,
 } = styles;
@@ -14,24 +13,24 @@ const {
 export default class ScanBookScreen extends Component {
   state = {
     hasCameraPermission: null,
-  }
+  };
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
+  static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerTitle: "Scan Book",
     headerLeft: <BackButton navigation={navigation} buttonText="Back" />,
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,
     headerBackTitleStyle: { color: "#fff" }
-  })
+  });
 
   handleBarCodeRead = ({ type, data }) => {
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  }
+  };
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({hasCameraPermission: status === 'granted'});
+    this.setState({ hasCameraPermission: status === "granted" });
   }
 
   render() {

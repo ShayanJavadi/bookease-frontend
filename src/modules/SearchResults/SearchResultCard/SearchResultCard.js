@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Image } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
+import { string, number, shape } from "prop-types";
 import { styles } from "./styles";
 
 const {
@@ -18,7 +19,7 @@ const {
   bookNameStyle,
   bookEditionStyle,
   bookCondititonStyle,
-  bookIsbnStyle,
+  // bookIsbnStyle,
   bookOwnerStyle,
   bookUniversityStyle,
   bookPriceStyle,
@@ -26,14 +27,23 @@ const {
 } = styles;
 
 export default class SearchResultCard extends Component {
+  static propTypes = {
+    book: shape({
+      name: string.isRequired,
+      edition: string,
+      condition: string.isRequired, // TODO: condition should be number and map to string
+      owner: string.isRequired,
+      price: number.isRequired,
+      thumbnail: string.isRequired
+    }).isRequired
+  };
+
   render() {
     const {
       name,
       edition,
       condititon,
-      isbn,
       owner,
-      university,
       price,
       thumbnail,
     } = this.props.book;

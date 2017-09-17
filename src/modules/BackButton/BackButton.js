@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
+import { func, shape, string } from "prop-types";
 import { styles } from "./styles";
-
 const {
   backButtonWrapperStyle,
   backButtonTextStyle,
@@ -11,6 +11,12 @@ const {
 } = styles;
 
 export default class BackButton extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+    buttonText: string.isRequired
+  };
 
   render() {
     const { navigation, buttonText } = this.props;

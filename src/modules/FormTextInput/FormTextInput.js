@@ -1,24 +1,16 @@
 import React from "react";
 import { TextInput, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationActions } from "react-navigation";
+import { func, string, shape } from "prop-types";
 import { styles } from "./styles";
 
 const {
-  backButtonWrapperStyle,
-  backButtonTextStyle,
-  backButtonIconStyle,
-  inputValidStyle,
-  inputInvalidStyle,
   inputStyle,
 } = styles;
 
 
-export default function FormTextInput(props) {
-  const { input, meta, ...inputProps } = props;
-  const validationStyles = meta.touched && !meta.active
-    ? meta.valid ? styles.valid : styles.invalid
-    : null;
+const FormTextInput = (props) => {
+  const { input, ...inputProps } = props;
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -33,4 +25,16 @@ export default function FormTextInput(props) {
       />
     </View>
   );
-}
+};
+
+FormTextInput.propTypes = {
+  input: shape({
+    onChange: func,
+    onBlur: func,
+    onFocus: func,
+    value: string
+  })
+
+};
+
+export default FormTextInput;
