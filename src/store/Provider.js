@@ -3,7 +3,6 @@ import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
-import isEmpty from "lodash/isEmpty";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
 
@@ -14,17 +13,15 @@ const networkInterface = createNetworkInterface({
   },
 });
 
-if (!isEmpty(BACKEND_AUTHENTICATION_HEADER)) {
-  networkInterface.use([{
-    applyMiddleware(req, next) {
-      if (!req.options.headers) {
-        req.options.headers = {};  // Create the header object if needed.
-      }
-      req.options.headers["authorization"] = `Basic ${btoa(BACKEND_AUTHENTICATION_HEADER)}`;
-      next();
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};  // Create the header object if needed.
     }
-  }]);
-}
+    req.options.headers["authorization"] = `Basic ${btoa(BACKEND_AUTHENTICATION_HEADER)}`;
+    next();
+  }
+}]);
 
 const client = new ApolloClient({ networkInterface });
 
@@ -33,7 +30,6 @@ const reducers = combineReducers({
   facebookAuthReducer,
   apollo: client.reducer()
 });
-
 
 const store = createStore(
   reducers,
@@ -44,12 +40,10 @@ const store = createStore(
 );
 
 const Provider = (props) => {
-  console.log(props);
   return (
     <ApolloProvider store={store} client={client}>
       {props.children}
     </ApolloProvider>
   )
 }
-
 export default Provider;

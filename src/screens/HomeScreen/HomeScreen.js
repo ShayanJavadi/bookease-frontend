@@ -25,8 +25,8 @@ class HomeScreenComponent extends Component {
 }
 
 const query = gql`
-  query lookupTextbooksQuery($query: String) {
-    lookupTextbooks (query: $query) {
+  query lookupTextbooksQuery($query: String, $limit: Int) {
+    lookupTextbooks (query: $query, limit: $limit) {
       totalItems
       textbooks {
         id
@@ -38,7 +38,7 @@ const query = gql`
 `;
 
 const HomeScreen = graphql(query, {
-  options: { variables: { query: "discrete math" } },
+  options: { variables: { query: "discrete math", limit: 10 } },
 })(HomeScreenComponent);
 
 export default HomeScreen;

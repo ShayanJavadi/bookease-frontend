@@ -1,4 +1,4 @@
 {
-  "BACKEND_URL": "https://bookease-development.herokuapp.com/graphiq",
+  "BACKEND_URL": "https://bookease-development.herokuapp.com/graphql",
   "BACKEND_AUTHENTICATION_HEADER": "bookease:bpkFGW4W"
 }
