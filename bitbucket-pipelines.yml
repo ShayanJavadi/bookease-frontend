@@ -6,5 +6,6 @@ pipelines:
         caches:
           - node
         script:
-          - npm install
-          - npm run lint
+          - yarn install
+          - yarn run lint
+          - yarn run exp:doctor

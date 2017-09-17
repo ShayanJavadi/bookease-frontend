@@ -8,7 +8,8 @@
   "scripts": {
     "test": "node ./node_modules/jest/bin/jest.js --watch",
     "lint": "./node_modules/.bin/eslint src",
-    "lint:fix": "./node_modules/.bin/eslint --fix src"
+    "lint:fix": "./node_modules/.bin/eslint --fix src",
+    "exp:doctor": "./node_modules/.bin/exp doctor"
   },
   "jest": {
     "preset": "jest-expo"
@@ -41,6 +42,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.0.1",
     "eslint-plugin-react": "^7.1.0",
+    "exp": "^44.0.0",
     "jest-expo": "^20.0.0"
   },
   "rnpm": {
