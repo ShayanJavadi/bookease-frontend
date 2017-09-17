@@ -3,7 +3,7 @@ import {
   TabNavigator,
 } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import SchoolSelectionScreen from "../screens/SchoolSelectionScreen";
+import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
 import HomeScreen from "../screens/HomeScreen";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreen";
@@ -87,4 +87,4 @@ const MainNavigator = StackNavigator({
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default HomeNavigator;
+export default SchoolSelectionNavigator;
