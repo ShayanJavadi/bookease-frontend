@@ -11,3 +11,4 @@ pipelines:
           - npm install exp -g
           - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
           - exp doctor
+          - exp publish
