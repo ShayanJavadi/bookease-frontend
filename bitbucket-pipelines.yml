@@ -10,4 +10,4 @@ pipelines:
           - npm run lint
           - export PATH=$PATH:$BITBUCKET_CLONE_DIR/node_modules/.bin
           - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-          - exp build:status
+          - exp doctor
