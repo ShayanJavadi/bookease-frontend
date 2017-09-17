@@ -3,7 +3,7 @@ import uiTheme from "src/common/styles/uiTheme";
 const { palette } = uiTheme;
 const {
   primaryColorLight,
-  tertiaryColorLight
+  tertiaryColorDark
 } = palette;
 
 export const styles = {
@@ -13,7 +13,7 @@ export const styles = {
     flex: 1,
   },
   headerStyle: {
-    backgroundColor: "#383b5a",
+    backgroundColor: tertiaryColorDark,
   },
   headerTitleStyle: {
     color: "#fff",
