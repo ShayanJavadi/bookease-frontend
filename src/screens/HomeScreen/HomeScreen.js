@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TextInput } from "react-native";
+import { View } from "react-native";
 import { styles } from "./styles";
 import SearchForm from "../../modules/SearchForm";
 import SearchResults from "../../modules/SearchResults";
@@ -7,6 +7,10 @@ import SearchResults from "../../modules/SearchResults";
 const { screenStyle } = styles;
 
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   render() {
     return (
       <View style={screenStyle}>

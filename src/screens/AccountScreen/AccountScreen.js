@@ -5,6 +5,10 @@ import { styles } from "./styles";
 const { screenStyle } = styles;
 
 export default class AccountScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  }
+  
   render() {
     return (
       <View style={screenStyle}>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
-import { Keyboard } from 'react-native'
+
+import { Text, View, TextInput, TouchableOpacity, Keyboard } from "react-native";
+import { func, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -25,6 +26,12 @@ export default class SchoolSelectionScreen extends Component {
   componentWillMount() {
     this.setState({ selectedSchool: { name: "", address: "", id: -1 } });
   }
+
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired
+  };
 
   onComplete() {
     this.props.navigation.navigate("home");

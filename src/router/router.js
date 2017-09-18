@@ -11,10 +11,20 @@ import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AccountScreen from "../screens/AccountScreen";
-import SellBooksScreen from "../screens/SellBooksScreen";
+import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
+import ScanBookScreen from "../screens/ScanBookScreen";
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
+
+const SellBooksNavigator = TabNavigator({
+  enterBookDetails: {
+    screen: EnterBookDetailsScreen,
+  },
+  scanBook: {
+    screen: ScanBookScreen,
+  },
+});
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
@@ -38,9 +48,6 @@ const HomeNavigator = TabNavigator({
   myBooks: {
     screen: myBooksNavigator,
   },
-  sellBooks: {
-    screen: SellBooksScreen,
-  },
   notifications: {
     screen: NotificationScreen,
   },
@@ -50,6 +57,18 @@ const HomeNavigator = TabNavigator({
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
+});
+
+const MainNavigator = StackNavigator({
+  mainScreen: {
+    screen: HomeNavigator,
+  },
+  sellBooks: {
+    screen: SellBooksNavigator,
+  },
+
+}, {
+  mode: "modal",
 });
 
 const SchoolSelectionNavigator = StackNavigator({
@@ -74,7 +93,7 @@ const AuthNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const MainNavigator = StackNavigator({
+const WelcomeNavigator = StackNavigator({ // eslint-disable-line
   welcome: {
     screen: WelcomeScreen,
   },
@@ -87,4 +106,4 @@ const MainNavigator = StackNavigator({
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default SchoolSelectionNavigator;
+export default MainNavigator;

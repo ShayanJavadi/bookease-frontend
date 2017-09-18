@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, TextInput, Text } from "react-native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { View, Text } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 
@@ -9,7 +9,6 @@ const {
   filterWrapperStyle,
   filterStyle,
   filterTextStyle,
-  searchIconStyle,
   barCodeIconStyle,
   resultsWrapperStyle,
   resultsTextStyle,

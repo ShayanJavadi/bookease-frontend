@@ -1,15 +1,11 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const PLUS_ICON_WIDTH = 56;
 const { palette } = uiTheme;
 const {
   tertiaryColorDark,
 } = palette;
 
-export const ICON_SIZE = 27;
-export const PLUS_ICON_SIZE = 30;
 export const BOTTOM_NAVIGATION_ICON_SIZE = 24;
 export const ACTION_BUTTON_COLOR = "#ff9900";
 export const FIRST_TAB_COLOR = tertiaryColorDark;

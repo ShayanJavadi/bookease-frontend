@@ -1,0 +1,13 @@
+image: node:6.11.2
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm install
+          - npm run lint
+          - export PATH=$PATH:$BITBUCKET_CLONE_DIR/node_modules/.bin
+          - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+          - exp doctor

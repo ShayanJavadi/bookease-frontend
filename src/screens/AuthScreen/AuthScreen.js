@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
+import { func, shape } from "prop-types";
 import { Text, View, AsyncStorage } from "react-native";
 import { styles, ICON_SIZE, LOGO_ICON_SIZE } from "./styles";
 
@@ -17,6 +18,13 @@ const {
 } = styles;
 
 export default class AuthScreen extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+    facebookLogin: func.isRequired
+  };
+
   componentDidMount() {
     // temporary line for debugging that removes token each time
     AsyncStorage.removeItem("fb_token");

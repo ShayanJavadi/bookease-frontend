@@ -1,52 +1,59 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import React, { Component } from "react";
+import { View } from "react-native";
 import ActionButton from "react-native-action-button";
-import { Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation'
+import { func, shape } from "prop-types";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import BottomNavigation, { Tab } from "react-native-material-bottom-navigation"
 import {
   styles,
-  ICON_SIZE,
-  PLUS_ICON_SIZE,
   BOTTOM_NAVIGATION_ICON_SIZE,
   ACTION_BUTTON_COLOR,
   FIRST_TAB_COLOR
-} from './styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+} from "./styles";
 
 const {
   sellBooksButtonStyle,
-  sellBooksButtonIconStyle,
   bottomNavigationStyle,
  } = styles;
 
 export default class TabBarComponent extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired
+  };
+
   state = {
     selectedTab: 0
-  }
+  };
 
   onHomePress = () => {
-    this.props.navigation.navigate('home');
-  }
+    this.props.navigation.navigate("home");
+  };
 
   onMyBooksPress = () => {
-    this.props.navigation.navigate('myBooks');
-  }
+    this.props.navigation.navigate("myBooks");
+  };
 
-  onSellBooksPress = () => {
-    this.props.navigation.navigate('sellBooks');
-  }
+  onManuallyEnterBookPress = () => {
+    this.props.navigation.navigate("sellBooks");
+  };
+
+  onScanBookPress = () => {
+    this.props.navigation.navigate("scanBook");
+  };
 
   onNotificationsPress = () => {
-    this.props.navigation.navigate('notifications');
-  }
+    this.props.navigation.navigate("notifications");
+  };
 
   onAccountPress = () => {
-    this.props.navigation.navigate('account');
-  }
+    this.props.navigation.navigate("account");
+  };
 
   setTab = (tabIndex) => {
-    this.setState({selectedTab: tabIndex})
-  }
+    this.setState({ selectedTab: tabIndex })
+  };
 
   componentWillUpdate(nextProps, nextState) {
     if (nextState.selectedTab === this.state.selectedTab) {
@@ -116,15 +123,17 @@ export default class TabBarComponent extends Component {
           <Item
             buttonColor="#ff9900"
             title="Manually Enter Book"
-            style={{ height: 2}}
+            style={{ height: 2 }}
+            onPress={() => this.onManuallyEnterBookPress()}
           >
             <MaterialIcons name="edit" size={23} style={{ color: "#fff" }}/>
           </Item>
           <Item
             buttonColor='#A100FF'
             title="Scan Book"
+            onPress={() => this.onScanBookPress()}
           >
-            <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff"}}/>
+            <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff" }}/>
           </Item>
         </ActionButton>
       </View>

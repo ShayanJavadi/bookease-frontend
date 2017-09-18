@@ -66,13 +66,17 @@ const listings = [
 ];
 
 export default class MyBooksListingsScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   renderMyListings(listing) {
     const {
       name,
-      edition,
+      // edition,
       condition,
       isbn,
-      owner,
+      // owner,
       timePosted,
       price,
       status,
@@ -82,14 +86,14 @@ export default class MyBooksListingsScreen extends Component {
     return (
       <Swipeable
         rightButtons={[
-          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]}>
+          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]} key="edit">
             <MaterialIcons
               name="edit"
               size={SWIPE_OUT_ICON_SIZE}
               style={swipeOutTextStyle}
             />
           </TouchableOpacity>,
-          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#ff003d" }]}>
+          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#ff003d" }]} key="delete">
             <MaterialCommunityIcons
               name="delete"
               size={SWIPE_OUT_ICON_SIZE}

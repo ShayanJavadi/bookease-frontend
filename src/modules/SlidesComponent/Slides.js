@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Text, View, ScrollView } from "react-native";
+import { arrayOf, string, shape, func } from "prop-types";
 import { Entypo } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import { styles, ICON_SIZE } from "./styles";
 
 const {
-  buttonStyle,
   buttonTextStyle,
   slideTextStyle,
   slideStyle,
@@ -14,6 +14,14 @@ const {
 } = styles;
 
 export default class Slides extends Component {
+  static propTypes = {
+    data: arrayOf(shape({
+      text: string,
+      color: string,
+    })).isRequired,
+    onComplete: func.isRequired
+  };
+
   renderBottomIcon(index) {
     if (index === this.props.data.length - 1) {
       return (
