@@ -48,7 +48,7 @@ export const styles = {
   },
   dropDownItemStyle : {
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
+    borderColor: "#d6d7da",
     paddingLeft: 5,
     paddingRight: 5,
     paddingTop: 5,

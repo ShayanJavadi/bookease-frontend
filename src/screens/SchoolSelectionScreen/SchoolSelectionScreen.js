@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-
 import { Text, View, TextInput, TouchableOpacity, Keyboard } from "react-native";
-import { func, shape } from "prop-types";
+import { func, string, shape, arrayOf } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -10,10 +9,8 @@ const {
   topContainerStyle,
   headerTextStyle,
   inputStyle,
-  inputWrapperStyle,
   dropDownStyle,
   dropDownItemStyle,
-  buttonWrapperStyle,
   buttonTextStyle,
   buttonContainerStyle,
   noResultsTextStyle,
@@ -24,13 +21,19 @@ const {
 
 export default class SchoolSelectionScreen extends Component {
   componentWillMount() {
-    this.setState({ selectedSchool: { name: "", address: "", id: -1 } });
+    this.setState({ selectedSchool: { name: "", address: "", id: "-1" } });
   }
 
   static propTypes = {
     navigation: shape({
       navigate: func.isRequired
-    }).isRequired
+    }).isRequired,
+    schools: arrayOf(shape({
+      name: string.isRequired,
+      address: string.isRequired,
+      id: string.isRequired
+    })).isRequired,
+    searchForSchool: func.isRequired
   };
 
   onComplete() {
@@ -41,7 +44,7 @@ export default class SchoolSelectionScreen extends Component {
     this.setState({ selectedSchool: {
       name: text,
       address: "",
-      id: -1,
+      id: "-1",
     } });
     this.props.searchForSchool(text);
   }
@@ -65,12 +68,12 @@ export default class SchoolSelectionScreen extends Component {
             {this.renderSchoolList()}
           </View>
         </View>
-        {this.state.selectedSchool.id === -1 && this.props.schools.length === 0 && this.state.selectedSchool.name !== "" &&
+        {this.state.selectedSchool.id === "-1" && this.props.schools.length === 0 && this.state.selectedSchool.name !== "" &&
           (<View style={noResultsContainerStyle}>
               <Text style={noResultsTextStyle}>No results found</Text>
             </View>)
         }
-        {this.state.selectedSchool.id !== -1 &&
+        {this.state.selectedSchool.id !== "-1" &&
           (<Button
               text="Select"
               raised
@@ -83,7 +86,7 @@ export default class SchoolSelectionScreen extends Component {
   }
 
   renderSchoolList() {
-    if(this.state.selectedSchool.name === "" || this.state.selectedSchool.id !== -1) return [];
+    if(this.state.selectedSchool.name === "" || this.state.selectedSchool.id !== "-1") return [];
 
     return this.props.schools.map((school, index) =>
       <TouchableOpacity key={index} style={dropDownItemStyle} onPress={() => this.onSelectSchool(school)}>
