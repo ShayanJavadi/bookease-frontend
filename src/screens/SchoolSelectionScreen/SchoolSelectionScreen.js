@@ -4,7 +4,22 @@ import { Keyboard } from 'react-native'
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
-const { screenStyle, topContainerStyle, headerStyle, inputStyle, dropDownStyle, dropDownItemStyle, schoolNameStyle, schoolAddressStyle, buttonStyle, buttonTextStyle, noButtonPaddingStyle } = styles;
+const {
+  screenStyle,
+  topContainerStyle,
+  headerTextStyle,
+  inputStyle,
+  inputWrapperStyle,
+  dropDownStyle,
+  dropDownItemStyle,
+  buttonWrapperStyle,
+  buttonTextStyle,
+  buttonContainerStyle,
+  noResultsTextStyle,
+  noResultsContainerStyle,
+  schoolNameStyle,
+  schoolAddressStyle,
+} = styles;
 
 export default class SchoolSelectionScreen extends Component {
   componentWillMount() {
@@ -33,7 +48,7 @@ export default class SchoolSelectionScreen extends Component {
     return (
       <View style={screenStyle}>
         <View style={topContainerStyle}>
-          <Text style={headerStyle}>Select Your School</Text>
+          <Text style={headerTextStyle}>Select Your School</Text>
           <TextInput
             style={inputStyle}
             value={this.state.selectedSchool.name}
@@ -43,26 +58,25 @@ export default class SchoolSelectionScreen extends Component {
             {this.renderSchoolList()}
           </View>
         </View>
-        <View>
-          {this.state.selectedSchool.id !== -1 &&
-            (<Button
-              raised
-              primary
-              style={{ container: buttonStyle, text: buttonTextStyle }}
+        {this.state.selectedSchool.id === -1 && this.props.schools.length === 0 && this.state.selectedSchool.name !== "" &&
+          (<View style={noResultsContainerStyle}>
+              <Text style={noResultsTextStyle}>No results found</Text>
+            </View>)
+        }
+        {this.state.selectedSchool.id !== -1 &&
+          (<Button
               text="Select"
+              raised
+              style={{ text: buttonTextStyle, container: buttonContainerStyle }}
               onPress={() => this.onComplete()}
             />)
-          }
-          {this.state.selectedSchool.id === -1 &&
-            (<View style={noButtonPaddingStyle} />)
-          }
-        </View>
+        }
       </View>
     );
   }
 
   renderSchoolList() {
-    if(this.state.selectedSchool.id !== -1) return [];
+    if(this.state.selectedSchool.name === "" || this.state.selectedSchool.id !== -1) return [];
 
     return this.props.schools.map((school, index) =>
       <TouchableOpacity key={index} style={dropDownItemStyle} onPress={() => this.onSelectSchool(school)}>
