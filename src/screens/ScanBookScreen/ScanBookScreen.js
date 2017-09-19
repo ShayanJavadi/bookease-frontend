@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
-import { isEmpty } from "lodash";
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
 import { Button } from "react-native-material-ui";
 
 const {
-  screenStyle,
   headerStyle,
   headerTitleStyle,
+  screenStyle,
 } = styles;
 
 export default class ScanBookScreen extends Component {
@@ -20,14 +17,14 @@ export default class ScanBookScreen extends Component {
     bookIsScanned: false,
   }
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
+  static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerTitle: "Scan Book",
     headerLeft: <BackButton navigation={navigation} buttonText="Back" />,
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,
     headerBackTitleStyle: { color: "#fff" }
-  })
+  });
 
   async componentWillMount() {
     this.props.resetQuery();

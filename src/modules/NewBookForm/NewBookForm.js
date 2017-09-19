@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
 import { Button } from "react-native-material-ui";
 import PictureInput from "src/modules/PictureInput";
+import { func } from "prop-types";
 import FormTextInput from "src/modules/FormTextInput";
 import { styles } from "./styles";
 
@@ -74,6 +75,10 @@ class NewBookForm extends Component {
     );
   }
 }
+
+NewBookForm.propTypes = {
+  handleSubmit: func.isRequired
+};
 
 export default reduxForm({
   form: "newBook",

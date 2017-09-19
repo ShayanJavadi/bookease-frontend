@@ -93,7 +93,7 @@ const AuthNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const WelcomeNavigator = StackNavigator({
+const WelcomeNavigator = StackNavigator({ // eslint-disable-line
   welcome: {
     screen: WelcomeScreen,
   },

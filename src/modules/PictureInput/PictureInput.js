@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationActions } from "react-navigation";
 import { styles } from "./styles";
 
 const {
@@ -10,7 +9,6 @@ const {
 } = styles;
 
 export default class PictureInput extends Component {
-
   render() {
     return (
       <View style={pictureInputWrapperStyle}>

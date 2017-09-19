@@ -2,7 +2,6 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColorLight,
   tertiaryColorDark,
 } = palette;
 

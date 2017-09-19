@@ -1,6 +1,3 @@
-import { Dimensions } from "react-native";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
 export const SWIPE_OUT_ICON_SIZE = 25;
 export const styles = {
   screenStyle: {

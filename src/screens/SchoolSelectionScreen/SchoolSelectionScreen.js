@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
+import { func, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
 const { screenStyle, headerStyle, inputStyle, buttonStyle, buttonTextStyle } = styles;
 
 export default class SchoolSelectionScreen extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired
+  };
+
   onComplete() {
     this.props.navigation.navigate("authScreen");
   }
