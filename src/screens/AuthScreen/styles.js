@@ -42,7 +42,7 @@ export const styles = {
   },
   googleButtonStyle: {
     width: SCREEN_WIDTH * 0.68,
-    backgroundColor: "#cf4332",
+    backgroundColor: "#ffffff",
   },
   twitterButtonStyle: {
     width: SCREEN_WIDTH * 0.68,
