@@ -1,6 +1,5 @@
 import { graphql } from "react-apollo";
 import { connect } from "react-redux";
-import gql from "graphql-tag";
 import * as actions from "./actions";
 import queries from "./graphql/queries";
 import ScanBookScreen from "../ScanBookScreen";

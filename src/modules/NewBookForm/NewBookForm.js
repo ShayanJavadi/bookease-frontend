@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { reduxForm, Field, change } from "redux-form";
-import { View, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NavigationActions } from "react-navigation";
+import { reduxForm, Field } from "redux-form";
+import { View } from "react-native";
 import { Button } from "react-native-material-ui";
 import PictureInput from "src/modules/PictureInput";
 import { func } from "prop-types";

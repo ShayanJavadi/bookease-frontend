@@ -1,6 +1,7 @@
 import React from "react";
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
+import { node } from "prop-types";
 import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
@@ -45,5 +46,10 @@ const Provider = props => (
   <ApolloProvider store={store} client={client}>
     {props.children}
   </ApolloProvider>
-  );
+);
+
+Provider.propTypes = {
+  children: node.isRequired,
+};
+
 export default Provider;

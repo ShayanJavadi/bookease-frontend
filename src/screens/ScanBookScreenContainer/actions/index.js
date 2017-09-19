@@ -21,5 +21,5 @@ export const fetchScannedBook = (refetch, scannedData) => async (dispatch) => {
 };
 
 export const resetQuery = () => (dispatch) => {
-  dispatch({ type: SCAN_BOOK_SUCCESS });
+  dispatch({ type: RESET_QUERY });
 };

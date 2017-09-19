@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { BarCodeScanner, Permissions } from "expo";
+import { Text, View } from "react-native";
+import { BarCodeScanner, Permissions } from "expo"; // eslint-disable-line no-unused-vars
+import { func, shape, object, bool } from "prop-types";
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
 import { Button } from "react-native-material-ui";
@@ -12,6 +13,17 @@ const {
 } = styles;
 
 export default class ScanBookScreen extends Component {
+  static propTypes = {
+    data: object.isRequired,
+    loading: bool.isRequired,
+    resetQuery: func.isRequired,
+    fetchScannedBook: func.isRequired,
+    scannedTextbook: object.isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+  };
+
   state = {
     hasCameraPermission: null,
     bookIsScanned: false,

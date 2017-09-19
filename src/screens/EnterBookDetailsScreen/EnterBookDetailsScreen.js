@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { styles } from "./styles";
+import { shape, object } from "prop-types";
 import BackButton from "src/modules/BackButton";
 import NewBookForm from "src/modules/NewBookForm";
 
@@ -9,6 +10,12 @@ const {
 } = styles;
 
 export default class EnterBookDetailsScreen extends Component {
+  static propTypes = {
+    navigation: shape({
+      state: object.isRequired
+    }).isRequired
+  };
+
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerTitle: "Enter Book Details",
