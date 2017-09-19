@@ -20,8 +20,10 @@ export default class EnterBookDetailsScreen extends Component {
   })
 
   render() {
+    const navigationState = this.props.navigation.state;
+    const scannedBook = navigationState.params ? navigationState.params.scannedBook : undefined;
     return (
-        <NewBookForm onSubmit={(values) =>console.log('Submitted!', JSON.stringify(values))}/>
+        <NewBookForm scannedBook={scannedBook} onSubmit={(values) =>console.log('Submitted!', JSON.stringify(values))}/>
     );
   }
 }
