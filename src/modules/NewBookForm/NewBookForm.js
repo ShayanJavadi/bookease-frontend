@@ -73,7 +73,7 @@ class NewBookForm extends Component {
       </View>
     );
   }
-};
+}
 
 export default reduxForm({
   form: "newBook",

@@ -19,9 +19,9 @@ networkInterface.use([{
     if (!req.options.headers) {
       req.options.headers = {};  // Create the header object if needed.
     }
-    req.options.headers["authorization"] = `Basic ${btoa(BACKEND_AUTHENTICATION_HEADER)}`;
+    req.options.headers.authorization = `Basic ${btoa(BACKEND_AUTHENTICATION_HEADER)}`;
     next();
-  }
+  },
 }]);
 
 const client = new ApolloClient({ networkInterface });
@@ -30,7 +30,7 @@ const reducers = combineReducers({
   form,
   facebookAuthReducer,
   scanBookReducer,
-  apollo: client.reducer()
+  apollo: client.reducer(),
 });
 
 const store = createStore(
@@ -41,11 +41,9 @@ const store = createStore(
   ),
 );
 
-const Provider = (props) => {
-  return (
-    <ApolloProvider store={store} client={client}>
-      {props.children}
-    </ApolloProvider>
-  )
-}
+const Provider = props => (
+  <ApolloProvider store={store} client={client}>
+    {props.children}
+  </ApolloProvider>
+  );
 export default Provider;

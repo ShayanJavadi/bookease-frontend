@@ -43,15 +43,15 @@ export default class ScanBookScreen extends Component {
     }
   }
 
-  handleBarCodeRead = (data) => {
+  handleBarCodeRead = (barcodeData) => {
     const { fetchScannedBook, data } = this.props;
 
-    fetchScannedBook(data.refetch, data);
+    fetchScannedBook(data.refetch, barcodeData);
   };
 
   render() {
     const { hasCameraPermission } = this.state;
-    
+
     if (this.props.loading) {
       return (
         <View style={screenStyle}>

@@ -15,11 +15,11 @@ export default (state = INITIAL_STATE, action) => {
     case SCAN_BOOK_RQ:
       return { loading: true };
     case SCAN_BOOK_SUCCESS:
-      return { loading: false, scannedTextbook: action.payload }
+      return { loading: false, scannedTextbook: action.payload };
     case SCAN_BOOK_FAIL:
-      return { loading: false, scannedTextbook: null }
+      return { loading: false, scannedTextbook: null };
     case RESET_QUERY:
-      return state
+      return state;
     default:
       return state;
   }
