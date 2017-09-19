@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import { BarCodeScanner, Permissions } from 'expo';
+import { BarCodeScanner, Permissions } from "expo";
+import { isEmpty } from "lodash";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import BackButton from "src/modules/BackButton";
@@ -16,6 +17,7 @@ const {
 export default class ScanBookScreen extends Component {
   state = {
     hasCameraPermission: null,
+    bookIsScanned: false,
   }
 
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -28,25 +30,35 @@ export default class ScanBookScreen extends Component {
   })
 
   async componentWillMount() {
+    this.props.resetQuery();
+
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
     this.setState({ hasCameraPermission: status === "granted" });
   }
 
-  handleBarCodeRead = ({ type, data }) => {
-    const { refetch } = this.props.data;
-    const exampleQuery = "discrete";
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.scannedTextbook) {
+      this.props.navigation.navigate("enterBookDetails", { scannedTextbook: nextProps.scannedTextbook } )
+    }
+  }
 
-    refetch({ query: exampleQuery })
-      .then(() => {
-        const { navigation, data } = this.props;
-        navigation.navigate("enterBookDetails", { scannedBook: data.lookupTextbooks.textbooks[0] } )
-      })
+  handleBarCodeRead = (data) => {
+    const { fetchScannedBook, data } = this.props;
+
+    fetchScannedBook(data.refetch, data);
   };
 
   render() {
     const { hasCameraPermission } = this.state;
-    const { refetch } = this.props.data;
-    console.log(this);
+    
+    if (this.props.loading) {
+      return (
+        <View style={screenStyle}>
+          <Text>Loading...</Text>
+        </View>
+      )
+    }
     if (hasCameraPermission === null) {
       return (
         <View style={screenStyle}>
@@ -67,7 +79,7 @@ export default class ScanBookScreen extends Component {
           <Button
             raised
             text="Press me"
-            onPress={this.handleBarCodeRead}
+            onPress={() => this.handleBarCodeRead("math")}
           />
         </View>
       );

@@ -18,14 +18,6 @@ const {
 } = styles;
 
 class NewBookForm extends Component {
-  componentDidMount() {
-    const { scannedBook, dispatch } = this.props;
-    if (scannedBook) {
-      const { title } = scannedBook;
-      dispatch(change("newBook", "bookTitle", title));
-    }
-  }
-
   render() {
     return (
       <View style={formWrapperStyle}>
