@@ -1,5 +1,11 @@
 import { Dimensions } from "react-native";
+import uiTheme from "src/common/styles/uiTheme";
 
+const { palette } = uiTheme;
+const {
+  primaryColorLight,
+  primaryColorLighter
+} = palette;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -55,12 +61,12 @@ export const styles = {
     paddingBottom: 5,
   },
   buttonContainerStyle: {
-    backgroundColor: "#f50057",
+    backgroundColor: primaryColorLight,
     height: SCREEN_WIDTH * 0.1,
     width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
-    backgroundColor: "#f8bbd0",
+    backgroundColor: primaryColorLighter,
     height: SCREEN_WIDTH * 0.1,
     width: SCREEN_WIDTH * 0.9,
   },

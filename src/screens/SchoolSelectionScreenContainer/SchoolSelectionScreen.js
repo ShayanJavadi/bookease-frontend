@@ -11,7 +11,7 @@ const mapStateToProps = ({ schoolSelectionReducer }) => ({
 });
 
 const Container = graphql(searchForSchoolsQuery, {
-  options: props => ({ variables: { query: props.query, limit: 5 } }),
+  options: props => ({ variables: { query: props.query || "", limit: 5 } }),
 });
 
 export default Container(connect(
