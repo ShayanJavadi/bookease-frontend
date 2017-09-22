@@ -47,6 +47,7 @@ export const styles = {
   },
   dropDownStyle : {
     width: SCREEN_WIDTH * 0.9,
+    marginBottom: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -62,12 +63,12 @@ export const styles = {
   },
   buttonContainerStyle: {
     backgroundColor: primaryColorLight,
-    height: SCREEN_WIDTH * 0.1,
+    height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
     backgroundColor: primaryColorLighter,
-    height: SCREEN_WIDTH * 0.1,
+    height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
   buttonTextStyle: {

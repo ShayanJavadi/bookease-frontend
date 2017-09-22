@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, TouchableOpacity, Keyboard } from "react-native";
+import { Text, View, ScrollView, TextInput, TouchableOpacity, Keyboard } from "react-native";
 import { func, string, shape, arrayOf, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
@@ -75,9 +75,9 @@ export default class SchoolSelectionScreen extends Component {
             value={this.state.selectedSchool.name}
             onChangeText={text => this.onChangeText(text)}
           />
-          <View style={dropDownStyle}>
+          <ScrollView style={dropDownStyle}>
             {this.renderSchoolList()}
-          </View>
+          </ScrollView>
         </View>
         {!validSchoolSelected && resultsEmpty  && !textBoxEmpty &&
           (<View style={noResultsContainerStyle}>
