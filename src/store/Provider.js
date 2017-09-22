@@ -6,6 +6,7 @@ import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
+import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 
 const networkInterface = createNetworkInterface({
@@ -29,6 +30,7 @@ const client = new ApolloClient({ networkInterface });
 
 const reducers = combineReducers({
   form,
+  schoolSelectionReducer,
   facebookAuthReducer,
   scanBookReducer,
   apollo: client.reducer(),
