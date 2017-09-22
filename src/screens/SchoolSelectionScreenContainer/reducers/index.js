@@ -1,3 +1,3 @@
 import schoolSelectionReducer from "./schoolSelectionReducer";
 
-export { schoolSelectionReducer };
+export default schoolSelectionReducer;

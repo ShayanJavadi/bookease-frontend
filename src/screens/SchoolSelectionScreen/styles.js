@@ -57,12 +57,12 @@ export const styles = {
   buttonContainerStyle: {
     backgroundColor: "#f50057",
     height: SCREEN_WIDTH * 0.1,
-    width: SCREEN_WIDTH * 0.7,
+    width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
     backgroundColor: "#f8bbd0",
     height: SCREEN_WIDTH * 0.1,
-    width: SCREEN_WIDTH * 0.7,
+    width: SCREEN_WIDTH * 0.9,
   },
   buttonTextStyle: {
     color: "#fff",

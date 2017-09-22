@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, TouchableOpacity, Keyboard } from "react-native";
-import { func, string, shape, arrayOf } from "prop-types";
+import { func, string, shape, arrayOf, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -27,15 +27,16 @@ export default class SchoolSelectionScreen extends Component {
   }
 
   static propTypes = {
-    navigation: shape({
-      navigate: func.isRequired
-    }).isRequired,
+    data: object.isRequired,
     schools: arrayOf(shape({
       name: string.isRequired,
       address: string.isRequired,
       id: string.isRequired
     })).isRequired,
-    searchForSchool: func.isRequired
+    searchForSchool: func.isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired
   };
 
   onComplete() {
@@ -43,12 +44,15 @@ export default class SchoolSelectionScreen extends Component {
   }
 
   onChangeText(text) {
+    const { searchForSchool, data } = this.props;
+
     this.setState({ selectedSchool: {
       name: text,
       address: "",
       id: "-1",
     } });
-    this.props.searchForSchool(text);
+
+    searchForSchool(data.refetch, text);
   }
 
   onSelectSchool(school) {
@@ -66,6 +70,7 @@ export default class SchoolSelectionScreen extends Component {
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Select Your School</Text>
           <TextInput
+            autoCorrect={false}
             style={inputStyle}
             value={this.state.selectedSchool.name}
             onChangeText={text => this.onChangeText(text)}

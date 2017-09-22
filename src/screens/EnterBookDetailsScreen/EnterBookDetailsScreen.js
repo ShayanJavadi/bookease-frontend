@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { styles } from "./styles";
+import { shape, object } from "prop-types";
 import BackButton from "src/modules/BackButton";
 import NewBookForm from "src/modules/NewBookForm";
 
@@ -9,6 +10,12 @@ const {
 } = styles;
 
 export default class EnterBookDetailsScreen extends Component {
+  static propTypes = {
+    navigation: shape({
+      state: object.isRequired
+    }).isRequired
+  };
+
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerTitle: "Enter Book Details",
@@ -19,8 +26,10 @@ export default class EnterBookDetailsScreen extends Component {
   });
 
   render() {
+    const navigationState = this.props.navigation.state;
+    const scannedBook = navigationState.params ? navigationState.params.scannedBook : undefined;
     return (
-        <NewBookForm onSubmit={(values) =>console.log("Submitted!", JSON.stringify(values))}/> // eslint-disable-line no-console
+        <NewBookForm scannedBook={scannedBook} onSubmit={(values) =>console.log("Submitted!", JSON.stringify(values))}/> // eslint-disable-line no-console
     );
   }
 }
