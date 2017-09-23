@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { View } from "react-native";
 import { styles } from "./styles";
 import SearchForm from "../../modules/SearchForm";
@@ -6,17 +6,15 @@ import SearchResults from "../../modules/SearchResults";
 
 const { screenStyle } = styles;
 
-export default class HomeScreen extends Component {
-  static navigationOptions = {
-    header: null,
-  };
+const HomeScreen = () => (
+  <View style={screenStyle}>
+    <SearchForm />
+    <SearchResults />
+  </View>
+);
 
-  render() {
-    return (
-      <View style={screenStyle}>
-        <SearchForm />
-        <SearchResults />
-      </View>
-    );
-  }
-}
+HomeScreen.navigationOptions = {
+  header: null,
+};
+
+export default HomeScreen;

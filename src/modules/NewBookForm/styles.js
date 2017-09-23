@@ -24,10 +24,6 @@ export const styles = {
     justifyContent: "space-between",
     marginBottom: 15,
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
     zIndex: 9999,
   },
   buttonWrapperStyle: {

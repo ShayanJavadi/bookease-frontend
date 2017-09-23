@@ -1,0 +1,1 @@
+export const SCHOOL_SEARCH_RESP = "SCHOOL_SEARCH_RESP";

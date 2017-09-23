@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import { reduxForm, Field } from "redux-form";
 import { View } from "react-native";
 import { Button } from "react-native-material-ui";
@@ -16,7 +16,7 @@ const {
   buttonContainerStyle,
 } = styles;
 
-const NewBookForm = props => (
+const NewBookForm = (props) => (
   <View style={formWrapperStyle}>
     <PictureInput />
     <View style={textInputWrapperStyle}>
@@ -68,7 +68,7 @@ const NewBookForm = props => (
       />
     </View>
   </View>
-  );
+);
 
 NewBookForm.propTypes = {
   handleSubmit: func.isRequired

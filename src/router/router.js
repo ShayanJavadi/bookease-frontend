@@ -3,7 +3,7 @@ import {
   TabNavigator,
 } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import SchoolSelectionScreen from "../screens/SchoolSelectionScreen";
+import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
 import HomeScreen from "../screens/HomeScreen";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreen";
@@ -12,7 +12,7 @@ import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AccountScreen from "../screens/AccountScreen";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
-import ScanBookScreen from "../screens/ScanBookScreen";
+import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import PinScreen from "../screens/PinScreen";
 
 import TabBarComponent from "../modules/TabBarComponent";

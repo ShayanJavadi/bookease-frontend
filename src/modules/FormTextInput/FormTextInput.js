@@ -7,10 +7,8 @@ const {
   inputStyle,
 } = styles;
 
-
 const FormTextInput = (props) => {
   const { input, ...inputProps } = props;
-
 
   return (
     <View style={{ flex: 1 }}>
