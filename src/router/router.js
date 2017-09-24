@@ -14,7 +14,7 @@ import AccountScreen from "../screens/AccountScreen";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import EmailScreen from "../screens/EmailScreenContainer";
-import PinScreen from "../screens/PinScreen";
+import EmailPinScreen from "../screens/EmailPinScreenContainer";
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -85,14 +85,14 @@ const SchoolSelectionNavigator = StackNavigator({
 });
 
 const AuthNavigator = StackNavigator({
+  emailPinScreen: {
+    screen: EmailPinScreen,
+  },
   auth: {
     screen: AuthScreen,
   },
   emailScreen: {
     screen: EmailScreen,
-  },
-  pinScreen: {
-    screen: PinScreen,
   },
   schoolSelectionScreen: {
     screen: SchoolSelectionNavigator,

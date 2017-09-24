@@ -75,7 +75,7 @@ export default class PinScreen extends Component {
       this.setState({ invalidPinEntered: false });
     }
     else {
-      this.pinInput.forEach(input => input.setNativeProps({text: ""}));
+      this.pinInput.forEach(input => input.setNativeProps({ text: "" }));
       this.pinValues = this.pinValues.map(value => "");
       this.pinInput[0].focus();
       this.setState({ invalidPinEntered: true });
@@ -94,7 +94,7 @@ export default class PinScreen extends Component {
   render() {
     return (
       <View style={screenStyle}>
-        <Text style={headerTextStyle}>Enter PIN</Text>
+        <Text style={headerTextStyle}>Enter the PIN you received</Text>
         <View style={inputContainerStyle}>
           {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinInput(index))}
         </View>

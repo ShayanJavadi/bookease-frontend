@@ -1,10 +1,18 @@
-import React from "react"; // eslint-disable-line no-unused-vars
+import { graphql } from "react-apollo";
 import { connect } from "react-redux";
 import * as actions from "./actions";
+import queries from "./graphql/queries";
 import EmailScreen from "../EmailScreen";
 
-// move to another
+const { sendVerificationCodeMutation } = queries;
+
 const mapStateToProps = ({ emailValidationReducer }) => ({ isEmailValid: emailValidationReducer.isEmailValid });
 
-// pick out actions
-export default connect(mapStateToProps, actions)(EmailScreen);
+const Container = graphql(sendVerificationCodeMutation, {
+  options: props => ({ variables: { email: props.email || "" } }),
+});
+
+export default Container(connect(
+  mapStateToProps,
+  actions,
+)(EmailScreen));

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, Keyboard } from "react-native";
-import { func, shape,} from "prop-types";
+import { bool, func, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -10,15 +10,11 @@ const {
   topContainerStyle,
   headerTextStyle,
   inputStyle,
-  invalidInputStyle,
   inputContainerStyle,
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
  } = styles;
-
- const PIN_LENGTH = 6;
-
 
 export default class EmailScreen extends Component {
   static navigationOptions = {
@@ -26,6 +22,7 @@ export default class EmailScreen extends Component {
   }
 
   static propTypes = {
+    isEmailValid: bool.isRequired,
     validateEmail: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
@@ -34,12 +31,12 @@ export default class EmailScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { keyboardVisible: false };
+    this.state = { email: "", keyboardVisible: false };
   }
 
   componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
   }
 
   componentWillUnmount() {
@@ -55,17 +52,16 @@ export default class EmailScreen extends Component {
     this.setState({ keyboardVisible: false });
   }
 
-
-  onComplete() {
-    this.props.navigation.navigate("home");
-  }
-
   onInputChange(value) {
+    this.setState({ email: value });
     this.props.validateEmail(value);
   }
 
   onSubmitButtonPress() {
-
+    this.props.mutate({
+      variables: { email: this.state.email }
+    });
+    this.props.navigation.navigate("emailPinScreen");
   }
 
 
