@@ -32,14 +32,11 @@ export default class EmailScreen extends Component {
     }).isRequired
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      emailInUse: false,
-      keyboardVisible: false
-     };
-  }
+  state = {
+    email: "",
+    emailInUse: false,
+    keyboardVisible: false
+   }
 
   componentDidMount() {
     this.input.focus();

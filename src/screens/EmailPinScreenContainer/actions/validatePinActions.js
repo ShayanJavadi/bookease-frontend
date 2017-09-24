@@ -4,7 +4,7 @@ import {
   PIN_INVALID,
 } from "./consts";
 
-export const validatePin = ({ pin, identifier, verifier }) => async (dispatch) => {
+export const validatePin = ({ pin, identifier, verifier }) => (dispatch) => {
   verifier({
     variables: {
       email: identifier,

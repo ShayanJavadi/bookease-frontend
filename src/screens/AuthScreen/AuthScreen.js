@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Entypo, Zocial } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import { func, shape } from "prop-types";
 import { Text, Image, View, AsyncStorage } from "react-native";
@@ -103,7 +103,7 @@ export default class AuthScreen extends Component {
             container: [buttonStyle, emailButtonStyle],
             text: buttonTextStyle,
           }}
-          icon={<Zocial name="email" size={ICON_SIZE} style={buttonIconStyle} />}
+          icon={<MaterialIcons name="email" size={ICON_SIZE} style={buttonIconStyle} />}
           text="Sign in with Email"
           onPress={() => this.onEmailButtonPress()}
         />

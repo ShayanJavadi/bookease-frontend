@@ -36,15 +36,13 @@ export default class PinScreen extends Component {
     }).isRequired
   }
 
-  constructor(props) {
-    super(props);
-    this.pinBox = [];
-    this.state = {
-      pin: "",
-      invalidPinEntered: false,
-      submitButtonEnabled: false
-    };
+  state = {
+    pin: "",
+    invalidPinEntered: false,
+    submitButtonEnabled: false
   }
+
+  pinBox = [];
 
   componentDidMount() {
     this.hiddenInput.focus();
