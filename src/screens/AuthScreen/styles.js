@@ -48,6 +48,10 @@ export const styles = {
     width: SCREEN_WIDTH * 0.68,
     backgroundColor: "#1b95e0",
   },
+  emailButtonStyle: {
+    width: SCREEN_WIDTH * 0.68,
+    backgroundColor: "#404040",
+  },
   slideLogoStyle: {
     color: "#222",
   },

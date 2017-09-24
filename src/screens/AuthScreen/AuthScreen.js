@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import { func, shape } from "prop-types";
 import { Text, Image, View, AsyncStorage } from "react-native";
@@ -13,6 +13,7 @@ const {
   facebookButtonStyle,
   googleButtonStyle,
   twitterButtonStyle,
+  emailButtonStyle,
   buttonIconStyle,
   slideLogoStyle,
 } = styles;
@@ -45,6 +46,10 @@ export default class AuthScreen extends Component {
 
   onFacebookButtonPress() {
     this.props.facebookLogin();
+  }
+
+  onEmailButtonPress() {
+    this.props.navigation.navigate("emailScreen");
   }
 
   renderAuthButtons() {
@@ -89,6 +94,18 @@ export default class AuthScreen extends Component {
           icon={<Entypo name="twitter" size={ICON_SIZE} style={buttonIconStyle} />}
           text="Sign in with Twitter"
           onPress={() => this.onComplete}
+        />
+        <Button
+          raised
+          primary
+          upperCase={false}
+          style={{
+            container: [buttonStyle, emailButtonStyle],
+            text: buttonTextStyle,
+          }}
+          icon={<MaterialIcons name="email" size={ICON_SIZE} style={buttonIconStyle} />}
+          text="Sign in with Email"
+          onPress={() => this.onEmailButtonPress()}
         />
       </View>
     );
