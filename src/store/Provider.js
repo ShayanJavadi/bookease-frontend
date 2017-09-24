@@ -7,6 +7,7 @@ import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apol
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
+import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 
@@ -34,6 +35,7 @@ const reducers = combineReducers({
   schoolSelectionReducer,
   facebookAuthReducer,
   emailValidationReducer,
+  emailPinValidationReducer,
   scanBookReducer,
   apollo: client.reducer(),
 });

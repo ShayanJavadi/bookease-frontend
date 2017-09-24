@@ -1,3 +1,3 @@
-import validatePinQuery from "./validatePinQuery";
+import validatePinMutation from "./validatePinMutation";
 
-export default { validatePinQuery };
+export default { validatePinMutation };

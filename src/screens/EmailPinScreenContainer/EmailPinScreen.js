@@ -4,14 +4,16 @@ import * as actions from "./actions";
 import queries from "./graphql/queries";
 import PinScreen from "../PinScreen";
 
-const { validatePinQuery } = queries;
+const { validatePinMutation } = queries;
 
-const mapStateToProps = ({ pinValidationReducer }) => ({
-
+const mapStateToProps = ({ emailPinValidationReducer }) => ({
+  isPinValid: emailPinValidationReducer.isPinValid,
+  updateCounter: emailPinValidationReducer.updateCounter,
+  nextScreen: "schoolSelectionScreen",
 });
 
-const Container = graphql(validatePinQuery, {
-  options: props => ({ variables: { query: props.query || "", limit: 5 } }),
+const Container = graphql(validatePinMutation, {
+  options: props => ({ variables: { email: props.email || "", verificationCode: props.verificationCode || "" } }),
 });
 
 export default Container(connect(

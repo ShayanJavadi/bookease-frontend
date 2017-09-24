@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
+import { bool, func, string, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
 const {
   screenStyle,
+  topContainerStyle,
   headerTextStyle,
   inputStyle,
   invalidInputStyle,
   inputContainerStyle,
+  invalidPinTextStyle,
   buttonContainerStyle,
+  disabledButtonContainerStyle,
   buttonTextStyle,
  } = styles;
 
@@ -21,114 +25,115 @@ export default class PinScreen extends Component {
     header: null,
   }
 
+  static propTypes = {
+    isPinValid: bool.isRequired,
+    validatePin: func.isRequired,
+    nextScreen: string.isRequired,
+    mutate: func.isRequired,
+    navigation: shape({
+      navigate: func.isRequired,
+      state: object.isRequired
+    }).isRequired
+  }
+
   constructor(props) {
     super(props);
-    this.pinInput = [];
-    this.pinValues = [];
+    this.pinBox = [];
     this.state = {
+      pin: "",
       invalidPinEntered: false,
       submitButtonEnabled: false
     };
   }
 
   componentDidMount() {
-    this.pinInput[0].focus();
+    this.hiddenInput.focus();
   }
 
-  onComplete() {
-    this.props.navigation.navigate("home");
-  }
-
-
-  onPinChangeText(index, text) {
-    const wasBackspace = text.length === 0;
-
-    if(!wasBackspace && index < PIN_LENGTH - 1) {
-      this.pinInput[index + 1].focus();
-    }
-
-    this.pinValues[index] = text;
-
-    this.setButtonEnabledStatus();
-    this.setState({ invalidPinEntered: false });
-  }
-
-  onPinKeyPress(index, key) {
-    const wasBackspace = key === "Backspace";
-    const wasEnter = key === "Enter";
-
-    if(wasBackspace && !this.pinValues[index] && index > 0) {
-      this.pinInput[index - 1].focus();
-    }
-    else if(!wasBackspace && !wasEnter && this.pinValues[index] && index < PIN_LENGTH - 1) {
-      this.pinInput[index + 1].focus();
-      this.pinInput[index + 1].setNativeProps({ text: key });
-      this.pinValues[index + 1] = key;
-    }
-  }
-
-  onSubmitButtonPress() {
-    const pin = this.pinValues.join("");
-    const isPinValid = pin === "123456";
-
-    if(isPinValid) {
-      this.setState({ invalidPinEntered: false });
+  componentWillReceiveProps(props) {
+    if (props.isPinValid) {
+      this.props.navigation.navigate(this.props.nextScreen);
     }
     else {
-      this.pinInput.forEach(input => input.setNativeProps({ text: "" }));
-      this.pinValues = this.pinValues.map(value => "");
-      this.pinInput[0].focus();
+      this.hiddenInput.setNativeProps({ text: "" });
+      this.onChangeText("");
       this.setState({ invalidPinEntered: true });
     }
   }
 
 
-  setButtonEnabledStatus() {
-    const pin = this.pinValues.join("");
-    const hasAllDigits = pin.length === PIN_LENGTH;
+  onChangeText(text) {
+    const pin = text.split("");
+    const padding = Array(PIN_LENGTH - pin.length).fill("");
+    const paddedPin = pin.concat(padding);
 
-    this.setState({ submitButtonEnabled: hasAllDigits });
+    paddedPin.map((character, index) =>
+      this.pinBox[index].setNativeProps({ text: character })
+    );
+
+    this.setState({
+      pin: text,
+      submitButtonEnabled: pin.length === PIN_LENGTH,
+      invalidPinEntered: false,
+    });
+  }
+
+  onSubmitButtonPress() {
+    this.props.validatePin({
+      pin: this.state.pin,
+      identifier: this.props.navigation.state.params.email,
+      verifier: this.props.mutate,
+    });
   }
 
 
   render() {
     return (
       <View style={screenStyle}>
-        <Text style={headerTextStyle}>Enter the PIN you received</Text>
-        <View style={inputContainerStyle}>
-          {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinInput(index))}
+        <View style={topContainerStyle}>
+          <Text style={headerTextStyle}>Enter the PIN you received</Text>
+          {this.state.invalidPinEntered &&
+            (<Text style={invalidPinTextStyle}>Incorrect PIN</Text>)
+          }
+          <View style={inputContainerStyle}>
+            {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index))}
+          </View>
+          {this.state.submitButtonEnabled &&
+            (<Button
+              raised
+              primary
+              text="Submit"
+              style={{ container: buttonContainerStyle, text: buttonTextStyle }}
+              onPress={() => this.onSubmitButtonPress()}
+            />)
+          }
+          {!this.state.submitButtonEnabled &&
+            (<Button
+              disabled
+              raised
+              primary
+              text="Submit"
+              style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
+            />)
+          }
         </View>
-        {this.state.submitButtonEnabled &&
-          (<Button
-            raised
-            primary
-            text="Submit"
-            style={{ container: buttonContainerStyle, text: buttonTextStyle }}
-            onPress={() => this.onSubmitButtonPress()}
-          />)
-        }
-        {!this.state.submitButtonEnabled &&
-          (<Button
-            disabled
-            raised
-            primary
-            text="Submit"
-            style={{ container: buttonContainerStyle, text: buttonTextStyle }}
-          />)
-        }
+        <TextInput
+          ref={input => this.hiddenInput = input}
+          onChangeText={text => this.onChangeText(text)}
+          keyboardType="numeric"
+          maxLength={6}
+        />
       </View>
     );
   }
 
-  renderPinInput(index) {
+  renderPinBox(index) {
     const style = this.state.invalidPinEntered ? invalidInputStyle : inputStyle;
     return (<TextInput
         style={style}
-        onChangeText={text => this.onPinChangeText(index, text)}
-        onKeyPress={event => this.onPinKeyPress(index, event.nativeEvent.key)}
-        ref={input => this.pinInput[index] = input}
-        keyboardType="numeric"
-        maxLength={1}
+        key={index}
+        editable={false}
+        ref={input => this.pinBox[index] = input}
     />);
   }
 }

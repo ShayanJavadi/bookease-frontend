@@ -1,3 +1,3 @@
-import pinValidationReducer from "./pinValidationReducer";
+import emailPinValidationReducer from "./emailPinValidationReducer";
 
-export default pinValidationReducer;
+export default emailPinValidationReducer;

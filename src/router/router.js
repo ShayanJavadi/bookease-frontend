@@ -85,14 +85,14 @@ const SchoolSelectionNavigator = StackNavigator({
 });
 
 const AuthNavigator = StackNavigator({
-  emailPinScreen: {
-    screen: EmailPinScreen,
-  },
   auth: {
     screen: AuthScreen,
   },
   emailScreen: {
     screen: EmailScreen,
+  },
+  emailPinScreen: {
+    screen: EmailPinScreen,
   },
   schoolSelectionScreen: {
     screen: SchoolSelectionNavigator,
