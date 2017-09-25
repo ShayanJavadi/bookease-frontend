@@ -52,6 +52,10 @@ export const styles = {
     width: SCREEN_WIDTH * 0.68,
     backgroundColor: "#404040",
   },
+  phoneButtonStyle: {
+    width: SCREEN_WIDTH * 0.68,
+    backgroundColor: "#009900",
+  },
   slideLogoStyle: {
     color: "#222",
   },
