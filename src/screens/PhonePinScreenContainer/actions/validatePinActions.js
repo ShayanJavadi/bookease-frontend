@@ -12,5 +12,5 @@ export const validatePin = ({ pin, identifier, verifier }) => (dispatch) => {
     }
   })
   .then(() => dispatch({ type: PIN_VALID }))
-  ;//.catch(() => dispatch({ type: PIN_INVALID }));
+  .catch(() => dispatch({ type: PIN_INVALID }));
 }

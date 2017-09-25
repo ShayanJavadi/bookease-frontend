@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, Keyboard } from "react-native";
-import {TextInputMask} from 'react-native-masked-text';
-import { bool, func, shape } from "prop-types";
+import { Text, View, Keyboard } from "react-native";
+import { TextInputMask } from "react-native-masked-text";
+import { bool, func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -26,6 +26,7 @@ export default class PhoneScreen extends Component {
 
   static propTypes = {
     isPhoneValid: bool.isRequired,
+    phoneNumber: string.isRequired,
     validatePhone: func.isRequired,
     mutate: func.isRequired,
     navigation: shape({
