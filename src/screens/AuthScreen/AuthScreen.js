@@ -14,6 +14,7 @@ const {
   googleButtonStyle,
   twitterButtonStyle,
   emailButtonStyle,
+  phoneButtonStyle,
   buttonIconStyle,
   slideLogoStyle,
 } = styles;
@@ -50,6 +51,10 @@ export default class AuthScreen extends Component {
 
   onEmailButtonPress() {
     this.props.navigation.navigate("emailScreen");
+  }
+
+  onPhoneButtonPress() {
+    this.props.navigation.navigate("phoneScreen");
   }
 
   renderAuthButtons() {
@@ -106,6 +111,18 @@ export default class AuthScreen extends Component {
           icon={<MaterialIcons name="email" size={ICON_SIZE} style={buttonIconStyle} />}
           text="Sign in with Email"
           onPress={() => this.onEmailButtonPress()}
+        />
+        <Button
+          raised
+          primary
+          upperCase={false}
+          style={{
+            container: [buttonStyle, phoneButtonStyle],
+            text: buttonTextStyle,
+          }}
+          icon={<MaterialIcons name="phone" size={ICON_SIZE} style={buttonIconStyle} />}
+          text="Sign in with Phone"
+          onPress={() => this.onPhoneButtonPress()}
         />
       </View>
     );

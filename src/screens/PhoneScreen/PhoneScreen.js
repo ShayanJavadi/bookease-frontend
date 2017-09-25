@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, Keyboard } from "react-native";
+import {TextInputMask} from 'react-native-masked-text';
 import { bool, func, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
@@ -9,7 +10,7 @@ const {
   screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
-  invalidEmailTextStyle,
+  invalidPhoneTextStyle,
   inputStyle,
   invalidInputStyle,
   inputContainerStyle,
@@ -18,14 +19,14 @@ const {
   buttonTextStyle,
  } = styles;
 
-export default class EmailScreen extends Component {
+export default class PhoneScreen extends Component {
   static navigationOptions = {
     header: null,
   }
 
   static propTypes = {
-    isEmailValid: bool.isRequired,
-    validateEmail: func.isRequired,
+    isPhoneValid: bool.isRequired,
+    validatePhone: func.isRequired,
     mutate: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
@@ -33,13 +34,14 @@ export default class EmailScreen extends Component {
   }
 
   state = {
-    email: "",
-    emailInUse: false,
-    keyboardVisible: false
+    phone: "",
+    phoneInUse: false,
+    keyboardVisible: false,
+    maskedValue: "",
    }
 
   componentDidMount() {
-    this.input.focus();
+    this.input.getElement().focus();
   }
 
   componentWillMount() {
@@ -61,22 +63,23 @@ export default class EmailScreen extends Component {
   }
 
   onInputChange(value) {
+    this.props.validatePhone(value);
+
     this.setState({
-      email: value,
-      emailInUse: false,
-     });
-    this.props.validateEmail(value);
+      phoneInUse: false,
+      maskedValue: value,
+    });
   }
 
   onSubmitButtonPress() {
     this.props.mutate({
-      variables: { email: this.state.email }
+      variables: { phoneNumber: this.props.phoneNumber }
     })
     .then(() =>
-      this.props.navigation.navigate("emailPinScreen", { identifier: this.state.email })
+      this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber })
     )
     .catch(() =>
-      this.setState({ emailInUse: true })
+      this.setState({ phoneInUse: true })
     );
   }
 
@@ -85,22 +88,26 @@ export default class EmailScreen extends Component {
     return (
       <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
-          <Text style={headerTextStyle}>Enter your email</Text>
-          {this.state.emailInUse &&
-            (<Text style={invalidEmailTextStyle}>Email already in use</Text>)
+          <Text style={headerTextStyle}>Enter your phone number</Text>
+          {this.state.phoneInUse &&
+            (<Text style={invalidPhoneTextStyle}>Phone number already in use</Text>)
           }
           <View style={inputContainerStyle}>
-            <TextInput
-              style={this.state.emailInUse ? invalidInputStyle : inputStyle}
+            <TextInputMask
+              style={this.state.phoneInUse ? invalidInputStyle : inputStyle}
               autoCorrect={false}
               autoCapitalize="none"
-              keyboardType="email-address"
-              onChangeText={value => this.onInputChange(value)}
+              textAlign="center"
+              keyboardType="phone-pad"
+              value={this.state.maskedValue}
               ref={input => this.input = input}
+              onChangeText={text => this.onInputChange(text)}
+              type="custom"
+              options={ { mask: "(999) 999 - 9999" } }
             />
           </View>
         </View>
-        {this.props.isEmailValid &&
+        {this.props.isPhoneValid &&
           (<Button
             raised
             primary
@@ -109,7 +116,7 @@ export default class EmailScreen extends Component {
             onPress={() => this.onSubmitButtonPress()}
           />)
         }
-        {!this.props.isEmailValid &&
+        {!this.props.isPhoneValid &&
           (<Button
             disabled
             raised

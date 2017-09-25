@@ -15,6 +15,9 @@ import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
+import PhoneScreen from "../screens/PhoneScreenContainer";
+import PhonePinScreen from "../screens/PhonePinScreenContainer";
+
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -94,6 +97,12 @@ const AuthNavigator = StackNavigator({
   emailPinScreen: {
     screen: EmailPinScreen,
   },
+  phoneScreen: {
+    screen: PhoneScreen,
+  },
+  phonePinScreen: {
+    screen: PhonePinScreen,
+  },
   schoolSelectionScreen: {
     screen: SchoolSelectionNavigator,
   },
@@ -114,4 +123,4 @@ const WelcomeNavigator = StackNavigator({ // eslint-disable-line
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default MainNavigator;
+export default AuthNavigator;

@@ -79,7 +79,7 @@ export default class PinScreen extends Component {
   onSubmitButtonPress() {
     this.props.validatePin({
       pin: this.state.pin,
-      identifier: this.props.navigation.state.params.email,
+      identifier: this.props.navigation.state.params.identifier,
       verifier: this.props.mutate,
     });
   }
