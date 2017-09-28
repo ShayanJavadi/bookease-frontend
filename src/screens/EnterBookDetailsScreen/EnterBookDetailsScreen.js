@@ -237,7 +237,7 @@ export default class EnterBookDetailsScreen extends Component {
         <TextField
           error={errorsMessages.bookDescription}
           label="Description"
-          title="Additional information about the book"
+          title="Provide additional information"
           value={bookDescription}
           multiline={true}
           fontSize={14}
