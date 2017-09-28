@@ -6,10 +6,12 @@ export const styles = {
   },
   backButtonTextStyle: {
     color: "#fff",
-    fontWeight: "100",
+    paddingLeft: 5,
+    fontSize: 16,
+    fontWeight: "600",
   },
   backButtonIconStyle: {
-    color: "#ccc",
-    paddingTop: 4,
+    color: "#fff",
+    paddingLeft: 15,
   },
 };

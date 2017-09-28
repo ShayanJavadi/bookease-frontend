@@ -12,6 +12,7 @@ import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
+import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
 
 const networkInterface = createNetworkInterface({
   uri: BACKEND_URL,
@@ -41,6 +42,7 @@ const reducers = combineReducers({
   phoneValidationReducer,
   phonePinValidationReducer,
   scanBookReducer,
+  EnterBookDetailsReducer,
   apollo: client.reducer(),
 });
 
