@@ -134,7 +134,7 @@ export default class EnterBookDetailsScreen extends Component {
       <Modal isVisible={this.state.modalVisible} style={modalWrapperStyle}>
         <Dialog>
           <Title>
-            <Text>Add Book Pictures</Text>
+            <Text>Add Pictures</Text>
           </Title>
           <Content>
             <View style={modalContentStyle}>
