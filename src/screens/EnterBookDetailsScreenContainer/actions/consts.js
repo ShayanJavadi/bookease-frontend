@@ -1,0 +1,1 @@
+export const FORM_HAS_ERRORS = "FORM_HAS_ERRORS";

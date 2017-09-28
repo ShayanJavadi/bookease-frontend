@@ -11,7 +11,7 @@ import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AccountScreen from "../screens/AccountScreen";
-import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
+import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";

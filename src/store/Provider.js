@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 import { node } from "prop-types";
 import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
+import base64 from "base-64";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
@@ -12,6 +13,7 @@ import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
+import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
 
 const networkInterface = createNetworkInterface({
   uri: BACKEND_URL,
@@ -25,7 +27,7 @@ networkInterface.use([{
     if (!req.options.headers) {
       req.options.headers = {};  // Create the header object if needed.
     }
-    req.options.headers.authorization = `Basic ${btoa(BACKEND_AUTHENTICATION_HEADER)}`;
+    req.options.headers.authorization = `Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`;
     next();
   },
 }]);
@@ -41,6 +43,7 @@ const reducers = combineReducers({
   phoneValidationReducer,
   phonePinValidationReducer,
   scanBookReducer,
+  EnterBookDetailsReducer,
   apollo: client.reducer(),
 });
 
