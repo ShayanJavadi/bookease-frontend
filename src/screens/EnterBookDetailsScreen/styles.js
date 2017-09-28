@@ -130,7 +130,6 @@ export const styles = {
     justifyContent: "center",
     margin: 0,
     padding: 22,
-    justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
@@ -168,5 +167,12 @@ export const styles = {
     paddingBottom: 20,
     paddingTop: 30,
     fontFamily: "Roboto",
-  }
+  },
+  pictureInputHorizontalRuleStyle: {
+    borderBottomColor: "#bbb",
+    borderBottomWidth: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 30,
+  },
 };

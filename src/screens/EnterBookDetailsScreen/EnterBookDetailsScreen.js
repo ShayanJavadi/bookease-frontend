@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
+import { func, object } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
@@ -34,7 +35,7 @@ const {
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
-  static navigationOptions = ({ navigation, screenProps }) => ({
+  static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerTitle: "Enter Book Details",
     headerLeft: <BackButton navigation={navigation}/>,
@@ -42,6 +43,11 @@ export default class EnterBookDetailsScreen extends Component {
     headerTitleStyle: headerTitleStyle,
     headerBackTitleStyle: { color: "#fff" }
   })
+
+  static propTypes = {
+    createNewBook: func.isRequired,
+    errorsMessages: object,
+  }
 
   state = {
     bookTitle: undefined,
@@ -148,7 +154,7 @@ export default class EnterBookDetailsScreen extends Component {
           </Content>
           <Actions>
             <DialogDefaultActions
-              actions={['Dismiss']}
+              actions={["Dismiss"]}
               onActionPress={() => this.setState({ modalVisible: false })}
             />
           </Actions>
@@ -162,7 +168,7 @@ export default class EnterBookDetailsScreen extends Component {
       bookTitle,
       bookAuthor,
       bookEdition,
-      bookCondition,
+      bookCondition, // eslint-disable-line no-unused-vars
       bookPrice,
       bookIsbn,
       bookDescription,
