@@ -1,7 +1,7 @@
 const uiTheme = {
   palette: {
-    primaryColorLight: "#F50057",
-    primaryColorLighter: "#F8BBD0",
+    primaryColor: "#F50057",
+    primaryColorLight: "#F8BBD0",
     secondarColorLight: "#ff9900",
     tertiaryColorDark: "#383b5a",
     tertiaryColorLight: "#00b2d6",

@@ -1,4 +1,3 @@
-import { graphql } from "react-apollo";
 import { connect } from "react-redux";
 import * as actions from "./actions";
 import EnterBookDetailsScreen from "../EnterBookDetailsScreen";

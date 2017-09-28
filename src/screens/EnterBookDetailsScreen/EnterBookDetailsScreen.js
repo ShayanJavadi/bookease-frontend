@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, ScrollView, Text } from "react-native";
-import { Button } from "react-native-material-ui";
+import { View, TouchableOpacity, TouchableHighlight, Text } from "react-native";
+import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "./consts";
@@ -21,10 +22,15 @@ const {
   descriptionTextInputStyle,
   modalWrapperStyle,
   modalContentStyle,
+  modalButtonStyle,
+  modalButtonIconStyle,
+  modalButtonWrapperStyle,
+  pictureInputHeaderTextStyle,
+  pictureInputHorizontalRuleStyle,
 } = styles;
 
 const {
-  primaryColorLight,
+  primaryColor,
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
@@ -45,7 +51,7 @@ export default class EnterBookDetailsScreen extends Component {
     bookPrice: undefined,
     bookIsbn: undefined,
     bookDescription: undefined,
-    visibleModal: false,
+    modalVisible: false,
     descriptionTextInputSelected: false,
   }
 
@@ -98,63 +104,55 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View>
         <View>
-          <Text style={{ color: "#888", paddingLeft: 20, paddingBottom: 20, paddingTop: 30 }}>Book Pictures</Text>
+          <Text style={pictureInputHeaderTextStyle}>Book Pictures</Text>
         </View>
         <View style={pictureInputWrapperStyle}>
           <TouchableOpacity
           style={pictureInputStyle}
-          onPress={() => this.setState({ visibleModal: true })}
+          onPress={() => this.setState({ modalVisible: true })}
           >
           <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
           </TouchableOpacity>
         </View>
         <View
-          style={{
-            borderBottomColor: '#bbb',
-            borderBottomWidth: 1,
-            marginLeft: 20,
-            marginRight: 20,
-            marginTop: 30
-          }}
+          style={pictureInputHorizontalRuleStyle}
         />
       </View>
     )
   }
 
   renderPictureInputModal() {
+    const { Title, Content, Actions } = Dialog;
+
     return (
-      <Modal isVisible={this.state.visibleModal} style={modalWrapperStyle}>
-        <View style={modalContentStyle}>
-          <View>
-            <View>
-              <Button
-                text="Add pictures with camera"
-                raised
-                icon={<MaterialCommunityIcons name="camera" size={20} style={{ color: "#222" }}/>}
-                onPress={() => this.onFormSubmit()}
-              />
+      <Modal isVisible={this.state.modalVisible} style={modalWrapperStyle}>
+        <Dialog>
+          <Title>
+            <Text>Add Book Pictures</Text>
+          </Title>
+          <Content>
+            <View style={modalContentStyle}>
+              <View style={modalButtonWrapperStyle}>
+                <TouchableOpacity style={modalButtonStyle}>
+                  <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
+                </TouchableOpacity>
+                <Text style={{ marginTop: 10 }}>Camera</Text>
+              </View>
+              <View style={modalButtonWrapperStyle}>
+                <TouchableOpacity style={modalButtonStyle}>
+                  <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
+                </TouchableOpacity>
+              <Text style={{ marginTop: 10 }}>Photos</Text>
+              </View>
             </View>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <View>
-              <Button
-                text="Add pictures from Photos"
-                raised
-                icon={<MaterialIcons name="photo-library" size={20} style={{ color: "#222" }}/>}
-                onPress={() => this.onFormSubmit()}
-              />
-            </View>
-          </View>
-          <View>
-            <View>
-              <Button
-                text="Cancel"
-                raised
-                onPress={() => this.setState({ visibleModal: false })}
-              />
-            </View>
-          </View>
-        </View>
+          </Content>
+          <Actions>
+            <DialogDefaultActions
+              actions={['Dismiss']}
+              onActionPress={() => this.setState({ modalVisible: false })}
+            />
+          </Actions>
+        </Dialog>
       </Modal>
     )
   }
@@ -180,7 +178,7 @@ export default class EnterBookDetailsScreen extends Component {
           label="Book Title"
           value={bookTitle}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookTitle) => this.setState({ bookTitle })}
         />
@@ -189,7 +187,7 @@ export default class EnterBookDetailsScreen extends Component {
           label="Author(s)"
           value={bookAuthor}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookAuthor) => this.setState({ bookAuthor })}
         />
@@ -198,7 +196,7 @@ export default class EnterBookDetailsScreen extends Component {
           label="Edition"
           value={bookEdition}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookEdition) => this.setState({ bookEdition })}
         />
@@ -208,7 +206,7 @@ export default class EnterBookDetailsScreen extends Component {
           data={BOOK_CONDITIONS}
           fontSize={14}
           animationDuration={120}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookCondition) => this.setState({ bookCondition })}
         />
@@ -217,7 +215,7 @@ export default class EnterBookDetailsScreen extends Component {
           label="Price"
           value={bookPrice}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookPrice) => this.setState({ bookPrice })}
         />
@@ -226,7 +224,7 @@ export default class EnterBookDetailsScreen extends Component {
           label="ISBN"
           value={bookIsbn}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookIsbn) => this.setState({ bookIsbn }) }
         />
@@ -237,10 +235,10 @@ export default class EnterBookDetailsScreen extends Component {
           value={bookDescription}
           multiline={true}
           fontSize={14}
-          tintColor={primaryColorLight}
+          tintColor={primaryColor}
           containerStyle={[
             descriptionTextInputStyle, {
-              borderColor: descriptionTextInputSelected || errorsMessages.bookDescription ? primaryColorLight : "#222",
+              borderColor: descriptionTextInputSelected || errorsMessages.bookDescription ? primaryColor : "#222",
             }
           ]}
           inputContainerStyle={{ height: 200 }}
@@ -270,12 +268,15 @@ export default class EnterBookDetailsScreen extends Component {
   render() {
     return (
       <View style={screenStyle}>
-        <ScrollView style={{ paddingTop: 20 }}>
+        <KeyboardAwareScrollView
+          style={{ paddingTop: 20 }}
+          extraScrollHeight={80}
+        >
           {this.renderPictureInput()}
           {this.renderForm()}
           {this.renderConfirmButton()}
           {this.renderPictureInputModal()}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     );
   }

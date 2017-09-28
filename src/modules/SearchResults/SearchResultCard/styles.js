@@ -2,7 +2,7 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColorLight,
+  primaryColor,
   tertiaryColorLight,
 } = palette;
 
@@ -69,7 +69,7 @@ export const styles = {
     fontWeight: "700",
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     width: 75,
   },
   bookNameStyle: {

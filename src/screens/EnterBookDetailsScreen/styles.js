@@ -2,7 +2,7 @@ import uiTheme from "src/common/styles/uiTheme";
 
 export const { palette } = uiTheme;
 const {
-  primaryColorLight,
+  primaryColor,
   tertiaryColorDark,
 } = palette;
 
@@ -55,7 +55,7 @@ export const styles = {
     fontWeight: "100",
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     flex: 1,
     height: 50,
   },
@@ -127,14 +127,46 @@ export const styles = {
      borderWidth: 0.5,
   },
   modalWrapperStyle: {
-    justifyContent: "flex-end",
+    justifyContent: "center",
     margin: 0,
-  },
-  modalContentStyle: {
     padding: 22,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
     borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalContentStyle: {
+     justifyContent: "center",
+     alignItems: "center",
+     flexDirection: "row",
+     paddingTop: 35,
+  },
+  modalButtonStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: primaryColor,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  modalButtonIconStyle: {
+    color: "#fff",
+    paddingTop: 2,
+  },
+  modalButtonWrapperStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  pictureInputHeaderTextStyle: {
+    color: "#888",
+    paddingLeft: 20,
+    paddingBottom: 20,
+    paddingTop: 30,
+    fontFamily: "Roboto",
   }
 };

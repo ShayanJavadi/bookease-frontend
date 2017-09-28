@@ -3,8 +3,8 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
+  primaryColor,
   primaryColorLight,
-  primaryColorLighter
 } = palette;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -62,12 +62,12 @@ export const styles = {
     paddingBottom: 5,
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
-    backgroundColor: primaryColorLighter,
+    backgroundColor: primaryColorLight,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
