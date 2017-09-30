@@ -31,7 +31,6 @@ export default class ScanBookScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
-    headerTitle: "Scan Book",
     headerLeft: <BackButton navigation={navigation} buttonText="Back" />,
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,

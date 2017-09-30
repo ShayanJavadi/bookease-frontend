@@ -61,6 +61,11 @@ export default class EnterBookDetailsScreen extends Component {
     descriptionTextInputSelected: false,
   }
 
+  onCameraPress() {
+    this.setState({ modalVisible: false });
+    this.props.navigation.navigate("newBookCamera");
+  }
+
   onFormSubmit() {
     const {
       bookTitle,
@@ -117,7 +122,7 @@ export default class EnterBookDetailsScreen extends Component {
           style={pictureInputStyle}
           onPress={() => this.setState({ modalVisible: true })}
           >
-          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
+            <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
           </TouchableOpacity>
         </View>
         <View
@@ -139,7 +144,10 @@ export default class EnterBookDetailsScreen extends Component {
           <Content>
             <View style={modalContentStyle}>
               <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity style={modalButtonStyle}>
+                <TouchableOpacity
+                  style={modalButtonStyle}
+                  onPress={() => this.onCameraPress()}
+                >
                   <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
                 </TouchableOpacity>
                 <Text style={{ marginTop: 10 }}>Camera</Text>
