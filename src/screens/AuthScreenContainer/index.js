@@ -1,3 +1,3 @@
-import AuthScreen from "./AuthScreen";
+import AuthScreen from './AuthScreen';
 
 export default AuthScreen;

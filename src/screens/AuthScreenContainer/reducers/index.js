@@ -1,3 +1,4 @@
-import facebookAuthReducer from "./facebookAuthReducer";
+import facebookAuthReducer from './facebookAuthReducer';
+import googleAuthReducer from './googleAuthReducer';
 
-export default facebookAuthReducer;
+export { facebookAuthReducer, googleAuthReducer };

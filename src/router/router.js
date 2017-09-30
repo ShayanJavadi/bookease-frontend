@@ -123,4 +123,4 @@ const WelcomeNavigator = StackNavigator({ // eslint-disable-line
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default MainNavigator;
+export default AuthNavigator;

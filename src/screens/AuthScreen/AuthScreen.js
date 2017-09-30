@@ -31,7 +31,8 @@ export default class AuthScreen extends Component {
 
   componentDidMount() {
     // temporary line for debugging that removes token each time
-    AsyncStorage.removeItem("fb_token");
+    AsyncStorage.removeItem('fb_token');
+    AsyncStorage.removeItem('google_token');
     this.onAuthenticated(this.props);
   }
 
@@ -40,13 +41,21 @@ export default class AuthScreen extends Component {
   }
 
   onAuthenticated(props) {
-    if (props.facebookAuthToken) {
-      this.props.navigation.navigate("schoolSelectionScreen");
+    if (props.facebookAuthToken || props.googleAuthToken) {
+      this.props.navigation.navigate('schoolSelectionScreen');
     }
   }
 
   onFacebookButtonPress() {
     this.props.facebookLogin();
+  }
+
+  onGoogleButtonPress() {
+    this.props.googleLogin();
+  }
+
+  onTwitterButtonPress() {
+    this.props.twitterLogin();
   }
 
   onEmailButtonPress() {
@@ -86,7 +95,7 @@ export default class AuthScreen extends Component {
               source={googleImage}
             />}
           text="Sign in with Google"
-          onPress={() => this.onComplete}
+          onPress={() => this.onGoogleButtonPress()}
         />
         <Button
           raised
@@ -98,7 +107,7 @@ export default class AuthScreen extends Component {
           }}
           icon={<Entypo name="twitter" size={ICON_SIZE} style={buttonIconStyle} />}
           text="Sign in with Twitter"
-          onPress={() => this.onComplete}
+          onPress={() => this.onTwitterButtonPress()}
         />
         <Button
           raised

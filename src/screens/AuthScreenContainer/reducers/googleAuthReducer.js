@@ -1,6 +1,6 @@
 import {
-  FACEBOOK_LOGIN_SUCCESS,
-  FACEBOOK_LOGIN_FAIL
+  GOOGLE_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAIL
 } from '../actions/consts';
 
 const INITIAL_STATE = {
@@ -9,9 +9,10 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FACEBOOK_LOGIN_SUCCESS:
+    case GOOGLE_LOGIN_SUCCESS:
+      console.log('GOOGLE_LOGIN_SUCCESS');
       return { token: action.payload };
-    case FACEBOOK_LOGIN_FAIL:
+    case GOOGLE_LOGIN_FAIL:
       return { token: null };
     default:
       return state;
