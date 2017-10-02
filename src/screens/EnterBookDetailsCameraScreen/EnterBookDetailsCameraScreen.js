@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from "react-native";
 import {
   Camera,
   Video,
@@ -10,11 +10,18 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
+import { FLASH_OPTIONS_ORDER } from './consts';
 
 const {
   screenStyle,
   headerStyle,
   headerTitleStyle,
+  flashIconWrapperStyle,
+  captureButtonWrapperStyle,
+  captureButtonOuterStyle,
+  captureButtonInnerStyle,
+  topRowWrapperStyle,
+  bottomRowWrapperStyle
 } = styles;
 
 export default class EnterBookDetailsCameraScreen extends Component {
@@ -27,49 +34,80 @@ export default class EnterBookDetailsCameraScreen extends Component {
     headerBackTitleStyle: { color: "#fff" }
   })
 
+  state = {
+    flash: 'off',
+    photoId: 0,
+  }
+
+  componentDidMount() {
+    FileSystem.makeDirectoryAsync(
+      FileSystem.documentDirectory + 'photos'
+    ).catch(e => {
+      console.log(e, 'Directory exists');
+    });
+  }
+
+  toggleFlash() {
+    this.setState({
+      flash: FLASH_OPTIONS_ORDER[this.state.flash],
+    });
+  }
+
+  renderFlashIcon() {
+    const { flash } = this.state;
+
+    return (
+      <View style={flashIconWrapperStyle}>
+        <TouchableHighlight
+          onPress={() => this.toggleFlash()}
+        >
+          <MaterialIcons name={`flash-${flash}`} size={flash === "auto" ? 28 : 30} style={{
+            color: "#fff",
+            paddingLeft: flash === "auto" ? 5 : undefined
+          }}/>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+
+  renderPhotosThumbnail() {
+    return (
+      <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15}}>
+        <TouchableOpacity>
+          <MaterialIcons name="insert-photo" size={45} style={{ color: "#fff" }}/>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  renderCaptureButton() {
+    return (
+      <View style={captureButtonWrapperStyle}>
+        <View style={captureButtonOuterStyle}>
+            <TouchableOpacity
+              style={captureButtonInnerStyle}
+              onPress={() => this.props.takePicture(this.camera, this.state.photoId)}
+            />
+        </View>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={screenStyle}>
         <Camera
           style={{ flex: 1 }}
+          ref={ref => { this.camera = ref; }}
+          flashMode={this.state.flash}
+          autoFocus="on"
         >
-          <View
-            style={{
-              flex: 0.9,
-              backgroundColor: 'transparent',
-              flexDirection: 'row',
-            }}
-          >
-          <TouchableOpacity
-          >
-            <MaterialIcons name="flash-on" size={25} style={{ color: "#fff" }}/>
-          </TouchableOpacity>
+          <View style={topRowWrapperStyle}>
+            {this.renderFlashIcon()}
           </View>
-          <View
-            style={{
-              flex: 0.1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row',
-              alignItems: "center",
-
-            }}
-          >
-          <View style={{ justifyContent: "flex-start"}}>
-            <TouchableOpacity
-            >
-              <MaterialIcons name="flash-on" size={25} style={{ color: "#fff" }}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{ justifyContent: "center"}}>
-            <View style={{ borderWidth: 1, borderColor: "#fff", height: 50, width: 50, borderRadius: 25, justifyContent: "center", alignItems: "center"}}>
-                <TouchableOpacity
-                  style={{ backgroundColor: "#fff", height: 44, width: 44, borderRadius: 22}}
-                >
-                </TouchableOpacity>
-            </View>
-
-          </View>
-
+          <View style={bottomRowWrapperStyle}>
+            {this.renderPhotosThumbnail()}
+            {this.renderCaptureButton()}
           </View>
         </Camera>
       </View>

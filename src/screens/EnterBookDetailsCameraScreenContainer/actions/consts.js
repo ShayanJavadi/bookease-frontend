@@ -1,2 +1,2 @@
-// export const EMAIL_VALID = "EMAIL_VALID";
+export const INCREMENT_PHOTO_ID = "INCREMENT_PHOTO_ID";
 // export const EMAIL_INVALID = "EMAIL_INVALID";
