@@ -1,15 +1,27 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, TouchableHighlight, Text, Image } from "react-native";
 import { func, object } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
+import Swiper from 'react-native-swiper';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "./consts";
+import { Dimensions } from "react-native";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
+const images = [
+  { url: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg", key: 0 },
+  { url: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg", key: 1 },
+  { url: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg", key: 2 },
+  { url: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg", key: 3 },
+];
+
 const {
   screenStyle,
   headerStyle,
@@ -19,6 +31,8 @@ const {
   buttonTextStyle,
   buttonContainerStyle,
   pictureInputStyle,
+  pictureCarouselWrapperStyle,
+  pictureCarouselStyle,
   textInputStyle,
   descriptionTextInputStyle,
   modalWrapperStyle,
@@ -59,6 +73,7 @@ export default class EnterBookDetailsScreen extends Component {
     bookDescription: undefined,
     modalVisible: false,
     descriptionTextInputSelected: false,
+    imageSlidesIndex: 0,
   }
 
   onCameraPress() {
@@ -111,20 +126,69 @@ export default class EnterBookDetailsScreen extends Component {
     this.props.createNewBook(bookDetails);
   }
 
+
+  renderSlides() {
+    return images.map((slide, index) => (
+      <View key={slide.key} style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}>
+        <TouchableOpacity style={{ position: "relative", flexDirection: "row", justifyContent: "flex-end", top: 30, right: 35, zIndex: 9999 }}>
+          <MaterialCommunityIcons name="close-circle-outline" size={20} style={{ color: "#eee" }}/>
+        </TouchableOpacity>
+        <TouchableHighlight
+          style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}
+          onPress={() => this.setState({ modalVisible: true })}
+        >
+          <Image
+            style={{ flex: 1 }}
+            source={{ uri: slide.url }}
+            resizeMode={"contain"}
+          />
+
+        </TouchableHighlight>
+
+      </View>
+    ));
+  }
+
+  renderPictureCarousel() {
+    if (images) {
+      return (
+          <View style={pictureCarouselWrapperStyle}>
+            <Swiper
+              loop={false}
+              horizontal
+              activeDotColor={primaryColor}
+              showsPagination={true}
+              showsButtons={false}
+              loadMinimalLoader
+              style={pictureCarouselStyle}
+              onIndexChanged={(index) => {this.setState({imageSlidesIndex: index})}}
+            >
+              {this.renderSlides()}
+            </Swiper>
+          </View>
+      )
+    }
+
+    return (
+      <View style={pictureInputWrapperStyle}>
+        <TouchableOpacity
+          style={pictureInputStyle}
+          onPress={() => this.setState({ modalVisible: true })}
+        >
+          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   renderPictureInput() {
+
     return (
       <View>
         <View>
           <Text style={pictureInputHeaderTextStyle}>Book Pictures</Text>
         </View>
-        <View style={pictureInputWrapperStyle}>
-          <TouchableOpacity
-          style={pictureInputStyle}
-          onPress={() => this.setState({ modalVisible: true })}
-          >
-            <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
-          </TouchableOpacity>
-        </View>
+          {this.renderPictureCarousel()}
         <View
           style={pictureInputHorizontalRuleStyle}
         />

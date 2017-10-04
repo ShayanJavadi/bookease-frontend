@@ -24,14 +24,6 @@ export const styles = {
     color: "#fff",
     fontSize: 16
   },
-  pictureInputWrapperStyle: {
-    flex: 5.5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingLeft: 90,
-    paddingRight: 90,
-  },
   formWrapperStyle: {
     flex: 4,
     justifyContent: "center",
@@ -59,14 +51,31 @@ export const styles = {
     flex: 1,
     height: 50,
   },
+  pictureInputWrapperStyle: {
+    flex: 5.5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingTop: 20,
+    marginLeft: 80,
+    marginRight: 80,
+  },
   pictureInputStyle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 260,
+    height: 300,
     zIndex: 9999,
     borderColor: "#bbb",
     borderWidth: 1,
+  },
+  pictureCarouselWrapperStyle:{
+    paddingTop: 20,
+    marginLeft: 60,
+    marginRight: 60,
+  },
+  pictureCarouselStyle: {
+    height: 300,
   },
   inputStyle: {
     flex: 1,
@@ -164,8 +173,7 @@ export const styles = {
   pictureInputHeaderTextStyle: {
     color: "#888",
     paddingLeft: 20,
-    paddingBottom: 20,
-    paddingTop: 30,
+    paddingTop: 20,
     fontFamily: "Roboto",
   },
   pictureInputHorizontalRuleStyle: {
