@@ -15,15 +15,16 @@ export default class BackButton extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
-    buttonText: string
+    buttonText: string,
+    onPress: func,
   };
 
   render() {
-    const { navigation, buttonText } = this.props;
+    const { navigation, buttonText, onPress } = this.props;
     return (
       <TouchableOpacity
         style={backButtonWrapperStyle}
-        onPress={() => navigation.dispatch(NavigationActions.back())}
+        onPress={() => onPress ? onPress : navigation.dispatch(NavigationActions.back())}
       >
         <MaterialIcons name="arrow-back" size={24} style={backButtonIconStyle} />
         <Text style={backButtonTextStyle}>{buttonText}</Text>

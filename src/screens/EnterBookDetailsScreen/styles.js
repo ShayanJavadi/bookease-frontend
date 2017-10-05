@@ -9,7 +9,7 @@ const {
 export const styles = {
   screenStyle: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   headerStyle: {
     backgroundColor: tertiaryColorDark,
@@ -39,7 +39,7 @@ export const styles = {
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 30,
-    paddingBottom: 50,
+    paddingBottom: 120,
   },
   buttonTextStyle: {
     color: "#fff",
@@ -64,18 +64,18 @@ export const styles = {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 300,
+    height: 500,
     zIndex: 9999,
     borderColor: "#bbb",
     borderWidth: 1,
   },
   pictureCarouselWrapperStyle:{
-    paddingTop: 20,
     marginLeft: 60,
     marginRight: 60,
+
   },
   pictureCarouselStyle: {
-    height: 300,
+    height: 500,
   },
   inputStyle: {
     flex: 1,

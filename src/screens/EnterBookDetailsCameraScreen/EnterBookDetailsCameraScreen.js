@@ -7,7 +7,7 @@ import {
   Permissions,
 } from 'expo';
 import { MaterialIcons } from "@expo/vector-icons";
-import { Button } from "react-native-material-ui";
+import { Button, Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
 import { FLASH_OPTIONS_ORDER } from './consts';
@@ -36,14 +36,20 @@ export default class EnterBookDetailsCameraScreen extends Component {
 
   state = {
     flash: 'off',
-    photoId: 0,
+    ready: false,
   }
 
   componentDidMount() {
     FileSystem.makeDirectoryAsync(
       FileSystem.documentDirectory + 'photos'
     ).catch(e => {
-      console.log(e, 'Directory exists');
+      FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos')
+      .then(() => {
+        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos')
+        .then(() => {
+          this.setState({ ready: true });
+        })
+      })
     });
   }
 
@@ -70,11 +76,21 @@ export default class EnterBookDetailsCameraScreen extends Component {
     )
   }
 
+  sendPhotosToForm() {
+    this.props.navigation.navigate("enterBookDetails", { photos: this.props.photos } )
+  }
+
   renderPhotosThumbnail() {
     return (
       <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15}}>
-        <TouchableOpacity>
-          <MaterialIcons name="insert-photo" size={45} style={{ color: "#fff" }}/>
+        <TouchableOpacity onPress={() => this.sendPhotosToForm()}>
+          <Badge
+            text={`${this.props.photos.length}`}
+            style={{ container: { flex: 1, right: 0}}}
+            size={20}
+          >
+            <MaterialIcons name="insert-photo" size={45} style={{ color: "#fff" }}/>
+          </Badge>
         </TouchableOpacity>
       </View>
     )
@@ -86,7 +102,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
         <View style={captureButtonOuterStyle}>
             <TouchableOpacity
               style={captureButtonInnerStyle}
-              onPress={() => this.props.takePicture(this.camera, this.state.photoId)}
+              onPress={() => this.state.ready ? this.props.takePicture(this.camera, this.props.navigation) : null}
             />
         </View>
       </View>

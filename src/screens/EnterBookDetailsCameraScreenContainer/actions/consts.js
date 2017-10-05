@@ -1,2 +1,2 @@
-export const INCREMENT_PHOTO_ID = "INCREMENT_PHOTO_ID";
+export const UPDATE_PHOTOS = "UPDATE_PHOTOS";
 // export const EMAIL_INVALID = "EMAIL_INVALID";

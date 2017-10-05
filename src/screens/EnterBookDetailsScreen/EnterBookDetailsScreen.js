@@ -3,6 +3,7 @@ import { View, TouchableOpacity, TouchableHighlight, Text, Image } from "react-n
 import { func, object } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import ActionButton from "react-native-action-button";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
@@ -14,13 +15,6 @@ import { BOOK_CONDITIONS } from "./consts";
 import { Dimensions } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-
-const images = [
-  { url: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg", key: 0 },
-  { url: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg", key: 1 },
-  { url: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg", key: 2 },
-  { url: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg", key: 3 },
-];
 
 const {
   screenStyle,
@@ -46,6 +40,8 @@ const {
 
 const {
   primaryColor,
+  tertiaryColorDark,
+  secondarColorLight,
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
@@ -127,9 +123,9 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
 
-  renderSlides() {
-    return images.map((slide, index) => (
-      <View key={slide.key} style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}>
+  renderCarouselSlides(photos) {
+    return photos.map((photo, index) => (
+      <View key={photo.key} style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}>
         <TouchableOpacity style={{ position: "relative", flexDirection: "row", justifyContent: "flex-end", top: 30, right: 35, zIndex: 9999 }}>
           <MaterialCommunityIcons name="close-circle-outline" size={20} style={{ color: "#eee" }}/>
         </TouchableOpacity>
@@ -139,10 +135,8 @@ export default class EnterBookDetailsScreen extends Component {
         >
           <Image
             style={{ flex: 1 }}
-            source={{ uri: slide.url }}
-            resizeMode={"contain"}
+            source={{ uri: photo.uri }}
           />
-
         </TouchableHighlight>
 
       </View>
@@ -150,7 +144,9 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureCarousel() {
-    if (images) {
+    const { navigation } = this.props;
+    const photos = navigation.state.params ? navigation.state.params.photos : false;
+    if (photos) {
       return (
           <View style={pictureCarouselWrapperStyle}>
             <Swiper
@@ -159,11 +155,10 @@ export default class EnterBookDetailsScreen extends Component {
               activeDotColor={primaryColor}
               showsPagination={true}
               showsButtons={false}
-              loadMinimalLoader
               style={pictureCarouselStyle}
               onIndexChanged={(index) => {this.setState({imageSlidesIndex: index})}}
             >
-              {this.renderSlides()}
+              {this.renderCarouselSlides(photos)}
             </Swiper>
           </View>
       )
@@ -182,7 +177,6 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureInput() {
-
     return (
       <View>
         <View>
@@ -343,7 +337,20 @@ export default class EnterBookDetailsScreen extends Component {
     );
   }
 
+  renderActionButton() {
+    return (
+      <ActionButton
+        buttonColor={tertiaryColorDark}
+        position="right"
+        onPress={() => this.props.navigation.navigate("scanBook")}
+        style={{ right: -15, bottom: -10 }}
+        icon={<MaterialCommunityIcons name="barcode-scan" size={28} style={{ color: "#fff", paddingTop: 4 }} />}
+      />
+    )
+  }
+
   render() {
+    console.log(this);
     return (
       <View style={screenStyle}>
         <KeyboardAwareScrollView
@@ -355,6 +362,7 @@ export default class EnterBookDetailsScreen extends Component {
           {this.renderConfirmButton()}
           {this.renderPictureInputModal()}
         </KeyboardAwareScrollView>
+        {this.renderActionButton()}
       </View>
     );
   }
