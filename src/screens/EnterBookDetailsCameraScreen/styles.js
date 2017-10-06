@@ -4,12 +4,11 @@ import uiTheme from "src/common/styles/uiTheme";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CAPTURE_BUTTON_OUTER_WIDTH = 70;
 const CAPTURE_BUTTON_INNER_WIDTH = CAPTURE_BUTTON_OUTER_WIDTH - 10;
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
 
 const {
   tertiaryColorDark,
 } = palette;
-
 
 export const styles = {
   screenStyle: {

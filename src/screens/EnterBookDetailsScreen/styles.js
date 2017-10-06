@@ -57,25 +57,25 @@ export const styles = {
     alignItems: "center",
     flexDirection: "row",
     paddingTop: 20,
-    marginLeft: 80,
-    marginRight: 80,
+    marginLeft: 70,
+    marginRight: 70,
   },
   pictureInputStyle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 500,
+    height: 350,
     zIndex: 9999,
     borderColor: "#bbb",
     borderWidth: 1,
   },
   pictureCarouselWrapperStyle:{
-    marginLeft: 60,
-    marginRight: 60,
+    marginLeft: 70,
+    marginRight: 70,
 
   },
   pictureCarouselStyle: {
-    height: 500,
+    height: 350,
   },
   inputStyle: {
     flex: 1,

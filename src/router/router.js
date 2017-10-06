@@ -22,7 +22,7 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
-const SellBooksNavigator = TabNavigator({
+const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
     screen: EnterBookDetailsScreen,
   },
@@ -32,6 +32,8 @@ const SellBooksNavigator = TabNavigator({
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
   }
+}, {
+  headerMode: "none",
 });
 
 const myBooksNavigator = TabNavigator({
@@ -74,7 +76,6 @@ const MainNavigator = StackNavigator({
   sellBooks: {
     screen: SellBooksNavigator,
   },
-
 }, {
   mode: "modal",
 });

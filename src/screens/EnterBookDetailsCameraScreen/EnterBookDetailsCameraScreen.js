@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native";
 import {
   Camera,
   Video,
   FileSystem,
   Permissions,
 } from 'expo';
+import { NavigationActions } from 'react-navigation';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Button, Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
-import { styles } from "./styles";
+import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from './consts';
 
 const {
@@ -24,6 +25,10 @@ const {
   bottomRowWrapperStyle
 } = styles;
 
+const {
+  tertiaryColorDark,
+} = palette;
+
 export default class EnterBookDetailsCameraScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
@@ -36,21 +41,12 @@ export default class EnterBookDetailsCameraScreen extends Component {
 
   state = {
     flash: 'off',
-    ready: false,
   }
 
   componentDidMount() {
-    FileSystem.makeDirectoryAsync(
-      FileSystem.documentDirectory + 'photos'
-    ).catch(e => {
-      FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos')
-      .then(() => {
-        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos')
-        .then(() => {
-          this.setState({ ready: true });
-        })
-      })
-    });
+    console.log('mounted camera');
+    this.props.createPhotosFolder();
+    this.props.updatePhotos();
   }
 
   toggleFlash() {
@@ -76,16 +72,13 @@ export default class EnterBookDetailsCameraScreen extends Component {
     )
   }
 
-  sendPhotosToForm() {
-    this.props.navigation.navigate("enterBookDetails", { photos: this.props.photos } )
-  }
-
   renderPhotosThumbnail() {
+    const { navigation, photos } = this.props;
     return (
       <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15}}>
-        <TouchableOpacity onPress={() => this.sendPhotosToForm()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Badge
-            text={`${this.props.photos.length}`}
+            text={`${this.props.photos ? this.props.photos.length : 0}`}
             style={{ container: { flex: 1, right: 0}}}
             size={20}
           >
@@ -102,7 +95,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
         <View style={captureButtonOuterStyle}>
             <TouchableOpacity
               style={captureButtonInnerStyle}
-              onPress={() => this.state.ready ? this.props.takePicture(this.camera, this.props.navigation) : null}
+              onPress={() => !this.props.loading ? this.props.takePicture(this.camera, this.props.navigation) : null}
             />
         </View>
       </View>
@@ -110,6 +103,16 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   render() {
+    if (this.props.loading) {
+      return (
+        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          <ActivityIndicator
+            size="large"
+            color={tertiaryColorDark}
+          />
+        </View>
+      )
+    }
     return (
       <View style={screenStyle}>
         <Camera

@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, TouchableHighlight, Text, Image } from "react-native";
 import { func, object } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
+import { FileSystem } from "expo";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from 'react-native-swiper';
+import { isEmpty } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
@@ -54,6 +56,22 @@ export default class EnterBookDetailsScreen extends Component {
     headerBackTitleStyle: { color: "#fff" }
   })
 
+  componentDidMount() {
+    // this is for debuging purposes. in the actual app
+    // the directory will be deleted after the form is submitted. 
+    console.log('mounted form');
+    FileSystem.makeDirectoryAsync(
+      FileSystem.documentDirectory + 'photos'
+    ).catch(e => {
+      FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`)
+       .then(() => {
+         FileSystem.makeDirectoryAsync(
+           FileSystem.documentDirectory + 'photos'
+         )
+       })
+    });
+  }
+
   static propTypes = {
     createNewBook: func.isRequired,
     errorsMessages: object,
@@ -67,14 +85,10 @@ export default class EnterBookDetailsScreen extends Component {
     bookPrice: undefined,
     bookIsbn: undefined,
     bookDescription: undefined,
-    modalVisible: false,
+    cameraModalVisible: false,
+    deletePhotoModalVisible: false,
     descriptionTextInputSelected: false,
     imageSlidesIndex: 0,
-  }
-
-  onCameraPress() {
-    this.setState({ modalVisible: false });
-    this.props.navigation.navigate("newBookCamera");
   }
 
   onFormSubmit() {
@@ -118,35 +132,71 @@ export default class EnterBookDetailsScreen extends Component {
         humanizedValue: "Description",
       }
     }
-
     this.props.createNewBook(bookDetails);
   }
 
+  onDeletePhotoPress() {
+    this.setState({ deletePhotoModalVisible: true, cameraModalVisible: false });
+  }
+
+  onCameraPress() {
+    this.props.navigation.navigate("newBookCamera");
+    this.setState({ cameraModalVisible: false });
+  }
 
   renderCarouselSlides(photos) {
     return photos.map((photo, index) => (
       <View key={photo.key} style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}>
-        <TouchableOpacity style={{ position: "relative", flexDirection: "row", justifyContent: "flex-end", top: 30, right: 35, zIndex: 9999 }}>
+        <TouchableOpacity onPress={() => this.onDeletePhotoPress()} style={{ position: "relative", flexDirection: "row", justifyContent: "flex-end", top: 30, right: 35, zIndex: 9999 }}>
           <MaterialCommunityIcons name="close-circle-outline" size={20} style={{ color: "#eee" }}/>
         </TouchableOpacity>
         <TouchableHighlight
           style={{ flex: 1 , width: SCREEN_WIDTH - 120 }}
-          onPress={() => this.setState({ modalVisible: true })}
+          onPress={() => this.setState({ cameraModalVisible: true })}
         >
           <Image
             style={{ flex: 1 }}
             source={{ uri: photo.uri }}
           />
         </TouchableHighlight>
-
       </View>
     ));
   }
 
+  handleDeletePhotoModalActions(action) {
+    const { deletePhoto, photos } = this.props;
+
+    if (action === "erase") {
+      deletePhoto(photos[this.state.imageSlidesIndex].uri)
+    }
+
+    this.setState({ deletePhotoModalVisible: false });
+  }
+
+  renderDeletePhotoModal() {
+    const { Title, Content, Actions } = Dialog;
+    return (
+      <Modal isVisible={this.state.deletePhotoModalVisible} style={modalWrapperStyle}>
+        <Dialog>
+          <Title>
+            <Text>Discard selected photo?</Text>
+          </Title>
+
+          <Actions>
+            <DialogDefaultActions
+              actions={["cancel", "erase"]}
+              onActionPress={(action) => this.handleDeletePhotoModalActions(action)}
+            />
+          </Actions>
+        </Dialog>
+      </Modal>
+    )
+  }
+
   renderPictureCarousel() {
-    const { navigation } = this.props;
-    const photos = navigation.state.params ? navigation.state.params.photos : false;
-    if (photos) {
+    const { navigation, photos } = this.props;
+    // const { photos } = this.state;
+    if (!isEmpty(photos)) {
       return (
           <View style={pictureCarouselWrapperStyle}>
             <Swiper
@@ -156,10 +206,17 @@ export default class EnterBookDetailsScreen extends Component {
               showsPagination={true}
               showsButtons={false}
               style={pictureCarouselStyle}
-              onIndexChanged={(index) => {this.setState({imageSlidesIndex: index})}}
+              onIndexChanged={(index) => {this.setState({ imageSlidesIndex: index })}}
             >
               {this.renderCarouselSlides(photos)}
             </Swiper>
+            <ActionButton
+              buttonColor={primaryColor}
+              position="right"
+              size={50}
+              onPress={() => this.setState({ cameraModalVisible: true })}
+              style={{ right: -37, bottom: -37, position: "absolute" }}
+            />
           </View>
       )
     }
@@ -168,10 +225,17 @@ export default class EnterBookDetailsScreen extends Component {
       <View style={pictureInputWrapperStyle}>
         <TouchableOpacity
           style={pictureInputStyle}
-          onPress={() => this.setState({ modalVisible: true })}
+          onPress={() => this.setState({ cameraModalVisible: true })}
         >
           <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
         </TouchableOpacity>
+        <ActionButton
+          buttonColor={primaryColor}
+          position="right"
+          size={50}
+          onPress={() => this.setState({ cameraModalVisible: true })}
+          style={{ right: -37, bottom: -37, position: "absolute", zIndex: 9999 }}
+        />
       </View>
     )
   }
@@ -192,9 +256,8 @@ export default class EnterBookDetailsScreen extends Component {
 
   renderPictureInputModal() {
     const { Title, Content, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.modalVisible} style={modalWrapperStyle}>
+      <Modal isVisible={this.state.cameraModalVisible} style={modalWrapperStyle}>
         <Dialog>
           <Title>
             <Text>Add Pictures</Text>
@@ -221,7 +284,7 @@ export default class EnterBookDetailsScreen extends Component {
           <Actions>
             <DialogDefaultActions
               actions={["Dismiss"]}
-              onActionPress={() => this.setState({ modalVisible: false })}
+              onActionPress={() => this.setState({ cameraModalVisible: false })}
             />
           </Actions>
         </Dialog>
@@ -361,6 +424,7 @@ export default class EnterBookDetailsScreen extends Component {
           {this.renderForm()}
           {this.renderConfirmButton()}
           {this.renderPictureInputModal()}
+          {this.renderDeletePhotoModal()}
         </KeyboardAwareScrollView>
         {this.renderActionButton()}
       </View>
