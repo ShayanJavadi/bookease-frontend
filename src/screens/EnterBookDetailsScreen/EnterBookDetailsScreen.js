@@ -58,18 +58,14 @@ export default class EnterBookDetailsScreen extends Component {
 
   componentDidMount() {
     // this is for debuging purposes. in the actual app
-    // the directory will be deleted after the form is submitted. 
-    console.log('mounted form');
+    // the directory will be deleted after the form is submitted.
     FileSystem.makeDirectoryAsync(
       FileSystem.documentDirectory + 'photos'
-    ).catch(e => {
-      FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`)
-       .then(() => {
-         FileSystem.makeDirectoryAsync(
-           FileSystem.documentDirectory + 'photos'
-         )
-       })
-    });
+    );
+  }
+
+  componentWillUnmount() {
+    FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`);
   }
 
   static propTypes = {
@@ -195,7 +191,6 @@ export default class EnterBookDetailsScreen extends Component {
 
   renderPictureCarousel() {
     const { navigation, photos } = this.props;
-    // const { photos } = this.state;
     if (!isEmpty(photos)) {
       return (
           <View style={pictureCarouselWrapperStyle}>
@@ -413,7 +408,6 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
-    console.log(this);
     return (
       <View style={screenStyle}>
         <KeyboardAwareScrollView
