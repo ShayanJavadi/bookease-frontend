@@ -1,4 +1,10 @@
 import { Dimensions } from "react-native";
+import uiTheme from "src/common/styles/uiTheme";
+
+const { palette } = uiTheme;
+const {
+  primaryColor,
+} = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -54,7 +60,7 @@ export const styles = {
   },
   phoneButtonStyle: {
     width: SCREEN_WIDTH * 0.68,
-    backgroundColor: "#009900",
+    backgroundColor: primaryColor,
   },
   slideLogoStyle: {
     color: "#222",
