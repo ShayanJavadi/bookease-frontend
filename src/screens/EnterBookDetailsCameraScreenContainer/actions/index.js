@@ -1,4 +1,4 @@
-import { FileSystem } from 'expo';
+import { FileSystem } from "expo";
 import { Vibration } from "react-native"
 import {
   UPDATE_PHOTOS,
@@ -13,7 +13,7 @@ export const createPhotosFolder = () => (dispatch) => {
     return dispatch({ type: CAMERA_RS });
   })
     .then(() => {
-      dispatch({ type: UPDATE_PHOTOS, payload: []});
+      dispatch({ type: UPDATE_PHOTOS, payload: [] });
     })
 }
 
@@ -24,7 +24,7 @@ export const updatePhotos = () => (dispatch) => {
       files.map((file, index) => {
         photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
       })
-      dispatch({ type: UPDATE_PHOTOS, payload: photos});
+      dispatch({ type: UPDATE_PHOTOS, payload: photos });
     })
 }
 

@@ -3,12 +3,12 @@ import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "r
 import { func, bool, shape, array } from "prop-types";
 import {
   Camera,
-} from 'expo';
+} from "expo";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles, palette } from "./styles";
-import { FLASH_OPTIONS_ORDER } from './consts';
+import { FLASH_OPTIONS_ORDER } from "./consts";
 
 const {
   screenStyle,
@@ -48,7 +48,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   state = {
-    flash: 'off',
+    flash: "off",
   }
 
   componentDidMount() {
@@ -82,11 +82,11 @@ export default class EnterBookDetailsCameraScreen extends Component {
   renderPhotosThumbnail() {
     const { navigation } = this.props;
     return (
-      <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15}}>
+      <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Badge
             text={`${this.props.photos ? this.props.photos.length : 0}`}
-            style={{ container: { flex: 1, right: 0}}}
+            style={{ container: { flex: 1, right: 0 } }}
             size={20}
           >
             <MaterialIcons name="insert-photo" size={45} style={{ color: "#fff" }}/>

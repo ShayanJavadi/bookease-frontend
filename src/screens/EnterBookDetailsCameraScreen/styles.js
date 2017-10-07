@@ -29,13 +29,13 @@ export const styles = {
   },
   topRowWrapperStyle: {
     flex: 0.9,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
+    backgroundColor: "transparent",
+    flexDirection: "row",
   },
   bottomRowWrapperStyle: {
     flex: 0.1,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
+    backgroundColor: "transparent",
+    flexDirection: "row",
     alignItems: "center",
   },
   flashIconWrapperStyle: {
