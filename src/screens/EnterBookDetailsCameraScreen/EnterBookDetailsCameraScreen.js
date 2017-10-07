@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native";
+import { func, bool, shape, array } from "prop-types";
 import {
   Camera,
-  Video,
-  FileSystem,
-  Permissions,
 } from 'expo';
-import { NavigationActions } from 'react-navigation';
 import { MaterialIcons } from "@expo/vector-icons";
-import { Button, Badge } from "react-native-material-ui";
+import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from './consts';
@@ -39,12 +36,22 @@ export default class EnterBookDetailsCameraScreen extends Component {
     headerBackTitleStyle: { color: "#fff" }
   })
 
+  static propTypes = {
+    createPhotosFolder: func.isRequired,
+    takePicture: func.isRequired,
+    updatePhotos: func.isRequired,
+    photos: array.isRequired,
+    loading: bool.isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+  }
+
   state = {
     flash: 'off',
   }
 
   componentDidMount() {
-    console.log('mounted camera');
     this.props.createPhotosFolder();
     this.props.updatePhotos();
   }
@@ -73,7 +80,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   renderPhotosThumbnail() {
-    const { navigation, photos } = this.props;
+    const { navigation } = this.props;
     return (
       <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15}}>
         <TouchableOpacity onPress={() => navigation.goBack()}>

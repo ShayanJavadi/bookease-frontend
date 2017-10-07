@@ -1,9 +1,10 @@
 import { forEach } from "lodash";
-import { FileSystem } from "expo"
+import { FileSystem, ImagePicker } from "expo"
 import {
   FORM_HAS_ERRORS,
   UPDATE_PHOTOS,
-  FORM_RQ,
+  PHOTO_GALLERY_OPEN,
+  PHOTO_GALLERY_CLOSED,
 } from "./consts";
 
 export const deletePhoto = (uri) => async (dispatch) => {
@@ -14,16 +15,37 @@ export const deletePhoto = (uri) => async (dispatch) => {
 }
 
 export const updatePhotos = () => async (dispatch) => {
-  console.log('updaitng');
   FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
     .then((files) => {
       const photos = [];
       files.map((file, index) => {
         photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
       })
-      console.log(photos);
-      return dispatch({ type: UPDATE_PHOTOS, payload: photos});
+      return dispatch({ type: UPDATE_PHOTOS, payload: photos });
     })
+}
+
+export const launchPhotoLibrary = () => async (dispatch) => {
+  dispatch({ type: PHOTO_GALLERY_OPEN });
+
+  let result = await ImagePicker.launchImageLibraryAsync({ base64: true });
+
+  if (!result.cancelled) {
+    return dispatch(addPhotoFromLibrary(result));
+  }
+
+  return dispatch({ type: PHOTO_GALLERY_CLOSED });
+}
+
+const addPhotoFromLibrary = (result) => (dispatch) => {
+  FileSystem.moveAsync({
+    from: result.uri,
+    to: `${FileSystem.documentDirectory}photos/Photo_${Date.now()}.jpg`,
+  })
+    .then(() => {
+      dispatch({ type: PHOTO_GALLERY_CLOSED });
+      dispatch(updatePhotos());
+    });
 }
 
 export const createNewBook = (bookDetails) => async (dispatch) => {
@@ -52,9 +74,4 @@ export const createNewBook = (bookDetails) => async (dispatch) => {
 
   // TODO: save to backend if everything is good
   // delete folder after submit is succesful
-  // FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos')
-  //   .then(() => {
-  //     // clean up state here
-  //   });
-
 };

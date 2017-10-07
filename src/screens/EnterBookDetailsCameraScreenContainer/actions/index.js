@@ -1,18 +1,15 @@
-import { FileSystem, Camera } from 'expo';
+import { FileSystem } from 'expo';
 import { Vibration } from "react-native"
 import {
   UPDATE_PHOTOS,
   CAMERA_RQ,
   CAMERA_RS,
-  RESET_STATE,
 } from "./consts";
 
 export const createPhotosFolder = () => (dispatch) => {
-  console.log('creating phot dir');
   dispatch({ type: CAMERA_RQ })
-  FileSystem.makeDirectoryAsync(
-    FileSystem.documentDirectory + 'photos'
-  ).catch(e => {
+  FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`)
+  .catch(() => {
     return dispatch({ type: CAMERA_RS });
   })
     .then(() => {
@@ -21,7 +18,6 @@ export const createPhotosFolder = () => (dispatch) => {
 }
 
 export const updatePhotos = () => (dispatch) => {
-  console.log('updating photos in camera');
   FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
     .then((files) => {
       const photos = [];
@@ -32,8 +28,7 @@ export const updatePhotos = () => (dispatch) => {
     })
 }
 
-export const takePicture = (camera, navigation) => async (dispatch) => {
-  console.log('taking pic');
+export const takePicture = (camera) => async (dispatch) => {
   if (!camera) {
     return;
   }
@@ -46,6 +41,6 @@ export const takePicture = (camera, navigation) => async (dispatch) => {
   })
     .then(() => {
       dispatch(updatePhotos());
+      Vibration.vibrate();
     });
-  Vibration.vibrate();
 };

@@ -1,4 +1,6 @@
+import { Dimensions } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const { palette } = uiTheme;
 const {
@@ -182,5 +184,23 @@ export const styles = {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 30,
+  },
+  carouselSlidesWrapperStyle: {
+    flex: 1,
+    width: SCREEN_WIDTH - 120,
+  },
+  carouselDeleteButtonWrapperStyle: {
+    position: "relative",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    top: 30,
+    right: 35,
+    zIndex: 9999,
+  },
+  pictureInputActionButtonStyle: {
+     right: -37,
+     bottom: -37,
+     position: "absolute",
+     zIndex: 9999
   },
 };

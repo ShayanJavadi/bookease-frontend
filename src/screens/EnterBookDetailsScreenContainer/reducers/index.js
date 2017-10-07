@@ -1,7 +1,8 @@
 import {
   FORM_HAS_ERRORS,
   UPDATE_PHOTOS,
-  FORM_RQ,
+  PHOTO_GALLERY_OPEN,
+  PHOTO_GALLERY_CLOSED,
 } from "../actions/consts";
 
 const INITIAL_STATE = {
@@ -20,15 +21,14 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FORM_RQ:
-      return { ...state, loading: true };
+    case PHOTO_GALLERY_OPEN:
+      return { ...state, photoGalleryOpen: true }
+    case PHOTO_GALLERY_CLOSED:
+      return { ...state, photoGalleryOpen: false }
     case UPDATE_PHOTOS:
-    console.log('actually works');
-      console.log(action.payload);
-      console.log({ ...state, photos: action.payload, loading: false});
-      return { ...state, photos: action.payload, loading: false}
+      return { ...state, photos: action.payload, loading: false }
     case FORM_HAS_ERRORS:
-      return { errorsMessages: action.payload };
+      return { ...state, errorsMessages: action.payload };
     default:
       return state;
   }
