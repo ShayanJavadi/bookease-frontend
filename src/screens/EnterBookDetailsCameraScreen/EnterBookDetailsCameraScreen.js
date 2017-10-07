@@ -41,7 +41,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
     takePicture: func.isRequired,
     updatePhotos: func.isRequired,
     photos: array.isRequired,
-    loading: bool.isRequired,
+    loading: bool,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,

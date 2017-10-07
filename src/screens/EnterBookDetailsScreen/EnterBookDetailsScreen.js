@@ -9,7 +9,7 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty, reverse } from "lodash";
+import { isEmpty } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
@@ -172,7 +172,7 @@ export default class EnterBookDetailsScreen extends Component {
     return photos.map((photo) => (
       <View key={photo.key} style={carouselSlidesWrapperStyle}>
         <TouchableOpacity onPress={() => this.onDeletePhotoPress()} style={carouselDeleteButtonWrapperStyle}>
-          <MaterialCommunityIcons name="close-circle-outline" size={20} style={{ color: "#eee" }}/>
+          <MaterialCommunityIcons name="close-circle-outline" size={20} style={{ color: "#fff" }}/>
         </TouchableOpacity>
         <TouchableHighlight
           style={carouselSlidesWrapperStyle}
@@ -195,6 +195,7 @@ export default class EnterBookDetailsScreen extends Component {
             <Swiper
               loop={false}
               horizontal
+              dotStyle={{ backgroundColor: "rgba(0,0,0,.7)" }}
               activeDotColor={primaryColor}
               showsPagination={true}
               showsButtons={false}
