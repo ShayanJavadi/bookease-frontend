@@ -192,13 +192,17 @@ export const styles = {
   carouselDeleteButtonWrapperStyle: {
     position: "relative",
     flexDirection: "row",
-    top: 30,
-    left: 8,
+    top: 39,
+    left: 9,
     zIndex: 9999,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   pictureInputActionButtonStyle: {
-     right: -37,
-     bottom: -37,
+     right: -38,
+     bottom: -38,
      position: "absolute",
      zIndex: 9999
   },
