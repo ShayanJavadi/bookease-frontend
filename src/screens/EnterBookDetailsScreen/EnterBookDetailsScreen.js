@@ -279,8 +279,8 @@ export default class EnterBookDetailsScreen extends Component {
           tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookTitle) => this.setState({ bookTitle })}
-          ref={ input => this.inputs['bookTitle'] = input }
-          onSubmitEditing={() => this.focusNextField('authors')}
+          ref={ input => this.inputs["bookTitle"] = input }
+          onSubmitEditing={() => this.focusNextField("authors")}
         />
         <TextField
           returnKeyType="next"
@@ -291,8 +291,8 @@ export default class EnterBookDetailsScreen extends Component {
           tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookAuthor) => this.setState({ bookAuthor })}
-          ref={ input => this.inputs['authors'] = input}
-          onSubmitEditing={() => this.focusNextField('edition')}
+          ref={ input => this.inputs["authors"] = input}
+          onSubmitEditing={() => this.focusNextField("edition")}
         />
         <TextField
           returnKeyType="next"
@@ -303,7 +303,7 @@ export default class EnterBookDetailsScreen extends Component {
           tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookEdition) => this.setState({ bookEdition })}
-          ref={ input => this.inputs['edition'] = input }
+          ref={ input => this.inputs["edition"] = input }
         />
         <Dropdown
           error={errorsMessages.bookCondition}
@@ -324,8 +324,8 @@ export default class EnterBookDetailsScreen extends Component {
           tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookPrice) => this.setState({ bookPrice })}
-          ref={ input => this.inputs['price'] = input }
-          onSubmitEditing={() => this.focusNextField('isbn')}
+          ref={ input => this.inputs["price"] = input }
+          onSubmitEditing={() => this.focusNextField("isbn")}
         />
         <TextField
           returnKeyType="next"
@@ -336,8 +336,8 @@ export default class EnterBookDetailsScreen extends Component {
           tintColor={primaryColor}
           containerStyle={textInputStyle}
           onChangeText={(bookIsbn) => this.setState({ bookIsbn }) }
-          ref={ input => this.inputs['isbn'] = input }
-          onSubmitEditing={() => this.focusNextField('description')}
+          ref={ input => this.inputs["isbn"] = input }
+          onSubmitEditing={() => this.focusNextField("description")}
         />
         <TextField
           error={errorsMessages.bookDescription}
@@ -358,7 +358,7 @@ export default class EnterBookDetailsScreen extends Component {
           onChangeText={(bookDescription) => this.setState({ bookDescription })}
           onFocus={() => this.setState({ descriptionTextInputSelected: true })}
           onBlur={() => this.setState({ descriptionTextInputSelected: false })}
-          ref={ input => this.inputs['description'] = input }
+          ref={ input => this.inputs["description"] = input }
         />
       </View>
     )
