@@ -26,13 +26,14 @@ export default class AuthScreen extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    googleLogin: func.isRequired,
     facebookLogin: func.isRequired
   };
 
   componentDidMount() {
     // temporary line for debugging that removes token each time
-    AsyncStorage.removeItem('fb_token');
-    AsyncStorage.removeItem('google_token');
+    AsyncStorage.removeItem("fb_token");
+    AsyncStorage.removeItem("google_token");
     this.onAuthenticated(this.props);
   }
 
@@ -42,7 +43,7 @@ export default class AuthScreen extends Component {
 
   onAuthenticated(props) {
     if (props.facebookAuthToken || props.googleAuthToken) {
-      this.props.navigation.navigate('schoolSelectionScreen');
+      this.props.navigation.navigate("schoolSelectionScreen");
     }
   }
 
@@ -55,7 +56,7 @@ export default class AuthScreen extends Component {
   }
 
   onTwitterButtonPress() {
-    this.props.twitterLogin();
+    
   }
 
   onEmailButtonPress() {

@@ -1,7 +1,7 @@
 import {
   GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAIL
-} from '../actions/consts';
+} from "../actions/consts";
 
 const INITIAL_STATE = {
   token: undefined,
@@ -10,10 +10,9 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GOOGLE_LOGIN_SUCCESS:
-      console.log('GOOGLE_LOGIN_SUCCESS');
       return { token: action.payload };
     case GOOGLE_LOGIN_FAIL:
-      return { token: null };
+      return { token: undefined };
     default:
       return state;
   }

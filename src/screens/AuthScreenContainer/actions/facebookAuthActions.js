@@ -1,16 +1,15 @@
-import { AsyncStorage } from 'react-native';
-import { Facebook } from 'expo';
+import { AsyncStorage } from "react-native";
+import { Facebook } from "expo";
 import {
   FACEBOOK_LOGIN_SUCCESS,
   FACEBOOK_LOGIN_FAIL
-} from './consts';
+} from "./consts";
 
 export const facebookLogin = () => async dispatch => {
-  console.log(Facebook);
-  let token = await AsyncStorage.getItem('fb_token');
+  let token = await AsyncStorage.getItem("fb_token");
 
   if (token) {
-    dispatch({ FACEBOOK_LOGIN_SUCCESS, paylod: token });
+    dispatch({ FACEBOOK_LOGIN_SUCCESS, payload: token });
   } else {
     doFacebookLogin(dispatch);
   }
@@ -29,14 +28,14 @@ export const getFacebookUserData = async (token) => {
 };
 
 const doFacebookLogin = async dispatch => {
-  let { type, token } = await Facebook.logInWithReadPermissionsAsync('122107125107711', {
-    permissions: ['email']
+  let { type, token } = await Facebook.logInWithReadPermissionsAsync("122107125107711", {
+    permissions: ["email"]
   });
 
-  if (type === 'cancel') {
-    return dispatch({ type: FACEBOOK_LOGIN_FAIL});
+  if (type === "cancel") {
+    return dispatch({ type: FACEBOOK_LOGIN_FAIL });
   }
 
-  await AsyncStorage.setItem('fb_token', token);
+  await AsyncStorage.setItem("fb_token", token);
   dispatch({ type: FACEBOOK_LOGIN_SUCCESS, payload: token });
 };
