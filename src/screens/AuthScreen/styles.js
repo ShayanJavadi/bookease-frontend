@@ -1,4 +1,10 @@
 import { Dimensions, StyleSheet } from "react-native";
+import uiTheme from "src/common/styles/uiTheme";
+
+const { palette } = uiTheme;
+const {
+  primaryColor,
+} = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
