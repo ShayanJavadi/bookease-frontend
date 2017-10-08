@@ -3,7 +3,7 @@ import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColor,
+  primaryColor, // eslint-disable-line no-unused-vars
 } = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
