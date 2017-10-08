@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
   },
   phoneButtonStyle: {
     width: SCREEN_WIDTH * 0.68,
-    backgroundColor: "#009900",
+    backgroundColor: primaryColor,
   },
   slideLogoStyle: {
     color: "#222",

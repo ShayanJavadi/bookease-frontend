@@ -90,9 +90,7 @@ export default class PinScreen extends Component {
       <View style={screenStyle}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter the PIN you received</Text>
-          {this.state.invalidPinEntered &&
-            (<Text style={invalidPinTextStyle}>Incorrect PIN</Text>)
-          }
+          <Text style={invalidPinTextStyle}>{this.state.invalidPinEntered? "Incorrect PIN" : " "}</Text>
           <View style={inputContainerStyle}>
             {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index))}
           </View>

@@ -43,6 +43,7 @@ export default class PhoneScreen extends Component {
 
   componentDidMount() {
     this.input.getElement().focus();
+    this.onInputChange("");
   }
 
   componentWillMount() {
@@ -90,9 +91,7 @@ export default class PhoneScreen extends Component {
       <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter your phone number</Text>
-          {this.state.phoneInUse &&
-            (<Text style={invalidPhoneTextStyle}>Phone number already in use</Text>)
-          }
+          <Text style={invalidPhoneTextStyle}>{this.state.phoneInUse? "Phone number already in use" : " "}</Text>
           <View style={inputContainerStyle}>
             <TextInputMask
               style={this.state.phoneInUse ? invalidInputStyle : inputStyle}
