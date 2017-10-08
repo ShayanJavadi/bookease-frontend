@@ -1,4 +1,6 @@
-export const styles = {
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
   inputStyle: {
     flex: 1,
     fontSize: 14,
@@ -32,4 +34,4 @@ export const styles = {
     borderColor: "#F55E64",
     borderWidth: 1,
   },
-};
+});

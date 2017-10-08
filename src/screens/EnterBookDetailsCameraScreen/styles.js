@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -10,7 +10,7 @@ const {
   tertiaryColorDark,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
   },
@@ -62,4 +62,4 @@ export const styles = {
     width: CAPTURE_BUTTON_INNER_WIDTH,
     borderRadius: CAPTURE_BUTTON_INNER_WIDTH / 2
   },
-};
+});

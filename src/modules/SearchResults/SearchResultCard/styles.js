@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
@@ -6,7 +7,7 @@ const {
   tertiaryColorLight,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   searchResultCardWrapper: {
     flex: 1,
     height: 400,
@@ -118,4 +119,4 @@ export const styles = {
     shadowRadius: 1,
     zIndex: 99999,
   },
-};
+});

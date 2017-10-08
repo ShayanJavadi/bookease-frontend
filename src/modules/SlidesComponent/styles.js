@@ -1,9 +1,10 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+
 export const ICON_SIZE = 50;
 
-export const styles = {
+export const styles = StyleSheet.create({
   slideStyle: {
     flex: 1,
     justifyContent: "center",
@@ -31,4 +32,4 @@ export const styles = {
   slideDotsStyle: {
     color: "#fff",
   },
-};
+});
