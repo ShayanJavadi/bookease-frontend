@@ -5,9 +5,7 @@ const lookupTextbooksQuery = gql`
     lookupTextbooks (query: $query, limit: $limit) {
       totalItems
       textbooks {
-        id
         title
-        uid
         description
         industryIdentifiers {
           type
@@ -15,10 +13,6 @@ const lookupTextbooksQuery = gql`
         }
         authors
         edition
-        imageLinks {
-          smallThumbnail
-          thumbnail
-        }
       }
     }
   }

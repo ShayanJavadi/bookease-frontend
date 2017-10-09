@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
+import { NavigationActions } from "react-navigation";
 import { BarCodeScanner, Permissions } from "expo"; // eslint-disable-line no-unused-vars
 import { func, shape, object, bool } from "prop-types";
 import BackButton from "src/modules/BackButton";
@@ -18,7 +19,7 @@ export default class ScanBookScreen extends Component {
     loading: bool.isRequired,
     resetQuery: func.isRequired,
     fetchScannedBook: func.isRequired,
-    scannedTextbook: object.isRequired,
+    scannedTextbook: object,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -47,7 +48,17 @@ export default class ScanBookScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.scannedTextbook) {
-      this.props.navigation.navigate("enterBookDetails", { scannedTextbook: nextProps.scannedTextbook } )
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: "enterBookDetails",
+            params: { scannedTextbook: nextProps.scannedTextbook },
+          })
+        ],
+      })
+
+      this.props.navigation.dispatch(resetAction)
     }
   }
 
@@ -59,6 +70,7 @@ export default class ScanBookScreen extends Component {
 
   render() {
     const { hasCameraPermission } = this.state;
+    const error = this.props.data.error; // eslint-disable-line no-unused-vars
 
     if (this.props.loading) {
       return (
@@ -67,6 +79,7 @@ export default class ScanBookScreen extends Component {
         </View>
       )
     }
+
     if (hasCameraPermission === null) {
       return (
         <View style={screenStyle}>
@@ -74,6 +87,7 @@ export default class ScanBookScreen extends Component {
         </View>
       )
     }
+
     if (hasCameraPermission === false) {
       return (
         <View style={screenStyle}>
@@ -82,12 +96,16 @@ export default class ScanBookScreen extends Component {
       )
     }
 
+    if (error) {
+      console.warn(error); // eslint-disable-line no-console
+    }
+
     return (
         <View style={screenStyle}>
           <Button
             raised
             text="Press me"
-            onPress={() => this.handleBarCodeRead("math")}
+            onPress={() => this.handleBarCodeRead("9780072930337")}
           />
         </View>
       );

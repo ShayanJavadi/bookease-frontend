@@ -52,7 +52,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    textAlign: "left",
     flex: 2,
     paddingLeft: 10,
   },
@@ -83,7 +82,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 1,
     color: "#666",
   },
-  bookCondititonStyle: {
+  bookconditionStyle: {
     fontSize: 12,
     color: "#666",
     paddingLeft: 15,
