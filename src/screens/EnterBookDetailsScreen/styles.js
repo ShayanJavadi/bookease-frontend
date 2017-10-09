@@ -1,4 +1,6 @@
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const { palette } = uiTheme;
 const {
@@ -6,10 +8,10 @@ const {
   tertiaryColorDark,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   headerStyle: {
     backgroundColor: tertiaryColorDark,
@@ -23,14 +25,6 @@ export const styles = {
   headerTitleStyle: {
     color: "#fff",
     fontSize: 16
-  },
-  pictureInputWrapperStyle: {
-    flex: 5.5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    paddingLeft: 90,
-    paddingRight: 90,
   },
   formWrapperStyle: {
     flex: 4,
@@ -47,7 +41,7 @@ export const styles = {
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 30,
-    paddingBottom: 50,
+    paddingBottom: 120,
   },
   buttonTextStyle: {
     color: "#fff",
@@ -59,14 +53,31 @@ export const styles = {
     flex: 1,
     height: 50,
   },
+  pictureInputWrapperStyle: {
+    flex: 5.5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingTop: 20,
+    marginLeft: 70,
+    marginRight: 70,
+  },
   pictureInputStyle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 260,
+    height: 350,
     zIndex: 9999,
     borderColor: "#bbb",
     borderWidth: 1,
+  },
+  pictureCarouselWrapperStyle:{
+    marginLeft: 70,
+    marginRight: 70,
+
+  },
+  pictureCarouselStyle: {
+    height: 350,
   },
   inputStyle: {
     flex: 1,
@@ -164,8 +175,7 @@ export const styles = {
   pictureInputHeaderTextStyle: {
     color: "#888",
     paddingLeft: 20,
-    paddingBottom: 20,
-    paddingTop: 30,
+    paddingTop: 20,
     fontFamily: "Roboto",
   },
   pictureInputHorizontalRuleStyle: {
@@ -175,4 +185,25 @@ export const styles = {
     marginRight: 20,
     marginTop: 30,
   },
-};
+  carouselSlidesWrapperStyle: {
+    flex: 1,
+    width: SCREEN_WIDTH - 120,
+  },
+  carouselDeleteButtonWrapperStyle: {
+    position: "relative",
+    flexDirection: "row",
+    top: 39,
+    left: 9,
+    zIndex: 9999,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  pictureInputActionButtonStyle: {
+     right: -38,
+     bottom: -38,
+     position: "absolute",
+     zIndex: 9999
+  },
+});

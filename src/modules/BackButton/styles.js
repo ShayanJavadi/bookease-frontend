@@ -1,4 +1,6 @@
-export const styles = {
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
   backButtonWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
@@ -14,4 +16,4 @@ export const styles = {
     color: "#fff",
     paddingLeft: 15,
   },
-};
+});

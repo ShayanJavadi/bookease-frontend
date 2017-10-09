@@ -1,9 +1,9 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColor,
+  primaryColor, // eslint-disable-line no-unused-vars
 } = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -11,7 +11,7 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 export const ICON_SIZE = 34;
 export const LOGO_ICON_SIZE = 80;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     backgroundColor: "#fff",
     flex: 1,
@@ -65,4 +65,4 @@ export const styles = {
   slideLogoStyle: {
     color: "#222",
   },
-};
+});

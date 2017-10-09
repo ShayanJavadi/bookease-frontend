@@ -1,4 +1,6 @@
-export const styles = {
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
   pictureInputWrapperStyle: {
     flex: 5.5,
     justifyContent: "center",
@@ -19,4 +21,4 @@ export const styles = {
     height: 260,
     zIndex: 9999,
   },
-};
+});

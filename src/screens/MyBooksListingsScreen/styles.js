@@ -1,5 +1,8 @@
+import { StyleSheet } from "react-native";
+
 export const SWIPE_OUT_ICON_SIZE = 25;
-export const styles = {
+
+export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
     backgroundColor: "#fafafa",
@@ -100,4 +103,4 @@ export const styles = {
     color: "#fff",
     fontWeight: "700",
   },
-};
+});

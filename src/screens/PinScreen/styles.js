@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
@@ -9,7 +9,7 @@ const {
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle : {
     flex: 1,
     backgroundColor: "#fff",
@@ -91,4 +91,4 @@ export const styles = {
     fontSize: 13,
     fontWeight: "100",
   },
-};
+});

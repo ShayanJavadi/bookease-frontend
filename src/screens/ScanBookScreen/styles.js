@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
@@ -5,7 +6,7 @@ const {
   tertiaryColorDark,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     justifyContent: "center",
     alignItems: "center",
@@ -19,4 +20,4 @@ export const styles = {
     fontWeight: "100",
     fontSize: 13,
   },
-};
+});

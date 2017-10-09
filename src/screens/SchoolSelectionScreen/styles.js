@@ -1,15 +1,15 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
 } = palette;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
-const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     backgroundColor: "#fff",
     flex: 1,
@@ -93,4 +93,4 @@ export const styles = {
     paddingBottom: 5,
     fontStyle: "italic",
   },
-};
+});

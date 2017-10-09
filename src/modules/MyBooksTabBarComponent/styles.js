@@ -1,4 +1,6 @@
-export const styles = {
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
   headerStyle: {
     height: 55,
     justifyContent: "center",
@@ -11,4 +13,4 @@ export const styles = {
     fontSize: 16,
     fontWeight: "700",
   },
-};
+});

@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
@@ -5,7 +6,7 @@ const {
   primaryColor,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   formWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
@@ -45,4 +46,4 @@ export const styles = {
     flex: 1,
     height: 50,
   },
-};
+});
