@@ -50,10 +50,6 @@ export const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.68,
     backgroundColor: "#ffffff",
   },
-  twitterButtonStyle: {
-    width: SCREEN_WIDTH * 0.68,
-    backgroundColor: "#1b95e0",
-  },
   emailButtonStyle: {
     width: SCREEN_WIDTH * 0.68,
     backgroundColor: "#404040",

@@ -12,7 +12,6 @@ const {
   buttonTextStyle,
   facebookButtonStyle,
   googleButtonStyle,
-  twitterButtonStyle,
   emailButtonStyle,
   phoneButtonStyle,
   buttonIconStyle,
@@ -26,12 +25,14 @@ export default class AuthScreen extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    googleLogin: func.isRequired,
     facebookLogin: func.isRequired
   };
 
   componentDidMount() {
     // temporary line for debugging that removes token each time
     AsyncStorage.removeItem("fb_token");
+    AsyncStorage.removeItem("google_token");
     this.onAuthenticated(this.props);
   }
 
@@ -40,13 +41,17 @@ export default class AuthScreen extends Component {
   }
 
   onAuthenticated(props) {
-    if (props.facebookAuthToken) {
+    if (props.facebookAuthToken || props.googleAuthToken) {
       this.props.navigation.navigate("schoolSelectionScreen");
     }
   }
 
   onFacebookButtonPress() {
     this.props.facebookLogin();
+  }
+
+  onGoogleButtonPress() {
+    this.props.googleLogin();
   }
 
   onEmailButtonPress() {
@@ -86,19 +91,7 @@ export default class AuthScreen extends Component {
               source={googleImage}
             />}
           text="Sign in with Google"
-          onPress={() => this.onComplete}
-        />
-        <Button
-          raised
-          primary
-          upperCase={false}
-          style={{
-            container: [buttonStyle, twitterButtonStyle],
-            text: buttonTextStyle,
-          }}
-          icon={<Entypo name="twitter" size={ICON_SIZE} style={buttonIconStyle} />}
-          text="Sign in with Twitter"
-          onPress={() => this.onComplete}
+          onPress={() => this.onGoogleButtonPress()}
         />
         <Button
           raised

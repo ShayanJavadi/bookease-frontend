@@ -6,7 +6,7 @@ import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
 import base64 from "base-64";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
-import facebookAuthReducer from "../screens/AuthScreenContainer/reducers";
+import { facebookAuthReducer, googleAuthReducer } from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
 import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
@@ -39,6 +39,7 @@ const reducers = combineReducers({
   form,
   schoolSelectionReducer,
   facebookAuthReducer,
+  googleAuthReducer,
   emailValidationReducer,
   emailPinValidationReducer,
   phoneValidationReducer,
