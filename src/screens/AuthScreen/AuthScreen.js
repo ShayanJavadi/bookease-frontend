@@ -12,7 +12,6 @@ const {
   buttonTextStyle,
   facebookButtonStyle,
   googleButtonStyle,
-  twitterButtonStyle,
   emailButtonStyle,
   phoneButtonStyle,
   buttonIconStyle,
@@ -55,10 +54,6 @@ export default class AuthScreen extends Component {
     this.props.googleLogin();
   }
 
-  onTwitterButtonPress() {
-    
-  }
-
   onEmailButtonPress() {
     this.props.navigation.navigate("emailScreen");
   }
@@ -97,18 +92,6 @@ export default class AuthScreen extends Component {
             />}
           text="Sign in with Google"
           onPress={() => this.onGoogleButtonPress()}
-        />
-        <Button
-          raised
-          primary
-          upperCase={false}
-          style={{
-            container: [buttonStyle, twitterButtonStyle],
-            text: buttonTextStyle,
-          }}
-          icon={<Entypo name="twitter" size={ICON_SIZE} style={buttonIconStyle} />}
-          text="Sign in with Twitter"
-          onPress={() => this.onTwitterButtonPress()}
         />
         <Button
           raised
