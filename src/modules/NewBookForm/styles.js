@@ -1,11 +1,12 @@
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColorLight,
+  primaryColor,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   formWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
@@ -41,8 +42,8 @@ export const styles = {
     fontWeight: "100",
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     flex: 1,
     height: 50,
   },
-};
+});

@@ -1,15 +1,15 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
-const {
-  primaryColorLight,
-  primaryColorLighter
-} = palette;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
+const { palette } = uiTheme;
+const {
+  primaryColor,
+  primaryColorLight,
+} = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyle: {
     backgroundColor: "#fff",
     flex: 1,
@@ -62,12 +62,12 @@ export const styles = {
     paddingBottom: 5,
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
-    backgroundColor: primaryColorLighter,
+    backgroundColor: primaryColorLight,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
@@ -93,4 +93,4 @@ export const styles = {
     paddingBottom: 5,
     fontStyle: "italic",
   },
-};
+});

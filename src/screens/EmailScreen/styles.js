@@ -1,15 +1,15 @@
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
+  primaryColor,
   primaryColorLight,
-  primaryColorLighter
 } = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export const styles = {
+export const styles = StyleSheet.create({
   screenStyleWithKeyboard: {
     flex: 1,
     backgroundColor: "#fff",
@@ -74,14 +74,14 @@ export const styles = {
     paddingBottom: 15,
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     marginTop: 100,
     marginBottom: 40,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
   disabledButtonContainerStyle: {
-    backgroundColor: primaryColorLighter,
+    backgroundColor: primaryColorLight,
     marginTop: 100,
     marginBottom: 40,
     height: 50,
@@ -92,4 +92,4 @@ export const styles = {
     fontSize: 13,
     fontWeight: "100",
   },
-};
+});

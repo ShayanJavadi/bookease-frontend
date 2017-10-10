@@ -11,24 +11,29 @@ import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AccountScreen from "../screens/AccountScreen";
-import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreen";
+import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
+import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
 
-
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
-const SellBooksNavigator = TabNavigator({
+const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
     screen: EnterBookDetailsScreen,
   },
   scanBook: {
     screen: ScanBookScreen,
   },
+  newBookCamera: {
+    screen: EnterBookDetailsCameraScreen,
+  }
+}, {
+  headerMode: "none",
 });
 
 const myBooksNavigator = TabNavigator({
@@ -71,7 +76,6 @@ const MainNavigator = StackNavigator({
   sellBooks: {
     screen: SellBooksNavigator,
   },
-
 }, {
   mode: "modal",
 });

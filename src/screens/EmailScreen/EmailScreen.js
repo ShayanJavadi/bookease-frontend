@@ -40,6 +40,7 @@ export default class EmailScreen extends Component {
 
   componentDidMount() {
     this.input.focus();
+    this.onInputChange("");
   }
 
   componentWillMount() {
@@ -86,9 +87,7 @@ export default class EmailScreen extends Component {
       <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter your email</Text>
-          {this.state.emailInUse &&
-            (<Text style={invalidEmailTextStyle}>Email already in use</Text>)
-          }
+          <Text style={invalidEmailTextStyle}>{this.state.emailInUse? "Email already in use" : " "}</Text>
           <View style={inputContainerStyle}>
             <TextInput
               style={this.state.emailInUse ? invalidInputStyle : inputStyle}

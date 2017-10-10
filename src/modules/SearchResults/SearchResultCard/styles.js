@@ -1,12 +1,13 @@
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 const { palette } = uiTheme;
 const {
-  primaryColorLight,
+  primaryColor,
   tertiaryColorLight,
 } = palette;
 
-export const styles = {
+export const styles = StyleSheet.create({
   searchResultCardWrapper: {
     flex: 1,
     height: 400,
@@ -69,7 +70,7 @@ export const styles = {
     fontWeight: "700",
   },
   buttonContainerStyle: {
-    backgroundColor: primaryColorLight,
+    backgroundColor: primaryColor,
     width: 75,
   },
   bookNameStyle: {
@@ -118,4 +119,4 @@ export const styles = {
     shadowRadius: 1,
     zIndex: 99999,
   },
-};
+});

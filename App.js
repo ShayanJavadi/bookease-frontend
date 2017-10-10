@@ -8,7 +8,22 @@ import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import uiTheme from 'src/common/styles/uiTheme';
 
 export default class App extends Component {
+  state = {
+    isAppReady: false,
+  }
+
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
+    });
+
+    this.setState({ isAppReady: true });
+  }
   render() {
+    if (!this.state.isAppReady) {
+      // TODO: loading animation goes here
+    }
+
     return (
       <Provider>
         <View style={styles.container}>
