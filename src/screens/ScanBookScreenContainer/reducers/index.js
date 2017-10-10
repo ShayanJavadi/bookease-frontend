@@ -6,7 +6,7 @@ import {
 } from "../actions/consts";
 
 const INITIAL_STATE = {
-  loading: undefined,
+  loading: false,
   scannedTextbook: undefined,
 };
 
@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
     case SCAN_BOOK_FAIL:
       return { loading: false, scannedTextbook: null };
     case RESET_QUERY:
-      return state;
+      return INITIAL_STATE;
     default:
       return state;
   }

@@ -18,7 +18,7 @@ const {
   buttonContainerStyle,
   bookNameStyle,
   bookEditionStyle,
-  bookCondititonStyle,
+  bookconditionStyle,
   // bookIsbnStyle,
   bookOwnerStyle,
   bookUniversityStyle,
@@ -42,7 +42,7 @@ export default class SearchResultCard extends Component {
     const {
       name,
       edition,
-      condititon,
+      condition,
       owner,
       price,
       thumbnail,
@@ -58,7 +58,7 @@ export default class SearchResultCard extends Component {
           <View style={upperSectionBottomWrapper}>
             <View style={{ flexDirection: "row", flex: 1 }}>
               <Text style={bookEditionStyle}>Edition: {edition}</Text>
-              <Text style={bookCondititonStyle}>Condition: {condititon}</Text>
+              <Text style={bookconditionStyle}>Condition: {condition}</Text>
             </View>
           </View>
         </View>

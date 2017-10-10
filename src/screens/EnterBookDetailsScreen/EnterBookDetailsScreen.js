@@ -83,10 +83,19 @@ export default class EnterBookDetailsScreen extends Component {
 
   inputs = {}
 
-  componentDidMount() {
-    // this is for debuging purposes. in the actual app
-    // the directory will be deleted after the form is submitted.
-    FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`)
+  async componentDidMount() {
+    const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
+    if (!photosDirectory.exists) {
+      FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`);
+    }
+
+    const scannedTextbook = this.props.navigation.state.params ?
+    this.props.navigation.state.params.scannedTextbook :
+    undefined;
+
+    if (scannedTextbook) {
+      this.populateFormUsingScannedTextbook(scannedTextbook);
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -97,8 +106,21 @@ export default class EnterBookDetailsScreen extends Component {
     return true;
   }
 
-  componentWillUnmount() {
-    FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`);
+  async componentWillUnmount() {
+    // this is for debuging purposes. in the actual app
+    // the directory will be deleted after the form is submitted.
+    const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
+    if (!photosDirectory.exists) {
+      FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`);
+    }
+  }
+
+  populateFormUsingScannedTextbook(scannedTextbook) {
+    const { title, authors, edition, industryIdentifiers } = scannedTextbook;
+    this.setState({ bookTitle: title })
+    this.setState({ bookAuthor: authors.join(", ") })
+    this.setState({ bookIsbn: industryIdentifiers[1].identifier })
+    this.setState({ bookEdition: edition })
   }
 
   onFormSubmit() {
@@ -317,6 +339,7 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <TextField
           returnKeyType="next"
+          keyboardType="numeric"
           error={errorsMessages.bookPrice}
           label="Price"
           value={bookPrice}
