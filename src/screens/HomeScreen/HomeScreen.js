@@ -6,10 +6,12 @@ import SearchResults from "../../modules/SearchResults";
 
 const { screenStyle } = styles;
 
-const HomeScreen = () => (
+const HomeScreen = (props) => (
   <View style={screenStyle}>
     <SearchForm />
-    <SearchResults />
+    <SearchResults
+      navigation={props.navigation}
+    />
   </View>
 );
 

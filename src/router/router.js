@@ -6,6 +6,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
 import HomeScreen from "../screens/HomeScreen";
+import SingleBookScreen from "../screens/SingleBookScreen/";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreen";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
@@ -51,6 +52,14 @@ const myBooksNavigator = TabNavigator({
   tabBarComponent: MyBooksTabBarComponent,
 });
 
+const SingleBookNavigator = StackNavigator({
+  singleBookScreen: {
+    screen: SingleBookScreen,
+  },
+}, {
+  headerMode: "none",
+});
+
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
@@ -76,8 +85,9 @@ const MainNavigator = StackNavigator({
   sellBooks: {
     screen: SellBooksNavigator,
   },
-}, {
-  mode: "modal",
+  singleBook: {
+    screen: SingleBookNavigator,
+  }
 });
 
 const SchoolSelectionNavigator = StackNavigator({
