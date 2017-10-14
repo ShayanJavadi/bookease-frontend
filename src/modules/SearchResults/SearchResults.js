@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, FlatList } from "react-native";
+import { shape, func } from "prop-types";
 import SearchResultCard from "./SearchResultCard";
 
 const bookResults = [
@@ -40,6 +41,12 @@ const bookResults = [
 ];
 
 export default class SearchResults extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired
+  };
+
   renderSearchResults(book) {
     return (
       <SearchResultCard

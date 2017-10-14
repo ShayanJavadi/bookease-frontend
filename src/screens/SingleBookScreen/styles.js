@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     zIndex: 9999,
   },
   bookImageLinearGradientStyle: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
@@ -112,7 +112,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   accountDetailsNameStyle: {
-    fontSize: 20,
     color: "#444",
     fontWeight: "500",
     paddingBottom: 3,

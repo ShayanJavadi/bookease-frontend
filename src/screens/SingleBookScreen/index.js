@@ -3,13 +3,10 @@ import { Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, StatusBa
 import { LinearGradient } from "expo";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { func, shape, object, bool } from "prop-types";
+import { func, shape } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { Dimensions } from "react-native";
 import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const {
   screenStyle,
@@ -45,7 +42,9 @@ export default class SingleBookScreen extends Component {
   })
 
   static propTypes = {
-
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
   };
 
   renderBookImage() {
@@ -64,7 +63,7 @@ export default class SingleBookScreen extends Component {
           <Text style={priceChipStyle}>${price}</Text>
         </View>
         <LinearGradient
-         colors={['rgba(0,0,0,0.6)', 'transparent']}
+         colors={["rgba(0,0,0,0.6)", "transparent"]}
          style={bookImageLinearGradientStyle}
        />
       </View>

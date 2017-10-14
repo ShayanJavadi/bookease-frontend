@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Image, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
-import { NavigationActions } from "react-navigation";
-import { string, number, shape } from "prop-types";
+import { string, number, shape, func } from "prop-types";
 import { styles } from "./styles";
 
 const {
@@ -35,7 +34,10 @@ export default class SearchResultCard extends Component {
       owner: string.isRequired,
       price: number.isRequired,
       thumbnail: string.isRequired
-    }).isRequired
+    }).isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
   };
 
   onListingPress() {
@@ -89,7 +91,7 @@ export default class SearchResultCard extends Component {
             raised
             style={{ text: buttonTextStyle, container: buttonContainerStyle }}
             text="Buy"
-            onPress={() => alert('buy')}
+            onPress={() => alert("buy")}
           />
         </View>
       </View>

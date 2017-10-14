@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { object } from "prop-types";
 import { styles } from "./styles";
 import SearchForm from "../../modules/SearchForm";
 import SearchResults from "../../modules/SearchResults";
@@ -17,6 +18,10 @@ const HomeScreen = (props) => (
 
 HomeScreen.navigationOptions = {
   header: null,
+};
+
+HomeScreen.propTypes = {
+  navigation: object.isRequired,
 };
 
 export default HomeScreen;

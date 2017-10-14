@@ -4,7 +4,6 @@ import uiTheme from "src/common/styles/uiTheme";
 const { palette } = uiTheme;
 const {
   primaryColor,
-  tertiaryColorLight,
 } = palette;
 
 export const styles = StyleSheet.create({
@@ -20,7 +19,7 @@ export const styles = StyleSheet.create({
     flex: 2.5,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#f7f7f7",
     flexDirection: "column",
     justifyContent: "center",
     shadowColor: "#222",
