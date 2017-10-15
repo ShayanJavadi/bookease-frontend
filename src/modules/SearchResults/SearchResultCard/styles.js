@@ -4,15 +4,14 @@ import uiTheme from "src/common/styles/uiTheme";
 const { palette } = uiTheme;
 const {
   primaryColor,
-  tertiaryColorLight,
 } = palette;
 
 export const styles = StyleSheet.create({
   searchResultCardWrapper: {
     flex: 1,
     height: 400,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "#222",
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
@@ -20,7 +19,7 @@ export const styles = StyleSheet.create({
     flex: 2.5,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#f7f7f7",
     flexDirection: "column",
     justifyContent: "center",
     shadowColor: "#222",
@@ -108,14 +107,5 @@ export const styles = StyleSheet.create({
     paddingRight: 10,
   },
   bookPriceWrapperStyle: {
-  },
-  horizantalLineStyle: {
-    height: 4,
-    backgroundColor: tertiaryColorLight,
-    shadowColor: "#222",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    zIndex: 99999,
   },
 });

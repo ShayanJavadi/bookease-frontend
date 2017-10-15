@@ -6,6 +6,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
+  backButtonHeaderLessWrapperStyle: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    top: 20,
+    left: 2,
+    backgroundColor: "transparent",
+  },
   backButtonTextStyle: {
     color: "#fff",
     paddingLeft: 5,

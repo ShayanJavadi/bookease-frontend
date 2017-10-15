@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
-import { func, shape, string } from "prop-types";
+import { func, shape, string, bool } from "prop-types";
 import { styles } from "./styles";
 const {
   backButtonWrapperStyle,
+  backButtonHeaderLessWrapperStyle,
   backButtonTextStyle,
   backButtonIconStyle,
 } = styles;
@@ -15,15 +16,28 @@ export default class BackButton extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
-    buttonText: string
+    buttonText: string,
+    onPress: func,
+    headerLess: bool,
   };
 
+  onBackButtonPress() {
+    const { navigation, onPress } = this.props;
+
+    if (!onPress) {
+      return () => navigation.dispatch(NavigationActions.back())
+    }
+
+    return onPress;
+  }
+
   render() {
-    const { navigation, buttonText } = this.props;
+    const { headerLess, buttonText } = this.props;
+
     return (
       <TouchableOpacity
-        style={backButtonWrapperStyle}
-        onPress={() => navigation.dispatch(NavigationActions.back())}
+        style={headerLess ? backButtonHeaderLessWrapperStyle : backButtonWrapperStyle}
+        onPress={this.onBackButtonPress()}
       >
         <MaterialIcons name="arrow-back" size={24} style={backButtonIconStyle} />
         <Text style={backButtonTextStyle}>{buttonText}</Text>

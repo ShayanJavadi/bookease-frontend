@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
-import { string, number, shape } from "prop-types";
+import { string, number, shape, func } from "prop-types";
 import { styles } from "./styles";
 
 const {
@@ -23,7 +23,6 @@ const {
   bookOwnerStyle,
   bookUniversityStyle,
   bookPriceStyle,
-  horizantalLineStyle,
 } = styles;
 
 export default class SearchResultCard extends Component {
@@ -35,22 +34,24 @@ export default class SearchResultCard extends Component {
       owner: string.isRequired,
       price: number.isRequired,
       thumbnail: string.isRequired
-    }).isRequired
+    }).isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
   };
 
-  render() {
+  onListingPress() {
+    this.props.navigation.navigate("singleBook", { book: this.props.book });
+  }
+
+  renderUpperSection() {
     const {
       name,
       edition,
       condition,
-      owner,
-      price,
-      thumbnail,
     } = this.props.book;
 
     return (
-      <View style={searchResultCardWrapper}>
-        <View style={horizantalLineStyle} />
         <View style={upperSectionWrapper}>
           <View style={upperSectionTopWrapper}>
             <Text style={bookNameStyle}>{name}</Text>
@@ -62,12 +63,18 @@ export default class SearchResultCard extends Component {
             </View>
           </View>
         </View>
-        <Image
-          style={middleSectionWrapper}
-          source={{ uri: thumbnail }}
-          resizeMode={"contain"}
-        />
-        <View style={lowerSectionWrapper}>
+    )
+  }
+
+  renderLowerSection() {
+    const {
+      owner,
+      price,
+    } = this.props.book;
+
+    return (
+      <View style={lowerSectionWrapper}>
+        <TouchableWithoutFeedback onPress={() => alert("go to account page ")}>
           <View style={lowerSectionLeftWrapper}>
             <View style={{ flex: 1 }}>
               <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
@@ -77,16 +84,34 @@ export default class SearchResultCard extends Component {
               <Text style={bookUniversityStyle}>Posted 3 hours ago</Text>
             </View>
           </View>
-          <View style={lowerSectionRightWrapper}>
-            <Text style={bookPriceStyle}>${price}</Text>
-            <Button
-              raised
-              style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-              text="Buy"
-            />
-          </View>
+        </TouchableWithoutFeedback>
+        <View style={lowerSectionRightWrapper}>
+          <Text style={bookPriceStyle}>${price}</Text>
+          <Button
+            raised
+            style={{ text: buttonTextStyle, container: buttonContainerStyle }}
+            text="Buy"
+            onPress={() => alert("buy")}
+          />
         </View>
       </View>
+    )
+  }
+
+  render() {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => this.onListingPress()}
+      >
+        <View style={searchResultCardWrapper}>
+          {this.renderUpperSection()}
+          <Image
+            style={middleSectionWrapper}
+            source={{ uri: this.props.book.thumbnail }}
+          />
+          {this.renderLowerSection()}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
