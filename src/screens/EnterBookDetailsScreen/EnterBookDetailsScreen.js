@@ -470,6 +470,15 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
+    console.log(this);
+
+
+    const error = this.props.data.error;
+
+    if (error) {
+      console.warn(error); // eslint-disable-line no-console
+    }
+
     return (
       <View style={screenStyle}>
         <KeyboardAwareScrollView
