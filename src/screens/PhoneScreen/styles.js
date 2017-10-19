@@ -94,4 +94,9 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "100",
   },
+  activitySpinnerStyle: {
+    marginTop: 100,
+    marginBottom: 40,
+    height: 80,
+  },
 });

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, Keyboard } from "react-native";
+import { Text, View, TextInput, ActivityIndicator, Keyboard } from "react-native";
 import { bool, func, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
@@ -16,6 +16,7 @@ const {
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
+  activitySpinnerStyle,
  } = styles;
 
 export default class EmailScreen extends Component {
@@ -70,14 +71,17 @@ export default class EmailScreen extends Component {
   }
 
   onSubmitButtonPress() {
+    this.setState({ isWaiting: true });
     this.props.mutate({
       variables: { email: this.state.email }
     })
-    .then(() =>
-      this.props.navigation.navigate("emailPinScreen", { identifier: this.state.email })
+    .then(() => {
+        this.setState({ isWaiting: false });
+        this.props.navigation.navigate("emailPinScreen", { identifier: this.state.email });
+      }
     )
     .catch(() =>
-      this.setState({ emailInUse: true })
+      this.setState({ emailInUse: true, isWaiting: false  })
     );
   }
 
@@ -99,7 +103,7 @@ export default class EmailScreen extends Component {
             />
           </View>
         </View>
-        {this.props.isEmailValid &&
+        {!this.state.isWaiting && this.props.isEmailValid &&
           (<Button
             raised
             primary
@@ -108,7 +112,7 @@ export default class EmailScreen extends Component {
             onPress={() => this.onSubmitButtonPress()}
           />)
         }
-        {!this.props.isEmailValid &&
+        {!this.state.isWaiting && !this.props.isEmailValid &&
           (<Button
             disabled
             raised
@@ -116,6 +120,13 @@ export default class EmailScreen extends Component {
             text="Submit"
             style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
           />)
+        }
+        {this.state.isWaiting &&
+          <ActivityIndicator
+             animating={this.state.animating}
+             style={[styles.centering, activitySpinnerStyle]}
+             size="large"
+           />
         }
       </View>
     );

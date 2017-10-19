@@ -11,6 +11,7 @@ import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
 import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
+import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContainer/reducers";
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
@@ -44,6 +45,7 @@ const reducers = combineReducers({
   emailPinValidationReducer,
   phoneValidationReducer,
   phonePinValidationReducer,
+  phonePasswordValidationReducer,
   scanBookReducer,
   EnterBookDetailsReducer,
   EnterBookDetailsCameraReducer,

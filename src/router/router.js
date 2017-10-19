@@ -19,6 +19,8 @@ import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
+import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
+import FullNameScreen from "../screens/FullNameScreen";
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -117,6 +119,12 @@ const AuthNavigator = StackNavigator({
   phonePinScreen: {
     screen: PhonePinScreen,
   },
+  phonePasswordScreen: {
+    screen: PhonePasswordScreen,
+  },
+  fullNameScreen: {
+    screen: FullNameScreen,
+  },
   schoolSelectionScreen: {
     screen: SchoolSelectionNavigator,
   },
@@ -137,4 +145,4 @@ const WelcomeNavigator = StackNavigator({ // eslint-disable-line
 
 // temporary changed to HomeNavigator for debugging
 // original value: MainNavigator
-export default MainNavigator;
+export default AuthNavigator;

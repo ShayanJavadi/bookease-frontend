@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Keyboard } from "react-native";
+import { Text, View, ActivityIndicator, Keyboard } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { bool, func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
@@ -17,6 +17,7 @@ const {
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
+  activitySpinnerStyle,
  } = styles;
 
 export default class PhoneScreen extends Component {
@@ -37,6 +38,7 @@ export default class PhoneScreen extends Component {
   state = {
     phone: "",
     phoneInUse: false,
+    isWaiting: false,
     keyboardVisible: false,
     maskedValue: "",
    }
@@ -74,14 +76,19 @@ export default class PhoneScreen extends Component {
   }
 
   onSubmitButtonPress() {
+    this.setState({ isWaiting: true });
     this.props.mutate({
       variables: { phoneNumber: this.props.phoneNumber }
     })
-    .then(() =>
-      this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber })
+    .then(() => {
+        this.setState({ isWaiting: false });
+        this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber })
+      }
     )
-    .catch(() =>
-      this.setState({ phoneInUse: true })
+    .catch(() => {
+        this.setState({ isWaiting: false })
+        this.props.navigation.navigate("phonePasswordScreen", { identifier: this.props.phoneNumber })
+      }
     );
   }
 
@@ -107,7 +114,7 @@ export default class PhoneScreen extends Component {
             />
           </View>
         </View>
-        {this.props.isPhoneValid &&
+        {!this.state.isWaiting && this.props.isPhoneValid &&
           (<Button
             raised
             primary
@@ -116,7 +123,7 @@ export default class PhoneScreen extends Component {
             onPress={() => this.onSubmitButtonPress()}
           />)
         }
-        {!this.props.isPhoneValid &&
+        {!this.state.isWaiting && !this.props.isPhoneValid &&
           (<Button
             disabled
             raised
@@ -124,6 +131,13 @@ export default class PhoneScreen extends Component {
             text="Submit"
             style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
           />)
+        }
+        {this.state.isWaiting &&
+          <ActivityIndicator
+             animating={this.state.animating}
+             style={[styles.centering, activitySpinnerStyle]}
+             size="large"
+           />
         }
       </View>
     );

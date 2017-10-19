@@ -10,14 +10,7 @@ const {
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  screenStyleWithKeyboard: {
-    flex: 1,
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  screenStyleWithoutKeyboard : {
+  screenStyle: {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
@@ -41,10 +34,9 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputStyle: {
-    height: 50,
+    height: 40,
     width: SCREEN_WIDTH * 0.9,
-    textAlign: "center",
-    fontSize: 20,
+    paddingLeft: 5,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "#fff",
@@ -54,49 +46,23 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
-  invalidInputStyle: {
-    height: 50,
-    width: SCREEN_WIDTH * 0.9,
-    textAlign: "center",
-    fontSize: 20,
-    borderColor: "red",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  invalidEmailTextStyle: {
-    fontSize: 20,
-    fontWeight: "300",
-    color: "red",
-    paddingTop: 10,
-    paddingBottom: 15,
-  },
-  buttonContainerStyle: {
+  submitButtonContainerStyle: {
     backgroundColor: primaryColor,
     marginTop: 100,
     marginBottom: 40,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
-  disabledButtonContainerStyle: {
+  submitButtonDisabledContainerStyle: {
     backgroundColor: primaryColorLight,
     marginTop: 100,
     marginBottom: 40,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
-  buttonTextStyle: {
+  submitButtonTextStyle: {
     color: "#fff",
     fontSize: 13,
     fontWeight: "100",
-  },
-  activitySpinnerStyle: {
-    marginTop: 100,
-    marginBottom: 40,
-    height: 80,
   },
 });

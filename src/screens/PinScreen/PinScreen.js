@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TextInput } from "react-native";
+import { Text, View, TextInput, ActivityIndicator } from "react-native";
 import { bool, func, string, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
@@ -15,6 +15,7 @@ const {
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
+  activitySpinnerStyle,
  } = styles;
 
  const PIN_LENGTH = 6;
@@ -38,6 +39,7 @@ export default class PinScreen extends Component {
 
   state = {
     pin: "",
+    isWaiting: false,
     invalidPinEntered: false,
     submitButtonEnabled: false
   }
@@ -50,12 +52,13 @@ export default class PinScreen extends Component {
 
   componentWillReceiveProps(props) {
     if (props.isPinValid) {
+      this.setState({ isWaiting: false });
       this.props.navigation.navigate(this.props.nextScreen);
     }
     else {
       this.hiddenInput.setNativeProps({ text: "" });
       this.onChangeText("");
-      this.setState({ invalidPinEntered: true });
+      this.setState({ invalidPinEntered: true, isWaiting: false });
     }
   }
 
@@ -77,6 +80,7 @@ export default class PinScreen extends Component {
   }
 
   onSubmitButtonPress() {
+    this.setState({ isWaiting: true });
     this.props.validatePin({
       pin: this.state.pin,
       identifier: this.props.navigation.state.params.identifier,
@@ -94,7 +98,7 @@ export default class PinScreen extends Component {
           <View style={inputContainerStyle}>
             {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index))}
           </View>
-          {this.state.submitButtonEnabled &&
+          {!this.state.isWaiting && this.state.submitButtonEnabled &&
             (<Button
               raised
               primary
@@ -103,7 +107,7 @@ export default class PinScreen extends Component {
               onPress={() => this.onSubmitButtonPress()}
             />)
           }
-          {!this.state.submitButtonEnabled &&
+          {!this.state.isWaiting && !this.state.submitButtonEnabled &&
             (<Button
               disabled
               raised
@@ -111,6 +115,13 @@ export default class PinScreen extends Component {
               text="Submit"
               style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
             />)
+          }
+          {this.state.isWaiting &&
+            <ActivityIndicator
+               animating={this.state.animating}
+               style={[styles.centering, activitySpinnerStyle]}
+               size="large"
+             />
           }
         </View>
         <TextInput
