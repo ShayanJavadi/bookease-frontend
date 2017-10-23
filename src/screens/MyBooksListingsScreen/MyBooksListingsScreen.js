@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Image } from "react-native";
+import { func, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
-import { BlurView } from "expo";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR } from "./styles";
 
 const {
   screenStyle,
-  sortWrapperStyle,
-  sortTextStyle,
   listingPictureWrapperStyle,
   listingPictureStyle,
   listingsWrapperStyle,
@@ -25,7 +23,6 @@ const {
   listingPriceWrapperStyle,
   listingPriceTextStyle,
   listingStatusTextStyle,
-  listingAuthorTextStyle,
   swipeOutStyle,
   swipeOutTextStyle,
   noListingWrapperStyle,
@@ -74,6 +71,12 @@ const listings = [
 ];
 
 export default class MyBooksListingsScreen extends Component {
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+  };
+
   static navigationOptions = {
     header: null,
   };
@@ -82,9 +85,6 @@ export default class MyBooksListingsScreen extends Component {
     const {
       name,
       edition,
-      condition,
-      isbn,
-      // owner,
       timePosted,
       price,
       status,
@@ -123,7 +123,7 @@ export default class MyBooksListingsScreen extends Component {
           </View>
           <View style={listingDetailsWrapperStyle}>
             <View style={listingNameWrapperStyle}>
-              <Text style={listingNameTextStyle}>{name}<Text style={{ color: "#444"}}> - {edition}</Text></Text>
+              <Text style={listingNameTextStyle}>{name}<Text style={{ color: "#444" }}> - {edition}</Text></Text>
             </View>
             <View style={listingDetailsTopWrapperStyle}>
               <Text style={[listingSmallDetailsTextStyle, ]}>

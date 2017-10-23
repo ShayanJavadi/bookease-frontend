@@ -4,7 +4,6 @@ import uiTheme from "src/common/styles/uiTheme";
 const { palette } = uiTheme;
 const {
   tertiaryColorDark,
-  primaryColor,
 } = palette;
 
 export const SWIPE_OUT_ICON_SIZE = 25;

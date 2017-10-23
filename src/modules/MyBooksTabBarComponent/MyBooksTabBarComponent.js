@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import MaterialTabs from "react-native-material-tabs";
 import { shape, func } from "prop-types";
-import BackButton from "src/modules/BackButton";
 
 import { styles, TAB_INDICATOR_COLOR } from "./styles";
 

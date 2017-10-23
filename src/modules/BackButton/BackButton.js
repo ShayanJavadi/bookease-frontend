@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
-import { func, shape, string, bool } from "prop-types";
+import { func, shape, string, bool, object } from "prop-types";
 import { styles } from "./styles";
 const {
   backButtonWrapperStyle,
@@ -19,6 +19,7 @@ export default class BackButton extends Component {
     buttonText: string,
     onPress: func,
     headerLess: bool,
+    style: object,
   };
 
   onBackButtonPress() {
