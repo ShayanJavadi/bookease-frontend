@@ -237,6 +237,7 @@ export const styles = StyleSheet.create({
   questionDateStyle: {
     color: "#999",
     paddingTop: 8,
+    fontSize: 13
   },
   noQuestionsWrapperStyle: {
     flex: 1,

@@ -15,10 +15,12 @@ export const deletePhoto = (uri) => async (dispatch) => {
 }
 
 export const updatePhotos = () => async (dispatch) => {
+  console.log('updating photos');
   FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
     .then((files) => {
       const photos = [];
       files.map((file, index) => {
+        console.log(file);
         photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
       })
       return dispatch({ type: UPDATE_PHOTOS, payload: photos });
@@ -48,7 +50,7 @@ const addPhotoFromLibrary = (result) => (dispatch) => {
     });
 }
 
-export const createNewBook = (bookDetails) => async (dispatch) => {
+export const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) => {
   const errorsMessages = {
     bookTitle: "",
     bookAuthor: "",
@@ -58,19 +60,37 @@ export const createNewBook = (bookDetails) => async (dispatch) => {
     bookIsbn: "",
     bookDescription: "",
     formHasErrors: false,
-  }
+  };
 
-  forEach(bookDetails ,(bookDetail, key) => {
+  forEach(bookDetails , (bookDetail, key) => {
     const { value, humanizedValue } = bookDetail;
+
     if (!value) {
       errorsMessages.formHasErrors = true;
       errorsMessages[`${key}`] = `${humanizedValue} is required`;
     }
-  })
+  });
 
   if (errorsMessages.formHasErrors) {
-     dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages })
+     return dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages });
   }
+
+  // createTextbookMutation({
+  //   variables: {
+  //     textbook: {
+  //       id:
+  //       title:
+  //       uid:
+  //       description:
+  //       industryIdentifiers: {
+  //         {},
+  //       },
+  //       authors:
+  //       edition:
+  //       images:
+  //     }
+  //   }
+  // })
 
   // TODO: save to backend if everything is good
   // delete folder after submit is succesful

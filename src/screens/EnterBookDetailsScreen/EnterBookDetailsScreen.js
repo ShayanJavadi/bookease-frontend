@@ -84,6 +84,19 @@ export default class EnterBookDetailsScreen extends Component {
   inputs = {}
 
   async componentDidMount() {
+    FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
+      .then((files) => {
+        console.log('asdaadr');
+        console.log(files);
+        FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos/${files[0]}`)
+        .then((image) => console.log(image));
+        const photos = [];
+        files.map((file, index) => {
+          console.log(file);
+          photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
+        })
+      })
+
     const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
     if (!photosDirectory.exists) {
       FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`);
@@ -134,6 +147,8 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription,
     } = this.state;
 
+    const { createNewBook, mutate } = this.props;
+
     const bookDetails = {
       bookTitle: {
         value: bookTitle,
@@ -163,8 +178,9 @@ export default class EnterBookDetailsScreen extends Component {
         value: bookDescription,
         humanizedValue: "Description",
       }
-    }
-    this.props.createNewBook(bookDetails);
+    };
+
+    createNewBook(bookDetails, mutate);
   }
 
   onDeletePhotoPress() {
@@ -470,10 +486,9 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
-    console.log(this);
-
-
-    const error = this.props.data.error;
+    const error =  this.props.data ?
+    this.props.data.error :
+    null;
 
     if (error) {
       console.warn(error); // eslint-disable-line no-console
