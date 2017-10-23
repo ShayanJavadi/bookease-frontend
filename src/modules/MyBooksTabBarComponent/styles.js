@@ -1,16 +1,38 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import uiTheme from "src/common/styles/uiTheme";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
+const { palette } = uiTheme;
+const {
+  primaryColor,
+  tertiaryColorDark,
+} = palette;
+
+export const TAB_INDICATOR_COLOR = primaryColor;
 
 export const styles = StyleSheet.create({
   headerStyle: {
-    height: 55,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#eee",
-    paddingTop: 25,
+    backgroundColor: tertiaryColorDark,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    zIndex: 9999,
+    height: 70,
   },
-  headerTextStyle: {
-    color: "#222",
+  headerTitleStyle: {
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "700",
+    textAlign: "center",
+    fontWeight: "600",
+    top: 35
   },
+  tabWrapperStyle: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: .5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    zIndex: 9999,
+  }
 });

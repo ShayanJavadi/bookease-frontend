@@ -8,7 +8,7 @@ import {
   styles,
   BOTTOM_NAVIGATION_ICON_SIZE,
   ACTION_BUTTON_COLOR,
-  FIRST_TAB_COLOR
+  TAB_COLOR,
 } from "./styles";
 
 const {
@@ -89,22 +89,22 @@ export default class TabBarComponent extends Component {
         onTabChange={(newTabIndex) => this.setTab(newTabIndex)}
       >
         <Tab
-          barBackgroundColor={FIRST_TAB_COLOR}
+          barBackgroundColor={TAB_COLOR}
           label="Home"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="home" />}
         />
         <Tab
-          barBackgroundColor="#783393"
+          barBackgroundColor={TAB_COLOR}
           label="My Books"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="book-open-variant" />}
         />
         <Tab
-          barBackgroundColor="#ff003d"
+          barBackgroundColor={TAB_COLOR}
           label="Notifications"
           icon={<MaterialIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="mail" />}
         />
         <Tab
-          barBackgroundColor="#4DDDA1"
+          barBackgroundColor={TAB_COLOR}
           label="Account"
           icon={<MaterialCommunityIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="account" />}
         />

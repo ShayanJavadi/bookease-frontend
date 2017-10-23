@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { Text, View } from "react-native";
 import MaterialTabs from "react-native-material-tabs";
 import { shape, func } from "prop-types";
-import { styles } from "./styles";
-const { headerStyle, headerTextStyle } = styles;
+import BackButton from "src/modules/BackButton";
+
+import { styles, TAB_INDICATOR_COLOR } from "./styles";
+
+const { headerStyle, headerTitleStyle, tabWrapperStyle } = styles;
 
 export default class MyBooksTabBarComponent extends Component {
   static propTypes = {
@@ -52,17 +55,17 @@ export default class MyBooksTabBarComponent extends Component {
 
   render() {
     return (
-      <View>
+      <View style={tabWrapperStyle}>
         <View style={headerStyle}>
-          <Text style={headerTextStyle}>My Books</Text>
+          <Text style={headerTitleStyle}>My Books</Text>
         </View>
         <MaterialTabs
-          items={["Listings", "Orders", "Bookmarks"]}
+          items={["Selling", "Buying", "Bookmarks"]}
           selectedIndex={this.state.selectedTab}
           onChange={(tabIndex) => this.setTab(tabIndex)}
-          barColor="#eee"
-          indicatorColor="#222"
-          activeTextColor="#222"
+          barColor="#fff"
+          indicatorColor={TAB_INDICATOR_COLOR}
+          activeTextColor={TAB_INDICATOR_COLOR}
           inactiveTextColor="#888"
         />
       </View>

@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Button } from "react-native-material-ui";
+import { BlurView } from "expo";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { styles, SWIPE_OUT_ICON_SIZE } from "./styles";
+import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR } from "./styles";
 
 const {
   screenStyle,
   sortWrapperStyle,
   sortTextStyle,
+  listingPictureWrapperStyle,
+  listingPictureStyle,
   listingsWrapperStyle,
   listingWrapperStyle,
   listingDetailsWrapperStyle,
@@ -20,12 +24,13 @@ const {
   listingDateTextStyle,
   listingPriceWrapperStyle,
   listingPriceTextStyle,
-  listingIsbnTextStyle,
-  listingConditionTextStyle,
   listingStatusTextStyle,
   listingAuthorTextStyle,
   swipeOutStyle,
   swipeOutTextStyle,
+  noListingWrapperStyle,
+  noListingIconWrapperStyle,
+  noListingTextStyle,
 } = styles;
 
 const listings = [
@@ -40,6 +45,7 @@ const listings = [
     timePosted: "5m",
     author: "Thomas H. Cormen",
     status: "Active",
+    thumbnail: "http://i.ebayimg.com/images/g/wqEAAOSwsXFZIheF/s-l1600.jpg",
   }, {
     name: "Algorithms and Something",
     edition: "2nd",
@@ -51,9 +57,10 @@ const listings = [
     timePosted: "3h",
     author: "Ronald McDonald",
     status: "Sold",
+    thumbnail: "http://i.ebayimg.com/images/g/~HcAAOSwl1xZp0yu/s-l1600.jpg",
   }, {
     name: "Modern Webapps with COBOL and Fortran",
-    edition: "12nd",
+    edition: "12th",
     condition: "Fair",
     isbn: "9782391833312312377",
     owner: "Some Guy",
@@ -62,6 +69,7 @@ const listings = [
     timePosted: "2w",
     author: "Miller Levine",
     status: "Sold",
+    thumbnail: "http://i.ebayimg.com/images/g/X~YAAOSwqYZZp0QO/s-l1600.jpg",
   },
 ];
 
@@ -73,7 +81,7 @@ export default class MyBooksListingsScreen extends Component {
   renderMyListings(listing) {
     const {
       name,
-      // edition,
+      edition,
       condition,
       isbn,
       // owner,
@@ -81,9 +89,11 @@ export default class MyBooksListingsScreen extends Component {
       price,
       status,
       author,
+      thumbnail,
     } = listing;
 
     return (
+
       <Swipeable
         rightButtons={[
           <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]} key="edit">
@@ -102,18 +112,29 @@ export default class MyBooksListingsScreen extends Component {
           </TouchableOpacity>,
         ]}
       >
+
         <View style={listingWrapperStyle}>
+          <View style={listingPictureWrapperStyle}>
+
+            <Image
+              style={listingPictureStyle}
+              source={{ uri:thumbnail }}
+            />
+          </View>
           <View style={listingDetailsWrapperStyle}>
             <View style={listingNameWrapperStyle}>
-              <Text style={listingNameTextStyle}>{name}</Text>
+              <Text style={listingNameTextStyle}>{name}<Text style={{ color: "#444"}}> - {edition}</Text></Text>
             </View>
             <View style={listingDetailsTopWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>Status: {status}</Text>
-              <Text style={[listingSmallDetailsTextStyle, listingAuthorTextStyle]}>Author: {author}</Text>
+              <Text style={[listingSmallDetailsTextStyle, ]}>
+                <Text style={{ fontWeight: "400" }}>Author:</Text> {author}
+              </Text>
+
             </View>
             <View style={listingDetailsBottomWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, listingConditionTextStyle]}>Condition: {condition}</Text>
-              <Text style={[listingSmallDetailsTextStyle, listingIsbnTextStyle]}>Isbn: {isbn}</Text>
+              <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>
+                <Text style={{ fontWeight: "400" }}>Status:</Text> {status}
+              </Text>
             </View>
             <View style={listingDateWrapperStyle}>
               <Text style={listingDateTextStyle}>{timePosted}</Text>
@@ -127,12 +148,9 @@ export default class MyBooksListingsScreen extends Component {
     );
   }
 
-  render() {
-    return (
-      <View style={screenStyle}>
-        <View style={sortWrapperStyle}>
-          <Text style={sortTextStyle}>SORT BY</Text>
-        </View>
+  renderListings() {
+    if (listings) {
+      return (
         <View style={listingsWrapperStyle}>
           <FlatList
             data={listings}
@@ -140,6 +158,37 @@ export default class MyBooksListingsScreen extends Component {
             keyExtractor={listing => listing.isbn}
           />
         </View>
+      )
+    }
+
+    return (
+      <View style={noListingWrapperStyle}>
+        <View style={noListingIconWrapperStyle}>
+          <MaterialCommunityIcons
+            name="barcode-scan"
+            size={40}
+            color={NO_LISTING_ICON_COLOR}
+          />
+        </View>
+        <View style={{ paddingVertical: 10 }}>
+          <Text style={noListingTextStyle}>{"You have no items posted.\n Tap below to post one!"}</Text>
+        </View>
+        <View style={{ paddingVertical: 10 }}>
+          <Button
+            primary
+            raised
+            text="Post Item"
+            onPress={() => this.props.navigation.navigate("scanBook")}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <View style={screenStyle}>
+        {this.renderListings()}
       </View>
     );
   }

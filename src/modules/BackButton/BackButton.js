@@ -32,11 +32,11 @@ export default class BackButton extends Component {
   }
 
   render() {
-    const { headerLess, buttonText } = this.props;
+    const { headerLess, buttonText, style } = this.props;
 
     return (
       <TouchableOpacity
-        style={headerLess ? backButtonHeaderLessWrapperStyle : backButtonWrapperStyle}
+        style={[headerLess ? backButtonHeaderLessWrapperStyle : backButtonWrapperStyle, style]}
         onPress={this.onBackButtonPress()}
       >
         <MaterialIcons name="arrow-back" size={24} style={backButtonIconStyle} />
