@@ -10,6 +10,8 @@ export default class MyBooksBookmarksScreen extends Component {
   }
 
   render() {
+    // you haven't bookmarked anything
+    // search books
     return (
       <View style={screenStyle}>
         <Text>My Bookmarks</Text>

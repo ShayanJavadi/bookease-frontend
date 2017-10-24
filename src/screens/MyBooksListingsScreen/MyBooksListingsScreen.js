@@ -149,7 +149,7 @@ export default class MyBooksListingsScreen extends Component {
   }
 
   renderListings() {
-    if (listings) {
+    if (!listings) {
       return (
         <View style={listingsWrapperStyle}>
           <FlatList
@@ -171,13 +171,13 @@ export default class MyBooksListingsScreen extends Component {
           />
         </View>
         <View style={{ paddingVertical: 10 }}>
-          <Text style={noListingTextStyle}>{"You have no items posted.\n Tap below to post one!"}</Text>
+          <Text style={noListingTextStyle}>{"You don't have any books for sale."}</Text>
         </View>
         <View style={{ paddingVertical: 10 }}>
           <Button
             primary
             raised
-            text="Post Item"
+            text="Sell Book"
             onPress={() => this.props.navigation.navigate("scanBook")}
           />
         </View>
