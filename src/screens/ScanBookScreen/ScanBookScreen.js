@@ -105,7 +105,7 @@ export default class ScanBookScreen extends Component {
           <Button
             raised
             text="Press me"
-            onPress={() => this.handleBarCodeRead("9780072930337")}
+            onPress={() => this.handleBarCodeRead("math")}
           />
         </View>
       );
