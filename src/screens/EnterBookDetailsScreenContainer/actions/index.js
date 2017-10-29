@@ -6,6 +6,9 @@ import {
   PHOTO_GALLERY_OPEN,
   PHOTO_GALLERY_CLOSED,
 } from "./consts";
+import { BACKEND_AUTHENTICATION_HEADER } from "src/config.json";
+import base64 from "base-64";
+
 
 export const deletePhoto = (uri) => async (dispatch) => {
   FileSystem.deleteAsync(uri)
@@ -51,30 +54,60 @@ const addPhotoFromLibrary = (result) => (dispatch) => {
 }
 
 export const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) => {
-  const errorsMessages = {
-    bookTitle: "",
-    bookAuthor: "",
-    bookEdition: "",
-    bookCondition: "",
-    bookPrice: "",
-    bookIsbn: "",
-    bookDescription: "",
-    formHasErrors: false,
-  };
+  const formHasErrors = dispatch(checkForFormErrors(bookDetails));
 
-  forEach(bookDetails , (bookDetail, key) => {
-    const { value, humanizedValue } = bookDetail;
-
-    if (!value) {
-      errorsMessages.formHasErrors = true;
-      errorsMessages[`${key}`] = `${humanizedValue} is required`;
-    }
-  });
-
-  if (errorsMessages.formHasErrors) {
-     return dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages });
+  if (!formHasErrors) {
+    return;
   }
 
+  const uploadImages = (images) => {
+    const api = "https://bookease-development.herokuapp.com/upload";
+    const matchImageDetails = /\/(Photo_(.*).(jpg))/;
+
+    return imageUploadPromises = images.reduce((previousPromises, image) => {
+      return previousPromises.then(() => {
+        const uri = image.uri;
+        const imageDetails = uri.match(matchImageDetails);
+        const imageName = imageDetails[1];
+        const imageType = imageDetails[3];
+        const formData = new FormData();
+
+        formData.append('image', {
+          uri,
+          name: imageName,
+          type: `image/${imageType}`,
+        });
+
+        const options = {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        console.log(formData);
+        return fetch(api, options)
+                 .catch((e) => console.log(e))
+                 .then((response) => response.json())
+                 .then((responseData) => {
+                   console.log(responseData);
+                   console.log(responseData.url);
+                   imageUrls.push(responseData.url);
+                 });
+      })
+    }, Promise.resolve());
+  }
+
+
+  const images = bookDetails.bookPhotos.value;
+  const imageUrls = [];
+
+  uploadImages(images)
+    .then(() => {
+      console.log(imageUrls);
+    });
   // createTextbookMutation({
   //   variables: {
   //     textbook: {
@@ -95,3 +128,33 @@ export const createNewBook = (bookDetails, createTextbookMutation) => async (dis
   // TODO: save to backend if everything is good
   // delete folder after submit is succesful
 };
+
+const checkForFormErrors = (bookDetails) => (dispatch) => {
+  const errorsMessages = {
+    bookPhotos: "",
+    bookTitle: "",
+    bookAuthor: "",
+    bookEdition: "",
+    bookCondition: "",
+    bookPrice: "",
+    bookIsbn: "",
+    bookDescription: "",
+    formHasErrors: false,
+  };
+
+  forEach(bookDetails , (bookDetail, key) => {
+    const { value, humanizedValue } = bookDetail;
+
+    if (!value) {
+      errorsMessages.formHasErrors = true;
+      errorsMessages[`${key}`] = `${humanizedValue} is required`;
+    }
+  });
+
+  if (errorsMessages.formHasErrors) {
+     dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages });
+     return true;
+  }
+
+  return false
+}

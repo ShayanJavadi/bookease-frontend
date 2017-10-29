@@ -150,6 +150,10 @@ export default class EnterBookDetailsScreen extends Component {
     const { createNewBook, mutate } = this.props;
 
     const bookDetails = {
+      bookPhotos: {
+        value: this.props.photos,
+        humanizedValue: "Book Photos",
+      },
       bookTitle: {
         value: bookTitle,
         humanizedValue: "Book Title",
@@ -177,7 +181,7 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription: {
         value: bookDescription,
         humanizedValue: "Description",
-      }
+      },
     };
 
     createNewBook(bookDetails, mutate);
