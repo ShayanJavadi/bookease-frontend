@@ -18,12 +18,10 @@ export const deletePhoto = (uri) => async (dispatch) => {
 }
 
 export const updatePhotos = () => async (dispatch) => {
-  console.log('updating photos');
   FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
     .then((files) => {
       const photos = [];
       files.map((file, index) => {
-        console.log(file);
         photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
       })
       return dispatch({ type: UPDATE_PHOTOS, payload: photos });
@@ -82,37 +80,36 @@ const uploadImages = (images, bookDetails, createTextbookMutation) => (dispatch)
       const imageType = imageDetails[3];
       const formData = new FormData();
 
-      formData.append('image', {
+      formData.append("image", {
         uri,
         name: imageName,
         type: `image/${imageType}`,
       });
 
       const options = {
-        method: 'POST',
+        method: "POST",
         body: formData,
         headers: {
           Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
       };
 
       return fetch(api, options)
-             .catch((e) => console.log(e))
+             .catch((e) => console.log(e)) // eslint-disable-line no-console
              .then((response) => response.json())
              .then((responseData) => {
                imageUrls.push({ thumbnail: responseData.url, priority: key });
              });
     })
-  }, Promise.resolve())
+  }, Promise.resolve()) // eslint-disable-line no-undef
     .then(() => {
-      console.log(imageUrls);
       dispatch(saveBookToBackend(bookDetails, createTextbookMutation, imageUrls));
     });
 }
 
-const checkForFormErrors = (bookDetails) => (dispatch) => {
+const checkForFormErrors = (bookDetails) => (dispatch) => { // eslint-disable-line no-undef
   const errorsMessages = {
     bookPhotos: "",
     bookTitle: "",
@@ -144,7 +141,7 @@ const checkForFormErrors = (bookDetails) => (dispatch) => {
   return formHasErrors;
 }
 
-const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (dispatch) => {
+const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (dispatch) => { // eslint-disable-line no-unused-vars
   const {
     bookTitle,
     bookAuthor,
@@ -166,7 +163,7 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (d
     edition: bookEdition.value,
     images: imageUrls,
     condition: bookCondition.value,
-    price: 90,
+    price: bookPrice.value,
   };
 
   createTextbookMutation({
@@ -174,11 +171,10 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (d
       textbook: textbookToSave
     }
   })
-  .catch((e) => console.log(e))
-  .then((response) => {
-    console.log(response);
-  });
-
+  // .catch((e) => console.log(e))
+  // .then((response) => {
+  //   console.log(response);
+  // });
   // TODO: delete image folder here
   return;
 }

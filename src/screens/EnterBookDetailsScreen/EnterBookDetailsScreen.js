@@ -62,6 +62,8 @@ export default class EnterBookDetailsScreen extends Component {
     errorsMessages: object.isRequired,
     photoGalleryOpen: bool.isRequired,
     photos: array.isRequired,
+    mutate: func.isRequired,
+    data: object,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
