@@ -14,6 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "./consts";
+import { mapConditionToNumbers } from "src/common/lib";
 
 const {
   screenStyle,
@@ -136,14 +137,7 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription,
     } = this.state;
 
-    const mapConditionToNumbers = {
-      excellent: 3,
-      good: 2,
-      fair: 1,
-      poor: 0,
-    }
-
-    const bookCondition = mapConditionToNumbers[lowerCase(this.state.bookCondition)];
+    const bookCondition = mapConditionToNumbers(lowerCase(this.state.bookCondition));
 
     const bookDetails = {
       bookPhotos: {

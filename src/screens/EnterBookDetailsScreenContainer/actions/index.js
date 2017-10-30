@@ -51,64 +51,6 @@ const addPhotoFromLibrary = (result) => (dispatch) => {
     });
 }
 
-export const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) => {
-  const formHasErrors = dispatch(checkForFormErrors(bookDetails));
-
-  if (formHasErrors) {
-    return;
-  }
-
-  const images = bookDetails.bookPhotos.value;
-
-  dispatch(uploadImages(images, bookDetails, createTextbookMutation));
-};
-
-// TODO: handle loading
-// TODO: better error handling
-// TODO: navigate user to the single book screen with their newly created book
-
-const uploadImages = (images, bookDetails, createTextbookMutation) => (dispatch) =>{
-  const api = "https://bookease-development.herokuapp.com/upload";
-  const matchImageDetails = /\/(Photo_(.*).(jpg))/;
-  const imageUrls = [];
-
-  images.reduce((previousPromises, image) => {
-    return previousPromises.then(() => {
-      const { uri, key } = image;
-      const imageDetails = uri.match(matchImageDetails);
-      const imageName = imageDetails[1];
-      const imageType = imageDetails[3];
-      const formData = new FormData();
-
-      formData.append("image", {
-        uri,
-        name: imageName,
-        type: `image/${imageType}`,
-      });
-
-      const options = {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      return fetch(api, options)
-             .catch((e) => console.log(e)) // eslint-disable-line no-console
-             .then((response) => response.json())
-             .then((responseData) => {
-               imageUrls.push({ thumbnail: responseData.url, priority: key });
-             });
-    })
-  }, Promise.resolve()) // eslint-disable-line no-undef
-    .then(() => {
-      dispatch(saveBookToBackend(bookDetails, createTextbookMutation, imageUrls));
-    });
-}
-
 const checkForFormErrors = (bookDetails) => (dispatch) => { // eslint-disable-line no-undef
   const errorsMessages = {
     bookPhotos: "",
@@ -139,6 +81,74 @@ const checkForFormErrors = (bookDetails) => (dispatch) => { // eslint-disable-li
   }
 
   return formHasErrors;
+}
+
+export const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) => {
+  const formHasErrors = dispatch(checkForFormErrors(bookDetails));
+
+  if (formHasErrors) {
+    return;
+  }
+
+  const images = bookDetails.bookPhotos.value;
+
+  dispatch(uploadImages(images, bookDetails, createTextbookMutation));
+};
+
+// TODO: handle loading
+// TODO: better error handling
+// TODO: navigate user to the single book screen with their newly created book
+
+const uploadImages = (images, bookDetails, createTextbookMutation) => (dispatch) => {
+  const imageUrls = [];
+
+  images.reduce((previousPromises, image) => {
+    return previousPromises.then(() => {
+      const { imageName, imageType } = dispatch(extractImageDetails(image));
+
+      return dispatch(uploadImage(image.uri, imageName, imageType))
+             .catch((e) => console.log(e)) // eslint-disable-line no-console
+             .then((response) => response.json())
+             .then((responseData) => {
+               imageUrls.push({ thumbnail: responseData.url, priority: image.key });
+             });
+    })
+  }, Promise.resolve()) // eslint-disable-line no-undef
+    .then(() => {
+      dispatch(saveBookToBackend(bookDetails, createTextbookMutation, imageUrls));
+    });
+}
+
+const extractImageDetails = (image) => (dispatch) => { // eslint-disable-line no-unused-vars
+  const matchImageDetails = /\/(Photo_(.*).(jpg))/;
+  const imageDetails = image.uri.match(matchImageDetails);
+  const imageName = imageDetails[1];
+  const imageType = imageDetails[3];
+
+  return { imageName, imageType };
+}
+
+const uploadImage = (imageUri, imageName, imageType) => (dispatch) => { // eslint-disable-line no-unused-vars
+  const api = "https://bookease-development.herokuapp.com/upload";
+  const formData = new FormData();
+
+  formData.append("image", {
+    uri: imageUri,
+    name: imageName,
+    type: `image/${imageType}`,
+  });
+
+  const options = {
+    method: "POST",
+    body: formData,
+    headers: {
+      Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  return fetch(api, options)
 }
 
 const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (dispatch) => { // eslint-disable-line no-unused-vars
