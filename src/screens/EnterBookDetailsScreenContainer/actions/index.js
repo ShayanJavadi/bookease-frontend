@@ -56,78 +56,61 @@ const addPhotoFromLibrary = (result) => (dispatch) => {
 export const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) => {
   const formHasErrors = dispatch(checkForFormErrors(bookDetails));
 
-  if (!formHasErrors) {
+  if (formHasErrors) {
     return;
   }
 
-  const uploadImages = (images) => {
-    const api = "https://bookease-development.herokuapp.com/upload";
-    const matchImageDetails = /\/(Photo_(.*).(jpg))/;
-
-    return imageUploadPromises = images.reduce((previousPromises, image) => {
-      return previousPromises.then(() => {
-        const uri = image.uri;
-        const imageDetails = uri.match(matchImageDetails);
-        const imageName = imageDetails[1];
-        const imageType = imageDetails[3];
-        const formData = new FormData();
-
-        formData.append('image', {
-          uri,
-          name: imageName,
-          type: `image/${imageType}`,
-        });
-
-        const options = {
-          method: 'POST',
-          body: formData,
-          headers: {
-            Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
-            Accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-          },
-        };
-        console.log(formData);
-        return fetch(api, options)
-                 .catch((e) => console.log(e))
-                 .then((response) => response.json())
-                 .then((responseData) => {
-                   console.log(responseData);
-                   console.log(responseData.url);
-                   imageUrls.push(responseData.url);
-                 });
-      })
-    }, Promise.resolve());
-  }
-
-
   const images = bookDetails.bookPhotos.value;
+
+  dispatch(uploadImages(images, bookDetails, createTextbookMutation));
+};
+
+// TODO: handle loading
+// TODO: better error handling
+// TODO: navigate user to the single book screen with their newly created book
+
+const uploadImages = (images, bookDetails, createTextbookMutation) => (dispatch) =>{
+  const api = "https://bookease-development.herokuapp.com/upload";
+  const matchImageDetails = /\/(Photo_(.*).(jpg))/;
   const imageUrls = [];
 
-  uploadImages(images)
+  images.reduce((previousPromises, image) => {
+    return previousPromises.then(() => {
+      const { uri, key } = image;
+      const imageDetails = uri.match(matchImageDetails);
+      const imageName = imageDetails[1];
+      const imageType = imageDetails[3];
+      const formData = new FormData();
+
+      formData.append('image', {
+        uri,
+        name: imageName,
+        type: `image/${imageType}`,
+      });
+
+      const options = {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization:`Basic ${base64.encode(BACKEND_AUTHENTICATION_HEADER)}`,
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      return fetch(api, options)
+             .catch((e) => console.log(e))
+             .then((response) => response.json())
+             .then((responseData) => {
+               imageUrls.push({ thumbnail: responseData.url, priority: key });
+             });
+    })
+  }, Promise.resolve())
     .then(() => {
       console.log(imageUrls);
+      dispatch(saveBookToBackend(bookDetails, createTextbookMutation, imageUrls));
     });
-  // createTextbookMutation({
-  //   variables: {
-  //     textbook: {
-  //       id:
-  //       title:
-  //       uid:
-  //       description:
-  //       industryIdentifiers: {
-  //         {},
-  //       },
-  //       authors:
-  //       edition:
-  //       images:
-  //     }
-  //   }
-  // })
-
-  // TODO: save to backend if everything is good
-  // delete folder after submit is succesful
-};
+}
 
 const checkForFormErrors = (bookDetails) => (dispatch) => {
   const errorsMessages = {
@@ -142,6 +125,8 @@ const checkForFormErrors = (bookDetails) => (dispatch) => {
     formHasErrors: false,
   };
 
+  let formHasErrors = false;
+
   forEach(bookDetails , (bookDetail, key) => {
     const { value, humanizedValue } = bookDetail;
 
@@ -153,8 +138,47 @@ const checkForFormErrors = (bookDetails) => (dispatch) => {
 
   if (errorsMessages.formHasErrors) {
      dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages });
-     return true;
+     formHasErrors = true;
   }
 
-  return false
+  return formHasErrors;
+}
+
+const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => (dispatch) => {
+  const {
+    bookTitle,
+    bookAuthor,
+    bookEdition,
+    bookPrice,
+    bookIsbn,
+    bookDescription,
+    bookCondition
+  } = bookDetails;
+
+  const textbookToSave = {
+    title: bookTitle.value,
+    description: bookDescription.value,
+    industryIdentifiers: {
+      type: "ISBN-13",
+      identifier: bookIsbn.value,
+    },
+    authors: [bookAuthor.value],
+    edition: bookEdition.value,
+    images: imageUrls,
+    condition: bookCondition.value,
+    price: 90,
+  };
+
+  createTextbookMutation({
+    variables: {
+      textbook: textbookToSave
+    }
+  })
+  .catch((e) => console.log(e))
+  .then((response) => {
+    console.log(response);
+  });
+
+  // TODO: delete image folder here
+  return;
 }

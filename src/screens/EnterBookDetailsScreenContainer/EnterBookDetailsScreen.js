@@ -13,7 +13,7 @@ const mapStateToProps = ({ EnterBookDetailsReducer }) => ({
 });
 
 const Container = graphql(createTextbookMutation, {
-  options: props => ({ variables: { textbook: props.textbook } }),
+  options: props => ({ variables: { textbook: props.textbook || {} } }),
 });
 
 

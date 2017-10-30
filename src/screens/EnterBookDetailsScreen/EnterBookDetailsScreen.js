@@ -9,7 +9,7 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty } from "lodash";
+import { isEmpty, lowerCase } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
@@ -84,19 +84,6 @@ export default class EnterBookDetailsScreen extends Component {
   inputs = {}
 
   async componentDidMount() {
-    FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
-      .then((files) => {
-        console.log('asdaadr');
-        console.log(files);
-        FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos/${files[0]}`)
-        .then((image) => console.log(image));
-        const photos = [];
-        files.map((file, index) => {
-          console.log(file);
-          photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
-        })
-      })
-
     const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
     if (!photosDirectory.exists) {
       FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`);
@@ -137,17 +124,24 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onFormSubmit() {
+    const { createNewBook, mutate } = this.props;
     const {
       bookTitle,
       bookAuthor,
       bookEdition,
-      bookCondition,
-      bookPrice,
       bookIsbn,
+      bookPrice,
       bookDescription,
     } = this.state;
 
-    const { createNewBook, mutate } = this.props;
+    const mapConditionToNumbers = {
+      excellent: 3,
+      good: 2,
+      fair: 1,
+      poor: 0,
+    }
+
+    const bookCondition = mapConditionToNumbers[lowerCase(this.state.bookCondition)];
 
     const bookDetails = {
       bookPhotos: {
