@@ -9,11 +9,12 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty } from "lodash";
+import { isEmpty, lowerCase } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "./consts";
+import { mapConditionToNumbers } from "src/common/lib";
 
 const {
   screenStyle,
@@ -62,6 +63,8 @@ export default class EnterBookDetailsScreen extends Component {
     errorsMessages: object.isRequired,
     photoGalleryOpen: bool.isRequired,
     photos: array.isRequired,
+    mutate: func.isRequired,
+    data: object,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -124,17 +127,23 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onFormSubmit() {
+    const { createNewBook, mutate } = this.props;
     const {
       bookTitle,
       bookAuthor,
       bookEdition,
-      bookCondition,
-      bookPrice,
       bookIsbn,
+      bookPrice,
       bookDescription,
     } = this.state;
 
+    const bookCondition = mapConditionToNumbers(lowerCase(this.state.bookCondition));
+
     const bookDetails = {
+      bookPhotos: {
+        value: this.props.photos,
+        humanizedValue: "Book Photos",
+      },
       bookTitle: {
         value: bookTitle,
         humanizedValue: "Book Title",
@@ -162,9 +171,10 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription: {
         value: bookDescription,
         humanizedValue: "Description",
-      }
-    }
-    this.props.createNewBook(bookDetails);
+      },
+    };
+
+    createNewBook(bookDetails, mutate);
   }
 
   onDeletePhotoPress() {
@@ -470,6 +480,14 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
+    const error =  this.props.data ?
+    this.props.data.error :
+    null;
+
+    if (error) {
+      console.warn(error); // eslint-disable-line no-console
+    }
+
     return (
       <View style={screenStyle}>
         <KeyboardAwareScrollView
