@@ -17,10 +17,12 @@ import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScree
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
+import EmailPasswordScreen from "../screens/EmailPasswordScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
-import FullNameScreen from "../screens/FullNameScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
+import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -92,17 +94,6 @@ const MainNavigator = StackNavigator({
   }
 });
 
-const SchoolSelectionNavigator = StackNavigator({
-  schoolSelection: {
-    screen: SchoolSelectionScreen,
-  },
-  homeScreen: {
-    screen: HomeNavigator,
-  },
-}, {
-  headerMode: "none",
-});
-
 const AuthNavigator = StackNavigator({
   auth: {
     screen: AuthScreen,
@@ -113,6 +104,9 @@ const AuthNavigator = StackNavigator({
   emailPinScreen: {
     screen: EmailPinScreen,
   },
+  emailPasswordScreen: {
+    screen: EmailPasswordScreen,
+  },
   phoneScreen: {
     screen: PhoneScreen,
   },
@@ -122,11 +116,17 @@ const AuthNavigator = StackNavigator({
   phonePasswordScreen: {
     screen: PhonePasswordScreen,
   },
-  fullNameScreen: {
-    screen: FullNameScreen,
+  changeFullNameScreen: {
+    screen: ChangeFullNameScreen,
+  },
+  changePasswordScreen: {
+    screen: ChangePasswordScreen,
   },
   schoolSelectionScreen: {
-    screen: SchoolSelectionNavigator,
+    screen: SchoolSelectionScreen,
+  },
+  homeScreen: {
+    screen: HomeNavigator,
   },
 }, {
   headerMode: "none",

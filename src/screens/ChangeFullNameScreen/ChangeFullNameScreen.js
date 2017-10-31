@@ -15,7 +15,7 @@ const {
   submitButtonTextStyle,
  } = styles;
 
-export default class FullNameScreen extends Component {
+export default class ChangeFullNameScreen extends Component {
   static navigationOptions = {
     header: null,
   }
@@ -33,24 +33,28 @@ export default class FullNameScreen extends Component {
     submitButtonEnabled: false,
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      submitButtonEnabled: props.isFullNameValid,
+    });
+  }
+
   componentDidMount() {
     this.input.focus();
   }
 
-  validateName(name) {
-    const validationRegExp = /\S+\s+\S+/;
-    return validationRegExp.test(name);
-  }
-
   onChangeText(text) {
-    this.setState({
-      fullName: text,
-      submitButtonEnabled: this.validateName(text),
-    });
+    this.setState({ fullName: text });
+    this.props.validateFullName({ id: 0, fullName: text });
   }
 
   onSubmitButtonPress() {
-    this.props.navigation.navigate(this.props.nextScreen);
+    this.props.submitFullName({
+      password: this.state.password,
+      profileData: this.props.navigation.state.params.profileData,
+      submitter: this.props.mutate,
+    });
+    this.props.navigation.navigate(this.props.nextScreen, { profileData: this.props.navigation.state.params.profileData });
   }
 
 

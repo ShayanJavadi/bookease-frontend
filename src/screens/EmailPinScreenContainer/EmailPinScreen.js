@@ -1,15 +1,16 @@
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 import * as actions from "./actions";
 import queries from "./graphql/queries";
 import PinScreen from "../PinScreen";
 
-const { validatePinMutation } = queries;
+const { signInWithEmailMutation, validatePinMutation } = queries;
 
 const mapStateToProps = ({ emailPinValidationReducer }) => ({
   isPinValid: emailPinValidationReducer.isPinValid,
+  profileData: emailPinValidationReducer.profileData,
   updateCounter: emailPinValidationReducer.updateCounter,
-  nextScreen: "schoolSelectionScreen",
+  nextScreen: "changePasswordScreen",
 });
 
 const Container = graphql(validatePinMutation, {

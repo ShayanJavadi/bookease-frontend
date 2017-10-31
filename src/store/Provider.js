@@ -9,9 +9,12 @@ import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import { facebookAuthReducer, googleAuthReducer } from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
 import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
+import emailPasswordValidationReducer from "../screens/EmailPasswordScreenContainer/reducers";
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
 import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContainer/reducers";
+import fullNameValidationReducer from "../screens/ChangeFullNameScreenContainer/reducers"
+import changePasswordValidationReducer from "../screens/ChangePasswordScreenContainer/reducers"
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
@@ -43,9 +46,12 @@ const reducers = combineReducers({
   googleAuthReducer,
   emailValidationReducer,
   emailPinValidationReducer,
+  emailPasswordValidationReducer,
   phoneValidationReducer,
   phonePinValidationReducer,
   phonePasswordValidationReducer,
+  changePasswordValidationReducer,
+  fullNameValidationReducer,
   scanBookReducer,
   EnterBookDetailsReducer,
   EnterBookDetailsCameraReducer,

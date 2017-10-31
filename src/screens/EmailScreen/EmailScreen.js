@@ -77,11 +77,17 @@ export default class EmailScreen extends Component {
     })
     .then(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("emailPinScreen", { identifier: this.state.email });
+        this.props.navigation.navigate("emailPinScreen", {
+          identifier: this.state.email,
+         });
       }
     )
-    .catch(() =>
-      this.setState({ emailInUse: true, isWaiting: false  })
+    .catch(() => {
+        this.setState({ isWaiting: false  });
+        this.props.navigation.navigate("emailPasswordScreen", {
+          profileData: { email: this.state.email }
+        });
+      }
     );
   }
 

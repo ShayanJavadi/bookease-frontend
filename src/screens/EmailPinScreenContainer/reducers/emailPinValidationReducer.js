@@ -4,7 +4,8 @@ import {
 } from "../actions/consts";
 
 const INITIAL_STATE = {
-  isPinValid: undefined,
+  isPinValid: false,
+  profileData: { },
   updateCounter: 0,
 };
 
@@ -14,11 +15,13 @@ export default (state = INITIAL_STATE, action) => {
       return {
         updateCounter: state.updateCounter + 1,
         isPinValid: true,
+        profileData: { id: action.payload.id, email: action.payload.email },
       };
     case PIN_INVALID:
       return {
         updateCounter: state.updateCounter + 1,
         isPinValid: false,
+        userId: action.payload,
       };
     default:
       return state;

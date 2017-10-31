@@ -28,14 +28,19 @@ export default class PasswordScreen extends Component {
   }
 
   static propTypes = {
+    message: string.isRequired,
     isPasswordValid: bool.isRequired,
-    validatePassword: func.isRequired,
+    submitPassword: func.isRequired,
     nextScreen: string.isRequired,
     mutate: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
       state: object.isRequired
-    }).isRequired
+    }).isRequired,
+  }
+
+  static defaultProps = {
+    message: "Enter your password",
   }
 
   state = {
@@ -45,9 +50,13 @@ export default class PasswordScreen extends Component {
     submitButtonEnabled: false,
   }
 
+  componentDidMount() {
+    this.input.focus();
+  }
+
   componentWillReceiveProps(props) {
     if (props.isPasswordValid) {
-      this.props.navigation.navigate(this.props.nextScreen);
+      this.props.navigation.navigate(this.props.nextScreen, { profileData: props.navigation.state.params.profileData });
     }
     else {
       this.input.setNativeProps({ text: "" });
@@ -65,10 +74,10 @@ export default class PasswordScreen extends Component {
   }
 
   onSubmitButtonPress() {
-    this.props.validatePassword({
+    this.props.submitPassword({
       password: this.state.password,
-      identifier: this.props.navigation.state.params.identifier,
-      verifier: this.props.mutate,
+      profileData: this.props.navigation.state.params.profileData,
+      submitter: this.props.mutate,
     });
   }
 
@@ -83,7 +92,7 @@ export default class PasswordScreen extends Component {
     return (
       <View style={screenStyle}>
         <View style={topContainerStyle}>
-          <Text style={headerTextStyle}>Enter your password</Text>
+          <Text style={headerTextStyle}>{this.props.message}</Text>
           <Text style={invalidPasswordTextStyle}>{this.state.invalidPasswordEntered ? "Incorrect password" : " "}</Text>
           <View style={inputContainerStyle}>
             <TextInput

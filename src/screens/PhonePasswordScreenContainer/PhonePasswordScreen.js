@@ -9,7 +9,7 @@ const { signInWithPhoneNumberMutation } = queries;
 const mapStateToProps = ({ phonePasswordValidationReducer }) => ({
   isPasswordValid: phonePasswordValidationReducer.isPasswordValid,
   updateCounter: phonePasswordValidationReducer.updateCounter,
-  nextScreen: "fullNameScreen",
+  nextScreen: "changeFullNameScreen",
 });
 
 const Container = graphql(signInWithPhoneNumberMutation, {

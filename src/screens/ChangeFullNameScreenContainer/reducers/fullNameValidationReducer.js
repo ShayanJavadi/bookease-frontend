@@ -1,24 +1,24 @@
 import {
-  PIN_VALID,
-  PIN_INVALID,
+  FULL_NAME_VALID,
+  FULL_NAME_INVALID,
 } from "../actions/consts";
 
 const INITIAL_STATE = {
-  isPinValid: false,
+  isFullNameValid: false,
   updateCounter: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case PIN_VALID:
+    case FULL_NAME_VALID:
       return {
         updateCounter: state.updateCounter + 1,
-        isPinValid: true,
+        isFullNameValid: true,
       };
-    case PIN_INVALID:
+    case FULL_NAME_INVALID:
       return {
         updateCounter: state.updateCounter + 1,
-        isPinValid: false,
+        isFullNameValid: false,
       };
     default:
       return state;

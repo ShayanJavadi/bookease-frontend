@@ -28,6 +28,7 @@ export default class PinScreen extends Component {
 
   static propTypes = {
     isPinValid: bool.isRequired,
+    profileData: object.isRequired,
     validatePin: func.isRequired,
     nextScreen: string.isRequired,
     mutate: func.isRequired,
@@ -53,7 +54,7 @@ export default class PinScreen extends Component {
   componentWillReceiveProps(props) {
     if (props.isPinValid) {
       this.setState({ isWaiting: false });
-      this.props.navigation.navigate(this.props.nextScreen);
+      this.props.navigation.navigate(this.props.nextScreen, { profileData: props.profileData });
     }
     else {
       this.hiddenInput.setNativeProps({ text: "" });
