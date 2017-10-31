@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput } from "react-native";
-import { func, string, shape, object } from "prop-types";
+import { func, string, shape, object, bool } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -22,6 +22,10 @@ export default class ChangeFullNameScreen extends Component {
 
   static propTypes = {
     nextScreen: string.isRequired,
+    validateFullName: func.isRequired,
+    submitFullName: func.isRequired,
+    mutate: func.isRequired,
+    isFullNameValid: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired,
       state: object.isRequired
@@ -45,7 +49,7 @@ export default class ChangeFullNameScreen extends Component {
 
   onChangeText(text) {
     this.setState({ fullName: text });
-    this.props.validateFullName({ id: 0, fullName: text });
+    this.props.validateFullName({ fullName: text });
   }
 
   onSubmitButtonPress() {

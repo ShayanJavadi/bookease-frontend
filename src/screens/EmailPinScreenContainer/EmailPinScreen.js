@@ -1,10 +1,10 @@
-import { graphql, compose } from "react-apollo";
+import { graphql } from "react-apollo";
 import { connect } from "react-redux";
 import * as actions from "./actions";
 import queries from "./graphql/queries";
 import PinScreen from "../PinScreen";
 
-const { signInWithEmailMutation, validatePinMutation } = queries;
+const { validatePinMutation } = queries;
 
 const mapStateToProps = ({ emailPinValidationReducer }) => ({
   isPinValid: emailPinValidationReducer.isPinValid,

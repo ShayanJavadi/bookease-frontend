@@ -13,5 +13,5 @@ export const submitPassword = ({ password, profileData, submitter }) => (dispatc
     }
   })
   .then(() => dispatch({ type: PASSWORD_ACCEPTED }))
-  .catch((err) => dispatch({ type: PASSWORD_NOT_ACCEPTED }));
+  .catch(() => dispatch({ type: PASSWORD_NOT_ACCEPTED }));
 }
