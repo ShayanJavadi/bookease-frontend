@@ -13,7 +13,7 @@ import { isEmpty, lowerCase } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
-import { BOOK_CONDITIONS } from "./consts";
+import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers } from "src/common/lib";
 
 const {
@@ -491,8 +491,9 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View style={screenStyle}>
         <KeyboardAwareScrollView
-          style={{ paddingTop: 20 }}
+          enableResetScrollToCoords={false}
           extraScrollHeight={80}
+          style={{ paddingTop: 20 }}
         >
           {this.renderPictureInput()}
           {this.renderForm()}

@@ -1,9 +1,9 @@
-export const BOOK_CONDITIONS = [{
+const BOOK_CONDITIONS = [{
   value: "Excellent",
 }, {
   value: "Good",
 }, {
   value: "Fair",
-}, {
-  value: "Poor",
 }];
+
+export default BOOK_CONDITIONS;

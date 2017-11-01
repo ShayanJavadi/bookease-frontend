@@ -1,9 +1,8 @@
 const mapConditionToNumbers = (condition) => {
   const mapping = {
-    excellent: 3,
-    good: 2,
-    fair: 1,
-    poor: 0,
+    excellent: 2,
+    good: 1,
+    fair: 0,
   }
 
   return mapping[condition];
