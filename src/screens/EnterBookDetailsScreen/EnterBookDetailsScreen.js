@@ -25,6 +25,7 @@ const {
   buttonTextStyle,
   buttonContainerStyle,
   pictureInputStyle,
+  pictureInputStyleHasErrors,
   pictureCarouselWrapperStyle,
   pictureCarouselStyle,
   carouselSlidesWrapperStyle,
@@ -38,7 +39,10 @@ const {
   modalButtonWrapperStyle,
   pictureInputHeaderTextStyle,
   pictureInputHorizontalRuleStyle,
+  pictureInputHeaderTextStyleHasErrors,
+  pictureInputHorizontalRuleStyleHasErrors,
   pictureInputActionButtonStyle,
+  pictureInputErrorMessageStyle,
 } = styles;
 
 const {
@@ -51,6 +55,15 @@ export default class EnterBookDetailsScreen extends Component {
     tabBarVisible: false,
     headerTitle: "Enter Book Details",
     headerLeft: <BackButton navigation={navigation}/>,
+    headerRight: (
+      <Button
+        text="submit"
+        primary
+        raised
+        style={{ container: { margin: 10 } }}
+        onPress={() => navigation.state.params.onFormSubmit()}
+      />
+    ),
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,
     headerBackTitleStyle: { color: "#fff" }
@@ -58,11 +71,11 @@ export default class EnterBookDetailsScreen extends Component {
 
   static propTypes = {
     createNewBook: func.isRequired,
-    launchPhotoLibrary: func.isRequired,
-    deletePhoto: func.isRequired,
+    launchImageLibrary: func.isRequired,
+    deleteImage: func.isRequired,
     errorsMessages: object.isRequired,
-    photoGalleryOpen: bool.isRequired,
-    photos: array.isRequired,
+    imageGalleryOpen: bool.isRequired,
+    images: array.isRequired,
     mutate: func.isRequired,
     data: object,
     navigation: shape({
@@ -79,7 +92,7 @@ export default class EnterBookDetailsScreen extends Component {
     bookIsbn: undefined,
     bookDescription: undefined,
     cameraModalVisible: false,
-    deletePhotoModalVisible: false,
+    deleteImageModalVisible: false,
     descriptionTextInputSelected: false,
     imageSlidesIndex: 0,
   }
@@ -87,9 +100,15 @@ export default class EnterBookDetailsScreen extends Component {
   inputs = {}
 
   async componentDidMount() {
-    const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
-    if (!photosDirectory.exists) {
-      FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`);
+    const { navigation } = this.props;
+
+    navigation.setParams({
+      onFormSubmit: this.onFormSubmit,
+    });
+
+    const imagesDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}images`);
+    if (!imagesDirectory.exists) {
+      FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}images`);
     }
 
     const scannedTextbook = this.props.navigation.state.params ?
@@ -102,7 +121,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (!this.props.photoGalleryOpen && nextProps.photoGalleryOpen) {
+    if (!this.props.imageGalleryOpen && nextProps.imageGalleryOpen) {
       return false;
     }
 
@@ -112,9 +131,9 @@ export default class EnterBookDetailsScreen extends Component {
   async componentWillUnmount() {
     // this is for debuging purposes. in the actual app
     // the directory will be deleted after the form is submitted.
-    const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
-    if (!photosDirectory.exists) {
-      FileSystem.deleteAsync(`${FileSystem.documentDirectory}photos`);
+    const imagesDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}images`);
+    if (!imagesDirectory.exists) {
+      FileSystem.deleteAsync(`${FileSystem.documentDirectory}images`);
     }
   }
 
@@ -126,7 +145,7 @@ export default class EnterBookDetailsScreen extends Component {
     this.setState({ bookEdition: edition })
   }
 
-  onFormSubmit() {
+  onFormSubmit = () => {
     const { createNewBook, mutate } = this.props;
     const {
       bookTitle,
@@ -138,11 +157,10 @@ export default class EnterBookDetailsScreen extends Component {
     } = this.state;
 
     const bookCondition = mapConditionToNumbers(lowerCase(this.state.bookCondition));
-
     const bookDetails = {
-      bookPhotos: {
-        value: this.props.photos,
-        humanizedValue: "Book Photos",
+      bookImages: {
+        value: this.props.images,
+        humanizedValue: "Book Images",
       },
       bookTitle: {
         value: bookTitle,
@@ -173,12 +191,12 @@ export default class EnterBookDetailsScreen extends Component {
         humanizedValue: "Description",
       },
     };
-
+    alert("sub")
     createNewBook(bookDetails, mutate);
   }
 
-  onDeletePhotoPress() {
-    this.setState({ deletePhotoModalVisible: true, cameraModalVisible: false });
+  onDeleteImagePress() {
+    this.setState({ deleteImageModalVisible: true, cameraModalVisible: false });
   }
 
   onCameraPress() {
@@ -186,26 +204,26 @@ export default class EnterBookDetailsScreen extends Component {
     this.props.navigation.navigate("newBookCamera");
   }
 
-  onPhotoLibraryPress() {
-    this.props.launchPhotoLibrary();
+  onImageLibraryPress() {
+    this.props.launchImageLibrary();
     this.setState({ cameraModalVisible: false });
   }
 
   onModalActionPress(action) {
-    const { deletePhoto, photos } = this.props;
+    const { deleteImage, images } = this.props;
 
     if (action === "erase") {
-      deletePhoto(photos[this.state.imageSlidesIndex].uri)
+      deleteImage(images[this.state.imageSlidesIndex].uri)
     }
 
-    this.setState({ deletePhotoModalVisible: false });
+    this.setState({ deleteImageModalVisible: false });
   }
 
 // TODO: bring up bigger swiper modal with the same pictures when you press on the pictures
-  renderCarouselSlides(photos) {
-    return photos.map((photo) => (
-      <View key={photo.key} style={carouselSlidesWrapperStyle}>
-        <TouchableOpacity onPress={() => this.onDeletePhotoPress()} style={carouselDeleteButtonWrapperStyle}>
+  renderCarouselSlides(images) {
+    return images.map((image) => (
+      <View key={image.key} style={carouselSlidesWrapperStyle}>
+        <TouchableOpacity onPress={() => this.onDeleteImagePress()} style={carouselDeleteButtonWrapperStyle}>
           <MaterialCommunityIcons name="close-circle-outline" size={25} style={{ color: "#fff" }}/>
         </TouchableOpacity>
         <TouchableHighlight
@@ -214,7 +232,7 @@ export default class EnterBookDetailsScreen extends Component {
         >
           <Image
             style={{ flex: 1 }}
-            source={{ uri: photo.uri }}
+            source={{ uri: image.uri }}
           />
         </TouchableHighlight>
       </View>
@@ -222,8 +240,9 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureCarousel() {
-    const { photos } = this.props;
-    if (!isEmpty(photos)) {
+    const { images, errorsMessages } = this.props;
+
+    if (!isEmpty(images)) {
       return (
           <View style={pictureCarouselWrapperStyle}>
             <Swiper
@@ -236,7 +255,7 @@ export default class EnterBookDetailsScreen extends Component {
               style={pictureCarouselStyle}
               onIndexChanged={(index) => {this.setState({ imageSlidesIndex: index })}}
             >
-              {this.renderCarouselSlides(photos)}
+              {this.renderCarouselSlides(images)}
             </Swiper>
             <ActionButton
               buttonColor={primaryColor}
@@ -252,7 +271,7 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View style={pictureInputWrapperStyle}>
         <TouchableOpacity
-          style={pictureInputStyle}
+          style={errorsMessages.bookImages ? pictureInputStyleHasErrors : pictureInputStyle}
           onPress={() => this.setState({ cameraModalVisible: true })}
         >
           <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
@@ -269,15 +288,20 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureInput() {
+    const { errorsMessages } = this.props;
+
     return (
       <View>
         <View>
-          <Text style={pictureInputHeaderTextStyle}>Book Pictures</Text>
+          <Text style={errorsMessages.bookImages ? pictureInputHeaderTextStyleHasErrors : pictureInputHeaderTextStyle}>Book Pictures*</Text>
         </View>
           {this.renderPictureCarousel()}
         <View
-          style={pictureInputHorizontalRuleStyle}
+          style={errorsMessages.bookImages ? pictureInputHorizontalRuleStyleHasErrors : pictureInputHorizontalRuleStyle}
         />
+        <View>
+          {errorsMessages.bookImages ? <Text style={pictureInputErrorMessageStyle}>{errorsMessages.bookImages}</Text> : null}
+        </View>
       </View>
     )
   }
@@ -305,7 +329,7 @@ export default class EnterBookDetailsScreen extends Component {
         <TextField
           returnKeyType="next"
           error={errorsMessages.bookTitle}
-          label="Book Title"
+          label="Book Title*"
           value={bookTitle}
           fontSize={14}
           tintColor={primaryColor}
@@ -317,7 +341,7 @@ export default class EnterBookDetailsScreen extends Component {
         <TextField
           returnKeyType="next"
           error={errorsMessages.bookAuthor}
-          label="Author(s)"
+          label="Author(s)*"
           value={bookAuthor}
           fontSize={14}
           tintColor={primaryColor}
@@ -327,9 +351,10 @@ export default class EnterBookDetailsScreen extends Component {
           onSubmitEditing={() => this.focusNextField("edition")}
         />
         <TextField
+          keyboardType="numeric"
           returnKeyType="next"
           error={errorsMessages.bookEdition}
-          label="Edition"
+          label="Edition*"
           value={bookEdition}
           fontSize={14}
           tintColor={primaryColor}
@@ -339,7 +364,7 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <Dropdown
           error={errorsMessages.bookCondition}
-          label="Condition"
+          label="Condition*"
           data={BOOK_CONDITIONS}
           fontSize={14}
           animationDuration={120}
@@ -351,7 +376,7 @@ export default class EnterBookDetailsScreen extends Component {
           returnKeyType="next"
           keyboardType="numeric"
           error={errorsMessages.bookPrice}
-          label="Price"
+          label="Price*"
           value={bookPrice}
           fontSize={14}
           tintColor={primaryColor}
@@ -362,8 +387,9 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <TextField
           returnKeyType="next"
+          keyboardType="numeric"
           error={errorsMessages.bookIsbn}
-          label="ISBN"
+          label="ISBN*"
           value={bookIsbn}
           fontSize={14}
           tintColor={primaryColor}
@@ -374,7 +400,7 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <TextField
           error={errorsMessages.bookDescription}
-          label="Description"
+          label="*Description"
           title="Provide additional information"
           value={bookDescription}
           multiline={true}
@@ -401,7 +427,7 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View style={buttonWrapperStyle}>
         <Button
-          text="Confirm"
+          text="Submit"
           raised
           style={{ text: buttonTextStyle, container: buttonContainerStyle }}
           onPress={() => this.onFormSubmit()}
@@ -430,10 +456,10 @@ export default class EnterBookDetailsScreen extends Component {
                 <Text style={{ marginTop: 10 }}>Camera</Text>
               </View>
               <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity style={modalButtonStyle} onPress={() => this.onPhotoLibraryPress()}>
+                <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
                   <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
                 </TouchableOpacity>
-              <Text style={{ marginTop: 10 }}>Photos</Text>
+              <Text style={{ marginTop: 10 }}>Images</Text>
               </View>
             </View>
           </Content>
@@ -448,13 +474,13 @@ export default class EnterBookDetailsScreen extends Component {
     )
   }
 
-  renderDeletePhotoModal() {
+  renderDeleteImageModal() {
     const { Title, Actions } = Dialog;
     return (
-      <Modal isVisible={this.state.deletePhotoModalVisible} style={modalWrapperStyle}>
+      <Modal isVisible={this.state.deleteImageModalVisible} style={modalWrapperStyle}>
         <Dialog>
           <Title>
-            <Text>Discard selected photo?</Text>
+            <Text>Discard selected image?</Text>
           </Title>
           <Actions>
             <DialogDefaultActions
@@ -494,12 +520,14 @@ export default class EnterBookDetailsScreen extends Component {
           enableResetScrollToCoords={false}
           extraScrollHeight={80}
           style={{ paddingTop: 20 }}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
         >
           {this.renderPictureInput()}
           {this.renderForm()}
           {this.renderConfirmButton()}
           {this.renderPictureInputModal()}
-          {this.renderDeletePhotoModal()}
+          {this.renderDeleteImageModal()}
         </KeyboardAwareScrollView>
         {this.renderActionButton()}
       </View>

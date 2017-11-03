@@ -1,16 +1,26 @@
 import { connect } from "react-redux";
 import { graphql } from "react-apollo";
+import { bindActionCreators } from "redux";
 import mutations from "./graphql/mutations";
-import * as actions from "./actions";
+import actions from "./actions";
 import EnterBookDetailsScreen from "../EnterBookDetailsScreen";
 
 const { createTextbookMutation } = mutations;
+const { createNewBook, launchImageLibrary, deleteImage } = actions;
 
 const mapStateToProps = ({ EnterBookDetailsReducer }) => ({
   errorsMessages: EnterBookDetailsReducer.errorsMessages,
-  photos: EnterBookDetailsReducer.photos,
-  photoGalleryOpen: EnterBookDetailsReducer.photoGalleryOpen,
+  images: EnterBookDetailsReducer.images,
+  imageGalleryOpen: EnterBookDetailsReducer.imageGalleryOpen,
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    createNewBook: createNewBook,
+    launchImageLibrary: launchImageLibrary,
+    deleteImage: deleteImage,
+  }, dispatch)
+};
 
 const Container = graphql(createTextbookMutation, {
   options: props => ({ variables: { textbook: props.textbook || {} } }),
@@ -19,5 +29,5 @@ const Container = graphql(createTextbookMutation, {
 
 export default Container(connect(
   mapStateToProps,
-  actions,
+  mapDispatchToProps,
 )(EnterBookDetailsScreen));
