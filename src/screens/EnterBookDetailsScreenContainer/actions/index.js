@@ -1,4 +1,4 @@
-import { forEach, isEmpty, isNumber } from "lodash";
+import { reduce, isEmpty, isNumber } from "lodash";
 import { FileSystem, ImagePicker } from "expo"
 import {
   FORM_HAS_ERRORS,
@@ -59,7 +59,7 @@ export const createNewBook = (bookDetails, createTextbookMutation) => async (dis
 
   const images = bookDetails.bookPhotos.value;
 
-  uploadImages(images, bookDetails, createTextbookMutation);
+  return uploadImages(images, bookDetails, createTextbookMutation);
 };
 
 // TODO: handle loading
@@ -82,24 +82,16 @@ const uploadImages = (images, bookDetails, createTextbookMutation) => {
     })
   }, Promise.resolve()) // eslint-disable-line no-undef
     .then(() => {
-      saveBookToBackend(bookDetails, createTextbookMutation, imageUrls);
+      return saveBookToBackend(bookDetails, createTextbookMutation, imageUrls);
     });
 }
 
 const checkForFormErrors = (bookDetails, dispatch) => { // eslint-disable-line no-undef
   const errorsMessages = {
-    bookPhotos: "",
-    bookTitle: "",
-    bookAuthor: "",
-    bookEdition: "",
-    bookCondition: "",
-    bookPrice: "",
-    bookIsbn: "",
-    bookDescription: "",
     formHasErrors: false,
   };
 
-  forEach(bookDetails , (bookDetail, key) => {
+  reduce(bookDetails , (errors, bookDetail, key) => {
     const { value, humanizedValue } = bookDetail;
     if (!value && !isNumber(value)) {
       errorsMessages.formHasErrors = true;
@@ -117,7 +109,7 @@ const checkForFormErrors = (bookDetails, dispatch) => { // eslint-disable-line n
         errorsMessages.formHasErrors = true;
       }
     }
-  });
+  }, errorsMessages);
 
   if (errorsMessages.formHasErrors) {
      dispatch({ type: FORM_HAS_ERRORS, payload: errorsMessages });
