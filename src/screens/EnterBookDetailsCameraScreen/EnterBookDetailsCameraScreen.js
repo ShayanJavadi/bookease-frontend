@@ -29,7 +29,7 @@ const {
 export default class EnterBookDetailsCameraScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
-    headerTitle: "Take photos copy goes here",
+    headerTitle: "Take images copy goes here",
     headerLeft: <BackButton navigation={navigation}/>,
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,
@@ -37,10 +37,10 @@ export default class EnterBookDetailsCameraScreen extends Component {
   })
 
   static propTypes = {
-    createPhotosFolder: func.isRequired,
+    createImagesFolder: func.isRequired,
     takePicture: func.isRequired,
-    updatePhotos: func.isRequired,
-    photos: array.isRequired,
+    updateImages: func.isRequired,
+    images: array.isRequired,
     loading: bool,
     navigation: shape({
       navigate: func.isRequired
@@ -52,8 +52,8 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.createPhotosFolder();
-    this.props.updatePhotos();
+    this.props.createImagesFolder();
+    this.props.updateImages();
   }
 
   toggleFlash() {
@@ -79,13 +79,13 @@ export default class EnterBookDetailsCameraScreen extends Component {
     )
   }
 
-  renderPhotosThumbnail() {
+  renderImagesThumbnail() {
     const { navigation } = this.props;
     return (
       <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Badge
-            text={`${this.props.photos ? this.props.photos.length : 0}`}
+            text={`${this.props.images ? this.props.images.length : 0}`}
             style={{ container: { flex: 1, right: 0 } }}
             size={20}
           >
@@ -132,7 +132,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
             {this.renderFlashIcon()}
           </View>
           <View style={bottomRowWrapperStyle}>
-            {this.renderPhotosThumbnail()}
+            {this.renderImagesThumbnail()}
             {this.renderCaptureButton()}
           </View>
         </Camera>
