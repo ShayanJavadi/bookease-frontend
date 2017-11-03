@@ -45,8 +45,7 @@ export const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     color: "#fff",
-    fontSize: 13,
-    fontWeight: "100",
+    fontSize: 16,
   },
   buttonContainerStyle: {
     backgroundColor: primaryColor,
@@ -70,6 +69,15 @@ export const styles = StyleSheet.create({
     zIndex: 9999,
     borderColor: "#bbb",
     borderWidth: 1,
+  },
+  pictureInputStyleHasErrors: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 350,
+    zIndex: 9999,
+    borderColor: "#d50000",
+    borderWidth: 2,
   },
   pictureCarouselWrapperStyle:{
     marginLeft: 70,
@@ -172,15 +180,37 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  pictureInputErrorMessageStyle: {
+    color: "#d50000",
+    paddingLeft: 20,
+    paddingTop: 5,
+    fontFamily: "Roboto",
+    fontSize: 10.5,
+  },
   pictureInputHeaderTextStyle: {
     color: "#888",
     paddingLeft: 20,
     paddingTop: 20,
     fontFamily: "Roboto",
+    fontSize: 12,
+  },
+  pictureInputHeaderTextStyleHasErrors: {
+    color: "#d50000",
+    paddingLeft: 20,
+    paddingTop: 20,
+    fontFamily: "Roboto",
+    fontSize: 12,
   },
   pictureInputHorizontalRuleStyle: {
     borderBottomColor: "#bbb",
     borderBottomWidth: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 30,
+  },
+  pictureInputHorizontalRuleStyleHasErrors: {
+    borderBottomColor: "#d50000",
+    borderBottomWidth: 2,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 30,

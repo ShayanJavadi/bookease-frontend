@@ -25,6 +25,7 @@ const {
   buttonTextStyle,
   buttonContainerStyle,
   pictureInputStyle,
+  pictureInputStyleHasErrors,
   pictureCarouselWrapperStyle,
   pictureCarouselStyle,
   carouselSlidesWrapperStyle,
@@ -38,7 +39,10 @@ const {
   modalButtonWrapperStyle,
   pictureInputHeaderTextStyle,
   pictureInputHorizontalRuleStyle,
+  pictureInputHeaderTextStyleHasErrors,
+  pictureInputHorizontalRuleStyleHasErrors,
   pictureInputActionButtonStyle,
+  pictureInputErrorMessageStyle,
 } = styles;
 
 const {
@@ -51,6 +55,15 @@ export default class EnterBookDetailsScreen extends Component {
     tabBarVisible: false,
     headerTitle: "Enter Book Details",
     headerLeft: <BackButton navigation={navigation}/>,
+    headerRight: (
+      <Button
+        text="submit"
+        primary
+        raised
+        style={{ container: { margin: 10 } }}
+        onPress={() => navigation.state.params.onFormSubmit()}
+      />
+    ),
     headerStyle: headerStyle,
     headerTitleStyle: headerTitleStyle,
     headerBackTitleStyle: { color: "#fff" }
@@ -87,6 +100,12 @@ export default class EnterBookDetailsScreen extends Component {
   inputs = {}
 
   async componentDidMount() {
+    const { navigation } = this.props;
+
+    navigation.setParams({
+      onFormSubmit: this.onFormSubmit,
+    });
+
     const photosDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}photos`);
     if (!photosDirectory.exists) {
       FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`);
@@ -126,7 +145,7 @@ export default class EnterBookDetailsScreen extends Component {
     this.setState({ bookEdition: edition })
   }
 
-  onFormSubmit() {
+  onFormSubmit = () => {
     const { createNewBook, mutate } = this.props;
     const {
       bookTitle,
@@ -138,7 +157,6 @@ export default class EnterBookDetailsScreen extends Component {
     } = this.state;
 
     const bookCondition = mapConditionToNumbers(lowerCase(this.state.bookCondition));
-
     const bookDetails = {
       bookPhotos: {
         value: this.props.photos,
@@ -222,7 +240,8 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureCarousel() {
-    const { photos } = this.props;
+    const { photos, errorsMessages } = this.props;
+
     if (!isEmpty(photos)) {
       return (
           <View style={pictureCarouselWrapperStyle}>
@@ -252,7 +271,7 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View style={pictureInputWrapperStyle}>
         <TouchableOpacity
-          style={pictureInputStyle}
+          style={errorsMessages.bookPhotos ? pictureInputStyleHasErrors : pictureInputStyle}
           onPress={() => this.setState({ cameraModalVisible: true })}
         >
           <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
@@ -269,15 +288,20 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureInput() {
+    const { errorsMessages } = this.props;
+
     return (
       <View>
         <View>
-          <Text style={pictureInputHeaderTextStyle}>Book Pictures</Text>
+          <Text style={errorsMessages.bookPhotos ? pictureInputHeaderTextStyleHasErrors : pictureInputHeaderTextStyle}>Book Pictures*</Text>
         </View>
           {this.renderPictureCarousel()}
         <View
-          style={pictureInputHorizontalRuleStyle}
+          style={errorsMessages.bookPhotos ? pictureInputHorizontalRuleStyleHasErrors : pictureInputHorizontalRuleStyle}
         />
+        <View>
+          {errorsMessages.bookPhotos ? <Text style={pictureInputErrorMessageStyle}>{errorsMessages.bookPhotos}</Text> : null}
+        </View>
       </View>
     )
   }
@@ -305,7 +329,7 @@ export default class EnterBookDetailsScreen extends Component {
         <TextField
           returnKeyType="next"
           error={errorsMessages.bookTitle}
-          label="Book Title"
+          label="Book Title*"
           value={bookTitle}
           fontSize={14}
           tintColor={primaryColor}
@@ -317,7 +341,7 @@ export default class EnterBookDetailsScreen extends Component {
         <TextField
           returnKeyType="next"
           error={errorsMessages.bookAuthor}
-          label="Author(s)"
+          label="Author(s)*"
           value={bookAuthor}
           fontSize={14}
           tintColor={primaryColor}
@@ -327,9 +351,10 @@ export default class EnterBookDetailsScreen extends Component {
           onSubmitEditing={() => this.focusNextField("edition")}
         />
         <TextField
+          keyboardType="numeric"
           returnKeyType="next"
           error={errorsMessages.bookEdition}
-          label="Edition"
+          label="Edition*"
           value={bookEdition}
           fontSize={14}
           tintColor={primaryColor}
@@ -339,7 +364,7 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <Dropdown
           error={errorsMessages.bookCondition}
-          label="Condition"
+          label="Condition*"
           data={BOOK_CONDITIONS}
           fontSize={14}
           animationDuration={120}
@@ -351,7 +376,7 @@ export default class EnterBookDetailsScreen extends Component {
           returnKeyType="next"
           keyboardType="numeric"
           error={errorsMessages.bookPrice}
-          label="Price"
+          label="Price*"
           value={bookPrice}
           fontSize={14}
           tintColor={primaryColor}
@@ -362,8 +387,9 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <TextField
           returnKeyType="next"
+          keyboardType="numeric"
           error={errorsMessages.bookIsbn}
-          label="ISBN"
+          label="ISBN*"
           value={bookIsbn}
           fontSize={14}
           tintColor={primaryColor}
@@ -374,7 +400,7 @@ export default class EnterBookDetailsScreen extends Component {
         />
         <TextField
           error={errorsMessages.bookDescription}
-          label="Description"
+          label="*Description"
           title="Provide additional information"
           value={bookDescription}
           multiline={true}
@@ -401,7 +427,7 @@ export default class EnterBookDetailsScreen extends Component {
     return (
       <View style={buttonWrapperStyle}>
         <Button
-          text="Confirm"
+          text="Submit"
           raised
           style={{ text: buttonTextStyle, container: buttonContainerStyle }}
           onPress={() => this.onFormSubmit()}
@@ -494,6 +520,8 @@ export default class EnterBookDetailsScreen extends Component {
           enableResetScrollToCoords={false}
           extraScrollHeight={80}
           style={{ paddingTop: 20 }}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
         >
           {this.renderPictureInput()}
           {this.renderForm()}

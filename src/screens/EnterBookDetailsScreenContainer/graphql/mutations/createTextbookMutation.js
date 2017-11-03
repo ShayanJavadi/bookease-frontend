@@ -7,7 +7,10 @@ const createTextbookMutation = gql`
       id,
       uid,
       description,
-      images,
+      images {
+        priority,
+        thumbnail,
+      },
     }
   }
 `;
