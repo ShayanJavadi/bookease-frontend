@@ -111,9 +111,11 @@ const checkForFormErrors = (bookDetails, dispatch) => { // eslint-disable-line n
       errorsMessages.formHasErrors = true;
     }
 
-    if (key === "bookIsbn" && !isISBN(value) && value) {
-      errorsMessages[`${key}`] = "Invalid ISBN number";
-      errorsMessages.formHasErrors = true;
+    if (key === "bookIsbn" && value) {
+      if (!isISBN(value)) {
+        errorsMessages[`${key}`] = "Invalid ISBN number";
+        errorsMessages.formHasErrors = true;
+      }
     }
   });
 
