@@ -54,7 +54,7 @@ export default class PinScreen extends Component {
   componentWillReceiveProps(props) {
     if (props.isPinValid) {
       this.setState({ invalidPinEntered: false, isWaiting: false });
-      this.props.navigation.navigate(this.props.nextScreen, { profileData: this.props.profileData });
+      this.props.navigation.navigate(this.props.nextScreen, { profileData: props.profileData });
     }
     else {
       this.hiddenInput.setNativeProps({ text: "" });
@@ -91,13 +91,15 @@ export default class PinScreen extends Component {
 
 
   render() {
+    const isPinInvalid = this.state.invalidPinEntered;
+
     return (
       <View style={screenStyle}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter the PIN you received</Text>
-          <Text style={invalidPinTextStyle}>{this.state.invalidPinEntered? "Incorrect PIN" : " "}</Text>
+          <Text style={invalidPinTextStyle}>{isPinInvalid ? "Incorrect PIN" : " "}</Text>
           <View style={inputContainerStyle}>
-            {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index))}
+            {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index, isPinInvalid))}
           </View>
           {!this.state.isWaiting && this.state.submitButtonEnabled &&
             (<Button
@@ -135,8 +137,9 @@ export default class PinScreen extends Component {
     );
   }
 
-  renderPinBox(index) {
-    const style = this.state.invalidPinEntered ? invalidInputStyle : inputStyle;
+  renderPinBox(index, isPinInvalid) {
+    const style = isPinInvalid ? invalidInputStyle : inputStyle;
+
     return (<TextInput
         style={style}
         key={index}

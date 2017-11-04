@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
     case PIN_INVALID:
       return {
         isPinValid: false,
-        updateCounter: state.updateCounter + 1,        
+        updateCounter: state.updateCounter + 1,
         userId: action.payload,
       };
     default:

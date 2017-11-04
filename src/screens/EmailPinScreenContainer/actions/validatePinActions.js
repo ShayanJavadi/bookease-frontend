@@ -12,5 +12,5 @@ export const validatePin = ({ pin, identifier, verifier }) => (dispatch) => {
     }
   })
   .then((response) => dispatch({ type: PIN_VALID, payload: { id: response.data.signInWithEmail.id, email: identifier } }))
-  .catch(dispatch({ type: PIN_INVALID }));
+  .catch(() => dispatch({ type: PIN_INVALID }));
 }

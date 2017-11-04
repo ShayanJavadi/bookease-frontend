@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 const changeSchoolMutation = gql`
-  mutation changeSchoolMutation($email: String, $phoneNumber: String, $schoolId: String) {
+  mutation changeSchoolMutation($email: String, $phoneNumber: String, $schoolId: ID) {
     updateProfile(email: $email, phoneNumber: $phoneNumber, schoolId: $schoolId) { id }
   }
 `;
