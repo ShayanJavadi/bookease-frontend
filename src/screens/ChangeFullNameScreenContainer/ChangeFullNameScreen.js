@@ -6,9 +6,9 @@ import ChangeFullNameScreen from "../ChangeFullNameScreen";
 
 const { setFullNameMutation } = queries;
 
-const mapStateToProps = ({ fullNameValidationReducer }) => ({
-  isFullNameValid: fullNameValidationReducer.isFullNameValid,
-  updateCounter: fullNameValidationReducer.updateCounter,
+const mapStateToProps = ({ fullNameSubmitReducer }) => ({
+  isFullNameValid: fullNameSubmitReducer.isFullNameValid,
+  updateCounter: fullNameSubmitReducer.updateCounter,
   nextScreen: "schoolSelectionScreen",
 });
 

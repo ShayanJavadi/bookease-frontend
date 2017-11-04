@@ -1,3 +1,3 @@
-import changePasswordValidationReducer from "./changePasswordValidationReducer";
+import changePasswordSubmitReducer from "./changePasswordSubmitReducer";
 
-export default changePasswordValidationReducer;
+export default changePasswordSubmitReducer;

@@ -1,4 +1,4 @@
-export const submitFullName = ({ password, profileData, submitter }) => {
+export const submitFullName = ({ password, profileData, submitter }) => () => {
   submitter({
     variables: {
       email: profileData.email,

@@ -13,14 +13,14 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PIN_VALID:
       return {
-        updateCounter: state.updateCounter + 1,
         isPinValid: true,
+        updateCounter: state.updateCounter + 1,
         profileData: { id: action.payload.id, email: action.payload.email },
       };
     case PIN_INVALID:
       return {
-        updateCounter: state.updateCounter + 1,
         isPinValid: false,
+        updateCounter: state.updateCounter + 1,        
         userId: action.payload,
       };
     default:

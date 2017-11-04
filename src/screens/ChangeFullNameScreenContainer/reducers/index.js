@@ -1,3 +1,3 @@
-import fullNameValidationReducer from "./fullNameValidationReducer";
+import fullNameSubmitReducer from "./fullNameSubmitReducer";
 
-export default fullNameValidationReducer;
+export default fullNameSubmitReducer;

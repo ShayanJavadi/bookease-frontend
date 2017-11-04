@@ -6,9 +6,9 @@ import PasswordScreen from "../PasswordScreen";
 
 const { changePasswordMutation } = queries;
 
-const mapStateToProps = ({ changePasswordValidationReducer }) => ({
-  isPasswordValid: changePasswordValidationReducer.isPasswordValid,
-  updateCounter: changePasswordValidationReducer.updateCounter,
+const mapStateToProps = ({ changePasswordSubmitReducer }) => ({
+  isPasswordValid: changePasswordSubmitReducer.isPasswordValid,
+  updateCounter: changePasswordSubmitReducer.updateCounter,
   nextScreen: "changeFullNameScreen",
   message: "Choose a password"
 });

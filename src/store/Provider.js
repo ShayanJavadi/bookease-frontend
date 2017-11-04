@@ -13,8 +13,8 @@ import emailPasswordValidationReducer from "../screens/EmailPasswordScreenContai
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
 import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContainer/reducers";
-import fullNameValidationReducer from "../screens/ChangeFullNameScreenContainer/reducers"
-import changePasswordValidationReducer from "../screens/ChangePasswordScreenContainer/reducers"
+import fullNameSubmitReducer from "../screens/ChangeFullNameScreenContainer/reducers"
+import changePasswordSubmitReducer from "../screens/ChangePasswordScreenContainer/reducers"
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
@@ -50,8 +50,8 @@ const reducers = combineReducers({
   phoneValidationReducer,
   phonePinValidationReducer,
   phonePasswordValidationReducer,
-  changePasswordValidationReducer,
-  fullNameValidationReducer,
+  changePasswordSubmitReducer,
+  fullNameSubmitReducer,
   scanBookReducer,
   EnterBookDetailsReducer,
   EnterBookDetailsCameraReducer,

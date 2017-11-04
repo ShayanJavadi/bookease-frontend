@@ -16,3 +16,13 @@ export const searchForSchool = (refetch, query) => async (dispatch) => {
     }
   }
 };
+
+export const updateSchool = ({ mutate, profileData, schoolId }) => () => {
+  mutate({
+    variables: {
+      email: profileData.email,
+      phoneNumber: profileData.phoneNumber,
+      schoolId: schoolId,
+    }
+  })
+};

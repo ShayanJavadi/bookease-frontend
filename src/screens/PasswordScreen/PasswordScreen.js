@@ -19,7 +19,7 @@ const {
   showHideButtonTextStyle,
  } = styles;
 
- const MINIMUM_PASSWORD_LENGTH = 1;
+const MINIMUM_PASSWORD_LENGTH = 1;
 
 
 export default class PasswordScreen extends Component {
