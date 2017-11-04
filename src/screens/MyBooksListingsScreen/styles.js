@@ -1,11 +1,30 @@
 import { StyleSheet } from "react-native";
+import uiTheme from "src/common/styles/uiTheme";
+
+const { palette } = uiTheme;
+const {
+  tertiaryColorDark,
+} = palette;
 
 export const SWIPE_OUT_ICON_SIZE = 25;
+export const NO_LISTING_ICON_COLOR = tertiaryColorDark;
 
 export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
-    backgroundColor: "#fafafa",
+  },
+  headerStyle: {
+    backgroundColor: tertiaryColorDark,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    zIndex: 9999,
+    height: 70,
+  },
+  headerTitleStyle: {
+    color: "#fff",
+    fontSize: 16
   },
   sortWrapperStyle: {
     flex: 1,
@@ -18,12 +37,20 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
   },
+  listingPictureWrapperStyle: {
+    justifyContent: "center",
+    paddingLeft: 5
+  },
+  listingPictureStyle: {
+    flex: .9,
+    width: 75,
+  },
   listingsWrapperStyle: {
-    flex: 10,
-    backgroundColor: "#fff",
+    flex: 1,
+    backgroundColor: "#f1f1f1",
   },
   listingWrapperStyle: {
-    height: 75,
+    height: 100,
     marginTop: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
@@ -31,6 +58,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+    flex: 1
   },
   listingTextStyle: {
     color: "#222",
@@ -42,35 +70,37 @@ export const styles = StyleSheet.create({
   },
   listingNameWrapperStyle: {
     flexDirection: "row",
-    paddingLeft: 20,
+    paddingLeft: 15,
     paddingBottom: 1,
   },
   listingDetailsTopWrapperStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 23,
+    paddingLeft: 18,
+    paddingVertical: 3
   },
   listingDetailsBottomWrapperStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 23,
+    paddingLeft: 18,
+    paddingBottom: 3,
   },
   listingDateWrapperStyle: {
     flexDirection: "row",
-    paddingLeft: 21,
+    paddingLeft: 18,
     paddingTop: 1,
   },
   listingPriceWrapperStyle: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    flex: 1.3,
   },
   listingPriceTextStyle: {
     fontWeight: "100",
   },
   listingNameTextStyle: {
     fontSize: 14,
-    color: "#444",
+    color: "#222",
   },
   listingSmallDetailsTextStyle: {
     color: "#333",
@@ -80,19 +110,16 @@ export const styles = StyleSheet.create({
   },
   listingDateTextStyle: {
     fontSize: 12,
-    color: "#555",
+    color: "#777",
   },
   listingIsbnTextStyle: {
     flex: 3,
   },
-  listingConditionTextStyle: {
-    flex: 2,
-  },
-  listingAuthorTextStyle: {
-    flex: 3,
-  },
   listingStatusTextStyle: {
     flex: 2,
+  },
+  listingEditionTextStyle: {
+    flex: 1.7,
   },
   swipeOutStyle: {
     flex: 1,
@@ -103,4 +130,21 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "700",
   },
+  noListingWrapperStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    paddingBottom: 50,
+  },
+  noListingIconWrapperStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 10,
+  },
+  noListingTextStyle: {
+    fontSize: 17,
+    lineHeight: 27,
+    color: "#444",
+    textAlign: "center",
+  }
 });

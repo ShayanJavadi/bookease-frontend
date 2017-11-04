@@ -21,7 +21,7 @@ import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/
 import EnterBookDetailsCameraReducer from "../screens/EnterBookDetailsCameraScreenContainer/reducers/";
 
 const networkInterface = createNetworkInterface({
-  uri: BACKEND_URL,
+  uri: `${BACKEND_URL}/graphql`,
   opts: {
     credentials: "include",
   },

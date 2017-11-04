@@ -9,7 +9,7 @@ const validationRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|
 export const validateEmail = (value) => (dispatch) => {
   const isValidEmail = validationRegExp.test(value);
 
-  if(isValidEmail) {
+  if (isValidEmail) {
     dispatch({ type: EMAIL_VALID });
   }
   else {

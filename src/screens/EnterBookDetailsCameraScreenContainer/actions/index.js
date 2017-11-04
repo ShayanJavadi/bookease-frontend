@@ -1,30 +1,30 @@
 import { FileSystem } from "expo";
 import { Vibration } from "react-native"
 import {
-  UPDATE_PHOTOS,
+  UPDATE_IMAGES,
   CAMERA_RQ,
   CAMERA_RS,
 } from "./consts";
 
-export const createPhotosFolder = () => (dispatch) => {
+export const createImagesFolder = () => (dispatch) => {
   dispatch({ type: CAMERA_RQ })
-  FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`)
+  FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}images`)
   .catch(() => {
     return dispatch({ type: CAMERA_RS });
   })
     .then(() => {
-      dispatch({ type: UPDATE_PHOTOS, payload: [] });
+      dispatch({ type: UPDATE_IMAGES, payload: [] });
     })
 }
 
-export const updatePhotos = () => (dispatch) => {
-  FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}photos`)
+export const updateImages = () => (dispatch) => {
+  FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}images`)
     .then((files) => {
-      const photos = [];
+      const images = [];
       files.map((file, index) => {
-        photos.push({ uri: `${FileSystem.documentDirectory}photos/${file}`, key: index })
+        images.push({ uri: `${FileSystem.documentDirectory}images/${file}`, key: index })
       })
-      dispatch({ type: UPDATE_PHOTOS, payload: photos });
+      dispatch({ type: UPDATE_IMAGES, payload: images });
     })
 }
 
@@ -37,10 +37,10 @@ export const takePicture = (camera) => async (dispatch) => {
 
   FileSystem.moveAsync({
     from: result.uri,
-    to: `${FileSystem.documentDirectory}photos/Photo_${Date.now()}.jpg`,
+    to: `${FileSystem.documentDirectory}images/Image_${Date.now()}.jpg`,
   })
     .then(() => {
-      dispatch(updatePhotos());
+      dispatch(updateImages());
       Vibration.vibrate();
     });
 };
