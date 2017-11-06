@@ -9,8 +9,10 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase } from "lodash";
+import { isEmpty, lowerCase, trim } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Spinner from 'react-native-loading-spinner-overlay';
+import { NavigationActions } from "react-navigation";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
@@ -47,20 +49,28 @@ const {
 
 const {
   primaryColor,
+  primaryColorLight,
   tertiaryColorDark,
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
-    headerTitle: "Enter Book Details",
+    headerTitle:  "Enter book detail",
     headerLeft: <BackButton navigation={navigation}/>,
     headerRight: (
       <Button
         text="submit"
-        primary
         raised
-        style={{ container: { margin: 10 } }}
+        primary
+        style={{
+          container: {
+            margin: 10,
+          },
+          text: {
+            color: "#fff",
+          },
+        }}
         onPress={() => navigation.state.params.onFormSubmit()}
       />
     ),
@@ -117,6 +127,12 @@ export default class EnterBookDetailsScreen extends Component {
 
     if (scannedTextbook) {
       this.populateFormUsingScannedTextbook(scannedTextbook);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.submittedBook) {
+      this.props.navigation.navigate("submissionSuccessScreen", { submittedBook: nextProps.submittedBook });
     }
   }
 
@@ -191,7 +207,6 @@ export default class EnterBookDetailsScreen extends Component {
         humanizedValue: "Description",
       },
     };
-    alert("sub")
     createNewBook(bookDetails, mutate);
   }
 
@@ -430,8 +445,7 @@ export default class EnterBookDetailsScreen extends Component {
           text="Submit"
           raised
           style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-          onPress={() => this.onFormSubmit()}
-        />
+          onPress={() => this.onFormSubmit()}/>
       </View>
     );
   }
@@ -530,6 +544,12 @@ export default class EnterBookDetailsScreen extends Component {
           {this.renderDeleteImageModal()}
         </KeyboardAwareScrollView>
         {this.renderActionButton()}
+        <Spinner
+          visible={this.props.isSubmitting}
+          textContent={this.props.loadingMessage}
+          overlayColor="rgba(0, 0, 0, 0.65)"
+          textStyle={{color: '#FFF'}}
+        />
       </View>
     );
   }

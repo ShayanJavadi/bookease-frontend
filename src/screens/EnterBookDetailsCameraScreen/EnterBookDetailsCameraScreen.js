@@ -9,6 +9,7 @@ import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from "./consts";
+import Toast from 'react-native-root-toast';
 
 const {
   screenStyle,
@@ -49,11 +50,21 @@ export default class EnterBookDetailsCameraScreen extends Component {
 
   state = {
     flash: "off",
+    toastMessageVisible: false,
   }
 
   componentDidMount() {
     this.props.createImagesFolder();
     this.props.updateImages();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
+      this.setState({ toastMessageVisible: true });
+      setTimeout(() => this.setState({
+          toastMessageVisible: false
+      }), 2000);
+    }
   }
 
   toggleFlash() {
@@ -109,6 +120,20 @@ export default class EnterBookDetailsCameraScreen extends Component {
     )
   }
 
+  renderToastMessage() {
+    return (
+      <Toast
+        visible={this.state.toastMessageVisible}
+        position={-120}
+        shadow={true}
+        hideOnPress={true}
+        backgroundColor="#ff003d"
+      >
+        Image added
+      </Toast>
+    )
+  }
+
   render() {
     if (this.props.loading) {
       return (
@@ -120,6 +145,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
         </View>
       )
     }
+    
     return (
       <View style={screenStyle}>
         <Camera
@@ -135,6 +161,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
             {this.renderImagesThumbnail()}
             {this.renderCaptureButton()}
           </View>
+            {this.renderToastMessage()}
         </Camera>
       </View>
     );

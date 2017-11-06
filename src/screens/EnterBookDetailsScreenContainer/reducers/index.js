@@ -3,6 +3,10 @@ import {
   UPDATE_IMAGES,
   IMAGE_GALLERY_OPEN,
   IMAGE_GALLERY_CLOSED,
+  SUBMIT_FORM_RQ,
+  UPDATE_LOADING_MESSAGE,
+  SUBMIT_FORM_RS,
+  RESET_STATE,
 } from "../actions/consts";
 
 const INITIAL_STATE = {
@@ -18,6 +22,9 @@ const INITIAL_STATE = {
   },
   images: [],
   imageGalleryOpen: false,
+  isSubmitting: false,
+  loadingMessage: "",
+  submittedBook: undefined,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,7 +36,15 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_IMAGES:
       return { ...state, images: action.payload, loading: false }
     case FORM_HAS_ERRORS:
-      return { ...state, errorsMessages: action.payload };
+      return { ...state, errorsMessages: action.payload }
+    case SUBMIT_FORM_RQ:
+      return { ...state, isSubmitting: true }
+    case UPDATE_LOADING_MESSAGE:
+      return { ...state, loadingMessage: action.payload }
+    case SUBMIT_FORM_RS:
+      return { ...state, isSubmitting: false, submittedBook: action.payload }
+    case RESET_STATE:
+      return INITIAL_STATE
     default:
       return state;
   }

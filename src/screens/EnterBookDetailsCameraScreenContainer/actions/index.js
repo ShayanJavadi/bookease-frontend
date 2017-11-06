@@ -4,6 +4,8 @@ import {
   UPDATE_IMAGES,
   CAMERA_RQ,
   CAMERA_RS,
+  TAKE_PICTURE_RQ,
+  TAKE_PICTURE_RS,
 } from "./consts";
 
 export const createImagesFolder = () => (dispatch) => {
@@ -33,7 +35,8 @@ export const takePicture = (camera) => async (dispatch) => {
     return;
   }
 
-  let result = await camera.takePictureAsync({ base64: true });
+  dispatch({ type: TAKE_PICTURE_RQ });
+  let result = await camera.takePictureAsync({ base64: true, quality: 0 });
 
   FileSystem.moveAsync({
     from: result.uri,
@@ -41,6 +44,7 @@ export const takePicture = (camera) => async (dispatch) => {
   })
     .then(() => {
       dispatch(updateImages());
+      dispatch({ type: TAKE_PICTURE_RS });
       Vibration.vibrate();
     });
 };

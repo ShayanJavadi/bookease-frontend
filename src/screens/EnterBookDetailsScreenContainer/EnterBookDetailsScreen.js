@@ -12,6 +12,9 @@ const mapStateToProps = ({ EnterBookDetailsReducer }) => ({
   errorsMessages: EnterBookDetailsReducer.errorsMessages,
   images: EnterBookDetailsReducer.images,
   imageGalleryOpen: EnterBookDetailsReducer.imageGalleryOpen,
+  isSubmitting: EnterBookDetailsReducer.isSubmitting,
+  loadingMessage: EnterBookDetailsReducer.loadingMessage,
+  submittedBook: EnterBookDetailsReducer.submittedBook,
 });
 
 const mapDispatchToProps = (dispatch) => {

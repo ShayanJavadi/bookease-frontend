@@ -15,6 +15,7 @@ import AccountScreen from "../screens/AccountScreen";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
+import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
@@ -22,6 +23,15 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
+
+const SubmissionSuccessNavigator = StackNavigator({
+  successScreen: {
+    screen: SubmissionSuccessScreen,
+  },
+}, {
+  headerMode: "none",
+  mode: "modal",
+})
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
@@ -32,9 +42,14 @@ const SellBooksNavigator = StackNavigator({
   },
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
+  },
+  submissionSuccessScreen: {
+    screen: SubmissionSuccessNavigator,
   }
 }, {
   headerMode: "none",
+  mode: "modal",
+
 });
 
 const myBooksNavigator = TabNavigator({

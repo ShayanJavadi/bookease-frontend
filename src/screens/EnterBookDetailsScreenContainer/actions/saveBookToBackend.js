@@ -1,4 +1,12 @@
-const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => { // eslint-disable-line no-unused-vars
+import {
+  UPDATE_LOADING_MESSAGE,
+  SUBMIT_FORM_RS,
+  RESET_STATE,
+} from "./consts";
+
+const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispatch) => {
+  dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Submitting your listing..." });
+
   const {
     bookTitle,
     bookAuthor,
@@ -27,6 +35,13 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls) => { 
     variables: {
       textbook: textbookToSave
     }
+  })
+  .catch((e) => console.warn(e))
+  .then((response) => {
+    console.log(response);
+    dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Done." });
+    dispatch({ type: SUBMIT_FORM_RS, payload: response.data.createTextbook });
+    dispatch({ type: RESET_STATE });
   })
   // .catch((e) => console.log(e))
   // .then((response) => {
