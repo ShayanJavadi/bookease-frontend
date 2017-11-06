@@ -6,7 +6,6 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const { palette } = uiTheme;
 const {
   primaryColor,
-  tertiaryColorDark,
 } = palette;
 
 export const styles = StyleSheet.create({
@@ -16,20 +15,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingBottom: 40,
-  },
-  headerStyle: {
-    backgroundColor: tertiaryColorDark,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    zIndex: 9999,
-    height: 70,
-  },
-  headerTitleStyle: {
-    color: "#fff",
-    fontWeight: "100",
-    fontSize: 13,
   },
   closeIconWrapperStyle: {
     position: "absolute",

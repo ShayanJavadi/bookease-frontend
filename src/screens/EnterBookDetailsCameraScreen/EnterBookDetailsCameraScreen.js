@@ -9,7 +9,7 @@ import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from "./consts";
-import Toast from 'react-native-root-toast';
+import Toast from "react-native-root-toast";
 
 const {
   screenStyle,
@@ -43,6 +43,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
     updateImages: func.isRequired,
     images: array.isRequired,
     loading: bool,
+    isTakingPicture: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -145,7 +146,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
         </View>
       )
     }
-    
+
     return (
       <View style={screenStyle}>
         <Camera

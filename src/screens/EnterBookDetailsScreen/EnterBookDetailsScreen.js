@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, TouchableHighlight, Text, Image } from "react-native";
-import { func, object, bool, array, shape } from "prop-types";
+import { func, object, bool, array, shape, string } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
 import { FileSystem } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,10 +9,9 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase, trim } from "lodash";
+import { isEmpty, lowerCase } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Spinner from 'react-native-loading-spinner-overlay';
-import { NavigationActions } from "react-navigation";
+import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
@@ -49,7 +48,6 @@ const {
 
 const {
   primaryColor,
-  primaryColorLight,
   tertiaryColorDark,
 } = palette;
 
@@ -88,6 +86,9 @@ export default class EnterBookDetailsScreen extends Component {
     images: array.isRequired,
     mutate: func.isRequired,
     data: object,
+    submittedBook: object.isRequired,
+    isSubmitting: bool.isRequired,
+    loadingMessage: string.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -548,7 +549,7 @@ export default class EnterBookDetailsScreen extends Component {
           visible={this.props.isSubmitting}
           textContent={this.props.loadingMessage}
           overlayColor="rgba(0, 0, 0, 0.65)"
-          textStyle={{color: '#FFF'}}
+          textStyle={{ color: "#FFF" }}
         />
       </View>
     );

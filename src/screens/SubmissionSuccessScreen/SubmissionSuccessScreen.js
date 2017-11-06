@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, StatusBar } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { NavigationActions } from 'react-navigation'
+import { shape, func } from "prop-types";
+import { NavigationActions } from "react-navigation"
 import { Button } from "react-native-material-ui";
-import BackButton from "src/modules/BackButton";
 import { styles } from "./styles";
 
 const {
   screenStyle,
-  headerStyle,
-  headerTitleStyle,
-  backButtonIconStyle,
   successIconWrapperStyle,
   successIconStyle,
   successMessageWrapperStyle,
@@ -26,18 +23,24 @@ const {
 } = styles;
 
 export default class SubmissionSuccessScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     tabBarVisible: false,
     header: null,
     gesturesEnabled: false,
   });
+
+  static propTypes = {
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
+  }
 
   closeSuccessScreen() {
     const closeSuccessScreenAction = NavigationActions.reset({
       index: 0,
       key: null,
       actions: [
-        NavigationActions.navigate({ routeName: 'mainScreen'})
+        NavigationActions.navigate({ routeName: "mainScreen" })
       ]
     })
     this.props.navigation.dispatch(closeSuccessScreenAction)
@@ -89,7 +92,7 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   render() {
-    const scannedTextbook = this.props.navigation.state.params ?
+    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
     this.props.navigation.state.params.scannedTextbook :
     undefined;
 

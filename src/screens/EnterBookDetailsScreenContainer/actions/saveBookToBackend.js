@@ -36,17 +36,12 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispa
       textbook: textbookToSave
     }
   })
-  .catch((e) => console.warn(e))
   .then((response) => {
-    console.log(response);
     dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Done." });
     dispatch({ type: SUBMIT_FORM_RS, payload: response.data.createTextbook });
     dispatch({ type: RESET_STATE });
   })
-  // .catch((e) => console.log(e))
-  // .then((response) => {
-  //   console.log(response);
-  // });
+
   // TODO: delete image folder here
   return;
 }
