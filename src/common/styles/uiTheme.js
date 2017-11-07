@@ -6,6 +6,11 @@ const uiTheme = {
     tertiaryColorDark: "#383b5a",
     tertiaryColorLight: "#00b2d6",
   },
+  button: {
+    text: {
+      fontWeight: "700",
+    }
+  }
 };
 
 export default uiTheme;

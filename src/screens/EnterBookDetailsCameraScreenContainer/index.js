@@ -4,6 +4,7 @@ import EnterBookDetailsCameraScreen from "../EnterBookDetailsCameraScreen";
 
 const mapStateToProps = ({ EnterBookDetailsCameraReducer }) => ({
   images: EnterBookDetailsCameraReducer.images,
+  isTakingPicture: EnterBookDetailsCameraReducer.isTakingPicture,
 });
 
 export default connect(

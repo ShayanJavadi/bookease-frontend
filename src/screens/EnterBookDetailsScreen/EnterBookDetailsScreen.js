@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, TouchableHighlight, Text, Image } from "react-native";
-import { func, object, bool, array, shape } from "prop-types";
+import { func, object, bool, array, shape, string } from "prop-types";
 import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
 import { FileSystem } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { isEmpty, lowerCase } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
@@ -53,14 +54,21 @@ const {
 export default class EnterBookDetailsScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
-    headerTitle: "Enter Book Details",
+    headerTitle:  "Enter book detail",
     headerLeft: <BackButton navigation={navigation}/>,
     headerRight: (
       <Button
         text="submit"
-        primary
         raised
-        style={{ container: { margin: 10 } }}
+        primary
+        style={{
+          container: {
+            margin: 10,
+          },
+          text: {
+            color: "#fff",
+          },
+        }}
         onPress={() => navigation.state.params.onFormSubmit()}
       />
     ),
@@ -78,6 +86,9 @@ export default class EnterBookDetailsScreen extends Component {
     images: array.isRequired,
     mutate: func.isRequired,
     data: object,
+    submittedBook: object.isRequired,
+    isSubmitting: bool.isRequired,
+    loadingMessage: string.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -117,6 +128,12 @@ export default class EnterBookDetailsScreen extends Component {
 
     if (scannedTextbook) {
       this.populateFormUsingScannedTextbook(scannedTextbook);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.submittedBook) {
+      this.props.navigation.navigate("submissionSuccessScreen", { submittedBook: nextProps.submittedBook });
     }
   }
 
@@ -191,7 +208,6 @@ export default class EnterBookDetailsScreen extends Component {
         humanizedValue: "Description",
       },
     };
-    alert("sub")
     createNewBook(bookDetails, mutate);
   }
 
@@ -430,8 +446,7 @@ export default class EnterBookDetailsScreen extends Component {
           text="Submit"
           raised
           style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-          onPress={() => this.onFormSubmit()}
-        />
+          onPress={() => this.onFormSubmit()}/>
       </View>
     );
   }
@@ -530,6 +545,12 @@ export default class EnterBookDetailsScreen extends Component {
           {this.renderDeleteImageModal()}
         </KeyboardAwareScrollView>
         {this.renderActionButton()}
+        <Spinner
+          visible={this.props.isSubmitting}
+          textContent={this.props.loadingMessage}
+          overlayColor="rgba(0, 0, 0, 0.65)"
+          textStyle={{ color: "#FFF" }}
+        />
       </View>
     );
   }

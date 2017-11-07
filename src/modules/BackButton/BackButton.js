@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
-import { func, shape, string, bool, object } from "prop-types";
+import { func, shape, string, bool, object, node } from "prop-types";
 import { styles } from "./styles";
 const {
   backButtonWrapperStyle,
@@ -20,6 +20,7 @@ export default class BackButton extends Component {
     onPress: func,
     headerLess: bool,
     style: object,
+    icon: node,
   };
 
   onBackButtonPress() {
@@ -32,6 +33,16 @@ export default class BackButton extends Component {
     return onPress;
   }
 
+  renderIcon() {
+    const { icon } = this.props;
+    
+    if (icon) {
+      return icon;
+    }
+
+    return <MaterialIcons name="arrow-back" size={24} style={backButtonIconStyle} />;
+  }
+
   render() {
     const { headerLess, buttonText, style } = this.props;
 
@@ -40,7 +51,7 @@ export default class BackButton extends Component {
         style={[headerLess ? backButtonHeaderLessWrapperStyle : backButtonWrapperStyle, style]}
         onPress={this.onBackButtonPress()}
       >
-        <MaterialIcons name="arrow-back" size={24} style={backButtonIconStyle} />
+        {this.renderIcon()}
         <Text style={backButtonTextStyle}>{buttonText}</Text>
       </TouchableOpacity>
     );
