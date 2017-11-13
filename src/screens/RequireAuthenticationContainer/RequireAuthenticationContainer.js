@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {bool, func, shape} from "prop-types";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { bool, func, shape } from "prop-types";
+import { connect } from "react-redux";
 
 export default function(ComposedComponent) {
   class RequireAuthenticationContainer extends Component {
