@@ -76,14 +76,6 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const SchoolSelectionNavigator = StackNavigator({
-  schoolSelection: {
-    screen: SchoolSelectionScreen,
-  }
-}, {
-  headerMode: "none",
-});
-
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
