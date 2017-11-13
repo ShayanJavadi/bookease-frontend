@@ -35,7 +35,7 @@ const SellBooksNavigator = StackNavigator({
     screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
   },
   scanBook: {
-    screen: ScanBookScreen,
+    screen: RequireAuthenticationContainer(ScanBookScreen),
   },
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
