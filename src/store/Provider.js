@@ -19,6 +19,7 @@ import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/re
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
 import EnterBookDetailsCameraReducer from "../screens/EnterBookDetailsCameraScreenContainer/reducers/";
+import SessionReducer from "../screens/SessionContainer/reducers/index";
 
 const networkInterface = createNetworkInterface({
   uri: `${BACKEND_URL}/graphql`,
@@ -56,6 +57,7 @@ const reducers = combineReducers({
   EnterBookDetailsReducer,
   EnterBookDetailsCameraReducer,
   apollo: client.reducer(),
+  Session: SessionReducer
 });
 
 const store = createStore(

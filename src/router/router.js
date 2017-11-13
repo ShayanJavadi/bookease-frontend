@@ -1,7 +1,4 @@
-import {
-  StackNavigator,
-  TabNavigator,
-} from "react-navigation";
+import { StackNavigator, TabNavigator, } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
@@ -15,6 +12,7 @@ import AccountScreen from "../screens/AccountScreen";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
+import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
 import EmailPasswordScreen from "../screens/EmailPasswordScreenContainer";
@@ -23,22 +21,36 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
 import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
-
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
+const SubmissionSuccessNavigator = StackNavigator({
+  successScreen: {
+    screen: SubmissionSuccessScreen,
+  },
+}, {
+  headerMode: "none",
+  mode: "modal",
+});
+
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: EnterBookDetailsScreen,
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
   },
   scanBook: {
-    screen: ScanBookScreen,
+    screen: RequireAuthenticationContainer(ScanBookScreen),
   },
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
+  },
+  submissionSuccessScreen: {
+    screen: SubmissionSuccessNavigator,
   }
 }, {
   headerMode: "none",
+  mode: "modal",
+
 });
 
 const myBooksNavigator = TabNavigator({
@@ -60,6 +72,14 @@ const SingleBookNavigator = StackNavigator({
   singleBookScreen: {
     screen: SingleBookScreen,
   },
+}, {
+  headerMode: "none",
+});
+
+const SchoolSelectionNavigator = StackNavigator({
+  schoolSelection: {
+    screen: SchoolSelectionScreen,
+  }
 }, {
   headerMode: "none",
 });
@@ -143,6 +163,4 @@ const WelcomeNavigator = StackNavigator({ // eslint-disable-line
   headerMode: "none",
 });
 
-// temporary changed to HomeNavigator for debugging
-// original value: MainNavigator
 export default MainNavigator;

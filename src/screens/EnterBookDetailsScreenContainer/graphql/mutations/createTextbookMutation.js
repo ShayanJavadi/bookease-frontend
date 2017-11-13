@@ -7,6 +7,10 @@ const createTextbookMutation = gql`
       id,
       uid,
       description,
+      authors
+      edition
+      condition
+      price
       images {
         priority,
         thumbnail,
