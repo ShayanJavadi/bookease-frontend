@@ -1,7 +1,4 @@
-import {
-  StackNavigator,
-  TabNavigator,
-} from "react-navigation";
+import {StackNavigator, TabNavigator,} from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
@@ -20,7 +17,7 @@ import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
-
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
@@ -31,11 +28,11 @@ const SubmissionSuccessNavigator = StackNavigator({
 }, {
   headerMode: "none",
   mode: "modal",
-})
+});
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: EnterBookDetailsScreen,
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -75,43 +72,10 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const HomeNavigator = TabNavigator({
-  home: {
-    screen: HomeScreen,
-  },
-  myBooks: {
-    screen: myBooksNavigator,
-  },
-  notifications: {
-    screen: NotificationScreen,
-  },
-  account: {
-    screen: AccountScreen,
-  },
-}, {
-  tabBarPosition: "bottom",
-  tabBarComponent: TabBarComponent,
-});
-
-const MainNavigator = StackNavigator({
-  mainScreen: {
-    screen: HomeNavigator,
-  },
-  sellBooks: {
-    screen: SellBooksNavigator,
-  },
-  singleBook: {
-    screen: SingleBookNavigator,
-  }
-});
-
 const SchoolSelectionNavigator = StackNavigator({
   schoolSelection: {
     screen: SchoolSelectionScreen,
-  },
-  homeScreen: {
-    screen: HomeNavigator,
-  },
+  }
 }, {
   headerMode: "none",
 });
@@ -139,6 +103,39 @@ const AuthNavigator = StackNavigator({
   headerMode: "none",
 });
 
+const HomeNavigator = TabNavigator({
+  home: {
+    screen: HomeScreen,
+  },
+  myBooks: {
+    screen: myBooksNavigator,
+  },
+  notifications: {
+    screen: NotificationScreen,
+  },
+  account: {
+    screen: AccountScreen,
+  },
+}, {
+  tabBarPosition: "bottom",
+  tabBarComponent: TabBarComponent,
+});
+
+const MainNavigator = StackNavigator({
+  mainScreen: {
+    screen: HomeNavigator,
+  },
+  sellBooks: {
+    screen: SellBooksNavigator,
+  },
+  singleBook: {
+    screen: SingleBookNavigator,
+  },
+  auth: {
+    screen: AuthNavigator
+  }
+});
+
 const WelcomeNavigator = StackNavigator({ // eslint-disable-line
   welcome: {
     screen: WelcomeScreen,
@@ -150,6 +147,4 @@ const WelcomeNavigator = StackNavigator({ // eslint-disable-line
   headerMode: "none",
 });
 
-// temporary changed to HomeNavigator for debugging
-// original value: MainNavigator
 export default MainNavigator;
