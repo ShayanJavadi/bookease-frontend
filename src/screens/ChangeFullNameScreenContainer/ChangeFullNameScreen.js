@@ -1,10 +1,9 @@
 import { graphql } from "react-apollo";
 import { connect } from "react-redux";
-import * as actions from "./actions";
-import queries from "./graphql/queries";
+import actions from "./actions";
+import setFullNameMutation from "./graphql/queries/setFullNameMutation";
 import ChangeFullNameScreen from "../ChangeFullNameScreen";
 
-const { setFullNameMutation } = queries;
 
 const mapStateToProps = ({ fullNameSubmitReducer }) => ({
   isFullNameValid: fullNameSubmitReducer.isFullNameValid,

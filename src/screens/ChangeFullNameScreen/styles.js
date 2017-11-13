@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
@@ -10,7 +10,14 @@ const {
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  screenStyle: {
+  screenStyleWithKeyboard: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  screenStyleWithoutKeyboard : {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
@@ -34,17 +41,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputStyle: {
-    height: 40,
+    height: 50,
     width: SCREEN_WIDTH * 0.9,
-    paddingLeft: 5,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+  },
+  paddingTextStyle: {
+    fontSize: 20,
+    fontWeight: "300",
+    paddingTop: 10,
+    paddingBottom: 15,
   },
   submitButtonContainerStyle: {
     backgroundColor: primaryColor,

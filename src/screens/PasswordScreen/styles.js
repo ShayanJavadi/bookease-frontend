@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
@@ -10,7 +10,14 @@ const {
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  screenStyle: {
+  screenStyleWithKeyboard: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  screenStyleWithoutKeyboard : {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
@@ -34,31 +41,9 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputStyle: {
-    height: 40,
+    height: 50,
     width: SCREEN_WIDTH * 0.7,
     paddingLeft: 5,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  invalidInputStyle: {
-    height: 40,
-    width: SCREEN_WIDTH * 0.7,
-    paddingLeft: 5,
-    borderColor: "red",
-    borderWidth: 1,
-    fontSize: 24,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
   },
   invalidPasswordTextStyle: {
     fontSize: 20,
@@ -71,7 +56,8 @@ export const styles = StyleSheet.create({
     backgroundColor: primaryColor,
     height: 40,
     width: SCREEN_WIDTH * 0.2,
-    marginLeft: 5,
+    marginLeft: 10,
+    marginTop: 30,
   },
   showHideButtonTextStyle: {
     color: "#fff",
@@ -96,5 +82,10 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 13,
     fontWeight: "100",
+  },
+  activitySpinnerStyle: {
+    marginTop: 100,
+    marginBottom: 40,
+    height: 80,
   },
 });

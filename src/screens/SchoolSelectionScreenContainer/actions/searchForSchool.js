@@ -2,7 +2,7 @@ import {
   SCHOOL_SEARCH_RESP,
 } from "./consts";
 
-export const searchForSchool = (refetch, query) => async (dispatch) => {
+const searchForSchool = (refetch, query) => async (dispatch) => {
   if (query === undefined || query === "") {
     dispatch({ type: SCHOOL_SEARCH_RESP, payload: [] });
   } else {
@@ -18,12 +18,4 @@ export const searchForSchool = (refetch, query) => async (dispatch) => {
   }
 };
 
-export const updateSchool = ({ mutate, profileData, schoolId }) => () => {
-  mutate({
-    variables: {
-      email: profileData.email,
-      phoneNumber: profileData.phoneNumber,
-      schoolId: schoolId,
-    }
-  })
-};
+export default searchForSchool;

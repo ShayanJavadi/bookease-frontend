@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
@@ -43,35 +43,10 @@ export const styles = StyleSheet.create({
   inputStyle: {
     height: 50,
     width: SCREEN_WIDTH * 0.9,
-    textAlign: "center",
-    fontSize: 20,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
   },
-  invalidInputStyle: {
-    height: 50,
-    width: SCREEN_WIDTH * 0.9,
-    textAlign: "center",
-    fontSize: 20,
-    borderColor: "red",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  invalidEmailTextStyle: {
+  paddingTextStyle: {
     fontSize: 20,
     fontWeight: "300",
-    color: "red",
     paddingTop: 10,
     paddingBottom: 15,
   },

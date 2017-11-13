@@ -4,7 +4,7 @@ import {
   FULL_NAME_INVALID,
 } from "./consts";
 
-export const validateFullName = ({ fullName }) => (dispatch) => {
+const validateFullName = ({ fullName }) => (dispatch) => {
   const validationRegExp = /\S+\s+\S+/;
   const isValid = validationRegExp.test(fullName);
 
@@ -15,3 +15,5 @@ export const validateFullName = ({ fullName }) => (dispatch) => {
     dispatch({ type: FULL_NAME_INVALID });
   }
 }
+
+export default validateFullName;

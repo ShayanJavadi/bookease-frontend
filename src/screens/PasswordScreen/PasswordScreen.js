@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { Text, View, TextInput } from "react-native";
-import { bool, func, string, shape, object } from "prop-types";
+import { Text, View, ActivityIndicator, Keyboard } from "react-native";
 import { Button } from "react-native-material-ui";
-import { styles } from "./styles";
+import { TextField } from "react-native-material-textfield";
+import { bool, func, string, shape, object } from "prop-types";
+import { styles, palette } from "./styles";
 
 const {
-  screenStyle,
+  screenStyleWithKeyboard,
+  screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
   inputStyle,
-  invalidInputStyle,
   inputContainerStyle,
   invalidPasswordTextStyle,
   submitButtonContainerStyle,
@@ -17,7 +18,12 @@ const {
   submitButtonTextStyle,
   showHideButtonContainerStyle,
   showHideButtonTextStyle,
+  activitySpinnerStyle,
  } = styles;
+
+const {
+   primaryColor,
+ } = palette;
 
 const MINIMUM_PASSWORD_LENGTH = 1;
 
@@ -48,20 +54,40 @@ export default class PasswordScreen extends Component {
     passwordVisible: false,
     invalidPasswordEntered: false,
     submitButtonEnabled: false,
+    isWaiting: false,
   }
 
   componentDidMount() {
     this.input.focus();
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardWillShow() {
+    this.setState({ keyboardVisible: true });
+  }
+
+  keyboardWillHide() {
+    this.setState({ keyboardVisible: false });
+  }
+
   componentWillReceiveProps(props) {
     if (props.isPasswordValid) {
+      this.setState({ isWaiting: false });
       this.props.navigation.navigate(this.props.nextScreen, { profileData: props.navigation.state.params.profileData });
     }
     else {
-      this.input.setNativeProps({ text: "" });
+      this.input.clear();
       this.onChangeText("");
-      this.setState({ invalidPasswordEntered: true });
+      this.setState({ isWaiting: false, invalidPasswordEntered: true });
     }
   }
 
@@ -74,6 +100,7 @@ export default class PasswordScreen extends Component {
   }
 
   onSubmitButtonPress() {
+    this.setState({ isWaiting: true });
     this.props.submitPassword({
       password: this.state.password,
       profileData: this.props.navigation.state.params.profileData,
@@ -90,46 +117,56 @@ export default class PasswordScreen extends Component {
 
   render() {
     return (
-      <View style={screenStyle}>
+      <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>{this.props.message}</Text>
           <Text style={invalidPasswordTextStyle}>{this.state.invalidPasswordEntered ? "Incorrect password" : " "}</Text>
           <View style={inputContainerStyle}>
-            <TextInput
-              style={this.state.invalidPasswordEntered ? invalidInputStyle : inputStyle}
+            <TextField
+              label="Password"
               autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={!this.state.passwordVisible}
+              fontSize={20}
+              tintColor={primaryColor}
+              containerStyle={inputStyle}
               onChangeText={value => this.onChangeText(value)}
               ref={input => this.input = input}
             />
             <Button
-              raised
-              primary
-              text={this.state.passwordVisible ? "Hide" : "Show"}
-              style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
-              onPress={() => this.onShowHideButtonPress()}
-            />
+                raised
+                primary
+                text={this.state.passwordVisible ? "Hide" : "Show"}
+                style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
+                onPress={() => this.onShowHideButtonPress()}
+              />
           </View>
-          {this.state.submitButtonEnabled &&
-            (<Button
-              raised
-              primary
-              text="Submit"
-              style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
-              onPress={() => this.onSubmitButtonPress()}
-            />)
-          }
-          {!this.state.submitButtonEnabled &&
-            (<Button
-              disabled
-              raised
-              primary
-              text="Submit"
-              style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
-            />)
-          }
         </View>
+        {!this.state.isWaiting && this.state.submitButtonEnabled &&
+          (<Button
+            raised
+            primary
+            text="Submit"
+            style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
+            onPress={() => this.onSubmitButtonPress()}
+          />)
+        }
+        {!this.state.isWaiting && !this.state.submitButtonEnabled &&
+          (<Button
+            disabled
+            raised
+            primary
+            text="Submit"
+            style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
+          />)
+        }
+        {this.state.isWaiting &&
+          <ActivityIndicator
+             animating={this.state.animating}
+             style={[styles.centering, activitySpinnerStyle]}
+             size="large"
+           />
+        }
       </View>
     );
   }

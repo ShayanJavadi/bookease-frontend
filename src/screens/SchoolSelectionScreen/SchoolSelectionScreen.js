@@ -38,7 +38,11 @@ export default class SchoolSelectionScreen extends Component {
     updateSchool: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
-      state: object.isRequired
+      state: shape({
+        params: shape({
+          profileData: object.isRequired
+        }).isRequired
+      }).isRequired
     }).isRequired
   };
 

@@ -1,10 +1,8 @@
 import { graphql } from "react-apollo";
 import { connect } from "react-redux";
 import * as actions from "./actions";
-import queries from "./graphql/queries";
+import signInWithEmailMutation from "./graphql/queries/signInWithEmailMutation";
 import PasswordScreen from "../PasswordScreen";
-
-const { signInWithEmailMutation } = queries;
 
 const mapStateToProps = ({ emailPasswordValidationReducer }) => ({
   isPasswordValid: emailPasswordValidationReducer.isPasswordValid,

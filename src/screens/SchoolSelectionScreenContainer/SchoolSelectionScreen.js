@@ -1,6 +1,6 @@
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
-import * as actions from "./actions";
+import actions from "./actions";
 import queries from "./graphql/queries";
 import SchoolSelectionScreen from "../SchoolSelectionScreen";
 

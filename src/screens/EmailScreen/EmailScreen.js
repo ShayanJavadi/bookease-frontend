@@ -1,23 +1,27 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, ActivityIndicator, Keyboard } from "react-native";
-import { bool, func, shape } from "prop-types";
+import { Text, View, ActivityIndicator, Keyboard } from "react-native";
 import { Button } from "react-native-material-ui";
-import { styles } from "./styles";
+import { TextField } from "react-native-material-textfield";
+import { bool, func, shape } from "prop-types";
+import { styles, palette } from "./styles";
 
 const {
   screenStyleWithKeyboard,
   screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
-  invalidEmailTextStyle,
   inputStyle,
-  invalidInputStyle,
+  paddingTextStyle,
   inputContainerStyle,
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
   activitySpinnerStyle,
  } = styles;
+
+ const {
+   primaryColor,
+ } = palette;
 
 export default class EmailScreen extends Component {
   static navigationOptions = {
@@ -35,8 +39,8 @@ export default class EmailScreen extends Component {
 
   state = {
     email: "",
-    emailInUse: false,
-    keyboardVisible: false
+    keyboardVisible: false,
+    isWaiting: false,
    }
 
   componentDidMount() {
@@ -65,7 +69,6 @@ export default class EmailScreen extends Component {
   onInputChange(value) {
     this.setState({
       email: value,
-      emailInUse: false,
      });
     this.props.validateEmail(value);
   }
@@ -97,13 +100,16 @@ export default class EmailScreen extends Component {
       <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter your email</Text>
-          <Text style={invalidEmailTextStyle}>{this.state.emailInUse? "Email already in use" : " "}</Text>
+          <Text style={paddingTextStyle}>{" "}</Text>
           <View style={inputContainerStyle}>
-            <TextInput
-              style={this.state.emailInUse ? invalidInputStyle : inputStyle}
+            <TextField
+              label="Email"
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"
+              fontSize={20}
+              tintColor={primaryColor}
+              containerStyle={inputStyle}
               onChangeText={value => this.onInputChange(value)}
               ref={input => this.input = input}
             />
@@ -115,6 +121,7 @@ export default class EmailScreen extends Component {
             primary
             text="Submit"
             style={{ container: buttonContainerStyle, text: buttonTextStyle }}
+            onChangeText={value => this.onInputChange(value)}
             onPress={() => this.onSubmitButtonPress()}
           />)
         }

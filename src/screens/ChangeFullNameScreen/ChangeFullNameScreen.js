@@ -1,19 +1,26 @@
 import React, { Component } from "react";
-import { Text, View, TextInput } from "react-native";
-import { func, string, shape, object, bool } from "prop-types";
+import { Text, View, Keyboard } from "react-native";
 import { Button } from "react-native-material-ui";
-import { styles } from "./styles";
+import { TextField } from "react-native-material-textfield";
+import { func, string, shape, object, bool } from "prop-types";
+import { styles, palette } from "./styles";
 
 const {
-  screenStyle,
+  screenStyleWithKeyboard,
+  screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
   inputStyle,
   inputContainerStyle,
+  paddingTextStyle,
   submitButtonContainerStyle,
   submitButtonDisabledContainerStyle,
   submitButtonTextStyle,
  } = styles;
+
+ const {
+   primaryColor,
+ } = palette;
 
 export default class ChangeFullNameScreen extends Component {
   static navigationOptions = {
@@ -34,7 +41,9 @@ export default class ChangeFullNameScreen extends Component {
 
   state = {
     fullName: "",
+    keyboardVisible: false,
     submitButtonEnabled: false,
+    isWaiting: false,
   }
 
   componentWillReceiveProps(props) {
@@ -45,6 +54,24 @@ export default class ChangeFullNameScreen extends Component {
 
   componentDidMount() {
     this.input.focus();
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardWillShow() {
+    this.setState({ keyboardVisible: true });
+  }
+
+  keyboardWillHide() {
+    this.setState({ keyboardVisible: false });
   }
 
   onChangeText(text) {
@@ -64,37 +91,41 @@ export default class ChangeFullNameScreen extends Component {
 
   render() {
     return (
-      <View style={screenStyle}>
+      <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter your full name</Text>
+          <Text style={paddingTextStyle}>{" "}</Text>
           <View style={inputContainerStyle}>
-            <TextInput
-              style={inputStyle}
+            <TextField
+              label="Full name"
               autoCorrect={false}
               autoCapitalize="words"
+              fontSize={20}
+              tintColor={primaryColor}
+              containerStyle={inputStyle}
               onChangeText={value => this.onChangeText(value)}
               ref={input => this.input = input}
             />
           </View>
-          {this.state.submitButtonEnabled &&
-            (<Button
-              raised
-              primary
-              text="Submit"
-              style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
-              onPress={() => this.onSubmitButtonPress()}
-            />)
-          }
-          {!this.state.submitButtonEnabled &&
-            (<Button
-              disabled
-              raised
-              primary
-              text="Submit"
-              style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
-            />)
-          }
         </View>
+        {this.state.submitButtonEnabled &&
+          (<Button
+            raised
+            primary
+            text="Submit"
+            style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
+            onPress={() => this.onSubmitButtonPress()}
+          />)
+        }
+        {!this.state.submitButtonEnabled &&
+          (<Button
+            disabled
+            raised
+            primary
+            text="Submit"
+            style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
+          />)
+        }
       </View>
     );
   }

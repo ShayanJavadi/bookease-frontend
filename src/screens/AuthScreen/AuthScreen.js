@@ -56,7 +56,6 @@ export default class AuthScreen extends Component {
 
   onEmailButtonPress() {
     this.props.navigation.navigate("emailScreen");
-    //this.props.navigation.navigate("schoolSelectionScreen", { profileData: { id: "37", email: "h@foo.com" } } );
   }
 
   onPhoneButtonPress() {

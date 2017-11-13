@@ -4,7 +4,7 @@ import {
   PASSWORD_INVALID,
 } from "./consts";
 
-export const validatePassword = ({ password, }) => (dispatch) => {
+const validatePassword = ({ password, }) => (dispatch) => {
   const MINIMUM_PASSWORD_LENGTH = 1;
 
   if (password.length < MINIMUM_PASSWORD_LENGTH) {
@@ -14,3 +14,5 @@ export const validatePassword = ({ password, }) => (dispatch) => {
     dispatch({ type: PASSWORD_VALID });
   }
 }
+
+export default validatePassword;
