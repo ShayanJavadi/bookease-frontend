@@ -5,7 +5,7 @@ import {
 } from "./consts";
 
 export const submitPassword = ({ password, identifier, submitter }) => (dispatch) => {
-  submitter({
+  return submitter({
     variables: {
       identifier: identifier,
       password: password
