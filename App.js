@@ -17,7 +17,7 @@ export default class App extends Component {
       Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
     });
 
-    const isFirstRun = (await AsyncStorage.getItem("hasRunBefore")) === 'false';
+    const isFirstRun = (await AsyncStorage.getItem("hasRunBefore")) !== 'true';
     await AsyncStorage.setItem("hasRunBefore", "true");
 
     this.setState({
