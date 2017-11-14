@@ -150,7 +150,7 @@ const createMainNavigator = (isFirstRun = false) => {
       screen: AuthNavigator,
     },
   }, {
-    initialRoute: isFirstRun ? "welcomeScreen" : "mainScreen",
+    initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
   });
 }

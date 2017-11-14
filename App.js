@@ -17,7 +17,7 @@ export default class App extends Component {
       Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
     });
 
-    const isFirstRun = !(await AsyncStorage.getItem("hasRunBefore"));
+    const isFirstRun = (await AsyncStorage.getItem("hasRunBefore")) === 'false';
     await AsyncStorage.setItem("hasRunBefore", "true");
 
     this.setState({
@@ -28,22 +28,24 @@ export default class App extends Component {
   render() {
     if (!this.state.isAppReady) {
       // TODO: loading animation goes here
+      return (null);
     }
+    else {
+      const Navigator = createMainNavigator(this.state.isFirstRun);
 
-    const Navigator = createMainNavigator(this.state.isFirstRun);
-
-    return (
-      <Provider>
-        <View style={styles.container}>
-          <ThemeProvider uiTheme={uiTheme}>
-            <Navigator />
-          </ThemeProvider>
-          <StatusBar
-            barStyle="light-content"
-          />
-        </View>
-      </Provider>
-    );
+      return (
+        <Provider>
+          <View style={styles.container}>
+            <ThemeProvider uiTheme={uiTheme}>
+              <Navigator />
+            </ThemeProvider>
+            <StatusBar
+              barStyle="light-content"
+            />
+          </View>
+        </Provider>
+      );
+    }
   }
 }
 
