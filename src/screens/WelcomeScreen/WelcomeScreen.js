@@ -11,7 +11,7 @@ export default class WelcomeScreen extends Component {
   };
 
   onSlidesComplete = () => {
-    this.props.navigation.navigate("authScreen");
+    this.props.navigation.navigate("mainScreen");
   };
 
   render() {

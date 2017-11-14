@@ -1,9 +1,9 @@
 import Expo from 'expo';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, AsyncStorage } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import Provider from './src/store';
-import HomeNavigator from './src/router';
+import createMainNavigator from './src/router';
 import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import uiTheme from 'src/common/styles/uiTheme';
 
@@ -17,18 +17,26 @@ export default class App extends Component {
       Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
     });
 
-    this.setState({ isAppReady: true });
+    const isFirstRun = !(await AsyncStorage.getItem("hasRunBefore"));
+    await AsyncStorage.setItem("hasRunBefore", "true");
+
+    this.setState({
+      isAppReady: true,
+      isFirstRun,
+     });
   }
   render() {
     if (!this.state.isAppReady) {
       // TODO: loading animation goes here
     }
 
+    const Navigator = createMainNavigator(this.state.isFirstRun);
+
     return (
       <Provider>
         <View style={styles.container}>
           <ThemeProvider uiTheme={uiTheme}>
-            <HomeNavigator />
+            <Navigator />
           </ThemeProvider>
           <StatusBar
             barStyle="light-content"

@@ -94,18 +94,6 @@ const HomeNavigator = TabNavigator({
   tabBarComponent: TabBarComponent,
 });
 
-const MainNavigator = StackNavigator({
-  mainScreen: {
-    screen: HomeNavigator,
-  },
-  sellBooks: {
-    screen: SellBooksNavigator,
-  },
-  singleBook: {
-    screen: SingleBookNavigator,
-  }
-});
-
 const AuthNavigator = StackNavigator({
   auth: {
     screen: AuthScreen,
@@ -144,15 +132,27 @@ const AuthNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const WelcomeNavigator = StackNavigator({ // eslint-disable-line
-  welcome: {
-    screen: WelcomeScreen,
-  },
-  authScreen: {
-    screen: AuthNavigator,
-  },
-}, {
-  headerMode: "none",
-});
+const createMainNavigator = (isFirstRun = false) => {
+  return StackNavigator({
+    welcomeScreen: {
+      screen: WelcomeScreen,
+    },
+    mainScreen: {
+      screen: HomeNavigator,
+    },
+    sellBooks: {
+      screen: SellBooksNavigator,
+    },
+    singleBook: {
+      screen: SingleBookNavigator,
+    },
+    authScreen: {
+      screen: AuthNavigator,
+    },
+  }, {
+    initialRoute: isFirstRun ? "welcomeScreen" : "mainScreen",
+    headerMode: "none",
+  });
+}
 
-export default MainNavigator;
+export default createMainNavigator;
