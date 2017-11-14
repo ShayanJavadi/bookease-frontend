@@ -8,8 +8,9 @@ const { validatePinMutation } = queries;
 
 const mapStateToProps = ({ emailPinValidationReducer }) => ({
   isPinValid: emailPinValidationReducer.isPinValid,
+  profileData: emailPinValidationReducer.profileData,
   updateCounter: emailPinValidationReducer.updateCounter,
-  nextScreen: "schoolSelectionScreen",
+  nextScreen: "changePasswordScreen",
 });
 
 const Container = graphql(validatePinMutation, {

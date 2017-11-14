@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   inputStyle: {
     height: 60,
     width: SCREEN_WIDTH * 0.12,
-    paddingLeft: 10,
+    textAlign: "center",
     marginLeft: 5,
     marginRight: 5,
     borderColor: "gray",
@@ -90,5 +90,10 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 13,
     fontWeight: "100",
+  },
+  activitySpinnerStyle: {
+    marginTop: 100,
+    marginBottom: 40,
+    height: 80,
   },
 });

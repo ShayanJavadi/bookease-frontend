@@ -15,8 +15,12 @@ import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
+import EmailPasswordScreen from "../screens/EmailPasswordScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
+import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
+import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
+import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -72,37 +76,6 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const SchoolSelectionNavigator = StackNavigator({
-  schoolSelection: {
-    screen: SchoolSelectionScreen,
-  }
-}, {
-  headerMode: "none",
-});
-
-const AuthNavigator = StackNavigator({
-  auth: {
-    screen: AuthScreen,
-  },
-  emailScreen: {
-    screen: EmailScreen,
-  },
-  emailPinScreen: {
-    screen: EmailPinScreen,
-  },
-  phoneScreen: {
-    screen: PhoneScreen,
-  },
-  phonePinScreen: {
-    screen: PhonePinScreen,
-  },
-  schoolSelectionScreen: {
-    screen: SchoolSelectionNavigator,
-  },
-}, {
-  headerMode: "none",
-});
-
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
@@ -130,10 +103,45 @@ const MainNavigator = StackNavigator({
   },
   singleBook: {
     screen: SingleBookNavigator,
-  },
-  auth: {
-    screen: AuthNavigator
   }
+});
+
+const AuthNavigator = StackNavigator({
+  auth: {
+    screen: AuthScreen,
+  },
+  emailScreen: {
+    screen: EmailScreen,
+  },
+  emailPinScreen: {
+    screen: EmailPinScreen,
+  },
+  emailPasswordScreen: {
+    screen: EmailPasswordScreen,
+  },
+  phoneScreen: {
+    screen: PhoneScreen,
+  },
+  phonePinScreen: {
+    screen: PhonePinScreen,
+  },
+  phonePasswordScreen: {
+    screen: PhonePasswordScreen,
+  },
+  changeFullNameScreen: {
+    screen: ChangeFullNameScreen,
+  },
+  changePasswordScreen: {
+    screen: ChangePasswordScreen,
+  },
+  schoolSelectionScreen: {
+    screen: SchoolSelectionScreen,
+  },
+  homeScreen: {
+    screen: HomeNavigator,
+  },
+}, {
+  headerMode: "none",
 });
 
 const WelcomeNavigator = StackNavigator({ // eslint-disable-line
