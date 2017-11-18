@@ -4,7 +4,7 @@ import {
 } from "../actions/consts";
 
 const INITIAL_STATE = {
-  isPinValid: undefined,
+  isPinValid: false,
   updateCounter: 0,
 };
 

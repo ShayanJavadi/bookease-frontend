@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
@@ -41,35 +41,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputStyle: {
-    height: 40,
+    height: 50,
     width: SCREEN_WIDTH * 0.9,
-    paddingLeft: 5,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
   },
-  invalidInputStyle: {
-    height: 40,
-    width: SCREEN_WIDTH * 0.9,
-    paddingLeft: 5,
-    borderColor: "red",
-    borderWidth: 1,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  invalidEmailTextStyle: {
+  paddingTextStyle: {
     fontSize: 20,
     fontWeight: "300",
-    color: "red",
     paddingTop: 10,
     paddingBottom: 15,
   },
@@ -91,5 +68,10 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 13,
     fontWeight: "100",
+  },
+  activitySpinnerStyle: {
+    marginTop: 100,
+    marginBottom: 40,
+    height: 80,
   },
 });

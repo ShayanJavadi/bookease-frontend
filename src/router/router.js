@@ -1,7 +1,4 @@
-import {
-  StackNavigator,
-  TabNavigator,
-} from "react-navigation";
+import { StackNavigator, TabNavigator, } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
@@ -18,9 +15,13 @@ import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
 import EmailScreen from "../screens/EmailScreenContainer";
 import EmailPinScreen from "../screens/EmailPinScreenContainer";
+import EmailPasswordScreen from "../screens/EmailPasswordScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
-
+import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
+import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
+import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
@@ -31,14 +32,14 @@ const SubmissionSuccessNavigator = StackNavigator({
 }, {
   headerMode: "none",
   mode: "modal",
-})
+});
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: EnterBookDetailsScreen,
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
   },
   scanBook: {
-    screen: ScanBookScreen,
+    screen: RequireAuthenticationContainer(ScanBookScreen),
   },
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
@@ -94,29 +95,6 @@ const HomeNavigator = TabNavigator({
   lazy: true,
 });
 
-const MainNavigator = StackNavigator({
-  mainScreen: {
-    screen: HomeNavigator,
-  },
-  sellBooks: {
-    screen: SellBooksNavigator,
-  },
-  singleBook: {
-    screen: SingleBookNavigator,
-  }
-});
-
-const SchoolSelectionNavigator = StackNavigator({
-  schoolSelection: {
-    screen: SchoolSelectionScreen,
-  },
-  homeScreen: {
-    screen: HomeNavigator,
-  },
-}, {
-  headerMode: "none",
-});
-
 const AuthNavigator = StackNavigator({
   auth: {
     screen: AuthScreen,
@@ -127,30 +105,55 @@ const AuthNavigator = StackNavigator({
   emailPinScreen: {
     screen: EmailPinScreen,
   },
+  emailPasswordScreen: {
+    screen: EmailPasswordScreen,
+  },
   phoneScreen: {
     screen: PhoneScreen,
   },
   phonePinScreen: {
     screen: PhonePinScreen,
   },
+  phonePasswordScreen: {
+    screen: PhonePasswordScreen,
+  },
+  changeFullNameScreen: {
+    screen: ChangeFullNameScreen,
+  },
+  changePasswordScreen: {
+    screen: ChangePasswordScreen,
+  },
   schoolSelectionScreen: {
-    screen: SchoolSelectionNavigator,
+    screen: SchoolSelectionScreen,
+  },
+  homeScreen: {
+    screen: HomeNavigator,
   },
 }, {
   headerMode: "none",
 });
 
-const WelcomeNavigator = StackNavigator({ // eslint-disable-line
-  welcome: {
-    screen: WelcomeScreen,
-  },
-  authScreen: {
-    screen: AuthNavigator,
-  },
-}, {
-  headerMode: "none",
-});
+const createMainNavigator = (isFirstRun = false) => {
+  return StackNavigator({
+    welcomeScreen: {
+      screen: WelcomeScreen,
+    },
+    mainScreen: {
+      screen: HomeNavigator,
+    },
+    sellBooks: {
+      screen: SellBooksNavigator,
+    },
+    singleBook: {
+      screen: SingleBookNavigator,
+    },
+    authScreen: {
+      screen: AuthNavigator,
+    },
+  }, {
+    initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
+    headerMode: "none",
+  });
+}
 
-// temporary changed to HomeNavigator for debugging
-// original value: MainNavigator
-export default MainNavigator;
+export default createMainNavigator;

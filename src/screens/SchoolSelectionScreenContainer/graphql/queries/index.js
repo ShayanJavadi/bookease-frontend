@@ -1,3 +1,4 @@
+import changeSchoolMutation from "./changeSchoolMutation";
 import searchForSchoolsQuery from "./searchForSchoolsQuery";
 
-export default { searchForSchoolsQuery };
+export default { changeSchoolMutation, searchForSchoolsQuery };

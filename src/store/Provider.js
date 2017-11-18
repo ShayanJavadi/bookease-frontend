@@ -9,12 +9,17 @@ import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import { facebookAuthReducer, googleAuthReducer } from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
 import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
+import emailPasswordValidationReducer from "../screens/EmailPasswordScreenContainer/reducers";
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
+import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContainer/reducers";
+import fullNameSubmitReducer from "../screens/ChangeFullNameScreenContainer/reducers"
+import changePasswordSubmitReducer from "../screens/ChangePasswordScreenContainer/reducers"
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
 import EnterBookDetailsCameraReducer from "../screens/EnterBookDetailsCameraScreenContainer/reducers/";
+import SessionReducer from "../screens/SessionContainer/reducers/index";
 import MyBooksListingsScreenReducer from "../screens/MyBooksListingsScreenContainer/reducers/";
 
 const networkInterface = createNetworkInterface({
@@ -43,13 +48,18 @@ const reducers = combineReducers({
   googleAuthReducer,
   emailValidationReducer,
   emailPinValidationReducer,
+  emailPasswordValidationReducer,
   phoneValidationReducer,
   phonePinValidationReducer,
+  phonePasswordValidationReducer,
+  changePasswordSubmitReducer,
+  fullNameSubmitReducer,
   scanBookReducer,
   EnterBookDetailsReducer,
   EnterBookDetailsCameraReducer,
   MyBooksListingsScreenReducer,
   apollo: client.reducer(),
+  Session: SessionReducer
 });
 
 const store = createStore(

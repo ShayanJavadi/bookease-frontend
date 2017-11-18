@@ -28,18 +28,34 @@ export default class SchoolSelectionScreen extends Component {
 
   static propTypes = {
     data: object.isRequired,
+    mutate: func.isRequired,
     schools: arrayOf(shape({
       name: string.isRequired,
       address: string.isRequired,
       id: string.isRequired
     })).isRequired,
     searchForSchool: func.isRequired,
+    updateSchool: func.isRequired,
     navigation: shape({
-      navigate: func.isRequired
+      navigate: func.isRequired,
+      state: shape({
+        params: shape({
+          profileData: object.isRequired
+        }).isRequired
+      }).isRequired
     }).isRequired
   };
 
+  componentDidMount() {
+    this.input.focus();
+  }
+
   onComplete() {
+    this.props.updateSchool({
+      mutate: this.props.mutate,
+      profileData: this.props.navigation.state.params.profileData,
+      schoolId: this.state.selectedSchool.id
+    });
     this.props.navigation.navigate("home");
   }
 
@@ -74,6 +90,7 @@ export default class SchoolSelectionScreen extends Component {
             style={inputStyle}
             value={this.state.selectedSchool.name}
             onChangeText={text => this.onChangeText(text)}
+            ref={input => this.input = input}
           />
           <ScrollView style={dropDownStyle}>
             {this.renderSchoolList()}

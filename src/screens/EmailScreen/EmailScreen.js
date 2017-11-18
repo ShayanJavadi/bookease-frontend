@@ -1,22 +1,27 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, Keyboard } from "react-native";
-import { bool, func, shape } from "prop-types";
+import { Text, View, ActivityIndicator, Keyboard } from "react-native";
 import { Button } from "react-native-material-ui";
-import { styles } from "./styles";
+import { TextField } from "react-native-material-textfield";
+import { bool, func, shape } from "prop-types";
+import { styles, palette } from "./styles";
 
 const {
   screenStyleWithKeyboard,
   screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
-  invalidEmailTextStyle,
   inputStyle,
-  invalidInputStyle,
+  paddingTextStyle,
   inputContainerStyle,
   buttonContainerStyle,
   disabledButtonContainerStyle,
   buttonTextStyle,
+  activitySpinnerStyle,
  } = styles;
+
+ const {
+   primaryColor,
+ } = palette;
 
 export default class EmailScreen extends Component {
   static navigationOptions = {
@@ -34,8 +39,8 @@ export default class EmailScreen extends Component {
 
   state = {
     email: "",
-    emailInUse: false,
-    keyboardVisible: false
+    keyboardVisible: false,
+    isWaiting: false,
    }
 
   componentDidMount() {
@@ -64,20 +69,28 @@ export default class EmailScreen extends Component {
   onInputChange(value) {
     this.setState({
       email: value,
-      emailInUse: false,
      });
     this.props.validateEmail(value);
   }
 
   onSubmitButtonPress() {
+    this.setState({ isWaiting: true });
     this.props.mutate({
       variables: { email: this.state.email }
     })
-    .then(() =>
-      this.props.navigation.navigate("emailPinScreen", { identifier: this.state.email })
+    .then(() => {
+        this.setState({ isWaiting: false });
+        this.props.navigation.navigate("emailPinScreen", {
+          identifier: this.state.email,
+         });
+      }
     )
-    .catch(() =>
-      this.setState({ emailInUse: true })
+    .catch(() => {
+        this.setState({ isWaiting: false  });
+        this.props.navigation.navigate("emailPasswordScreen", {
+          profileData: { email: this.state.email }
+        });
+      }
     );
   }
 
@@ -87,28 +100,32 @@ export default class EmailScreen extends Component {
       <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
         <View style={topContainerStyle}>
           <Text style={headerTextStyle}>Enter your email</Text>
-          <Text style={invalidEmailTextStyle}>{this.state.emailInUse? "Email already in use" : " "}</Text>
+          <Text style={paddingTextStyle}>{" "}</Text>
           <View style={inputContainerStyle}>
-            <TextInput
-              style={this.state.emailInUse ? invalidInputStyle : inputStyle}
+            <TextField
+              label="Email"
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"
+              fontSize={20}
+              tintColor={primaryColor}
+              containerStyle={inputStyle}
               onChangeText={value => this.onInputChange(value)}
               ref={input => this.input = input}
             />
           </View>
         </View>
-        {this.props.isEmailValid &&
+        {!this.state.isWaiting && this.props.isEmailValid &&
           (<Button
             raised
             primary
             text="Submit"
             style={{ container: buttonContainerStyle, text: buttonTextStyle }}
+            onChangeText={value => this.onInputChange(value)}
             onPress={() => this.onSubmitButtonPress()}
           />)
         }
-        {!this.props.isEmailValid &&
+        {!this.state.isWaiting && !this.props.isEmailValid &&
           (<Button
             disabled
             raised
@@ -116,6 +133,13 @@ export default class EmailScreen extends Component {
             text="Submit"
             style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
           />)
+        }
+        {this.state.isWaiting &&
+          <ActivityIndicator
+             animating={this.state.animating}
+             style={[styles.centering, activitySpinnerStyle]}
+             size="large"
+           />
         }
       </View>
     );
