@@ -7,7 +7,7 @@ import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
 import HomeScreen from "../screens/HomeScreen";
 import SingleBookScreen from "../screens/SingleBookScreen/";
-import MyBooksListingsScreen from "../screens/MyBooksListingsScreen";
+import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
@@ -91,6 +91,7 @@ const HomeNavigator = TabNavigator({
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
+  lazy: true,
 });
 
 const MainNavigator = StackNavigator({

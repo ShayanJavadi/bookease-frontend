@@ -1,3 +1,4 @@
 import mapConditionToNumbers from "./mapConditionToNumbers";
+import toOrdinal from "./toOrdinal";
 
-export { mapConditionToNumbers };
+export { mapConditionToNumbers, toOrdinal };

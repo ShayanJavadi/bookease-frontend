@@ -1,13 +1,15 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
-const { palette } = uiTheme;
+export const { palette } = uiTheme;
+export const SWIPE_OUT_ICON_SIZE = 25;
+export const NO_LISTING_ICON_COLOR = tertiaryColorDark;
+
 const {
   tertiaryColorDark,
 } = palette;
 
-export const SWIPE_OUT_ICON_SIZE = 25;
-export const NO_LISTING_ICON_COLOR = tertiaryColorDark;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export const styles = StyleSheet.create({
   screenStyle: {
@@ -146,5 +148,12 @@ export const styles = StyleSheet.create({
     lineHeight: 27,
     color: "#444",
     textAlign: "center",
+  },
+  activityIndicatorWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    // TODO: take care of this magic number
+    height: SCREEN_HEIGHT / 2 + 150,
   }
 });
