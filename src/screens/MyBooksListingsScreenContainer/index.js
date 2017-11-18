@@ -6,7 +6,7 @@ import MyBooksListingsScreen from "../MyBooksListingsScreen";
 
 const { getMyTextbooksQuery } = queries;
 
-const mapStateToProps = ({ MyBooksListingsReducer }) => ({});
+const mapStateToProps = ({ MyBooksListingsReducer }) => ({}); // eslint-disable-line no-unused-vars
 
 const Container = graphql(getMyTextbooksQuery);
 

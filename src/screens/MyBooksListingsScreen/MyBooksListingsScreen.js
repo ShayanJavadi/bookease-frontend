@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
-import { func, shape } from "prop-types";
+import { func, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { toOrdinal } from "src/common/lib";
+import { toOrdinal, getRelativeTime } from "src/common/lib";
 import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR, palette } from "./styles";
 
 const {
@@ -38,6 +38,7 @@ const {
 
 export default class MyBooksListingsScreen extends Component {
   static propTypes = {
+    data: object.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -65,13 +66,11 @@ export default class MyBooksListingsScreen extends Component {
       edition,
       createdAt,
       price,
-      status,
       authors,
       images,
     } = listing;
 
     return (
-
       <Swipeable
         rightButtons={[
           <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]} key="edit">
@@ -112,7 +111,7 @@ export default class MyBooksListingsScreen extends Component {
               </Text>
             </View>
             <View style={listingDateWrapperStyle}>
-              <Text style={listingDateTextStyle}>{"5m"}</Text>
+              <Text style={listingDateTextStyle}>{getRelativeTime(createdAt)}</Text>
             </View>
           </View>
           <View style={listingPriceWrapperStyle}>
@@ -173,7 +172,6 @@ export default class MyBooksListingsScreen extends Component {
   }
 
   render() {
-    console.log(this);
     return (
       <View style={screenStyle}>
         <ScrollView style={{ flex: 1 }}

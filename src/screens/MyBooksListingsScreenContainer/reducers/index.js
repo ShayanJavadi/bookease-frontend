@@ -1,6 +1,4 @@
 import {
-  PIN_VALID,
-  PIN_INVALID,
 } from "../actions/consts";
 
 const INITIAL_STATE = {
