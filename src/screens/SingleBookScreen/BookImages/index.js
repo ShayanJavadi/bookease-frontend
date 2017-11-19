@@ -17,7 +17,7 @@ const {
 
 const renderCarouselSlides = (images) => {
   return images.map((image, index) => (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} key={index}>
         <Image
           style={bookImageStyle}
           source={{ uri: image.thumbnail }}

@@ -175,7 +175,6 @@ export default class MyBooksListingsScreen extends Component {
   }
 
   render() {
-    console.log(this);
     return (
       <View style={screenStyle}>
         <ScrollView style={{ flex: 1 }}

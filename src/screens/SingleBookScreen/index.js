@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, StatusBar, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { func, shape } from "prop-types";
+import { func, shape, object } from "prop-types";
 import BackButton from "src/modules/BackButton";
 import Questions from "./Questions";
 import BookImages from "./BookImages";
@@ -27,6 +27,7 @@ export default class SingleBookScreen extends Component {
   })
 
   static propTypes = {
+    getTextbookQuery: object.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -51,8 +52,9 @@ export default class SingleBookScreen extends Component {
         </View>
       )
     }
+
     const { getTextbook } = this.props.getTextbookQuery;
-    console.log(getTextbook);
+
     return (
       <KeyboardAwareScrollView>
         <BookImages textbook={getTextbook} />
@@ -87,13 +89,9 @@ export default class SingleBookScreen extends Component {
   }
 
   render() {
-    console.log(this);
-    const { getTextbook } = this.props.getTextbookQuery;
-
     return (
       <View style={screenStyle}>
         {this.renderListing()}
-
         {this.renderButtons()}
       </View>
     );
