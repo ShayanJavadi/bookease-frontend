@@ -3,7 +3,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
 import HomeScreen from "../screens/HomeScreen";
-import SingleBookScreen from "../screens/SingleBookScreen/";
+import SingleBookScreen from "../screens/SingleBookScreenContainer/";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
