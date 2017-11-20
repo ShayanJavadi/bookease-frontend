@@ -1,6 +1,5 @@
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
-// import * as actions from "./actions";
 import queries from "./graphql/queries";
 import mutations from "./graphql/mutations";
 import MyBooksListingsScreen from "../MyBooksListingsScreen";
