@@ -40,15 +40,11 @@ const {
   modalWrapperStyle,
 } = styles;
 
-const initialState = {
-  refreshing: false,
-  isDeleteConfirmationModalVisible: false,
-  selectedTextbookId: "",
-}
-
 export default class MyBooksListingsScreen extends Component {
   static propTypes = {
     data: object.isRequired,
+    getMyTextbooksQuery: func.isRequired,
+    deleteTextbookMutation: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -92,9 +88,9 @@ export default class MyBooksListingsScreen extends Component {
        this.setState({ isDeleteConfirmationModalVisible: false })
        getMyTextbooksQuery.refetch();
      })
-   };
+   }
 
-   this.setState({ isDeleteConfirmationModalVisible: false });
+   this.setState({ isDeleteConfirmationModalVisible: false })
  }
 
   renderMyListings(listing) {
@@ -240,12 +236,6 @@ export default class MyBooksListingsScreen extends Component {
   }
 
   render() {
-    const {
-      selectedTextbookId,
-      isDeleteConfirmationModalVisible,
-    } = this.state;
-    const { deleteTextbookMutation, getMyTextbooksQuery } = this.props;
-
     return (
       <View style={screenStyle}>
         <ScrollView style={{ flex: 1 }}
