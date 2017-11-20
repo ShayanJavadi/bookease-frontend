@@ -12,7 +12,7 @@ export default function(ComposedComponent) {
     };
 
     checkAuthenticationStatus({ isAuthenticated }) {
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
         this.props.navigation.navigate("auth");
       }
     }
