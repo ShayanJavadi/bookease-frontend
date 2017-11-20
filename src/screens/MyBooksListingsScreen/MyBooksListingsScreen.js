@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, TouchableOpacity, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
 import { func, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
@@ -68,6 +68,7 @@ export default class MyBooksListingsScreen extends Component {
       price,
       authors,
       images,
+      id,
     } = listing;
 
     return (
@@ -89,35 +90,37 @@ export default class MyBooksListingsScreen extends Component {
           </TouchableOpacity>,
         ]}
       >
-        <View style={listingWrapperStyle}>
-          <View style={listingPictureWrapperStyle}>
-            <Image
-              style={listingPictureStyle}
-              source={{ uri: images[0].thumbnail }}
-            />
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("singleBook", { textbookId: id })}>
+          <View style={listingWrapperStyle}>
+            <View style={listingPictureWrapperStyle}>
+              <Image
+                style={listingPictureStyle}
+                source={{ uri: images[0].thumbnail }}
+              />
+            </View>
+            <View style={listingDetailsWrapperStyle}>
+              <View style={listingNameWrapperStyle}>
+                <Text style={listingNameTextStyle}>{title}<Text style={{ color: "#444" }}> - {toOrdinal(edition)}</Text></Text>
+              </View>
+              <View style={listingDetailsTopWrapperStyle}>
+                <Text style={[listingSmallDetailsTextStyle, ]}>
+                  <Text style={{ fontWeight: "400" }}>Author:</Text> {authors}
+                </Text>
+              </View>
+              <View style={listingDetailsBottomWrapperStyle}>
+                <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>
+                  <Text style={{ fontWeight: "400" }}>Status:</Text> Active
+                </Text>
+              </View>
+              <View style={listingDateWrapperStyle}>
+                <Text style={listingDateTextStyle}>{getRelativeTime(createdAt)}</Text>
+              </View>
+            </View>
+            <View style={listingPriceWrapperStyle}>
+              <Text style={listingPriceTextStyle}>${price}</Text>
+            </View>
           </View>
-          <View style={listingDetailsWrapperStyle}>
-            <View style={listingNameWrapperStyle}>
-              <Text style={listingNameTextStyle}>{title}<Text style={{ color: "#444" }}> - {toOrdinal(edition)}</Text></Text>
-            </View>
-            <View style={listingDetailsTopWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, ]}>
-                <Text style={{ fontWeight: "400" }}>Author:</Text> {authors}
-              </Text>
-            </View>
-            <View style={listingDetailsBottomWrapperStyle}>
-              <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>
-                <Text style={{ fontWeight: "400" }}>Status:</Text> Active
-              </Text>
-            </View>
-            <View style={listingDateWrapperStyle}>
-              <Text style={listingDateTextStyle}>{getRelativeTime(createdAt)}</Text>
-            </View>
-          </View>
-          <View style={listingPriceWrapperStyle}>
-            <Text style={listingPriceTextStyle}>${price}</Text>
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Swipeable>
     );
   }
