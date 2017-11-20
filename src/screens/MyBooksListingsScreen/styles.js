@@ -137,6 +137,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     paddingBottom: 50,
+    // TODO: take care of this magic number
+    height: SCREEN_HEIGHT / 2 + 180,
   },
   noListingIconWrapperStyle: {
     justifyContent: "center",
@@ -155,5 +157,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     // TODO: take care of this magic number
     height: SCREEN_HEIGHT / 2 + 150,
-  }
+  },
+  modalWrapperStyle: {
+    justifyContent: "center",
+    margin: 0,
+    padding: 22,
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
 });
