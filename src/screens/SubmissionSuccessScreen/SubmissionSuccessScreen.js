@@ -72,6 +72,10 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   renderButtons() {
+    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
+    this.props.navigation.state.params.submittedBook :
+    undefined;
+
     return (
       <View style={buttonsWrapperStyle}>
         <Button
@@ -85,6 +89,7 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           upperCase={false}
           text="View Your Post"
+          onPress={() => this.props.navigation.navigate("singleBook", { textbookId: scannedTextbook.id })}
           style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
         />
       </View>
@@ -92,10 +97,6 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   render() {
-    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
-    this.props.navigation.state.params.scannedTextbook :
-    undefined;
-
     return (
       <View style={screenStyle}>
         {this.renderCloseIcon()}

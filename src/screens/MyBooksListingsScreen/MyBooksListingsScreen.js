@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
 import { func, shape, object } from "prop-types";
+import { isEmpty } from "lodash";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import Modal from "react-native-modal";
+import { Dialog, DialogDefaultActions } from "react-native-material-ui";
 import { toOrdinal, getRelativeTime } from "src/common/lib";
 import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR, palette } from "./styles";
 
@@ -34,11 +37,14 @@ const {
   noListingIconWrapperStyle,
   noListingTextStyle,
   activityIndicatorWrapper,
+  modalWrapperStyle,
 } = styles;
 
 export default class MyBooksListingsScreen extends Component {
   static propTypes = {
     data: object.isRequired,
+    getMyTextbooksQuery: func.isRequired,
+    deleteTextbookMutation: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -50,15 +56,42 @@ export default class MyBooksListingsScreen extends Component {
 
   state = {
     refreshing: false,
+    isDeleteConfirmationModalVisible: false,
+    selectedTextbookId: "",
   }
 
   onScrollViewRefresh() {
     this.setState({ refreshing: true });
-    this.props.data.refetch()
+    this.props.getMyTextbooksQuery.refetch()
     .then(() => {
       this.setState({ refreshing: false });
     })
   }
+
+  onDeleteButtonPress(id = "") {
+    this.setState({
+      selectedTextbookId: id,
+      isDeleteConfirmationModalVisible: true,
+    })
+  }
+
+  onModalActionPress(action) {
+   const { deleteTextbookMutation, getMyTextbooksQuery } = this.props;
+
+   if (action === "erase") {
+     deleteTextbookMutation({
+       variables: {
+         textbookId: this.state.selectedTextbookId
+       }
+     })
+     .then(() => {
+       this.setState({ isDeleteConfirmationModalVisible: false })
+       getMyTextbooksQuery.refetch();
+     })
+   }
+
+   this.setState({ isDeleteConfirmationModalVisible: false })
+ }
 
   renderMyListings(listing) {
     const {
@@ -81,7 +114,10 @@ export default class MyBooksListingsScreen extends Component {
               style={swipeOutTextStyle}
             />
           </TouchableOpacity>,
-          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#ff003d" }]} key="delete">
+          <TouchableOpacity
+            style={[swipeOutStyle, { backgroundColor: "#ff003d" }]} key="delete"
+            onPress={() => this.onDeleteButtonPress(id)}
+          >
             <MaterialCommunityIcons
               name="delete"
               size={SWIPE_OUT_ICON_SIZE}
@@ -126,7 +162,7 @@ export default class MyBooksListingsScreen extends Component {
   }
 
   renderListings() {
-    const { loading, getMyTextbooks } = this.props.data;
+    const { loading, getMyTextbooks } = this.props.getMyTextbooksQuery;
 
     if (loading) {
       return (
@@ -138,39 +174,64 @@ export default class MyBooksListingsScreen extends Component {
       )
     }
 
-    if (getMyTextbooks) {
+    if (isEmpty(getMyTextbooks)) {
       return (
-        <View style={listingsWrapperStyle}>
-          <FlatList
-            data={getMyTextbooks}
-            renderItem={({ item }) => this.renderMyListings(item)}
-            keyExtractor={getMyTextbooks => getMyTextbooks.id}
-          />
+        <View style={noListingWrapperStyle}>
+          <View style={noListingIconWrapperStyle}>
+            <MaterialCommunityIcons
+              name="barcode-scan"
+              size={40}
+              color={NO_LISTING_ICON_COLOR}
+            />
+          </View>
+          <View style={{ paddingVertical: 10 }}>
+            <Text style={noListingTextStyle}>{"You don't have any books for sale."}</Text>
+          </View>
+          <View style={{ paddingVertical: 10 }}>
+            <Button
+              primary
+              raised
+              text="Sell Book"
+              onPress={() => this.props.navigation.navigate("scanBook")}
+            />
+          </View>
         </View>
       )
     }
 
     return (
-      <View style={noListingWrapperStyle}>
-        <View style={noListingIconWrapperStyle}>
-          <MaterialCommunityIcons
-            name="barcode-scan"
-            size={40}
-            color={NO_LISTING_ICON_COLOR}
-          />
-        </View>
-        <View style={{ paddingVertical: 10 }}>
-          <Text style={noListingTextStyle}>{"You don't have any books for sale."}</Text>
-        </View>
-        <View style={{ paddingVertical: 10 }}>
-          <Button
-            primary
-            raised
-            text="Sell Book"
-            onPress={() => this.props.navigation.navigate("scanBook")}
-          />
-        </View>
+      <View style={listingsWrapperStyle}>
+        <FlatList
+          data={getMyTextbooks}
+          renderItem={({ item }) => this.renderMyListings(item)}
+          keyExtractor={getMyTextbooks => getMyTextbooks.id}
+        />
       </View>
+    )
+  }
+
+
+
+  renderDeleteConfirmationModal() {
+    const { isDeleteConfirmationModalVisible } = this.state;
+
+    const { Title, Actions } = Dialog;
+    return (
+      <Modal isVisible={isDeleteConfirmationModalVisible} style={modalWrapperStyle}>
+        <Dialog>
+          <Title>
+            <Text style={{ fontSize: 18 }}>Discard selected Textbook?</Text>
+          </Title>
+          <Actions>
+            <DialogDefaultActions
+              actions={["cancel", "erase"]}
+              onActionPress={
+                (action) => this.onModalActionPress(action)
+              }
+            />
+          </Actions>
+        </Dialog>
+      </Modal>
     )
   }
 
@@ -187,8 +248,8 @@ export default class MyBooksListingsScreen extends Component {
           }
         >
         {this.renderListings()}
-
         </ ScrollView>
+        {this.renderDeleteConfirmationModal()}
       </View>
     );
   }
