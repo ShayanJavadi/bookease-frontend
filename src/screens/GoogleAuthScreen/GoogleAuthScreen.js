@@ -24,7 +24,7 @@ export default class AuthScreen extends Component {
 
   componentWillReceiveProps(newProps) {
     if(!newProps.googleAuthToken) {
-      this.props.navigation.goBack();
+      return this.props.navigation.goBack();
     }
     else {
       //TODO: make API call here
