@@ -21,6 +21,7 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
 import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
+import GoogleAuthScreen from "../screens/GoogleAuthScreenContainer";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
@@ -125,6 +126,9 @@ const AuthNavigator = StackNavigator({
   },
   schoolSelectionScreen: {
     screen: SchoolSelectionScreen,
+  },
+  googleAuthScreen: {
+    screen: GoogleAuthScreen
   },
   homeScreen: {
     screen: HomeNavigator,

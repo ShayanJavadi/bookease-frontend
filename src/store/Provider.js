@@ -6,7 +6,7 @@ import { reducer as form } from "redux-form";
 import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
 import base64 from "base-64";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
-import { facebookAuthReducer, googleAuthReducer } from "../screens/AuthScreenContainer/reducers";
+import { facebookAuthReducer } from "../screens/AuthScreenContainer/reducers";
 import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
 import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
 import emailPasswordValidationReducer from "../screens/EmailPasswordScreenContainer/reducers";
@@ -16,6 +16,7 @@ import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContai
 import fullNameSubmitReducer from "../screens/ChangeFullNameScreenContainer/reducers"
 import changePasswordSubmitReducer from "../screens/ChangePasswordScreenContainer/reducers"
 import schoolSelectionReducer from "../screens/SchoolSelectionScreenContainer/reducers";
+import googleAuthReducer from "../screens/GoogleAuthScreenContainer/reducers";
 import scanBookReducer from "../screens/ScanBookScreenContainer/reducers";
 import EnterBookDetailsReducer from "../screens/EnterBookDetailsScreenContainer/reducers";
 import EnterBookDetailsCameraReducer from "../screens/EnterBookDetailsCameraScreenContainer/reducers/";

@@ -51,7 +51,7 @@ export default class AuthScreen extends Component {
   }
 
   onGoogleButtonPress() {
-    this.props.googleLogin();
+    this.props.navigation.navigate("googleAuthScreen");
   }
 
   onEmailButtonPress() {
