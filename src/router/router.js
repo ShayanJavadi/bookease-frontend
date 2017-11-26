@@ -21,7 +21,6 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
 import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
-import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 
@@ -36,10 +35,10 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
+    screen: EnterBookDetailsScreen,
   },
   scanBook: {
-    screen: RequireAuthenticationContainer(ScanBookScreen),
+    screen: ScanBookScreen,
   },
   newBookCamera: {
     screen: EnterBookDetailsCameraScreen,
@@ -48,9 +47,7 @@ const SellBooksNavigator = StackNavigator({
     screen: SubmissionSuccessNavigator,
   }
 }, {
-  headerMode: "none",
   mode: "modal",
-
 });
 
 const myBooksNavigator = TabNavigator({
