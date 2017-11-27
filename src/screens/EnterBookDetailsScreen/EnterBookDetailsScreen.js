@@ -10,7 +10,7 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase } from "lodash";
+import { isEmpty, lowerCase, isEqual, remove } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
@@ -112,6 +112,10 @@ export default class EnterBookDetailsScreen extends Component {
     updateMode: false,
     textbookIdToUpdate: undefined,
     deleteTextbookModalVisible: undefined,
+    uploadedImages: [],
+    newImages: [],
+    allImages: [],
+    carouselKey: Math.random(),
   }
 
   inputs = {}
@@ -122,12 +126,16 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   async componentDidMount() {
-    const { navigation, getTextbookQuery } = this.props;
+    const { navigation, getTextbookQuery, images } = this.props;
+    const { uploadedImages } = this.state;
 
     const imagesDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}images`);
     if (!imagesDirectory.exists) {
       FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}images`);
     }
+
+    this.setState({ newImages: images });
+    this.rebuildImagesArray(uploadedImages, images);
 
     const scannedTextbook = navigation.state.params ?
     navigation.state.params.scannedTextbook :
@@ -149,6 +157,8 @@ export default class EnterBookDetailsScreen extends Component {
   fetchTextbookToUpdate(textbookIdToUpdate) {
     this.props.getTextbookQuery.refetch({ textbookId: textbookIdToUpdate })
     .then((textbook) => {
+        this.setState({ uploadedImages: textbook.data.getTextbook.images });
+        this.rebuildImagesArray(textbook.data.getTextbook.images, this.state.newImages);
         this.populateForm(textbook.data.getTextbook);
     })
   }
@@ -186,6 +196,14 @@ export default class EnterBookDetailsScreen extends Component {
     if (isSetParamsCalled && textbookIdToUpdate !== undefined) {
       this.fetchTextbookToUpdate(textbookIdToUpdate);
     }
+
+    if (!isEqual(this.props.images, nextProps.images)) {
+      console.log('not equal');
+      console.log(nextProps);
+      this.setState({ newImages: nextProps.images });
+      this.rebuildImagesArray(this.state.uploadedImages, nextProps.images)
+      this.resetCarousel();
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -205,6 +223,14 @@ export default class EnterBookDetailsScreen extends Component {
     }
 
     this.props.resetState();
+  }
+
+  rebuildImagesArray(uploadedImages, newImages) {
+    this.setState({ allImages: [...uploadedImages, ...newImages] });
+  }
+
+  resetCarousel() {
+    this.setState({ carouselKey: Math.random(), imageSlidesIndex: 0 });
   }
 
   populateForm(textbook) {
@@ -267,11 +293,9 @@ export default class EnterBookDetailsScreen extends Component {
     };
 
     if (this.state.updateMode) {
-      const uploadedImages = this.props.getTextbookQuery.getTextbook && this.state.updateMode ?
-      this.props.getTextbookQuery.getTextbook.images :
-      []
+      const { uploadedImages, allImages } = this.state;
 
-      bookDetails.bookImages.value = [...uploadedImages, ...this.props.images];
+      bookDetails.bookImages.value = allImages;
 
       return updateTextbook(bookDetails, uploadedImages, updateTextbookMutation, this.state.textbookIdToUpdate);
     }
@@ -299,12 +323,31 @@ export default class EnterBookDetailsScreen extends Component {
 
   onDeleteImageModalActionPress(action) {
     const { deleteImage, images } = this.props;
+    const { allImages, imageSlidesIndex, newImages, uploadedImages } = this.state;
 
     if (action === "erase") {
-      deleteImage(images[this.state.imageSlidesIndex].uri)
-    }
+      console.log(this.state);
+      if (allImages[imageSlidesIndex].uri) {
+        this.setState({ deleteImageModalVisible: false });
+        deleteImage(allImages[imageSlidesIndex].uri)
+        this.resetCarousel();
+        return;
+      }
 
-    this.setState({ deleteImageModalVisible: false });
+      this.setState(
+        {
+          uploadedImages: uploadedImages.filter((image, index) => {
+            return index !== imageSlidesIndex
+          })
+        },
+        () => {
+          this.resetCarousel();
+          this.rebuildImagesArray(this.state.uploadedImages, newImages)
+          this.setState({ deleteImageModalVisible: false });
+          return;
+        }
+      );
+    }
   }
 
   onDeleteTextbookModalActionPress(action) {
@@ -326,7 +369,7 @@ export default class EnterBookDetailsScreen extends Component {
           ],
         })
 
-          this.props.navigation.dispatch(resetAction)
+        this.props.navigation.dispatch(resetAction)
       })
     }
 
@@ -360,13 +403,11 @@ export default class EnterBookDetailsScreen extends Component {
     this.props.getTextbookQuery.getTextbook.images :
     []
 
-    const images = [...uploadedImages, ...this.props.images];
-
-    console.log(images);
+    const images = this.state.allImages;
 
     if (!isEmpty(images)) {
       return (
-          <View style={pictureCarouselWrapperStyle}>
+          <View style={pictureCarouselWrapperStyle} key={this.state.carouselKey}>
             <Swiper
               loop={false}
               horizontal
@@ -376,6 +417,7 @@ export default class EnterBookDetailsScreen extends Component {
               showsButtons={false}
               style={pictureCarouselStyle}
               onIndexChanged={(index) => {this.setState({ imageSlidesIndex: index })}}
+              ref={component => this.swiper = component}
             >
               {this.renderCarouselSlides(images)}
             </Swiper>
@@ -559,6 +601,7 @@ export default class EnterBookDetailsScreen extends Component {
 
   renderPictureInputModal() {
     const { Title, Content, Actions } = Dialog;
+
     return (
       <Modal isVisible={this.state.cameraModalVisible} style={modalWrapperStyle}>
         <Dialog>
@@ -597,6 +640,7 @@ export default class EnterBookDetailsScreen extends Component {
 
   renderDeleteImageModal() {
     const { Title, Actions } = Dialog;
+
     return (
       <Modal isVisible={this.state.deleteImageModalVisible} style={modalWrapperStyle}>
         <Dialog>
@@ -616,6 +660,7 @@ export default class EnterBookDetailsScreen extends Component {
 
   renderDeleteTextbookModal() {
     const { Title, Actions } = Dialog;
+
     return (
       <Modal isVisible={this.state.deleteTextbookModalVisible} style={modalWrapperStyle}>
         <Dialog>
@@ -661,6 +706,7 @@ export default class EnterBookDetailsScreen extends Component {
     if (error) {
       console.warn(error); // eslint-disable-line no-console
     }
+
     const hasTextbookBeenFetched = this.props.getTextbookQuery.loading || (!this.props.getTextbookQuery.getTextbook && this.state.updateMode);
 
     if (hasTextbookBeenFetched) {
