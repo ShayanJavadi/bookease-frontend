@@ -6,9 +6,9 @@ import queries from "./graphql/queries";
 import actions from "./actions";
 import EnterBookDetailsScreen from "../EnterBookDetailsScreen";
 
-const { createTextbookMutation, deleteTextbookMutation } = mutations;
+const { createTextbookMutation, deleteTextbookMutation, updateTextbookMutation } = mutations;
 const { getTextbookQuery } = queries;
-const { createNewBook, launchImageLibrary, deleteImage, resetState } = actions;
+const { createNewBook, launchImageLibrary, deleteImage, resetState, updateTextbook } = actions;
 
 const mapStateToProps = ({ EnterBookDetailsReducer }) => ({
   errorsMessages: EnterBookDetailsReducer.errorsMessages,
@@ -17,6 +17,7 @@ const mapStateToProps = ({ EnterBookDetailsReducer }) => ({
   isSubmitting: EnterBookDetailsReducer.isSubmitting,
   loadingMessage: EnterBookDetailsReducer.loadingMessage,
   submittedBook: EnterBookDetailsReducer.submittedBook,
+  submissionType: EnterBookDetailsReducer.submissionType,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -24,9 +25,11 @@ const mapDispatchToProps = (dispatch) => {
     createNewBook: createNewBook,
     launchImageLibrary: launchImageLibrary,
     deleteImage: deleteImage,
-    resetState: resetState
+    resetState: resetState,
+    updateTextbook: updateTextbook,
   }, dispatch)
 };
+
 const Container = compose(
   graphql(createTextbookMutation, {
     options: props => ({ variables: { textbook: props.textbook || {} }, fetchPolicy: "network-only" }),
@@ -39,6 +42,10 @@ const Container = compose(
   graphql(deleteTextbookMutation, {
     options: props => ({ variables: { textbookId: props.textbookId || "" } }),
     name: "deleteTextbookMutation",
+  }),
+  graphql(updateTextbookMutation, {
+    options: props => ({ variables: { textbook: props.textbook || {} } }),
+    name: "updateTextbookMutation",
   }),
 )
 

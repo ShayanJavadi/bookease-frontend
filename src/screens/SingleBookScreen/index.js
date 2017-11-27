@@ -42,7 +42,7 @@ export default class SingleBookScreen extends Component {
     const { getTextbookQuery } = this.props;
 
     // TODO: implement optimistic loading
-    if (getTextbookQuery.loading) {
+    if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: " center" }}>
           <ActivityIndicator

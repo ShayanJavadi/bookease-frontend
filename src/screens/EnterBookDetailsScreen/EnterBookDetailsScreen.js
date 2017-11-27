@@ -156,8 +156,22 @@ export default class EnterBookDetailsScreen extends Component {
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
 
-    if (nextProps.submittedBook) {
-      this.props.navigation.navigate("submissionSuccessScreen", { submittedBook: nextProps.submittedBook });
+    if (nextProps.submittedBook && nextProps.submissionType === "createTextbook") {
+      navigation.navigate("submissionSuccessScreen", { submittedBook: nextProps.submittedBook });
+    }
+
+    if (nextProps.submittedBook && nextProps.submissionType === "updateTextbook") {
+      console.log(nextProps.submittedBook );
+      console.log(nextProps);
+      const closeSuccessScreenAction = NavigationActions.reset({
+        index: 1,
+        key: null,
+        actions: [
+          NavigationActions.navigate({ routeName: "mainScreen" }),
+          NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: nextProps.submittedBook } })
+        ]
+      })
+      this.props.navigation.dispatch(closeSuccessScreenAction)
     }
 
     // workaround for react navigation messing up api call
@@ -206,7 +220,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onFormSubmit = () => {
-    const { createNewBook, createTextbookMutation } = this.props;
+    const { createNewBook,  createTextbookMutation, updateTextbook, updateTextbookMutation } = this.props;
     const {
       bookTitle,
       bookAuthor,
@@ -252,7 +266,17 @@ export default class EnterBookDetailsScreen extends Component {
       },
     };
 
-    createNewBook(bookDetails, createTextbookMutation);
+    if (this.state.updateMode) {
+      const uploadedImages = this.props.getTextbookQuery.getTextbook && this.state.updateMode ?
+      this.props.getTextbookQuery.getTextbook.images :
+      []
+
+      bookDetails.bookImages.value = [...uploadedImages, ...this.props.images];
+
+      return updateTextbook(bookDetails, uploadedImages, updateTextbookMutation, this.state.textbookIdToUpdate);
+    }
+
+    return createNewBook(bookDetails, createTextbookMutation);
   }
 
   onDeleteImagePress() {
@@ -311,8 +335,8 @@ export default class EnterBookDetailsScreen extends Component {
 
 // TODO: bring up bigger swiper modal with the same pictures when you press on the pictures
   renderCarouselSlides(images) {
-    return images.map((image) => (
-      <View key={image.key} style={carouselSlidesWrapperStyle}>
+    return images.map((image, index) => (
+      <View key={index} style={carouselSlidesWrapperStyle}>
         <TouchableOpacity onPress={() => this.onDeleteImagePress()} style={carouselDeleteButtonWrapperStyle}>
           <MaterialCommunityIcons name="close-circle-outline" size={25} style={{ color: "#fff" }}/>
         </TouchableOpacity>
@@ -322,7 +346,7 @@ export default class EnterBookDetailsScreen extends Component {
         >
           <Image
             style={{ flex: 1 }}
-            source={{ uri: image.uri }}
+            source={{ uri: image.uri || image.thumbnail  }}
           />
         </TouchableHighlight>
       </View>
@@ -330,7 +354,15 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureCarousel() {
-    const { images, errorsMessages } = this.props;
+    const { getTextbookQuery, errorsMessages } = this.props;
+
+    const uploadedImages = this.props.getTextbookQuery.getTextbook && this.state.updateMode ?
+    this.props.getTextbookQuery.getTextbook.images :
+    []
+
+    const images = [...uploadedImages, ...this.props.images];
+
+    console.log(images);
 
     if (!isEmpty(images)) {
       return (
