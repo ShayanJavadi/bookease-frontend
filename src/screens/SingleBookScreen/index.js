@@ -34,6 +34,7 @@ export default class SingleBookScreen extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    deleteTextbookMutation: func.isRequired,
   };
 
   state = {
@@ -50,7 +51,7 @@ export default class SingleBookScreen extends Component {
   }
 
   onDeleteTextbookModalActionPress(action) {
-    const { deleteTextbookMutation, navigation, getTextbookQuery } = this.props;
+    const { deleteTextbookMutation, getTextbookQuery } = this.props;
 
     if (action === "erase") {
       deleteTextbookMutation({
@@ -97,7 +98,6 @@ export default class SingleBookScreen extends Component {
   }
 
   renderListing() {
-    const { getTextbookQuery } = this.props;
     const { getTextbook } = this.props.getTextbookQuery;
 
     return (
@@ -176,7 +176,7 @@ export default class SingleBookScreen extends Component {
     // TODO: implement optimistic loading
     if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
       return (
-        <View style={{ flex: 1, justifyContent: "center"}}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
           <ActivityIndicator
             size="large"
             color={uiTheme.tertiaryColorDark}

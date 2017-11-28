@@ -10,7 +10,7 @@ import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase, isEqual, remove } from "lodash";
+import { isEmpty, lowerCase, isEqual } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
@@ -90,11 +90,18 @@ export default class EnterBookDetailsScreen extends Component {
     mutate: func.isRequired,
     data: object,
     submittedBook: object.isRequired,
+    submissionType: string.isRequired,
     isSubmitting: bool.isRequired,
     loadingMessage: string.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    getTextbookQuery: func.isRequired,
+    updateTextbookMutation: func.isRequired,
+    createTextbookMutation: func.isRequired,
+    deleteTextbookMutation: func.isRequired,
+    resetState: func.isRequired,
+    updateTextbook: func.isRequired,
   }
 
   state = {
@@ -126,7 +133,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   async componentDidMount() {
-    const { navigation, getTextbookQuery, images } = this.props;
+    const { navigation, images } = this.props;
     const { uploadedImages } = this.state;
 
     const imagesDirectory = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}images`);
@@ -165,15 +172,16 @@ export default class EnterBookDetailsScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
+    const textbookWasCreated = nextProps.submittedBook && nextProps.submissionType === "createTextbook";
 
-    if (nextProps.submittedBook && nextProps.submissionType === "createTextbook") {
+    if (textbookWasCreated) {
       navigation.navigate("submissionSuccessScreen", { submittedBook: nextProps.submittedBook });
     }
 
-    if (nextProps.submittedBook && nextProps.submissionType === "updateTextbook") {
-      console.log(nextProps.submittedBook );
-      console.log(nextProps);
-      const closeSuccessScreenAction = NavigationActions.reset({
+    const textbookWasUpdated = nextProps.submittedBook && nextProps.submissionType === "updateTextbook";
+
+    if (textbookWasUpdated) {
+      const navigateToSingleBookScreenAction = NavigationActions.reset({
         index: 1,
         key: null,
         actions: [
@@ -181,7 +189,7 @@ export default class EnterBookDetailsScreen extends Component {
           NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: nextProps.submittedBook } })
         ]
       })
-      this.props.navigation.dispatch(closeSuccessScreenAction)
+      this.props.navigation.dispatch(navigateToSingleBookScreenAction)
     }
 
     // workaround for react navigation messing up api call
@@ -198,8 +206,6 @@ export default class EnterBookDetailsScreen extends Component {
     }
 
     if (!isEqual(this.props.images, nextProps.images)) {
-      console.log('not equal');
-      console.log(nextProps);
       this.setState({ newImages: nextProps.images });
       this.rebuildImagesArray(this.state.uploadedImages, nextProps.images)
       this.resetCarousel();
@@ -322,11 +328,10 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onDeleteImageModalActionPress(action) {
-    const { deleteImage, images } = this.props;
+    const { deleteImage } = this.props;
     const { allImages, imageSlidesIndex, newImages, uploadedImages } = this.state;
 
     if (action === "erase") {
-      console.log(this.state);
       if (allImages[imageSlidesIndex].uri) {
         this.setState({ deleteImageModalVisible: false });
         deleteImage(allImages[imageSlidesIndex].uri)
@@ -351,7 +356,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onDeleteTextbookModalActionPress(action) {
-    const { deleteTextbookMutation, navigation } = this.props;
+    const { deleteTextbookMutation } = this.props;
     if (action === "erase") {
       deleteTextbookMutation({
         variables: {
@@ -397,12 +402,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureCarousel() {
-    const { getTextbookQuery, errorsMessages } = this.props;
-
-    const uploadedImages = this.props.getTextbookQuery.getTextbook && this.state.updateMode ?
-    this.props.getTextbookQuery.getTextbook.images :
-    []
-
+    const { errorsMessages } = this.props;
     const images = this.state.allImages;
 
     if (!isEmpty(images)) {
@@ -719,8 +719,6 @@ export default class EnterBookDetailsScreen extends Component {
         </View>
       )
     }
-
-    const { getTextbook } = this.props.getTextbookQuery;
 
     return (
       <View style={screenStyle}>

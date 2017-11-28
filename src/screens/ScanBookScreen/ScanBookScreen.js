@@ -72,29 +72,29 @@ export default class ScanBookScreen extends Component {
     const { hasCameraPermission } = this.state;
     const error = this.props.data.error; // eslint-disable-line no-unused-vars
 
-    // if (this.props.loading) {
-    //   return (
-    //     <View style={screenStyle}>
-    //       <Text>Loading...</Text>
-    //     </View>
-    //   )
-    // }
-    //
-    // if (hasCameraPermission === null) {
-    //   return (
-    //     <View style={screenStyle}>
-    //       <Text>Requesting for camera access...</Text>
-    //     </View>
-    //   )
-    // }
-    //
-    // if (hasCameraPermission === false) {
-    //   return (
-    //     <View style={screenStyle}>
-    //       <Text>No access to camera...</Text>
-    //     </View>
-    //   )
-    // }
+    if (this.props.loading) {
+      return (
+        <View style={screenStyle}>
+          <Text>Loading...</Text>
+        </View>
+      )
+    }
+
+    if (hasCameraPermission === null) {
+      return (
+        <View style={screenStyle}>
+          <Text>Requesting for camera access...</Text>
+        </View>
+      )
+    }
+
+    if (hasCameraPermission === false) {
+      return (
+        <View style={screenStyle}>
+          <Text>No access to camera...</Text>
+        </View>
+      )
+    }
 
     if (error) {
       console.warn(error); // eslint-disable-line no-console

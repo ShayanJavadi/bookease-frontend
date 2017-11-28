@@ -31,8 +31,6 @@ const updateTextbook = (bookDetails, uploadedImages, updateTextbookMutation, tex
     return previouslyUploadedImages;
   }, []);
 
-  console.log('images');
-  console.log(images);
   uploadImages(images, dispatch)
   .then((newImages) => {
     const updatedImages = [...oldImages, ...newImages].reduce((reprioritizedImages, image, currentIndex) => {

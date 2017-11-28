@@ -3,7 +3,6 @@ import {
   SUBMIT_FORM_RS,
   RESET_STATE,
 } from "./consts";
-import { NavigationActions } from "react-navigation";
 
 const saveBookToBackend = (bookDetails, updateTextbookMutation, imageUrls, textbookId, dispatch) => {
   dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Updating your listing..." });
@@ -33,7 +32,6 @@ const saveBookToBackend = (bookDetails, updateTextbookMutation, imageUrls, textb
     price: bookPrice.value,
   };
 
-  console.log(textbookToSave);
 
   updateTextbookMutation({
     variables: {
@@ -41,12 +39,12 @@ const saveBookToBackend = (bookDetails, updateTextbookMutation, imageUrls, textb
     }
   })
   .then((response) => {
-    console.log(response);
     dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Done." });
     dispatch({
        type: SUBMIT_FORM_RS,
        payload: { submittedBook: response.data.updateTextbook.id, submissionType: "updateTextbook" }
     });
+    dispatch({ type: RESET_STATE });
   })
 
   // TODO: delete image folder here

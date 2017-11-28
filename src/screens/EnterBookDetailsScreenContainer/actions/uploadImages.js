@@ -1,6 +1,5 @@
 import extractImageDetails from "./extractImageDetails";
 import uploadImage from "./uploadImage";
-import saveBookToBackend from "./saveBookToBackend";
 import {
   UPDATE_LOADING_MESSAGE,
 } from "./consts";
