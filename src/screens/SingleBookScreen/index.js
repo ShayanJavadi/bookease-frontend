@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { View, StatusBar, ActivityIndicator } from "react-native";
-import { Button } from "react-native-material-ui";
+import { View, StatusBar, ActivityIndicator, Text } from "react-native";
+import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
+import Modal from "react-native-modal";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { NavigationActions } from "react-navigation";
 import { func, shape, object } from "prop-types";
 import BackButton from "src/modules/BackButton";
 import Questions from "./Questions";
@@ -19,6 +21,7 @@ const {
   askButtonTextStyle,
   offerButtonContainerStyle,
   offerButtonTextStyle,
+  modalWrapperStyle
 } = styles;
 
 export default class SingleBookScreen extends Component {
@@ -33,26 +36,68 @@ export default class SingleBookScreen extends Component {
     }).isRequired,
   };
 
+  state = {
+    deleteTextbookModalVisible: false,
+  }
+
   componentDidMount() {
     const { getTextbookQuery, navigation } = this.props;
     getTextbookQuery.refetch({ textbookId: navigation.state.params.textbookId })
   }
 
-  renderListing() {
-    const { getTextbookQuery } = this.props;
+  onDeleteTextbookPress() {
+    this.setState({ deleteTextbookModalVisible: true })
+  }
 
-    // TODO: implement optimistic loading
-    if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
-      return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: " center" }}>
-          <ActivityIndicator
-            size="large"
-            color={uiTheme.tertiaryColorDark}
-          />
-        </View>
-      )
+  onDeleteTextbookModalActionPress(action) {
+    const { deleteTextbookMutation, navigation, getTextbookQuery } = this.props;
+
+    if (action === "erase") {
+      deleteTextbookMutation({
+        variables: {
+          textbookId: getTextbookQuery.getTextbook.id
+        }
+      })
+      .then(() => {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          key: null,
+          actions: [
+            NavigationActions.navigate({
+              routeName: "mainScreen",
+            })
+          ],
+        })
+
+        this.props.navigation.dispatch(resetAction)
+      })
     }
 
+    this.setState({ deleteTextbookModalVisible: false });
+  }
+
+  renderDeleteTextbookModal() {
+    const { Title, Actions } = Dialog;
+
+    return (
+      <Modal isVisible={this.state.deleteTextbookModalVisible} style={modalWrapperStyle}>
+        <Dialog>
+          <Title>
+            <Text>Discard this listing?</Text>
+          </Title>
+          <Actions>
+            <DialogDefaultActions
+              actions={["cancel", "erase"]}
+              onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
+            />
+          </Actions>
+        </Dialog>
+      </Modal>
+    )
+  }
+
+  renderListing() {
+    const { getTextbookQuery } = this.props;
     const { getTextbook } = this.props.getTextbookQuery;
 
     return (
@@ -66,33 +111,85 @@ export default class SingleBookScreen extends Component {
     )
   }
 
-  renderButtons() {
+  renderSellerButtons() {
+    const { navigation, getTextbookQuery } = this.props;
+
     return (
       <View style={buttonsWrapperStyle}>
         <View style={buttonWrapperStyle}>
-            <Button
-              style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
-              primary
-              text="Ask"
-            />
-          </View>
-          <View style={buttonWrapperStyle}>
-            <Button
-              style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
-              primary
-              raised
-              text="Buy"
-            />
-          </View>
+          <Button
+            style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
+            primary
+            onPress={() => this.onDeleteTextbookPress()}
+            text="Delete"
+          />
+        </View>
+        <View style={buttonWrapperStyle}>
+          <Button
+            style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
+            primary
+            raised
+            onPress={() => navigation.navigate("sellBooks", { textbookIdToUpdate: getTextbookQuery.getTextbook.id })}
+            text="Edit"
+          />
+        </View>
       </View>
     )
   }
 
+  renderBuyerButtons() {
+    return (
+      <View style={buttonsWrapperStyle}>
+        <View style={buttonWrapperStyle}>
+          <Button
+            style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
+            primary
+            text="Ask"
+          />
+        </View>
+        <View style={buttonWrapperStyle}>
+          <Button
+            style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
+            primary
+            raised
+            text="Buy"
+          />
+        </View>
+      </View>
+    )
+  }
+
+  renderButtons() {
+    // TODO: change to use getSession api
+    const isUserOwner = true;
+
+    if (isUserOwner) {
+      return this.renderSellerButtons();
+    }
+
+    return this.renderBuyerButtons();
+  }
+
   render() {
+    const { getTextbookQuery } = this.props;
+
+    // TODO: implement optimistic loading
+    if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center"}}>
+          <ActivityIndicator
+            size="large"
+            color={uiTheme.tertiaryColorDark}
+          />
+        </View>
+      )
+    }
+
     return (
       <View style={screenStyle}>
         {this.renderListing()}
         {this.renderButtons()}
+        {this.renderDeleteTextbookModal()}
       </View>
     );
   }

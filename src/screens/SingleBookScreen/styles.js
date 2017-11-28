@@ -43,4 +43,12 @@ export const styles = StyleSheet.create({
   offerButtonTextStyle: {
     fontSize: 18,
   },
+  modalWrapperStyle: {
+    justifyContent: "center",
+    margin: 0,
+    padding: 22,
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
 });
