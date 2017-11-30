@@ -75,6 +75,10 @@ export default class MyBooksListingsScreen extends Component {
     })
   }
 
+  onEditButtonPress(id = "") {
+    this.props.navigation.navigate("sellBooks", { textbookIdToUpdate: id });
+  }
+
   onModalActionPress(action) {
    const { deleteTextbookMutation, getMyTextbooksQuery } = this.props;
 
@@ -107,7 +111,11 @@ export default class MyBooksListingsScreen extends Component {
     return (
       <Swipeable
         rightButtons={[
-          <TouchableOpacity style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]} key="edit">
+          <TouchableOpacity
+            style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]}
+            key="edit"
+            onPress={() => this.onEditButtonPress(id)}
+          >
             <MaterialIcons
               name="edit"
               size={SWIPE_OUT_ICON_SIZE}
