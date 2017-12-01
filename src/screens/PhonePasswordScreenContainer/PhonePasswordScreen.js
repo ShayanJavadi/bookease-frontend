@@ -7,7 +7,7 @@ import PasswordScreen from "../PasswordScreen";
 const mapStateToProps = ({ phonePasswordValidationReducer }) => ({
   isPasswordValid: phonePasswordValidationReducer.isPasswordValid,
   updateCounter: phonePasswordValidationReducer.updateCounter,
-  nextScreen: "changeFullNameScreen",
+  nextScreen: "homeScreen",
 });
 
 const Container = graphql(signInWithPhoneNumberMutation, {

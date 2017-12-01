@@ -7,9 +7,6 @@ import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apol
 import base64 from "base-64";
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import { facebookAuthReducer, googleAuthReducer } from "../screens/AuthScreenContainer/reducers";
-import emailValidationReducer from "../screens/EmailScreenContainer/reducers";
-import emailPinValidationReducer from "../screens/EmailPinScreenContainer/reducers";
-import emailPasswordValidationReducer from "../screens/EmailPasswordScreenContainer/reducers";
 import phoneValidationReducer from "../screens/PhoneScreenContainer/reducers";
 import phonePinValidationReducer from "../screens/PhonePinScreenContainer/reducers";
 import phonePasswordValidationReducer from "../screens/PhonePasswordScreenContainer/reducers";
@@ -46,9 +43,6 @@ const reducers = combineReducers({
   schoolSelectionReducer,
   facebookAuthReducer,
   googleAuthReducer,
-  emailValidationReducer,
-  emailPinValidationReducer,
-  emailPasswordValidationReducer,
   phoneValidationReducer,
   phonePinValidationReducer,
   phonePasswordValidationReducer,

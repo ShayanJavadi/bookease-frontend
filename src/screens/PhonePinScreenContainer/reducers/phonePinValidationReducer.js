@@ -5,6 +5,7 @@ import {
 
 const INITIAL_STATE = {
   isPinValid: false,
+  profileData: { },
   updateCounter: 0,
 };
 
@@ -12,13 +13,15 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PIN_VALID:
       return {
-        updateCounter: state.updateCounter + 1,
         isPinValid: true,
+        updateCounter: state.updateCounter + 1,
+        profileData: { id: action.payload.id, phoneNumber: action.payload.phoneNumber },
       };
     case PIN_INVALID:
       return {
-        updateCounter: state.updateCounter + 1,
         isPinValid: false,
+        updateCounter: state.updateCounter + 1,
+        userId: action.payload,
       };
     default:
       return state;

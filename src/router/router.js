@@ -13,9 +13,6 @@ import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
-import EmailScreen from "../screens/EmailScreenContainer";
-import EmailPinScreen from "../screens/EmailPinScreenContainer";
-import EmailPasswordScreen from "../screens/EmailPasswordScreenContainer";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
@@ -98,15 +95,6 @@ const HomeNavigator = TabNavigator({
 const AuthNavigator = StackNavigator({
   auth: {
     screen: AuthScreen,
-  },
-  emailScreen: {
-    screen: EmailScreen,
-  },
-  emailPinScreen: {
-    screen: EmailPinScreen,
-  },
-  emailPasswordScreen: {
-    screen: EmailPasswordScreen,
   },
   phoneScreen: {
     screen: PhoneScreen,

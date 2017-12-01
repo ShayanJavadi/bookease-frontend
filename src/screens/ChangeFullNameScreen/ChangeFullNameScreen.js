@@ -81,7 +81,7 @@ export default class ChangeFullNameScreen extends Component {
 
   onSubmitButtonPress() {
     this.props.submitFullName({
-      password: this.state.password,
+      fullName: this.state.fullName,
       profileData: this.props.navigation.state.params.profileData,
       submitter: this.props.mutate,
     });

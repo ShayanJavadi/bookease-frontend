@@ -82,12 +82,12 @@ export default class PhoneScreen extends Component {
     })
     .then(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber })
+        this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber });
       }
     )
     .catch(() => {
-        this.setState({ isWaiting: false })
-        this.props.navigation.navigate("phonePasswordScreen", { identifier: this.props.phoneNumber })
+        this.setState({ isWaiting: false });
+        this.props.navigation.navigate("phonePasswordScreen", { profileData: { phoneNumber: this.props.phoneNumber } });
       }
     );
   }

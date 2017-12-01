@@ -12,7 +12,7 @@ const mapStateToProps = ({ fullNameSubmitReducer }) => ({
 });
 
 const Container = graphql(setFullNameMutation, {
-  options: props => ({ variables: { email: props.email || "", phone: props.phone || "", fullName: props.fullName || "" } }),
+  options: props => ({ variables: { email: props.email || "", phoneNumber: props.phoneNumber || "", fullName: props.fullName || "" } }),
 });
 
 export default Container(connect(
