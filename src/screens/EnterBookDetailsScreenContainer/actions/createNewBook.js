@@ -1,5 +1,6 @@
 import checkForFormErrors from "./checkForFormErrors";
 import uploadImages from "./uploadImages";
+import saveBookToBackend from "./saveBookToBackend";
 import {
   SUBMIT_FORM_RQ,
   UPDATE_LOADING_MESSAGE,
@@ -15,7 +16,10 @@ const createNewBook = (bookDetails, createTextbookMutation) => async (dispatch) 
 
   const images = bookDetails.bookImages.value;
 
-  return uploadImages(images, bookDetails, createTextbookMutation, dispatch);
+  return uploadImages(images, dispatch)
+  .then((imageUrls) => {
+    return saveBookToBackend(bookDetails, createTextbookMutation, imageUrls, dispatch);
+  })
 };
 
 export default createNewBook;

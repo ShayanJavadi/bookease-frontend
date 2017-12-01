@@ -1,16 +1,15 @@
 import extractImageDetails from "./extractImageDetails";
 import uploadImage from "./uploadImage";
-import saveBookToBackend from "./saveBookToBackend";
 import {
   UPDATE_LOADING_MESSAGE,
 } from "./consts";
 
-const uploadImages = (images, bookDetails, createTextbookMutation, dispatch) => {
+const uploadImages = (images, dispatch) => {
   dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Uploading your images..." });
 
   const imageUrls = [];
 
-  images.reduce((previousPromises, image) => {
+  return images.reduce((previousPromises, image) => {
     return previousPromises.then(() => {
       const { imageName, imageType } = extractImageDetails(image);
 
@@ -23,7 +22,7 @@ const uploadImages = (images, bookDetails, createTextbookMutation, dispatch) => 
     })
   }, Promise.resolve()) // eslint-disable-line no-undef
     .then(() => {
-      return saveBookToBackend(bookDetails, createTextbookMutation, imageUrls, dispatch);
+      return imageUrls;
     });
 }
 

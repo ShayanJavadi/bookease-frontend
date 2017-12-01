@@ -4,8 +4,8 @@ import {
   RESET_STATE,
 } from "./consts";
 
-const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispatch) => {
-  dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Submitting your listing..." });
+const saveBookToBackend = (bookDetails, updateTextbookMutation, imageUrls, textbookId, dispatch) => {
+  dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Updating your listing..." });
 
   const {
     bookTitle,
@@ -18,6 +18,7 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispa
   } = bookDetails;
 
   const textbookToSave = {
+    id: textbookId,
     title: bookTitle.value,
     description: bookDescription.value,
     industryIdentifiers: {
@@ -31,7 +32,8 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispa
     price: bookPrice.value,
   };
 
-  createTextbookMutation({
+
+  updateTextbookMutation({
     variables: {
       textbook: textbookToSave
     }
@@ -40,7 +42,7 @@ const saveBookToBackend = (bookDetails, createTextbookMutation, imageUrls, dispa
     dispatch({ type: UPDATE_LOADING_MESSAGE, payload: "Done." });
     dispatch({
        type: SUBMIT_FORM_RS,
-       payload: { submittedBook: response.data.createTextbook, submissionType: "createTextbook" }
+       payload: { submittedBook: response.data.updateTextbook.id, submissionType: "updateTextbook" }
     });
     dispatch({ type: RESET_STATE });
   })

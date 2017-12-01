@@ -25,6 +25,7 @@ const INITIAL_STATE = {
   isSubmitting: false,
   loadingMessage: "",
   submittedBook: undefined,
+  submissionType: undefined,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -42,7 +43,7 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_LOADING_MESSAGE:
       return { ...state, loadingMessage: action.payload }
     case SUBMIT_FORM_RS:
-      return { ...state, isSubmitting: false, submittedBook: action.payload }
+      return { ...state, isSubmitting: false, submittedBook: action.payload.submittedBook, submissionType: action.payload.submissionType }
     case RESET_STATE:
       return INITIAL_STATE
     default:
