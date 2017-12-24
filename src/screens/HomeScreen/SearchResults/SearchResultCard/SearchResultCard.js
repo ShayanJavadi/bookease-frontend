@@ -3,6 +3,7 @@ import { Text, View, Image, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
+import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
 
 const {
@@ -41,12 +42,12 @@ export default class SearchResultCard extends Component {
   };
 
   onListingPress() {
-    this.props.navigation.navigate("singleBook", { book: this.props.book });
+    this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
   }
 
   renderUpperSection() {
     const {
-      name,
+      title,
       edition,
       condition,
     } = this.props.book;
@@ -54,12 +55,12 @@ export default class SearchResultCard extends Component {
     return (
         <View style={upperSectionWrapper}>
           <View style={upperSectionTopWrapper}>
-            <Text style={bookNameStyle}>{name}</Text>
+            <Text style={bookNameStyle}>{title}</Text>
           </View>
           <View style={upperSectionBottomWrapper}>
             <View style={{ flexDirection: "row", flex: 1 }}>
-              <Text style={bookEditionStyle}>Edition: {edition}</Text>
-              <Text style={bookconditionStyle}>Condition: {condition}</Text>
+              <Text style={bookEditionStyle}>Edition: {toOrdinal(edition)}</Text>
+              <Text style={bookconditionStyle}>Condition: {mapNumberToConditions(condition)}</Text>
             </View>
           </View>
         </View>
@@ -68,8 +69,8 @@ export default class SearchResultCard extends Component {
 
   renderLowerSection() {
     const {
-      owner,
       price,
+      createdAt,
     } = this.props.book;
 
     return (
@@ -80,8 +81,8 @@ export default class SearchResultCard extends Component {
               <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
             </View>
             <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
-              <Text style={bookOwnerStyle}>{owner}</Text>
-              <Text style={bookUniversityStyle}>Posted 3 hours ago</Text>
+              <Text style={bookOwnerStyle}>John Doe</Text>
+              <Text style={bookUniversityStyle}>{getRelativeTime(createdAt, true)}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -107,7 +108,7 @@ export default class SearchResultCard extends Component {
           {this.renderUpperSection()}
           <Image
             style={middleSectionWrapper}
-            source={{ uri: this.props.book.thumbnail }}
+            source={{ uri: this.props.book.images[0].thumbnail}}
           />
           {this.renderLowerSection()}
         </View>

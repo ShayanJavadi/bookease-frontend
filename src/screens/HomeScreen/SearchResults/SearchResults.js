@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import { shape, func } from "prop-types";
 import SearchResultCard from "./SearchResultCard";
 
@@ -48,20 +48,35 @@ export default class SearchResults extends Component {
   };
 
   renderSearchResults(book) {
+    console.log(book);
     return (
       <SearchResultCard
         navigation={this.props.navigation}
-        key={book.isbn}
+        key={book.id}
         book={book}
       />
     );
   }
 
   render() {
+    console.log(this.props.textbooks);
+    if (this.props.loading) {
+      return (
+        <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
+          <View style={{ flex: 6, justifyContent: "center", alignItems: "center" }}>
+            <ActivityIndicator
+              size="large"
+            />
+          </View>
+        </View>
+      )
+    }
+
+
     return (
       <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
         <FlatList
-          data={bookResults}
+          data={this.props.textbooks}
           renderItem={({ item }) => this.renderSearchResults(item)}
           keyExtractor={item => item.isbn}
         />
