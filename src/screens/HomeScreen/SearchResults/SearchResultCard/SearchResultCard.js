@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Image, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
 import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
@@ -20,9 +20,8 @@ const {
   bookNameStyle,
   bookEditionStyle,
   bookconditionStyle,
-  // bookIsbnStyle,
   bookOwnerStyle,
-  bookUniversityStyle,
+  bookCreatedAtStyle,
   bookPriceStyle,
 } = styles;
 
@@ -40,6 +39,10 @@ export default class SearchResultCard extends Component {
       navigate: func.isRequired
     }).isRequired,
   };
+
+  state = {
+    isImageLoading: true,
+  }
 
   onListingPress() {
     this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
@@ -67,6 +70,31 @@ export default class SearchResultCard extends Component {
     )
   }
 
+  renderImage() {
+    return (
+      <View style={{ flex: 11 }}>
+        <View
+          style={
+            this.state.isImageLoading ? [middleSectionWrapper, { justifyContent: "center", alignItems: "center" }] : { height: 0, opacity: 0 }
+          }
+        >
+          <ActivityIndicator
+            size="large"
+            color="#222"
+          />
+        </View>
+        <Image
+          style={
+            this.state.isImageLoading ? { flex: 0.1 } : middleSectionWrapper
+          }
+          source={{ uri: this.props.book.images[0].thumbnail}}
+          onLoad={() => this.setState({ isImageLoading: false })}
+          onLoadStart={() => this.setState({ isImageLoading: true })}
+        />
+      </View>
+    )
+  }
+
   renderLowerSection() {
     const {
       price,
@@ -81,8 +109,8 @@ export default class SearchResultCard extends Component {
               <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
             </View>
             <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
-              <Text style={bookOwnerStyle}>John Doe</Text>
-              <Text style={bookUniversityStyle}>{getRelativeTime(createdAt, true)}</Text>
+              <Text style={bookOwnerStyle}>Joh </Text>
+              <Text style={bookCreatedAtStyle}>{getRelativeTime(createdAt, true)}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -106,10 +134,7 @@ export default class SearchResultCard extends Component {
       >
         <View style={searchResultCardWrapper}>
           {this.renderUpperSection()}
-          <Image
-            style={middleSectionWrapper}
-            source={{ uri: this.props.book.images[0].thumbnail}}
-          />
+          {this.renderImage()}
           {this.renderLowerSection()}
         </View>
       </TouchableWithoutFeedback>

@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const { palette } = uiTheme;
 const {
@@ -12,20 +14,16 @@ export const styles = StyleSheet.create({
     height: 400,
     shadowColor: "#222",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.5,
     shadowRadius: 2,
   },
   upperSectionWrapper: {
     flex: 2.5,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#f8f8f8",
     flexDirection: "column",
     justifyContent: "center",
-    shadowColor: "#222",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
     zIndex: 9999,
   },
   upperSectionTopWrapper: {
@@ -40,7 +38,7 @@ export const styles = StyleSheet.create({
     flex: 11,
     height: undefined,
     width: undefined,
-    backgroundColor: "#111",
+    backgroundColor: "#f0f0f0",
   },
   lowerSectionWrapper: {
     flex: 2,
@@ -58,12 +56,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingRight: 10,
+    marginRight: SCREEN_WIDTH * .069,
     flex: 1,
   },
   buttonTextStyle: {
     textAlign: "center",
-    fontSize: 11,
+    fontSize: 13,
     color: "#fff",
     fontWeight: "700",
   },
@@ -73,8 +71,7 @@ export const styles = StyleSheet.create({
   },
   bookNameStyle: {
     fontSize: 17,
-    color: "#333",
-    fontWeight: "100",
+    color: "#222",
   },
   bookEditionStyle: {
     fontSize: 12,
@@ -94,17 +91,15 @@ export const styles = StyleSheet.create({
     color: "#222",
     paddingBottom: 2,
     fontSize: 14,
-    fontWeight: "100",
   },
-  bookUniversityStyle: {
-    fontSize: 10,
+  bookCreatedAtStyle: {
+    fontSize: 12,
     color: "#666",
   },
   bookPriceStyle: {
-    color: "#222",
+    color: "#666",
     fontSize: 19,
-    fontWeight: "100",
-    paddingRight: 10,
+    paddingRight: 15,
   },
   bookPriceWrapperStyle: {
   },

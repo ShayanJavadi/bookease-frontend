@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
     paddingLeft: 11,
-    fontWeight: "100",
     color: "#fff",
   },
 });

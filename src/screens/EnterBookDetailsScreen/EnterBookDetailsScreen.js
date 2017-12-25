@@ -692,7 +692,10 @@ export default class EnterBookDetailsScreen extends Component {
         icon={
           this.state.updateMode ?
           <MaterialCommunityIcons name="delete-forever" size={35} style={{ color: "#fff", paddingTop: 4 }} /> :
-          <MaterialCommunityIcons name="barcode-scan" size={30} style={{ color: "#fff", paddingTop: 4 }} />
+          <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+            <MaterialCommunityIcons name="barcode-scan" size={25} style={{ color: "#fff", marginTop: 2 }}/>
+            <Text style={{ color: "#fff", position: "relative", bottom: 3, fontWeight: "700", fontSize: 10 }}>SCAN</Text>
+          </View>
         }
       />
     )
