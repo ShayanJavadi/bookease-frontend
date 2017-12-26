@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, Image, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
 import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
@@ -87,7 +87,7 @@ export default class SearchResultCard extends Component {
           style={
             this.state.isImageLoading ? { flex: 0.1 } : middleSectionWrapper
           }
-          source={{ uri: this.props.book.images[0].thumbnail}}
+          source={{ uri: this.props.book.images[0].thumbnail }}
           onLoad={() => this.setState({ isImageLoading: false })}
           onLoadStart={() => this.setState({ isImageLoading: true })}
         />

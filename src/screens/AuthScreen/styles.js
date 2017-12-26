@@ -61,4 +61,12 @@ export const styles = StyleSheet.create({
   slideLogoStyle: {
     color: "#222",
   },
+  closeIconWrapperStyle: {
+    position: "absolute",
+    top: 40,
+    right: 30,
+  },
+  closeIconStyle: {
+    color: "#aaa",
+  },
 });

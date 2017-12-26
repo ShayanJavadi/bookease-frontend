@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { bool, func, shape } from "prop-types";
 import { connect } from "react-redux";
 
 export default function(ComposedComponent) {
-  class RequireAuthenticationContainer extends Component {
+  class RequireAuthenticationContainer extends ComposedComponent {
     static propTypes = {
       isAuthenticated: bool.isRequired,
       navigation: shape({
@@ -13,7 +13,7 @@ export default function(ComposedComponent) {
 
     checkAuthenticationStatus({ isAuthenticated }) {
       if (!isAuthenticated) {
-        this.props.navigation.navigate("auth");
+        this.props.navigation.navigate("authScreen");
       }
     }
 

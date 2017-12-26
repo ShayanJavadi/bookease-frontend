@@ -23,7 +23,7 @@ import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
-
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
     screen: SubmissionSuccessScreen,
@@ -35,7 +35,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: EnterBookDetailsScreen,
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -150,6 +150,7 @@ const createMainNavigator = (isFirstRun = false) => {
   }, {
     initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
+
   });
 }
 

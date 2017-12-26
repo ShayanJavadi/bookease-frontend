@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { View, FlatList, ActivityIndicator, Text } from "react-native";
-import { shape, func } from "prop-types";
+import { object, bool, array } from "prop-types";
 import { isEmpty } from "lodash";
 import SearchResultCard from "./SearchResultCard";
 import uiTheme from "src/common/styles/uiTheme";
@@ -16,8 +16,6 @@ const renderSearchResult = (book, navigation) => {
 }
 
 const SearchResults = ({ textbooks, loading, navigation }) => {
-  console.log(textbooks);
-
   if (loading) {
     return (
       <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
@@ -41,7 +39,6 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
     )
   }
 
-
   return (
     <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
       <FlatList
@@ -52,5 +49,11 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
     </View>
   );
 }
+
+SearchResults.propTypes = {
+  navigation: object.isRequired,
+  loading: bool.isRequired,
+  textbooks: array.isRequired,
+};
 
 export default SearchResults;

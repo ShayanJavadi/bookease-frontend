@@ -8,7 +8,6 @@ import SearchResults from "./SearchResults";
 const { screenStyle } = styles;
 
 const HomeScreen = (props) => {
-  console.log(props);
   const { getTextbooksQuery: { refetch, loading, getTextbooks }, navigation } = props;
   return (
     <View style={screenStyle}>

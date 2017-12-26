@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput } from "react-native";
+import { func } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { styles } from "./styles";
 
@@ -17,6 +18,11 @@ export default class SearchBar extends Component {
     searchQuery: "",
   }
 
+
+  static propTypes = {
+    search: func.isRequired,
+  };
+
   onSearchInputChange(text) {
     this.setState({ searchQuery: text }, () => {
       this.props.search(text);
@@ -24,8 +30,6 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    console.log(this.props);
-
     return (
       <View style={searchBarWrapperStyle}>
         <View style={inputWrapperStyle}>

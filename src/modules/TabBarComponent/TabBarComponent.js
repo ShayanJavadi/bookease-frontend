@@ -114,7 +114,6 @@ export default class TabBarComponent extends Component {
   }
 
   renderActionButton() {
-    const { Item } = ActionButton;
     return (
       <View style={sellBooksButtonStyle}>
         <ActionButton
