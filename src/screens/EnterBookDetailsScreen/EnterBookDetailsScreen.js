@@ -17,6 +17,7 @@ import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers, mapNumberToConditions } from "src/common/lib";
+import Header from "src/modules/Header";
 
 const {
   screenStyle,
@@ -53,32 +54,9 @@ const {
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarVisible: false,
-    headerTitle:  navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate ? "Update Book Details" : "Enter Book Details" :
-    "Enter Book Details",
-    headerLeft: <BackButton navigation={navigation}/>,
-    headerRight: (
-      <Button
-        text="submit"
-        raised
-        primary
-        style={{
-          container: {
-            margin: 10,
-          },
-          text: {
-            color: "#fff",
-          },
-        }}
-        onPress={() => navigation.state.params.onFormSubmit()}
-      />
-    ),
-    headerStyle: headerStyle,
-    headerTitleStyle: headerTitleStyle,
-    headerBackTitleStyle: { color: "#fff" }
-  })
+  static navigationOptions = {
+    header: null,
+  }
 
   static propTypes = {
     createNewBook: func.isRequired,
@@ -185,7 +163,7 @@ export default class EnterBookDetailsScreen extends Component {
         index: 1,
         key: null,
         actions: [
-          NavigationActions.navigate({ routeName: "mainScreen" }),
+          NavigationActions.navigate({ routeName: "main" }),
           NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: nextProps.submittedBook } })
         ]
       })
@@ -702,15 +680,16 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
-    const error =  this.props.data ?
-    this.props.data.error :
+    const { navigation, data, getTextbookQuery, isSubmitting, loadingMessage } = this.props;
+    const error =  data ?
+    data.error :
     null;
 
     if (error) {
       console.warn(error); // eslint-disable-line no-console
     }
 
-    const hasTextbookBeenFetched = this.props.getTextbookQuery.loading || (!this.props.getTextbookQuery.getTextbook && this.state.updateMode);
+    const hasTextbookBeenFetched = getTextbookQuery.loading || (!getTextbookQuery.getTextbook && this.state.updateMode);
 
     if (hasTextbookBeenFetched) {
       return (
@@ -741,9 +720,29 @@ export default class EnterBookDetailsScreen extends Component {
           {this.renderDeleteTextbookModal()}
         </KeyboardAwareScrollView>
         {this.renderActionButton()}
+        <Header
+          leftComponent={<BackButton navigation={navigation}/>}
+          rightComponent={
+            <Button
+              text="submit"
+              raised
+              primary
+              style={{
+                container: {
+                  margin: 10,
+                },
+                text: {
+                  color: "#fff",
+                },
+              }}
+              onPress={() => navigation.state.params.onFormSubmit()}
+            />
+          }
+          text="Enter Book Details"
+         />
         <Spinner
-          visible={this.props.isSubmitting}
-          textContent={this.props.loadingMessage}
+          visible={isSubmitting}
+          textContent={loadingMessage}
           overlayColor="rgba(0, 0, 0, 0.65)"
           textStyle={{ color: "#FFF" }}
         />

@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 70,
   },
   headerStyle: {
     backgroundColor: tertiaryColorDark,

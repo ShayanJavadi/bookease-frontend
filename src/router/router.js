@@ -35,7 +35,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, false),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -84,7 +84,7 @@ const HomeNavigator = TabNavigator({
     screen: NotificationScreen,
   },
   account: {
-    screen: AccountScreen,
+    screen: RequireAuthenticationContainer(AccountScreen, true),
   },
 }, {
   tabBarPosition: "bottom",
@@ -144,14 +144,34 @@ const createMainNavigator = (isFirstRun = false) => {
     singleBook: {
       screen: SingleBookNavigator,
     },
-    authScreen: {
-      screen: AuthNavigator,
-    },
   }, {
     initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
-
   });
 }
 
-export default createMainNavigator;
+const appNavigator = (isFirstRun = false) => StackNavigator({
+  main: {
+    screen: createMainNavigator(isFirstRun),
+  },
+  authScreen: {
+    screen: AuthNavigator
+  },
+  singleBook: {
+    screen: SingleBookNavigator,
+  },
+}, {
+  initialRouteName: "main",
+  headerMode: 'none',
+  mode: 'modal',
+  cardStyle: {
+    opacity: 1,
+  },
+  navigationOptions: {
+    cardStack: {
+      gesturesEnabled: true,
+    },
+  },
+});
+
+export default appNavigator;

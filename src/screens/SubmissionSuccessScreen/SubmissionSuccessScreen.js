@@ -40,10 +40,26 @@ export default class SubmissionSuccessScreen extends Component {
       index: 0,
       key: null,
       actions: [
-        NavigationActions.navigate({ routeName: "mainScreen" })
+        NavigationActions.navigate({ routeName: "main" })
       ]
     })
     this.props.navigation.dispatch(closeSuccessScreenAction)
+  }
+
+  navigateToListing() {
+    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
+    this.props.navigation.state.params.submittedBook :
+    undefined;
+
+    const navigateToSingleBookScreenAction = NavigationActions.reset({
+      index: 1,
+      key: null,
+      actions: [
+        NavigationActions.navigate({ routeName: "main" }),
+        NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: scannedTextbook.id } })
+      ]
+    })
+    this.props.navigation.dispatch(navigateToSingleBookScreenAction)
   }
 
   renderCloseIcon() {
@@ -72,9 +88,6 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   renderButtons() {
-    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
-    this.props.navigation.state.params.submittedBook :
-    undefined;
 
     return (
       <View style={buttonsWrapperStyle}>
@@ -89,7 +102,7 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           upperCase={false}
           text="View Your Post"
-          onPress={() => this.props.navigation.navigate("singleBook", { textbookId: scannedTextbook.id })}
+          onPress={() => this.navigateToListing()}
           style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
         />
       </View>
