@@ -5,26 +5,13 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 export const { palette } = uiTheme;
 const {
   primaryColor,
-  tertiaryColorDark,
 } = palette;
 
 export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  headerStyle: {
-    backgroundColor: tertiaryColorDark,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    zIndex: 9999,
-    height: 70,
-  },
-  headerTitleStyle: {
-    color: "#fff",
-    fontSize: 16
+    paddingTop: 70,
   },
   formWrapperStyle: {
     flex: 4,

@@ -70,14 +70,19 @@ export default class AuthScreen extends Component {
   }
 
   closeAuthScreen() {
-    const closeSuccessScreenAction = NavigationActions.reset({
-      index: 0,
-      key: null,
-      actions: [
-        NavigationActions.navigate({ routeName: "mainScreen" })
-      ]
-    })
-    this.props.navigation.dispatch(closeSuccessScreenAction)
+    if (this.props.navigation.state.params.resetToHomeOnClose) {
+      const closeSuccessScreenAction = NavigationActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+          NavigationActions.navigate({ routeName: "mainScreen" })
+        ]
+      })
+      return this.props.navigation.dispatch(closeSuccessScreenAction);
+    }
+
+    this.props.navigation.goBack(null);
+    this.props.navigation.goBack(null);
   }
 
   renderCloseIcon() {

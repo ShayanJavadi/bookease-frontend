@@ -2,7 +2,9 @@ import React from "react";
 import { bool, func, shape } from "prop-types";
 import { connect } from "react-redux";
 
-export default function(ComposedComponent) {
+export default function(ComposedComponent, options) {
+  const { resetToHomeOnClose, isNavigator } = options;
+
   class RequireAuthenticationContainer extends ComposedComponent {
     static propTypes = {
       isAuthenticated: bool.isRequired,
@@ -13,7 +15,7 @@ export default function(ComposedComponent) {
 
     checkAuthenticationStatus({ isAuthenticated }) {
       if (!isAuthenticated) {
-        this.props.navigation.navigate("authScreen");
+        this.props.navigation.navigate("authScreen", { resetToHomeOnClose: resetToHomeOnClose });
       }
     }
 
@@ -34,6 +36,10 @@ export default function(ComposedComponent) {
     return {
       isAuthenticated: state.Session.isAuthenticated
     };
+  }
+
+  if (isNavigator) {
+    return RequireAuthenticationContainer;
   }
 
   return connect(mapStateToProps)(RequireAuthenticationContainer);

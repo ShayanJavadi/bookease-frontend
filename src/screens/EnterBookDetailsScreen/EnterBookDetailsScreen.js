@@ -17,11 +17,10 @@ import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers, mapNumberToConditions } from "src/common/lib";
+import Header from "src/modules/Header";
 
 const {
   screenStyle,
-  headerStyle,
-  headerTitleStyle,
   pictureInputWrapperStyle,
   buttonWrapperStyle,
   buttonTextStyle,
@@ -53,32 +52,9 @@ const {
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarVisible: false,
-    headerTitle:  navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate ? "Update Book Details" : "Enter Book Details" :
-    "Enter Book Details",
-    headerLeft: <BackButton navigation={navigation}/>,
-    headerRight: (
-      <Button
-        text="submit"
-        raised
-        primary
-        style={{
-          container: {
-            margin: 10,
-          },
-          text: {
-            color: "#fff",
-          },
-        }}
-        onPress={() => navigation.state.params.onFormSubmit()}
-      />
-    ),
-    headerStyle: headerStyle,
-    headerTitleStyle: headerTitleStyle,
-    headerBackTitleStyle: { color: "#fff" }
-  })
+  static navigationOptions = {
+    header: null,
+  }
 
   static propTypes = {
     createNewBook: func.isRequired,
@@ -702,52 +678,72 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
-    const error =  this.props.data ?
-    this.props.data.error :
-    null;
+   const { navigation, data, getTextbookQuery, isSubmitting, loadingMessage } = this.props;
+   const error =  data ?
+   data.error :
+   null;
 
-    if (error) {
-      console.warn(error); // eslint-disable-line no-console
-    }
+   if (error) {
+     console.warn(error); // eslint-disable-line no-console
+   }
 
-    const hasTextbookBeenFetched = this.props.getTextbookQuery.loading || (!this.props.getTextbookQuery.getTextbook && this.state.updateMode);
+   const hasTextbookBeenFetched = getTextbookQuery.loading || (!getTextbookQuery.getTextbook && this.state.updateMode);
 
-    if (hasTextbookBeenFetched) {
-      return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator
-            size="large"
-            color={tertiaryColorDark}
-          />
-        </View>
-      )
-    }
+   if (hasTextbookBeenFetched) {
+     return (
+       <View style={{ flex: 1, justifyContent: "center" }}>
+         <ActivityIndicator
+           size="large"
+           color={tertiaryColorDark}
+         />
+       </View>
+     )
+   }
 
-    return (
-      <View style={screenStyle}>
-        <KeyboardAwareScrollView
-          enableResetScrollToCoords={false}
-          extraScrollHeight={80}
-          style={{ paddingTop: 20 }}
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-        >
-
-          {this.renderPictureInput()}
-          {this.renderForm()}
-          {this.renderConfirmButton()}
-          {this.renderPictureInputModal()}
-          {this.renderDeleteImageModal()}
-          {this.renderDeleteTextbookModal()}
-        </KeyboardAwareScrollView>
+   return (
+     <View style={screenStyle}>
+       <KeyboardAwareScrollView
+         enableResetScrollToCoords={false}
+         extraScrollHeight={80}
+         style={{ paddingTop: 20 }}
+         keyboardShouldPersistTaps="handled"
+         keyboardDismissMode="on-drag"
+       >
+         {this.renderPictureInput()}
+         {this.renderForm()}
+         {this.renderConfirmButton()}
+         {this.renderPictureInputModal()}
+         {this.renderDeleteImageModal()}
+         {this.renderDeleteTextbookModal()}
+       </KeyboardAwareScrollView>
         {this.renderActionButton()}
-        <Spinner
-          visible={this.props.isSubmitting}
-          textContent={this.props.loadingMessage}
-          overlayColor="rgba(0, 0, 0, 0.65)"
-          textStyle={{ color: "#FFF" }}
+       <Header
+         leftComponent={<BackButton navigation={navigation}/>}
+         rightComponent={
+           <Button
+             text="submit"
+             raised
+             primary
+             style={{
+               container: {
+                 margin: 10,
+               },
+               text: {
+                 color: "#fff",
+               },
+             }}
+             onPress={() => navigation.state.params.onFormSubmit()}
+           />
+         }
+         text="Enter Book Details"
         />
-      </View>
-    );
-  }
+       <Spinner
+         visible={isSubmitting}
+         textContent={loadingMessage}
+         overlayColor="rgba(0, 0, 0, 0.65)"
+         textStyle={{ color: "#FFF" }}
+       />
+     </View>
+   );
+ }
 }

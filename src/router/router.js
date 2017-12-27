@@ -35,7 +35,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen),
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, isNavigator: false }),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -78,13 +78,13 @@ const HomeNavigator = TabNavigator({
     screen: HomeScreen,
   },
   myBooks: {
-    screen: myBooksNavigator,
+    screen: RequireAuthenticationContainer(myBooksNavigator, { resetToHomeOnClose: true, isNavigator: true }),
   },
   notifications: {
-    screen: NotificationScreen,
+    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
   account: {
-    screen: AccountScreen,
+    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
 }, {
   tabBarPosition: "bottom",
@@ -150,7 +150,6 @@ const createMainNavigator = (isFirstRun = false) => {
   }, {
     initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
-
   });
 }
 
