@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { number } from "prop-types";
 import { styles } from "./styles";
 
 const {
@@ -14,10 +14,10 @@ const {
   resultsTextStyle,
 } = styles;
 
-const SearchFilters = () => (
+const SearchFilters = ({ resultsCount }) => (
   <View style={searchFilterWrapperStyle}>
     <View style={resultsWrapperStyle}>
-      <Text style={resultsTextStyle}>33 Results</Text>
+      <Text style={resultsTextStyle}>{`${resultsCount} Results`}</Text>
     </View>
     <View style={filterWrapperStyle}>
       <View style={filterStyle}>
@@ -27,5 +27,9 @@ const SearchFilters = () => (
     </View>
   </View>
 )
+
+SearchFilters.propTypes = {
+  resultsCount: number.isRequired,
+}
 
 export default SearchFilters;
