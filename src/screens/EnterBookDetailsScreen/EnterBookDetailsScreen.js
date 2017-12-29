@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, TouchableHighlight, Text, Image, ActivityIndicator } from "react-native";
 import { func, object, bool, array, shape, string } from "prop-types";
-import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
+import { Button } from "react-native-material-ui";
 import { NavigationActions } from "react-navigation";
 import { FileSystem } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
 import { TextField } from "react-native-material-textfield";
 import { Dropdown } from "react-native-material-dropdown";
-import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { isEmpty, lowerCase, isEqual } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -18,6 +17,7 @@ import BackButton from "src/modules/BackButton";
 import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers, mapNumberToConditions } from "src/common/lib";
 import Header from "src/modules/Header";
+import Modal from "src/modules/Modal";
 
 const {
   screenStyle,
@@ -33,8 +33,6 @@ const {
   carouselDeleteButtonWrapperStyle,
   textInputStyle,
   descriptionTextInputStyle,
-  modalWrapperStyle,
-  modalContentStyle,
   modalButtonStyle,
   modalButtonIconStyle,
   modalButtonWrapperStyle,
@@ -103,9 +101,16 @@ export default class EnterBookDetailsScreen extends Component {
 
   inputs = {}
   componentWillMount() {
-    this.props.navigation.setParams({
-      onFormSubmit: this.onFormSubmit,
-    });
+    const { navigation } = this.props;
+
+    const textbookIdToUpdate = navigation.state.params ?
+    navigation.state.params.textbookIdToUpdate :
+    undefined;
+
+    if (textbookIdToUpdate !== undefined) {
+      this.fetchTextbookToUpdate(textbookIdToUpdate);
+      this.setState({ updateMode: true, textbookIdToUpdate: textbookIdToUpdate })
+    }
   }
 
   async componentDidMount() {
@@ -126,14 +131,6 @@ export default class EnterBookDetailsScreen extends Component {
 
     if (scannedTextbook) {
       this.populateForm(scannedTextbook);
-    }
-
-    const textbookIdToUpdate = navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate :
-    undefined;
-
-    if (textbookIdToUpdate) {
-      this.setState({ updateMode: true, textbookIdToUpdate: textbookIdToUpdate })
     }
   }
 
@@ -165,23 +162,13 @@ export default class EnterBookDetailsScreen extends Component {
           NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: nextProps.submittedBook } })
         ]
       })
+
       this.props.navigation.dispatch(navigateToSingleBookScreenAction)
     }
 
-    // workaround for react navigation messing up api call
-    const isSetParamsCalled = navigation.state.params ?
-    !navigation.state.params.onFormSubmit && nextProps.navigation.state.params.onFormSubmit :
-    false;
+    const shouldRebuildImageArray = !isEqual(this.props.images, nextProps.images);
 
-    const textbookIdToUpdate = navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate :
-    undefined;
-
-    if (isSetParamsCalled && textbookIdToUpdate !== undefined) {
-      this.fetchTextbookToUpdate(textbookIdToUpdate);
-    }
-
-    if (!isEqual(this.props.images, nextProps.images)) {
+    if (shouldRebuildImageArray) {
       this.setState({ newImages: nextProps.images });
       this.rebuildImagesArray(this.state.uploadedImages, nextProps.images)
       this.resetCarousel();
@@ -308,7 +295,9 @@ export default class EnterBookDetailsScreen extends Component {
     const { allImages, imageSlidesIndex, newImages, uploadedImages } = this.state;
 
     if (action === "erase") {
-      if (allImages[imageSlidesIndex].uri) {
+      const isImageAlreadyUploaded = allImages[imageSlidesIndex].uri;
+
+      if (isImageAlreadyUploaded) {
         this.setState({ deleteImageModalVisible: false });
         deleteImage(allImages[imageSlidesIndex].uri)
         this.resetCarousel();
@@ -328,6 +317,10 @@ export default class EnterBookDetailsScreen extends Component {
           return;
         }
       );
+    }
+
+    if (action === "cancel") {
+      this.setState({ deleteImageModalVisible: false });
     }
   }
 
@@ -576,81 +569,51 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureInputModal() {
-    const { Title, Content, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.cameraModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Add Pictures</Text>
-          </Title>
-          <Content>
-            <View style={modalContentStyle}>
-              <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity
-                  style={modalButtonStyle}
-                  onPress={() => this.onCameraPress()}
-                >
-                  <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
-                </TouchableOpacity>
-                <Text style={{ marginTop: 10 }}>Camera</Text>
-              </View>
-              <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
-                  <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
-                </TouchableOpacity>
-              <Text style={{ marginTop: 10 }}>Images</Text>
-              </View>
-            </View>
-          </Content>
-          <Actions>
-            <DialogDefaultActions
-              actions={["Dismiss"]}
-              onActionPress={() => this.setState({ cameraModalVisible: false })}
-            />
-          </Actions>
-        </Dialog>
+      <Modal
+        isVisible={this.state.cameraModalVisible}
+        text="Add Pictures"
+        actions={["Dismiss"]}
+        onActionPress={() => this.setState({ cameraModalVisible: false })}
+      >
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity
+            style={modalButtonStyle}
+            onPress={() => this.onCameraPress()}
+          >
+            <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Camera</Text>
+        </View>
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
+            <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Images</Text>
+        </View>
       </Modal>
     )
   }
 
   renderDeleteImageModal() {
-    const { Title, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.deleteImageModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Discard selected image?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={(action) => this.onDeleteImageModalActionPress(action)}
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.deleteImageModalVisible}
+        text="Discard selected image?"
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onDeleteImageModalActionPress(action)}
+      />
     )
   }
 
   renderDeleteTextbookModal() {
-    const { Title, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.deleteTextbookModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Discard this listing?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.deleteTextbookModalVisible}
+        text="Discard this listing?"
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
+      />
     )
   }
 
@@ -732,7 +695,7 @@ export default class EnterBookDetailsScreen extends Component {
                  color: "#fff",
                },
              }}
-             onPress={() => navigation.state.params.onFormSubmit()}
+             onPress={() => this.onFormSubmit()}
            />
          }
          text="Enter Book Details"

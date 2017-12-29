@@ -132,20 +132,6 @@ export const styles = StyleSheet.create({
      borderRadius: 1,
      borderWidth: 0.5,
   },
-  modalWrapperStyle: {
-    justifyContent: "center",
-    margin: 0,
-    padding: 22,
-    alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-  },
-  modalContentStyle: {
-     justifyContent: "center",
-     alignItems: "center",
-     flexDirection: "row",
-     paddingTop: 35,
-  },
   modalButtonStyle: {
     alignItems: "center",
     justifyContent: "center",

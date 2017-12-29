@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, StatusBar, ActivityIndicator, Text } from "react-native";
-import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
-import Modal from "react-native-modal";
+import { View, StatusBar, ActivityIndicator } from "react-native";
+import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
 import { func, shape, object } from "prop-types";
@@ -12,6 +11,7 @@ import BookDetails from "./BookDetails";
 import AccountDetails from "./AccountDetails";
 import { styles } from "./styles";
 import uiTheme from "src/common/styles";
+import Modal from "src/modules/Modal";
 
 const {
   screenStyle,
@@ -21,7 +21,6 @@ const {
   askButtonTextStyle,
   offerButtonContainerStyle,
   offerButtonTextStyle,
-  modalWrapperStyle
 } = styles;
 
 export default class SingleBookScreen extends Component {
@@ -78,22 +77,14 @@ export default class SingleBookScreen extends Component {
   }
 
   renderDeleteTextbookModal() {
-    const { Title, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.deleteTextbookModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Discard this listing?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.deleteTextbookModalVisible}
+        text="Discard this listing?"
+        textStyle={{ fontSize: 18 }}
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
+      />
     )
   }
 
