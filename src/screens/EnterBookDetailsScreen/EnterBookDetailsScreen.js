@@ -1,51 +1,33 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, Text, Image, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { func, object, bool, array, shape, string } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { NavigationActions } from "react-navigation";
 import { FileSystem } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
-import { TextField } from "react-native-material-textfield";
-import { Dropdown } from "react-native-material-dropdown";
-import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase, isEqual } from "lodash";
+import { lowerCase, isEqual } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
-import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers, mapNumberToConditions } from "src/common/lib";
 import Header from "src/modules/Header";
 import Modal from "src/modules/Modal";
+import Form from  "./Form";
+import PictureInput from  "./PictureInput";
 
 const {
   screenStyle,
-  pictureInputWrapperStyle,
   buttonWrapperStyle,
   buttonTextStyle,
   buttonContainerStyle,
-  pictureInputStyle,
-  pictureInputStyleHasErrors,
-  pictureCarouselWrapperStyle,
-  pictureCarouselStyle,
-  carouselSlidesWrapperStyle,
-  carouselDeleteButtonWrapperStyle,
-  textInputStyle,
-  descriptionTextInputStyle,
   modalButtonStyle,
   modalButtonIconStyle,
   modalButtonWrapperStyle,
-  pictureInputHeaderTextStyle,
-  pictureInputHorizontalRuleStyle,
-  pictureInputHeaderTextStyleHasErrors,
-  pictureInputHorizontalRuleStyleHasErrors,
-  pictureInputActionButtonStyle,
-  pictureInputErrorMessageStyle,
 } = styles;
 
 const {
-  primaryColor,
   tertiaryColorDark,
 } = palette;
 
@@ -99,7 +81,6 @@ export default class EnterBookDetailsScreen extends Component {
     carouselKey: Math.random(),
   }
 
-  inputs = {}
   componentWillMount() {
     const { navigation } = this.props;
 
@@ -215,7 +196,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onFormSubmit = () => {
-    const { createNewBook,  createTextbookMutation, updateTextbook, updateTextbookMutation } = this.props;
+    const { createNewBook, createTextbookMutation, updateTextbook, updateTextbookMutation } = this.props;
     const {
       bookTitle,
       bookAuthor,
@@ -350,97 +331,21 @@ export default class EnterBookDetailsScreen extends Component {
     this.setState({ deleteTextbookModalVisible: false });
   }
 
-// TODO: bring up bigger swiper modal with the same pictures when you press on the pictures
-  renderCarouselSlides(images) {
-    return images.map((image, index) => (
-      <View key={index} style={carouselSlidesWrapperStyle}>
-        <TouchableOpacity onPress={() => this.onDeleteImagePress()} style={carouselDeleteButtonWrapperStyle}>
-          <MaterialCommunityIcons name="close-circle-outline" size={25} style={{ color: "#fff" }}/>
-        </TouchableOpacity>
-        <TouchableHighlight
-          style={carouselSlidesWrapperStyle}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-        >
-          <Image
-            style={{ flex: 1 }}
-            source={{ uri: image.uri || image.thumbnail  }}
-          />
-        </TouchableHighlight>
-      </View>
-    ));
-  }
-
-  renderPictureCarousel() {
-    const { errorsMessages } = this.props;
-    const images = this.state.allImages;
-
-    if (!isEmpty(images)) {
-      return (
-          <View style={pictureCarouselWrapperStyle} key={this.state.carouselKey}>
-            <Swiper
-              loop={false}
-              horizontal
-              dotStyle={{ backgroundColor: "rgba(0,0,0,.7)" }}
-              activeDotColor={primaryColor}
-              showsPagination={true}
-              showsButtons={false}
-              style={pictureCarouselStyle}
-              onIndexChanged={(index) => {this.setState({ imageSlidesIndex: index })}}
-              ref={component => this.swiper = component}
-            >
-              {this.renderCarouselSlides(images)}
-            </Swiper>
-            <ActionButton
-              buttonColor={primaryColor}
-              position="right"
-              size={43}
-              onPress={() => this.setState({ cameraModalVisible: true })}
-              style={pictureInputActionButtonStyle}
-            />
-          </View>
-      )
-    }
-
-    return (
-      <View style={pictureInputWrapperStyle}>
-        <TouchableOpacity
-          style={errorsMessages.bookImages ? pictureInputStyleHasErrors : pictureInputStyle}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-        >
-          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
-        </TouchableOpacity>
-        <ActionButton
-          buttonColor={primaryColor}
-          position="right"
-          size={43}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-          style={pictureInputActionButtonStyle}
-        />
-      </View>
-    )
-  }
 
   renderPictureInput() {
     const { errorsMessages } = this.props;
+    const { allImages, carouselKey } = this.state;
 
     return (
-      <View>
-        <View>
-          <Text style={errorsMessages.bookImages ? pictureInputHeaderTextStyleHasErrors : pictureInputHeaderTextStyle}>Book Pictures*</Text>
-        </View>
-          {this.renderPictureCarousel()}
-        <View
-          style={errorsMessages.bookImages ? pictureInputHorizontalRuleStyleHasErrors : pictureInputHorizontalRuleStyle}
-        />
-        <View>
-          {errorsMessages.bookImages ? <Text style={pictureInputErrorMessageStyle}>{errorsMessages.bookImages}</Text> : null}
-        </View>
-      </View>
+      <PictureInput
+        errorsMessages={errorsMessages}
+        images={allImages}
+        carouselKey={carouselKey}
+        onCarouselIndexChange={(index) => {this.setState({ imageSlidesIndex: index })}}
+        onPress={() => this.setState({ cameraModalVisible: true })}
+        onDeleteImagePress={() => this.onDeleteImagePress()}
+      />
     )
-  }
-
-  focusNextField(id) {
-    this.inputs[id].focus();
   }
 
   renderForm() {
@@ -454,106 +359,26 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription,
       descriptionTextInputSelected,
     } = this.state;
-
     const { errorsMessages } = this.props;
 
-    return (
-      <View style={{ flex: 4 }}>
-        <TextField
-          returnKeyType="next"
-          error={errorsMessages.bookTitle}
-          label="Book Title*"
-          value={bookTitle}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookTitle) => this.setState({ bookTitle })}
-          ref={ input => this.inputs["bookTitle"] = input }
-          onSubmitEditing={() => this.focusNextField("authors")}
-        />
-        <TextField
-          returnKeyType="next"
-          error={errorsMessages.bookAuthor}
-          label="Author(s)*"
-          value={bookAuthor}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookAuthor) => this.setState({ bookAuthor })}
-          ref={ input => this.inputs["authors"] = input}
-          onSubmitEditing={() => this.focusNextField("isbn")}
-        />
-        <TextField
-          returnKeyType="next"
-          keyboardType="numeric"
-          error={errorsMessages.bookIsbn}
-          label="ISBN*"
-          value={bookIsbn}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookIsbn) => this.setState({ bookIsbn }) }
-          ref={ input => this.inputs["isbn"] = input }
-          onSubmitEditing={() => this.focusNextField("edition")}
-        />
-        <TextField
-          keyboardType="numeric"
-          returnKeyType="next"
-          error={errorsMessages.bookEdition}
-          label="Edition*"
-          value={bookEdition}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookEdition) => this.setState({ bookEdition })}
-          ref={ input => this.inputs["edition"] = input }
-        />
-        <TextField
-          returnKeyType="next"
-          keyboardType="numeric"
-          error={errorsMessages.bookPrice}
-          label="Price*"
-          value={bookPrice}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookPrice) => this.setState({ bookPrice })}
-          ref={ input => this.inputs["price"] = input }
-        />
-        <Dropdown
-          error={errorsMessages.bookCondition}
-          label="Condition*"
-          data={BOOK_CONDITIONS}
-          fontSize={14}
-          animationDuration={120}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookCondition) => this.setState({ bookCondition })}
-          value={bookCondition}
-        />
-        <TextField
-          error={errorsMessages.bookDescription}
-          label="*Description"
-          title="Provide additional information"
-          value={bookDescription}
-          multiline={true}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={[
-            descriptionTextInputStyle, {
-              borderColor: descriptionTextInputSelected || errorsMessages.bookDescription ? primaryColor : "#222",
-            }
-          ]}
-          inputContainerStyle={{ height: 200 }}
-          style={{ height: 160 }}
-          characterRestriction={300}
-          onChangeText={(bookDescription) => this.setState({ bookDescription })}
-          onFocus={() => this.setState({ descriptionTextInputSelected: true })}
-          onBlur={() => this.setState({ descriptionTextInputSelected: false })}
-          ref={ input => this.inputs["description"] = input }
-        />
-      </View>
-    )
+    const formInputValues = {
+      bookTitle: bookTitle,
+      bookAuthor: bookAuthor,
+      bookEdition: bookEdition,
+      bookCondition: bookCondition,
+      bookPrice: bookPrice,
+      bookIsbn: bookIsbn,
+      bookDescription: bookDescription,
+      descriptionTextInputSelected: descriptionTextInputSelected,
+    }
+
+   return (
+     <Form
+      errorsMessages={errorsMessages}
+      formInputValues={formInputValues}
+      updateFormInputValues={(formInputValues) => this.setState(formInputValues)}
+     />
+   )
   }
 
   renderConfirmButton() {
