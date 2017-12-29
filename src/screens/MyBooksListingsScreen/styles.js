@@ -158,12 +158,4 @@ export const styles = StyleSheet.create({
     // TODO: take care of this magic number
     height: SCREEN_HEIGHT / 2 + 150,
   },
-  modalWrapperStyle: {
-    justifyContent: "center",
-    margin: 0,
-    padding: 22,
-    alignItems: "center",
-    borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-  },
 });

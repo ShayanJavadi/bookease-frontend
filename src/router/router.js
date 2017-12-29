@@ -2,7 +2,7 @@ import { StackNavigator, TabNavigator, } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import AuthScreen from "../screens/AuthScreenContainer";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreenContainer";
 import SingleBookScreen from "../screens/SingleBookScreenContainer/";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
@@ -23,7 +23,7 @@ import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
-
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
     screen: SubmissionSuccessScreen,
@@ -35,7 +35,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: EnterBookDetailsScreen,
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, isNavigator: false }),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -78,13 +78,13 @@ const HomeNavigator = TabNavigator({
     screen: HomeScreen,
   },
   myBooks: {
-    screen: myBooksNavigator,
+    screen: RequireAuthenticationContainer(myBooksNavigator, { resetToHomeOnClose: true, isNavigator: true }),
   },
   notifications: {
-    screen: NotificationScreen,
+    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
   account: {
-    screen: AccountScreen,
+    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
 }, {
   tabBarPosition: "bottom",

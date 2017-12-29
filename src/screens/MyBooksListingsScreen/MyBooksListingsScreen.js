@@ -5,8 +5,7 @@ import { isEmpty } from "lodash";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import Modal from "react-native-modal";
-import { Dialog, DialogDefaultActions } from "react-native-material-ui";
+import Modal from "src/modules/Modal";
 import { toOrdinal, getRelativeTime } from "src/common/lib";
 import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR, palette } from "./styles";
 
@@ -37,7 +36,6 @@ const {
   noListingIconWrapperStyle,
   noListingTextStyle,
   activityIndicatorWrapper,
-  modalWrapperStyle,
 } = styles;
 
 export default class MyBooksListingsScreen extends Component {
@@ -218,28 +216,15 @@ export default class MyBooksListingsScreen extends Component {
     )
   }
 
-
-
   renderDeleteConfirmationModal() {
-    const { isDeleteConfirmationModalVisible } = this.state;
-
-    const { Title, Actions } = Dialog;
     return (
-      <Modal isVisible={isDeleteConfirmationModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text style={{ fontSize: 18 }}>Discard selected Textbook?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={
-                (action) => this.onModalActionPress(action)
-              }
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.isDeleteConfirmationModalVisible}
+        text="Discard selected Textbook?"
+        textStyle={{ fontSize: 18 }}
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onModalActionPress(action)}
+      />
     )
   }
 

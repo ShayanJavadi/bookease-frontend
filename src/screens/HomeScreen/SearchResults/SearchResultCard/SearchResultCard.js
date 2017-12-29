@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Image, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
+import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
 
 const {
@@ -19,9 +20,8 @@ const {
   bookNameStyle,
   bookEditionStyle,
   bookconditionStyle,
-  // bookIsbnStyle,
   bookOwnerStyle,
-  bookUniversityStyle,
+  bookCreatedAtStyle,
   bookPriceStyle,
 } = styles;
 
@@ -40,13 +40,17 @@ export default class SearchResultCard extends Component {
     }).isRequired,
   };
 
+  state = {
+    isImageLoading: true,
+  }
+
   onListingPress() {
-    this.props.navigation.navigate("singleBook", { book: this.props.book });
+    this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
   }
 
   renderUpperSection() {
     const {
-      name,
+      title,
       edition,
       condition,
     } = this.props.book;
@@ -54,22 +58,47 @@ export default class SearchResultCard extends Component {
     return (
         <View style={upperSectionWrapper}>
           <View style={upperSectionTopWrapper}>
-            <Text style={bookNameStyle}>{name}</Text>
+            <Text style={bookNameStyle}>{title}</Text>
           </View>
           <View style={upperSectionBottomWrapper}>
             <View style={{ flexDirection: "row", flex: 1 }}>
-              <Text style={bookEditionStyle}>Edition: {edition}</Text>
-              <Text style={bookconditionStyle}>Condition: {condition}</Text>
+              <Text style={bookEditionStyle}>Edition: {toOrdinal(edition)}</Text>
+              <Text style={bookconditionStyle}>Condition: {mapNumberToConditions(condition)}</Text>
             </View>
           </View>
         </View>
     )
   }
 
+  renderImage() {
+    return (
+      <View style={{ flex: 11 }}>
+        <View
+          style={
+            this.state.isImageLoading ? [middleSectionWrapper, { justifyContent: "center", alignItems: "center" }] : { height: 0, opacity: 0 }
+          }
+        >
+          <ActivityIndicator
+            size="large"
+            color="#222"
+          />
+        </View>
+        <Image
+          style={
+            this.state.isImageLoading ? { flex: 0.1 } : middleSectionWrapper
+          }
+          source={{ uri: this.props.book.images[0].thumbnail }}
+          onLoad={() => this.setState({ isImageLoading: false })}
+          onLoadStart={() => this.setState({ isImageLoading: true })}
+        />
+      </View>
+    )
+  }
+
   renderLowerSection() {
     const {
-      owner,
       price,
+      createdAt,
     } = this.props.book;
 
     return (
@@ -80,8 +109,8 @@ export default class SearchResultCard extends Component {
               <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
             </View>
             <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
-              <Text style={bookOwnerStyle}>{owner}</Text>
-              <Text style={bookUniversityStyle}>Posted 3 hours ago</Text>
+              <Text style={bookOwnerStyle}>Joh </Text>
+              <Text style={bookCreatedAtStyle}>{getRelativeTime(createdAt, true)}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -105,10 +134,7 @@ export default class SearchResultCard extends Component {
       >
         <View style={searchResultCardWrapper}>
           {this.renderUpperSection()}
-          <Image
-            style={middleSectionWrapper}
-            source={{ uri: this.props.book.thumbnail }}
-          />
+          {this.renderImage()}
           {this.renderLowerSection()}
         </View>
       </TouchableWithoutFeedback>

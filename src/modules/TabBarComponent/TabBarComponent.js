@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import ActionButton from "react-native-action-button";
 import { func, shape } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
@@ -14,6 +14,7 @@ import {
 const {
   sellBooksButtonStyle,
   bottomNavigationStyle,
+  ActionButtonFontStyle,
  } = styles;
 
 export default class TabBarComponent extends Component {
@@ -113,28 +114,21 @@ export default class TabBarComponent extends Component {
   }
 
   renderActionButton() {
-    const { Item } = ActionButton;
     return (
       <View style={sellBooksButtonStyle}>
         <ActionButton
           buttonColor={ACTION_BUTTON_COLOR}
           position="right"
+          degrees={0}
+          icon={
+            <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+              <MaterialCommunityIcons name="camera" size={25} style={{ color: "#fff", marginTop: 2 }}/>
+              <Text style={ActionButtonFontStyle}>SELL</Text>
+            </View>
+          }
+          onPress={() => this.onManuallyEnterBookPress()}
         >
-          <Item
-            buttonColor="#ff9900"
-            title="Manually Enter Book"
-            style={{ height: 2 }}
-            onPress={() => this.onManuallyEnterBookPress()}
-          >
-            <MaterialIcons name="edit" size={23} style={{ color: "#fff" }}/>
-          </Item>
-          <Item
-            buttonColor='#A100FF'
-            title="Scan Book"
-            onPress={() => this.onScanBookPress()}
-          >
             <MaterialCommunityIcons name="barcode-scan" size={23} style={{ color: "#fff" }}/>
-          </Item>
         </ActionButton>
       </View>
     )
