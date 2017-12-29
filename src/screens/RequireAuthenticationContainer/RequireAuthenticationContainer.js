@@ -14,7 +14,7 @@ export default function(ComposedComponent, options) {
     };
 
     checkAuthenticationStatus({ isAuthenticated }) {
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
         this.props.navigation.navigate("authScreen", { resetToHomeOnClose: resetToHomeOnClose });
       }
     }
