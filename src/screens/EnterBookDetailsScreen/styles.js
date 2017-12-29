@@ -118,20 +118,6 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: undefined,
   },
-  textInputStyle: {
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  descriptionTextInputStyle: {
-     marginTop: 20,
-     paddingLeft: 20,
-     paddingRight: 20,
-     paddingBottom: 10,
-     marginRight: 20,
-     marginLeft: 20,
-     borderRadius: 1,
-     borderWidth: 0.5,
-  },
   modalButtonStyle: {
     alignItems: "center",
     justifyContent: "center",
