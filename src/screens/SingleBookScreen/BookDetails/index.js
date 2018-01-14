@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { object } from "prop-types";
+import { capitalize } from "lodash";
 import { toOrdinal, mapNumberToConditions } from "src/common/lib";
 import { styles } from "./styles";
 
@@ -25,7 +26,7 @@ const BookDetails = ({ textbook: { title, condition, authors, industryIdentifier
         <View style={bookDetailsTextWrapperStyle}>
           <View style={{ flexDirection: "row" }}>
             <Text style={bookDetailsTextKeyStyle}>Condition: </Text>
-            <Text style={bookDetailsTextValueStyle}>{mapNumberToConditions(condition)}</Text>
+            <Text style={bookDetailsTextValueStyle}>{capitalize(mapNumberToConditions(condition))}</Text>
           </View>
         </View>
         <View style={bookDetailsTextWrapperStyle}>

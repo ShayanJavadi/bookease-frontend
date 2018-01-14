@@ -18,10 +18,17 @@ export default class SearchBar extends Component {
     searchQuery: "",
   }
 
-
   static propTypes = {
     search: func.isRequired,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { filterBy, search } = this.props;
+
+    if (filterBy !== nextProps.filterBy) {
+      search(this.state.searchQuery);
+    }
+  }
 
   onSearchInputChange(text) {
     this.setState({ searchQuery: text }, () => {

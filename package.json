@@ -34,6 +34,7 @@
     "react-native-material-textfield": "^0.10.0",
     "react-native-material-ui": "^1.12.0",
     "react-native-modal": "^4.0.0",
+    "react-native-modal-selector": "^0.0.24",
     "react-native-root-toast": "https://github.com/ShayanJavadi/react-native-root-toast",
     "react-native-swipeable": "^0.6.0",
     "react-native-swiper": "^1.5.13",

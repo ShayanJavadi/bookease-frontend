@@ -3,6 +3,7 @@ import { Text, View, Image, TouchableWithoutFeedback, ActivityIndicator } from "
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
+import { capitalize } from "lodash";
 import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
 
@@ -63,7 +64,7 @@ export default class SearchResultCard extends Component {
           <View style={upperSectionBottomWrapper}>
             <View style={{ flexDirection: "row", flex: 1 }}>
               <Text style={bookEditionStyle}>Edition: {toOrdinal(edition)}</Text>
-              <Text style={bookconditionStyle}>Condition: {mapNumberToConditions(condition)}</Text>
+              <Text style={bookconditionStyle}>Condition: {capitalize(mapNumberToConditions(condition))}</Text>
             </View>
           </View>
         </View>

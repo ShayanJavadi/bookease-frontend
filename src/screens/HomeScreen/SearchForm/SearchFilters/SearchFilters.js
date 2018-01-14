@@ -1,8 +1,11 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Picker } from "react-native";
+import ModalSelector from 'react-native-modal-selector'
+import { find } from "lodash";
 import { MaterialIcons } from "@expo/vector-icons";
 import { number } from "prop-types";
 import { styles } from "./styles";
+import { SEARCH_FILTERS } from "src/common/consts";
 
 const {
   searchFilterWrapperStyle,
@@ -14,16 +17,40 @@ const {
   resultsTextStyle,
 } = styles;
 
-const SearchFilters = ({ resultsCount }) => (
+const createDropDownData = () => {
+  return (
+    SEARCH_FILTERS.reduce((searchFilters, searchFilter, currentIndex) => {
+      searchFilters.push({
+        key: currentIndex,
+        label: searchFilter.humanizedValue,
+        value: searchFilter.value
+      });
+
+      return searchFilters;
+    }, [{
+      key: Math.random(),
+      section: true,
+      label: 'Filter By:',
+    }])
+  )
+}
+
+const SearchFilters = ({ resultsCount, onFilterChange, filterBy }) => (
   <View style={searchFilterWrapperStyle}>
     <View style={resultsWrapperStyle}>
-      <Text style={resultsTextStyle}>{`${resultsCount} Results`}</Text>
+      <Text style={resultsTextStyle}>{`${resultsCount} ${resultsCount == 1 ? "Result" : "Results"}`}</Text>
     </View>
     <View style={filterWrapperStyle}>
       <View style={filterStyle}>
-        <Text style={filterTextStyle}>Filter</Text>
+        <Text style={filterTextStyle}>Filter by: {`${find(SEARCH_FILTERS, { value: filterBy }).humanizedValue}`}</Text>
       </View>
-      <MaterialIcons name="arrow-drop-down" size={30} style={barCodeIconStyle} />
+      <ModalSelector
+        data={createDropDownData()}
+        onChange={({ value }) => onFilterChange(value)}
+      >
+        <MaterialIcons name="arrow-drop-down" size={30} style={barCodeIconStyle} />
+      </ModalSelector>
+
     </View>
   </View>
 )

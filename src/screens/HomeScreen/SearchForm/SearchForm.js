@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { View } from "react-native";
 import { func, number } from "prop-types"
 import { debounce } from "lodash";
@@ -8,26 +8,35 @@ import { styles } from "./styles";
 
 const { searchFormWrapperStyle } = styles;
 
-const SearchForm = ({ searchTextbooks, resultsCount }) => {
-  const textbookSearch = debounce(text => {
-    return searchTextbooks({ query: text });
-  }, 250);
+export default class SearchForm extends Component {
+  static propTypes = {
+    searchTextbooks: func.isRequired,
+    resultsCount: number.isRequired,
+  };
 
-  return (
-    <View style={searchFormWrapperStyle}>
-      <SearchBar
-        search={textbookSearch}
-      />
-      <SearchFilters
-        resultsCount={resultsCount}
-      />
-    </View>
-  )
-};
+  state = {
+    filterBy: "relevance",
+  }
 
-SearchForm.propTypes = {
-  searchTextbooks: func.isRequired,
-  resultsCount: number.isRequired,
-};
+  render() {
+    const { searchTextbooks, resultsCount } = this.props;
 
-export default SearchForm;
+    const textbookSearch = debounce(text => {
+      return searchTextbooks({ query: text, orderBy: this.state.filterBy });
+    }, 250);
+
+    return (
+      <View style={searchFormWrapperStyle}>
+        <SearchBar
+          search={textbookSearch}
+          filterBy={this.state.filterBy}
+        />
+        <SearchFilters
+          resultsCount={resultsCount}
+          onFilterChange={(filterBy) => this.setState({ filterBy })}
+          filterBy={this.state.filterBy}
+        />
+      </View>
+    )
+  }
+}
