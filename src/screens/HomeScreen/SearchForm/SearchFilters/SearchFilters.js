@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Picker } from "react-native";
-import ModalSelector from 'react-native-modal-selector'
+import { View, Text } from "react-native";
+import ModalSelector from "react-native-modal-selector"
 import { find } from "lodash";
 import { MaterialIcons } from "@expo/vector-icons";
-import { number } from "prop-types";
+import { number, func, string } from "prop-types";
 import { styles } from "./styles";
 import { SEARCH_FILTERS } from "src/common/consts";
 
@@ -30,7 +30,7 @@ const createDropDownData = () => {
     }, [{
       key: Math.random(),
       section: true,
-      label: 'Filter By:',
+      label: "Filter By:",
     }])
   )
 }
@@ -57,6 +57,8 @@ const SearchFilters = ({ resultsCount, onFilterChange, filterBy }) => (
 
 SearchFilters.propTypes = {
   resultsCount: number.isRequired,
+  onFilterChange: func.isRequired,
+  filterBy: string.isRequired,
 }
 
 export default SearchFilters;
