@@ -8,8 +8,6 @@ const {
 
 export const styles = StyleSheet.create({
   screenStyle: {
-    justifyContent: "center",
-    alignItems: "center",
     flex: 1,
   },
   headerStyle: {

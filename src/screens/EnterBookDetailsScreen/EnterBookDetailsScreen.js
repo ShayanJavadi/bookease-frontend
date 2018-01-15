@@ -450,7 +450,7 @@ export default class EnterBookDetailsScreen extends Component {
         onPress={
           this.state.updateMode ?
           () => this.setState({ deleteTextbookModalVisible: true }) :
-          () => this.props.navigation.navigate("scanBook")
+          () => this.props.navigation.navigate("scanBook", { context: "enterBookDetails" })
         }
         style={{ right: -15, bottom: -10 }}
         icon={

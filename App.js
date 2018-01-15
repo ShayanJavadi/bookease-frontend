@@ -2,6 +2,7 @@ import Expo from 'expo';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, StatusBar, AsyncStorage } from 'react-native';
 import { TabNavigator, StackNavigator } from 'react-navigation';
+import { updateFocus, getCurrentRouteKey } from 'react-navigation-is-focused-hoc';
 import Provider from './src/store';
 import createMainNavigator from './src/router';
 import { COLOR, ThemeProvider } from 'react-native-material-ui';
@@ -37,7 +38,9 @@ export default class App extends Component {
         <Provider>
           <View style={styles.container}>
             <ThemeProvider uiTheme={uiTheme}>
-              <Navigator />
+              <Navigator
+                onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState) }}
+              />
             </ThemeProvider>
             <StatusBar
               barStyle="light-content"

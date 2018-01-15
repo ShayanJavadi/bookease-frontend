@@ -19,7 +19,7 @@ export default class SearchForm extends Component {
   }
 
   render() {
-    const { searchTextbooks, resultsCount } = this.props;
+    const { searchTextbooks, resultsCount, navigation } = this.props;
 
     const textbookSearch = debounce(text => {
       return searchTextbooks({ query: text, orderBy: this.state.filterBy });
@@ -30,6 +30,7 @@ export default class SearchForm extends Component {
         <SearchBar
           search={textbookSearch}
           filterBy={this.state.filterBy}
+          navigation={navigation}
         />
         <SearchFilters
           resultsCount={resultsCount}

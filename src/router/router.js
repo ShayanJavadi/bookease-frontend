@@ -73,6 +73,15 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
+const ScanSearchNavigator = StackNavigator({
+  scanSearch: {
+    screen: ScanBookScreen,
+  },
+},{
+  mode: "modal",
+})
+
+
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
@@ -86,6 +95,9 @@ const HomeNavigator = TabNavigator({
   account: {
     screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
+  scan: {
+    screen: ScanBookScreen
+  }
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,

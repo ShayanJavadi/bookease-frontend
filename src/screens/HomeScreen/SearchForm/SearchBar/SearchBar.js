@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { func, string } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { NavigationActions } from "react-navigation";
 import { styles } from "./styles";
 
 const {
@@ -24,10 +25,26 @@ export default class SearchBar extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { filterBy, search } = this.props;
+    const { filterBy, search, navigation } = this.props;
 
     if (filterBy !== nextProps.filterBy) {
       search(this.state.searchQuery);
+    }
+
+    const nextPropsScannedBookISBN = nextProps.navigation.state.params ?
+    nextProps.navigation.state.params.scannedTextbook :
+    undefined;
+
+    if (nextPropsScannedBookISBN) {
+      this.setState({ searchQuery: nextPropsScannedBookISBN }, () => {
+          this.props.search(nextPropsScannedBookISBN);
+          const resetParams = NavigationActions.setParams({
+            params: { scannedTextbook: undefined },
+            key: 'home',
+          });
+
+          this.props.navigation.dispatch(resetParams)
+      });
     }
   }
 
@@ -49,7 +66,9 @@ export default class SearchBar extends Component {
             value={this.state.searchQuery}
             onChangeText={(text) => this.onSearchInputChange(text)}
           />
-          <MaterialCommunityIcons name="barcode-scan" size={30} style={barCodeIconStyle} />
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("scan", { context: "home" })}>
+            <MaterialCommunityIcons name="barcode-scan" size={30} style={barCodeIconStyle} />
+          </TouchableOpacity>
         </View>
       </View>
     );
