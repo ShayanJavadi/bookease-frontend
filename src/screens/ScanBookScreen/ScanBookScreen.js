@@ -38,6 +38,7 @@ class ScanBookScreen extends Component {
     header: null,
   });
 
+
   componentWillMount() {
     this.props.resetQuery();
   }
@@ -79,9 +80,8 @@ class ScanBookScreen extends Component {
   }
 
   componentWillReceiveProps({ navigation, scannedTextbook }) {
-    const context = navigation.state.params ?
-    navigation.state.params.context :
-    undefined;
+    const navigationParams = navigation.state.params;
+    const context = navigationParams ? navigationParams.context : undefined;
 
     this.setState({ context })
 

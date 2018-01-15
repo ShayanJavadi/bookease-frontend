@@ -33,9 +33,8 @@ export default class SearchBar extends Component {
       search(this.state.searchQuery);
     }
 
-    const scannedTextbook = nextProps.navigation.state.params ?
-    nextProps.navigation.state.params.scannedTextbook :
-    undefined;
+    const navigationParams = nextProps.navigation.state.params;
+    const scannedTextbook = navigationParams ? navigationParams.scannedTextbook : undefined;
 
     if (scannedTextbook) {
       this.searchScannedTextbook(scannedTextbook);
@@ -50,7 +49,7 @@ export default class SearchBar extends Component {
           key: "home",
         });
 
-        this.props.navigation.dispatch(resetParams)
+        this.props.navigation.dispatch(resetParams);
     });
   }
 
