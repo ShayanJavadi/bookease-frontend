@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     height: 40,
   },
   filterWrapperStyle: {
-    flex: 1,
+    flex: 5,
     flexDirection: "row",
     backgroundColor: "#fff",
     height: 40,

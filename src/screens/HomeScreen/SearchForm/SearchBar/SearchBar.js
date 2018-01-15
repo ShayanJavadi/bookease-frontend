@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput } from "react-native";
-import { func } from "prop-types";
+import { func, string } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { styles } from "./styles";
 
@@ -18,10 +18,18 @@ export default class SearchBar extends Component {
     searchQuery: "",
   }
 
-
   static propTypes = {
     search: func.isRequired,
+    filterBy: string.isRequired,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { filterBy, search } = this.props;
+
+    if (filterBy !== nextProps.filterBy) {
+      search(this.state.searchQuery);
+    }
+  }
 
   onSearchInputChange(text) {
     this.setState({ searchQuery: text }, () => {

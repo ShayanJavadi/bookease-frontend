@@ -8,7 +8,7 @@ const mapStateToProps = ({ MyBooksListingsReducer }) => ({}); // eslint-disable-
 
 const Container = compose(
   graphql(getTextbooksQuery, {
-    options: props => ({ variables: { query: props.query || "math" } }),
+    options: props => ({ variables: { query: props.query || "math", orderBy: props.orderBy || "relevance" } }),
     name: "getTextbooksQuery",
   }),
 );
