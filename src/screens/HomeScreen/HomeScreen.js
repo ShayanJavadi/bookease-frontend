@@ -9,7 +9,6 @@ const { screenStyle } = styles;
 
 const HomeScreen = (props) => {
   const { getTextbooksQuery: { refetch, loading, getTextbooks }, navigation } = props;
-  console.log(props);
   return (
     <View style={screenStyle}>
       <SearchForm

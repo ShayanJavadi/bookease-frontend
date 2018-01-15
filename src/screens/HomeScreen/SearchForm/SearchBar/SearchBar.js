@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
-import { func, string } from "prop-types";
+import { func, string, shape } from "prop-types";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
 import { styles } from "./styles";
@@ -14,7 +14,6 @@ const {
 } = styles;
 
 export default class SearchBar extends Component {
-
   state = {
     searchQuery: "",
   }
@@ -22,30 +21,37 @@ export default class SearchBar extends Component {
   static propTypes = {
     search: func.isRequired,
     filterBy: string.isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
   };
 
   componentWillReceiveProps(nextProps) {
-    const { filterBy, search, navigation } = this.props;
+    const { filterBy, search } = this.props;
 
     if (filterBy !== nextProps.filterBy) {
       search(this.state.searchQuery);
     }
 
-    const nextPropsScannedBookISBN = nextProps.navigation.state.params ?
+    const scannedTextbook = nextProps.navigation.state.params ?
     nextProps.navigation.state.params.scannedTextbook :
     undefined;
 
-    if (nextPropsScannedBookISBN) {
-      this.setState({ searchQuery: nextPropsScannedBookISBN }, () => {
-          this.props.search(nextPropsScannedBookISBN);
-          const resetParams = NavigationActions.setParams({
-            params: { scannedTextbook: undefined },
-            key: 'home',
-          });
-
-          this.props.navigation.dispatch(resetParams)
-      });
+    if (scannedTextbook) {
+      this.searchScannedTextbook(scannedTextbook);
     }
+  }
+
+  searchScannedTextbook(scannedTextbook) {
+    this.setState({ searchQuery: scannedTextbook }, () => {
+        this.props.search(scannedTextbook);
+        const resetParams = NavigationActions.setParams({
+          params: { scannedTextbook: undefined },
+          key: "home",
+        });
+
+        this.props.navigation.dispatch(resetParams)
+    });
   }
 
   onSearchInputChange(text) {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { BarCodeScanner, Permissions } from "expo"; // eslint-disable-line no-unused-vars
 import { func, shape, object, bool, string } from "prop-types";
@@ -7,11 +7,9 @@ import BackButton from "src/modules/BackButton";
 import Header from "src/modules/Header";
 import { styles } from "./styles";
 import { Button } from "react-native-material-ui";
-import { withNavigationFocus } from 'react-navigation-is-focused-hoc';
+import { withNavigationFocus } from "react-navigation-is-focused-hoc";
 
 const {
-  headerStyle,
-  headerTitleStyle,
   screenStyle,
 } = styles;
 
@@ -22,6 +20,7 @@ class ScanBookScreen extends Component {
     resetQuery: func.isRequired,
     fetchScannedBook: func.isRequired,
     context: string.isRequired,
+    isFocused: bool.isRequired,
     scannedTextbook: object,
     navigation: shape({
       navigate: func.isRequired
@@ -34,7 +33,7 @@ class ScanBookScreen extends Component {
     context: undefined,
   }
 
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     tabBarVisible: false,
     header: null,
   });
@@ -62,20 +61,20 @@ class ScanBookScreen extends Component {
          ],
        });
 
-      return this.props.navigation.dispatch(resetAction);
+      return navigation.dispatch(resetAction);
     }
 
     if (context === "home") {
        const resetAction = NavigationActions.reset({
             index: 0,
             actions: [{
-              type: 'Navigation/INIT',
-              routeName: 'mainScreen',
+              type: "Navigation/INIT",
+              routeName: "mainScreen",
               params: { scannedTextbook: scannedTextbook },
             }]
         });
 
-      return this.props.navigation.dispatch(resetAction);
+      return navigation.dispatch(resetAction);
     }
   }
 
@@ -92,7 +91,7 @@ class ScanBookScreen extends Component {
   }
 
   handleBarCodeRead = (barcodeData) => {
-    const { fetchScannedBook, data, navigation } = this.props;
+    const { fetchScannedBook, data } = this.props;
     const context = this.state.context;
 
     if (context === "enterBookDetails") {
@@ -105,7 +104,6 @@ class ScanBookScreen extends Component {
   };
 
   render() {
-    const { hasCameraPermission } = this.state;
     const error = this.props.data.error; // eslint-disable-line no-unused-vars
     if (!this.props.isFocused) {
       return null;

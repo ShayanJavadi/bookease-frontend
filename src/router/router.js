@@ -73,15 +73,6 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const ScanSearchNavigator = StackNavigator({
-  scanSearch: {
-    screen: ScanBookScreen,
-  },
-},{
-  mode: "modal",
-})
-
-
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
