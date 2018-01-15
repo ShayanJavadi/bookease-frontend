@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { func, number } from "prop-types"
+import { func, number, shape } from "prop-types"
 import { debounce } from "lodash";
 import SearchBar from "./SearchBar";
 import SearchFilters from "./SearchFilters";
@@ -12,6 +12,9 @@ export default class SearchForm extends Component {
   static propTypes = {
     searchTextbooks: func.isRequired,
     resultsCount: number.isRequired,
+    navigation: shape({
+      navigate: func.isRequired
+    }).isRequired,
   };
 
   state = {
@@ -19,7 +22,7 @@ export default class SearchForm extends Component {
   }
 
   render() {
-    const { searchTextbooks, resultsCount } = this.props;
+    const { searchTextbooks, resultsCount, navigation } = this.props;
 
     const textbookSearch = debounce(text => {
       return searchTextbooks({ query: text, orderBy: this.state.filterBy });
@@ -30,6 +33,7 @@ export default class SearchForm extends Component {
         <SearchBar
           search={textbookSearch}
           filterBy={this.state.filterBy}
+          navigation={navigation}
         />
         <SearchFilters
           resultsCount={resultsCount}

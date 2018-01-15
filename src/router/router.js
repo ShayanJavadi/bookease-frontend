@@ -86,6 +86,9 @@ const HomeNavigator = TabNavigator({
   account: {
     screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, isNavigator: false }),
   },
+  scan: {
+    screen: ScanBookScreen
+  }
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
