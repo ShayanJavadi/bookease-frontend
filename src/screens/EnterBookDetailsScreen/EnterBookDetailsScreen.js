@@ -1,84 +1,40 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, Text, Image, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { func, object, bool, array, shape, string } from "prop-types";
-import { Button, Dialog, DialogDefaultActions } from "react-native-material-ui";
+import { Button } from "react-native-material-ui";
 import { NavigationActions } from "react-navigation";
 import { FileSystem } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
-import { TextField } from "react-native-material-textfield";
-import { Dropdown } from "react-native-material-dropdown";
-import Modal from "react-native-modal";
-import Swiper from "react-native-swiper";
-import { isEmpty, lowerCase, isEqual } from "lodash";
+import { lowerCase, isEqual } from "lodash";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
 import { styles, palette } from "./styles";
 import BackButton from "src/modules/BackButton";
-import { BOOK_CONDITIONS } from "src/common/consts";
 import { mapConditionToNumbers, mapNumberToConditions } from "src/common/lib";
+import Header from "src/modules/Header";
+import Modal from "src/modules/Modal";
+import Form from  "./Form";
+import PictureInput from  "./PictureInput";
 
 const {
   screenStyle,
-  headerStyle,
-  headerTitleStyle,
-  pictureInputWrapperStyle,
   buttonWrapperStyle,
   buttonTextStyle,
   buttonContainerStyle,
-  pictureInputStyle,
-  pictureInputStyleHasErrors,
-  pictureCarouselWrapperStyle,
-  pictureCarouselStyle,
-  carouselSlidesWrapperStyle,
-  carouselDeleteButtonWrapperStyle,
-  textInputStyle,
-  descriptionTextInputStyle,
-  modalWrapperStyle,
-  modalContentStyle,
   modalButtonStyle,
   modalButtonIconStyle,
   modalButtonWrapperStyle,
-  pictureInputHeaderTextStyle,
-  pictureInputHorizontalRuleStyle,
-  pictureInputHeaderTextStyleHasErrors,
-  pictureInputHorizontalRuleStyleHasErrors,
-  pictureInputActionButtonStyle,
-  pictureInputErrorMessageStyle,
 } = styles;
 
 const {
-  primaryColor,
   tertiaryColorDark,
 } = palette;
 
 export default class EnterBookDetailsScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarVisible: false,
-    headerTitle:  navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate ? "Update Book Details" : "Enter Book Details" :
-    "Enter Book Details",
-    headerLeft: <BackButton navigation={navigation}/>,
-    headerRight: (
-      <Button
-        text="submit"
-        raised
-        primary
-        style={{
-          container: {
-            margin: 10,
-          },
-          text: {
-            color: "#fff",
-          },
-        }}
-        onPress={() => navigation.state.params.onFormSubmit()}
-      />
-    ),
-    headerStyle: headerStyle,
-    headerTitleStyle: headerTitleStyle,
-    headerBackTitleStyle: { color: "#fff" }
-  })
+  static navigationOptions = {
+    header: null,
+  }
 
   static propTypes = {
     createNewBook: func.isRequired,
@@ -125,11 +81,17 @@ export default class EnterBookDetailsScreen extends Component {
     carouselKey: Math.random(),
   }
 
-  inputs = {}
   componentWillMount() {
-    this.props.navigation.setParams({
-      onFormSubmit: this.onFormSubmit,
-    });
+    const { navigation } = this.props;
+
+    const textbookIdToUpdate = navigation.state.params ?
+    navigation.state.params.textbookIdToUpdate :
+    undefined;
+
+    if (textbookIdToUpdate !== undefined) {
+      this.fetchTextbookToUpdate(textbookIdToUpdate);
+      this.setState({ updateMode: true, textbookIdToUpdate: textbookIdToUpdate })
+    }
   }
 
   async componentDidMount() {
@@ -150,14 +112,6 @@ export default class EnterBookDetailsScreen extends Component {
 
     if (scannedTextbook) {
       this.populateForm(scannedTextbook);
-    }
-
-    const textbookIdToUpdate = navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate :
-    undefined;
-
-    if (textbookIdToUpdate) {
-      this.setState({ updateMode: true, textbookIdToUpdate: textbookIdToUpdate })
     }
   }
 
@@ -189,23 +143,13 @@ export default class EnterBookDetailsScreen extends Component {
           NavigationActions.navigate({ routeName: "singleBook", params: { textbookId: nextProps.submittedBook } })
         ]
       })
+
       this.props.navigation.dispatch(navigateToSingleBookScreenAction)
     }
 
-    // workaround for react navigation messing up api call
-    const isSetParamsCalled = navigation.state.params ?
-    !navigation.state.params.onFormSubmit && nextProps.navigation.state.params.onFormSubmit :
-    false;
+    const shouldRebuildImageArray = !isEqual(this.props.images, nextProps.images);
 
-    const textbookIdToUpdate = navigation.state.params ?
-    navigation.state.params.textbookIdToUpdate :
-    undefined;
-
-    if (isSetParamsCalled && textbookIdToUpdate !== undefined) {
-      this.fetchTextbookToUpdate(textbookIdToUpdate);
-    }
-
-    if (!isEqual(this.props.images, nextProps.images)) {
+    if (shouldRebuildImageArray) {
       this.setState({ newImages: nextProps.images });
       this.rebuildImagesArray(this.state.uploadedImages, nextProps.images)
       this.resetCarousel();
@@ -252,7 +196,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onFormSubmit = () => {
-    const { createNewBook,  createTextbookMutation, updateTextbook, updateTextbookMutation } = this.props;
+    const { createNewBook, createTextbookMutation, updateTextbook, updateTextbookMutation } = this.props;
     const {
       bookTitle,
       bookAuthor,
@@ -332,7 +276,9 @@ export default class EnterBookDetailsScreen extends Component {
     const { allImages, imageSlidesIndex, newImages, uploadedImages } = this.state;
 
     if (action === "erase") {
-      if (allImages[imageSlidesIndex].uri) {
+      const isImageAlreadyUploaded = allImages[imageSlidesIndex].uri;
+
+      if (isImageAlreadyUploaded) {
         this.setState({ deleteImageModalVisible: false });
         deleteImage(allImages[imageSlidesIndex].uri)
         this.resetCarousel();
@@ -352,6 +298,10 @@ export default class EnterBookDetailsScreen extends Component {
           return;
         }
       );
+    }
+
+    if (action === "cancel") {
+      this.setState({ deleteImageModalVisible: false });
     }
   }
 
@@ -381,97 +331,21 @@ export default class EnterBookDetailsScreen extends Component {
     this.setState({ deleteTextbookModalVisible: false });
   }
 
-// TODO: bring up bigger swiper modal with the same pictures when you press on the pictures
-  renderCarouselSlides(images) {
-    return images.map((image, index) => (
-      <View key={index} style={carouselSlidesWrapperStyle}>
-        <TouchableOpacity onPress={() => this.onDeleteImagePress()} style={carouselDeleteButtonWrapperStyle}>
-          <MaterialCommunityIcons name="close-circle-outline" size={25} style={{ color: "#fff" }}/>
-        </TouchableOpacity>
-        <TouchableHighlight
-          style={carouselSlidesWrapperStyle}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-        >
-          <Image
-            style={{ flex: 1 }}
-            source={{ uri: image.uri || image.thumbnail  }}
-          />
-        </TouchableHighlight>
-      </View>
-    ));
-  }
-
-  renderPictureCarousel() {
-    const { errorsMessages } = this.props;
-    const images = this.state.allImages;
-
-    if (!isEmpty(images)) {
-      return (
-          <View style={pictureCarouselWrapperStyle} key={this.state.carouselKey}>
-            <Swiper
-              loop={false}
-              horizontal
-              dotStyle={{ backgroundColor: "rgba(0,0,0,.7)" }}
-              activeDotColor={primaryColor}
-              showsPagination={true}
-              showsButtons={false}
-              style={pictureCarouselStyle}
-              onIndexChanged={(index) => {this.setState({ imageSlidesIndex: index })}}
-              ref={component => this.swiper = component}
-            >
-              {this.renderCarouselSlides(images)}
-            </Swiper>
-            <ActionButton
-              buttonColor={primaryColor}
-              position="right"
-              size={43}
-              onPress={() => this.setState({ cameraModalVisible: true })}
-              style={pictureInputActionButtonStyle}
-            />
-          </View>
-      )
-    }
-
-    return (
-      <View style={pictureInputWrapperStyle}>
-        <TouchableOpacity
-          style={errorsMessages.bookImages ? pictureInputStyleHasErrors : pictureInputStyle}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-        >
-          <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
-        </TouchableOpacity>
-        <ActionButton
-          buttonColor={primaryColor}
-          position="right"
-          size={43}
-          onPress={() => this.setState({ cameraModalVisible: true })}
-          style={pictureInputActionButtonStyle}
-        />
-      </View>
-    )
-  }
 
   renderPictureInput() {
     const { errorsMessages } = this.props;
+    const { allImages, carouselKey } = this.state;
 
     return (
-      <View>
-        <View>
-          <Text style={errorsMessages.bookImages ? pictureInputHeaderTextStyleHasErrors : pictureInputHeaderTextStyle}>Book Pictures*</Text>
-        </View>
-          {this.renderPictureCarousel()}
-        <View
-          style={errorsMessages.bookImages ? pictureInputHorizontalRuleStyleHasErrors : pictureInputHorizontalRuleStyle}
-        />
-        <View>
-          {errorsMessages.bookImages ? <Text style={pictureInputErrorMessageStyle}>{errorsMessages.bookImages}</Text> : null}
-        </View>
-      </View>
+      <PictureInput
+        errorsMessages={errorsMessages}
+        images={allImages}
+        carouselKey={carouselKey}
+        onCarouselIndexChange={(index) => {this.setState({ imageSlidesIndex: index })}}
+        onPress={() => this.setState({ cameraModalVisible: true })}
+        onDeleteImagePress={() => this.onDeleteImagePress()}
+      />
     )
-  }
-
-  focusNextField(id) {
-    this.inputs[id].focus();
   }
 
   renderForm() {
@@ -485,106 +359,26 @@ export default class EnterBookDetailsScreen extends Component {
       bookDescription,
       descriptionTextInputSelected,
     } = this.state;
-
     const { errorsMessages } = this.props;
 
-    return (
-      <View style={{ flex: 4 }}>
-        <TextField
-          returnKeyType="next"
-          error={errorsMessages.bookTitle}
-          label="Book Title*"
-          value={bookTitle}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookTitle) => this.setState({ bookTitle })}
-          ref={ input => this.inputs["bookTitle"] = input }
-          onSubmitEditing={() => this.focusNextField("authors")}
-        />
-        <TextField
-          returnKeyType="next"
-          error={errorsMessages.bookAuthor}
-          label="Author(s)*"
-          value={bookAuthor}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookAuthor) => this.setState({ bookAuthor })}
-          ref={ input => this.inputs["authors"] = input}
-          onSubmitEditing={() => this.focusNextField("isbn")}
-        />
-        <TextField
-          returnKeyType="next"
-          keyboardType="numeric"
-          error={errorsMessages.bookIsbn}
-          label="ISBN*"
-          value={bookIsbn}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookIsbn) => this.setState({ bookIsbn }) }
-          ref={ input => this.inputs["isbn"] = input }
-          onSubmitEditing={() => this.focusNextField("edition")}
-        />
-        <TextField
-          keyboardType="numeric"
-          returnKeyType="next"
-          error={errorsMessages.bookEdition}
-          label="Edition*"
-          value={bookEdition}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookEdition) => this.setState({ bookEdition })}
-          ref={ input => this.inputs["edition"] = input }
-        />
-        <TextField
-          returnKeyType="next"
-          keyboardType="numeric"
-          error={errorsMessages.bookPrice}
-          label="Price*"
-          value={bookPrice}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookPrice) => this.setState({ bookPrice })}
-          ref={ input => this.inputs["price"] = input }
-        />
-        <Dropdown
-          error={errorsMessages.bookCondition}
-          label="Condition*"
-          data={BOOK_CONDITIONS}
-          fontSize={14}
-          animationDuration={120}
-          tintColor={primaryColor}
-          containerStyle={textInputStyle}
-          onChangeText={(bookCondition) => this.setState({ bookCondition })}
-          value={bookCondition}
-        />
-        <TextField
-          error={errorsMessages.bookDescription}
-          label="*Description"
-          title="Provide additional information"
-          value={bookDescription}
-          multiline={true}
-          fontSize={14}
-          tintColor={primaryColor}
-          containerStyle={[
-            descriptionTextInputStyle, {
-              borderColor: descriptionTextInputSelected || errorsMessages.bookDescription ? primaryColor : "#222",
-            }
-          ]}
-          inputContainerStyle={{ height: 200 }}
-          style={{ height: 160 }}
-          characterRestriction={300}
-          onChangeText={(bookDescription) => this.setState({ bookDescription })}
-          onFocus={() => this.setState({ descriptionTextInputSelected: true })}
-          onBlur={() => this.setState({ descriptionTextInputSelected: false })}
-          ref={ input => this.inputs["description"] = input }
-        />
-      </View>
-    )
+    const formInputValues = {
+      bookTitle: bookTitle,
+      bookAuthor: bookAuthor,
+      bookEdition: bookEdition,
+      bookCondition: bookCondition,
+      bookPrice: bookPrice,
+      bookIsbn: bookIsbn,
+      bookDescription: bookDescription,
+      descriptionTextInputSelected: descriptionTextInputSelected,
+    }
+
+   return (
+     <Form
+      errorsMessages={errorsMessages}
+      formInputValues={formInputValues}
+      updateFormInputValues={(formInputValues) => this.setState(formInputValues)}
+     />
+   )
   }
 
   renderConfirmButton() {
@@ -600,81 +394,51 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   renderPictureInputModal() {
-    const { Title, Content, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.cameraModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Add Pictures</Text>
-          </Title>
-          <Content>
-            <View style={modalContentStyle}>
-              <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity
-                  style={modalButtonStyle}
-                  onPress={() => this.onCameraPress()}
-                >
-                  <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
-                </TouchableOpacity>
-                <Text style={{ marginTop: 10 }}>Camera</Text>
-              </View>
-              <View style={modalButtonWrapperStyle}>
-                <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
-                  <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
-                </TouchableOpacity>
-              <Text style={{ marginTop: 10 }}>Images</Text>
-              </View>
-            </View>
-          </Content>
-          <Actions>
-            <DialogDefaultActions
-              actions={["Dismiss"]}
-              onActionPress={() => this.setState({ cameraModalVisible: false })}
-            />
-          </Actions>
-        </Dialog>
+      <Modal
+        isVisible={this.state.cameraModalVisible}
+        text="Add Pictures"
+        actions={["Dismiss"]}
+        onActionPress={() => this.setState({ cameraModalVisible: false })}
+      >
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity
+            style={modalButtonStyle}
+            onPress={() => this.onCameraPress()}
+          >
+            <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Camera</Text>
+        </View>
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
+            <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Images</Text>
+        </View>
       </Modal>
     )
   }
 
   renderDeleteImageModal() {
-    const { Title, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.deleteImageModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Discard selected image?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={(action) => this.onDeleteImageModalActionPress(action)}
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.deleteImageModalVisible}
+        text="Discard selected image?"
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onDeleteImageModalActionPress(action)}
+      />
     )
   }
 
   renderDeleteTextbookModal() {
-    const { Title, Actions } = Dialog;
-
     return (
-      <Modal isVisible={this.state.deleteTextbookModalVisible} style={modalWrapperStyle}>
-        <Dialog>
-          <Title>
-            <Text>Discard this listing?</Text>
-          </Title>
-          <Actions>
-            <DialogDefaultActions
-              actions={["cancel", "erase"]}
-              onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
-            />
-          </Actions>
-        </Dialog>
-      </Modal>
+      <Modal
+        isVisible={this.state.deleteTextbookModalVisible}
+        text="Discard this listing?"
+        actions={["cancel", "erase"]}
+        onActionPress={(action) => this.onDeleteTextbookModalActionPress(action)}
+      />
     )
   }
 
@@ -686,65 +450,88 @@ export default class EnterBookDetailsScreen extends Component {
         onPress={
           this.state.updateMode ?
           () => this.setState({ deleteTextbookModalVisible: true }) :
-          () => this.props.navigation.navigate("scanBook")
+          () => this.props.navigation.navigate("scanBook", { context: "enterBookDetails" })
         }
         style={{ right: -15, bottom: -10 }}
         icon={
           this.state.updateMode ?
           <MaterialCommunityIcons name="delete-forever" size={35} style={{ color: "#fff", paddingTop: 4 }} /> :
-          <MaterialCommunityIcons name="barcode-scan" size={30} style={{ color: "#fff", paddingTop: 4 }} />
+          <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+            <MaterialCommunityIcons name="barcode-scan" size={25} style={{ color: "#fff", marginTop: 2 }}/>
+            <Text style={{ color: "#fff", position: "relative", bottom: 3, fontWeight: "700", fontSize: 10 }}>SCAN</Text>
+          </View>
         }
       />
     )
   }
 
   render() {
-    const error =  this.props.data ?
-    this.props.data.error :
-    null;
+   const { navigation, data, getTextbookQuery, isSubmitting, loadingMessage } = this.props;
+   const error =  data ?
+   data.error :
+   null;
 
-    if (error) {
-      console.warn(error); // eslint-disable-line no-console
-    }
+   if (error) {
+     console.warn(error); // eslint-disable-line no-console
+   }
 
-    const hasTextbookBeenFetched = this.props.getTextbookQuery.loading || (!this.props.getTextbookQuery.getTextbook && this.state.updateMode);
+   const hasTextbookBeenFetched = getTextbookQuery.loading || (!getTextbookQuery.getTextbook && this.state.updateMode);
 
-    if (hasTextbookBeenFetched) {
-      return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator
-            size="large"
-            color={tertiaryColorDark}
-          />
-        </View>
-      )
-    }
+   if (hasTextbookBeenFetched) {
+     return (
+       <View style={{ flex: 1, justifyContent: "center" }}>
+         <ActivityIndicator
+           size="large"
+           color={tertiaryColorDark}
+         />
+       </View>
+     )
+   }
 
-    return (
-      <View style={screenStyle}>
-        <KeyboardAwareScrollView
-          enableResetScrollToCoords={false}
-          extraScrollHeight={80}
-          style={{ paddingTop: 20 }}
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-        >
-
-          {this.renderPictureInput()}
-          {this.renderForm()}
-          {this.renderConfirmButton()}
-          {this.renderPictureInputModal()}
-          {this.renderDeleteImageModal()}
-          {this.renderDeleteTextbookModal()}
-        </KeyboardAwareScrollView>
+   return (
+     <View style={screenStyle}>
+       <KeyboardAwareScrollView
+         enableResetScrollToCoords={false}
+         extraScrollHeight={80}
+         style={{ paddingTop: 20 }}
+         keyboardShouldPersistTaps="handled"
+         keyboardDismissMode="on-drag"
+       >
+         {this.renderPictureInput()}
+         {this.renderForm()}
+         {this.renderConfirmButton()}
+         {this.renderPictureInputModal()}
+         {this.renderDeleteImageModal()}
+         {this.renderDeleteTextbookModal()}
+       </KeyboardAwareScrollView>
         {this.renderActionButton()}
-        <Spinner
-          visible={this.props.isSubmitting}
-          textContent={this.props.loadingMessage}
-          overlayColor="rgba(0, 0, 0, 0.65)"
-          textStyle={{ color: "#FFF" }}
+       <Header
+         leftComponent={<BackButton navigation={navigation}/>}
+         rightComponent={
+           <Button
+             text="submit"
+             raised
+             primary
+             style={{
+               container: {
+                 margin: 10,
+               },
+               text: {
+                 color: "#fff",
+               },
+             }}
+             onPress={() => this.onFormSubmit()}
+           />
+         }
+         text="Enter Book Details"
         />
-      </View>
-    );
-  }
+       <Spinner
+         visible={isSubmitting}
+         textContent={loadingMessage}
+         overlayColor="rgba(0, 0, 0, 0.65)"
+         textStyle={{ color: "#FFF" }}
+       />
+     </View>
+   );
+ }
 }

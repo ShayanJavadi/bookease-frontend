@@ -29,4 +29,12 @@ export const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  ActionButtonFontStyle: {
+    color: "#fff",
+    position: "relative",
+    bottom: 3,
+    fontWeight: "700",
+    fontSize: 11,
+    paddingLeft: 1,
+  }
 });

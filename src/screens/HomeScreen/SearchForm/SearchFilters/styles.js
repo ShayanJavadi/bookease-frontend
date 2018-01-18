@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     height: 40,
   },
   filterWrapperStyle: {
-    flex: 1,
+    flex: 5,
     flexDirection: "row",
     backgroundColor: "#fff",
     height: 40,
@@ -49,7 +49,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "left",
     paddingLeft: 11,
-    fontWeight: "100",
     color: "#fff",
   },
 });
