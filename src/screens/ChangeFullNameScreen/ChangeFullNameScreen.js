@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Keyboard } from "react-native";
+import { Text, View, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { func, string, shape, object, bool } from "prop-types";
@@ -91,42 +91,44 @@ export default class ChangeFullNameScreen extends Component {
 
   render() {
     return (
-      <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
-        <View style={topContainerStyle}>
-          <Text style={headerTextStyle}>Enter your full name</Text>
-          <Text style={paddingTextStyle}>{" "}</Text>
-          <View style={inputContainerStyle}>
-            <TextField
-              label="Full name"
-              autoCorrect={false}
-              autoCapitalize="words"
-              fontSize={20}
-              tintColor={primaryColor}
-              containerStyle={inputStyle}
-              onChangeText={value => this.onChangeText(value)}
-              ref={input => this.input = input}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
+          <View style={topContainerStyle}>
+            <Text style={headerTextStyle}>Enter your full name</Text>
+            <Text style={paddingTextStyle}>{" "}</Text>
+            <View style={inputContainerStyle}>
+              <TextField
+                label="Full name"
+                autoCorrect={false}
+                autoCapitalize="words"
+                fontSize={20}
+                tintColor={primaryColor}
+                containerStyle={inputStyle}
+                onChangeText={value => this.onChangeText(value)}
+                ref={input => this.input = input}
+              />
+            </View>
           </View>
+          {this.state.submitButtonEnabled &&
+            (<Button
+              raised
+              primary
+              text="Submit"
+              style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
+              onPress={() => this.onSubmitButtonPress()}
+            />)
+          }
+          {!this.state.submitButtonEnabled &&
+            (<Button
+              disabled
+              raised
+              primary
+              text="Submit"
+              style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
+            />)
+          }
         </View>
-        {this.state.submitButtonEnabled &&
-          (<Button
-            raised
-            primary
-            text="Submit"
-            style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
-            onPress={() => this.onSubmitButtonPress()}
-          />)
-        }
-        {!this.state.submitButtonEnabled &&
-          (<Button
-            disabled
-            raised
-            primary
-            text="Submit"
-            style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
-          />)
-        }
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

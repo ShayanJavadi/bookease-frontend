@@ -10,7 +10,14 @@ const {
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  screenStyle : {
+  screenStyleWithKeyboard: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  screenStyleWithoutKeyboard : {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
@@ -74,19 +81,21 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 15,
   },
-  buttonContainerStyle: {
-    marginTop: 100,
+  submitButtonContainerStyle: {
     backgroundColor: primaryColor,
-    height: 50,
-    width: SCREEN_WIDTH * 0.85,
-  },
-  disabledButtonContainerStyle: {
     marginTop: 100,
-    backgroundColor: primaryColorLight,
+    marginBottom: 40,
     height: 50,
-    width: SCREEN_WIDTH * 0.85,
+    width: SCREEN_WIDTH * 0.9,
   },
-  buttonTextStyle: {
+  submitButtonDisabledContainerStyle: {
+    backgroundColor: primaryColorLight,
+    marginTop: 100,
+    marginBottom: 40,
+    height: 50,
+    width: SCREEN_WIDTH * 0.9,
+  },
+  submitButtonTextStyle: {
     color: "#fff",
     fontSize: 13,
     fontWeight: "100",

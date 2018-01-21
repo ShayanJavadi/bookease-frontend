@@ -32,8 +32,16 @@ export const styles = StyleSheet.create({
   headerTextStyle: {
     fontSize: 29,
     fontWeight: "100",
-    paddingTop: 40,
+    paddingTop: 70,
     paddingBottom: 40,
+  },
+  privacyNoticeTextStyle: {
+    fontSize: 16,
+    fontWeight: "300",
+    textAlign: "center",
+    paddingLeft: 10,
+    paddingBottom: 40,
+    paddingRight: 10,
   },
   inputContainerStyle: {
     flexDirection: "row",
@@ -53,27 +61,6 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-  },
-  invalidInputStyle: {
-    height: 50,
-    width: SCREEN_WIDTH * 0.9,
-    paddingLeft: 5,
-    borderColor: "red",
-    borderWidth: 1,
-    fontSize: 24,
-    backgroundColor: "#fff",
-    color: "#424242",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  invalidPhoneTextStyle: {
-    fontSize: 20,
-    fontWeight: "300",
-    color: "red",
-    paddingTop: 10,
-    paddingBottom: 15,
   },
   buttonContainerStyle: {
     backgroundColor: primaryColor,
@@ -98,5 +85,16 @@ export const styles = StyleSheet.create({
     marginTop: 100,
     marginBottom: 40,
     height: 80,
+  },
+  closeIconWrapperStyle: {
+    position: "absolute",
+    top: 30,
+    right: 15,
+  },
+  closeIconStyle: {
+    color: "#aaa",
+  },
+  lockIconStyle: {
+    color: "#000",
   },
 });

@@ -93,9 +93,6 @@ const HomeNavigator = TabNavigator({
 });
 
 const AuthNavigator = StackNavigator({
-  auth: {
-    screen: AuthScreen,
-  },
   phoneScreen: {
     screen: PhoneScreen,
   },
