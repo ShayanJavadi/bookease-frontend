@@ -1,9 +1,8 @@
-const submitFullName = ({ password, profileData, submitter }) => () => {
+const submitFullName = ({ fullName, profileData, submitter }) => () => {
   submitter({
     variables: {
-      email: profileData.email,
       phoneNumber: profileData.phoneNumber,
-      password: password,
+      fullName: fullName,
     }
   });
 }

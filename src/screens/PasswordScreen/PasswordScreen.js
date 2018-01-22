@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, ActivityIndicator, Keyboard } from "react-native";
+import { Text, View, ActivityIndicator, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { bool, func, string, shape, object } from "prop-types";
@@ -117,57 +117,59 @@ export default class PasswordScreen extends Component {
 
   render() {
     return (
-      <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
-        <View style={topContainerStyle}>
-          <Text style={headerTextStyle}>{this.props.message}</Text>
-          <Text style={invalidPasswordTextStyle}>{this.state.invalidPasswordEntered ? "Incorrect password" : " "}</Text>
-          <View style={inputContainerStyle}>
-            <TextField
-              label="Password"
-              autoCorrect={false}
-              autoCapitalize="none"
-              secureTextEntry={!this.state.passwordVisible}
-              fontSize={20}
-              tintColor={primaryColor}
-              containerStyle={inputStyle}
-              onChangeText={value => this.onChangeText(value)}
-              ref={input => this.input = input}
-            />
-            <Button
-                raised
-                primary
-                text={this.state.passwordVisible ? "Hide" : "Show"}
-                style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
-                onPress={() => this.onShowHideButtonPress()}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
+          <View style={topContainerStyle}>
+            <Text style={headerTextStyle}>{this.props.message}</Text>
+            <Text style={invalidPasswordTextStyle}>{this.state.invalidPasswordEntered ? "Incorrect password" : " "}</Text>
+            <View style={inputContainerStyle}>
+              <TextField
+                label="Password"
+                autoCorrect={false}
+                autoCapitalize="none"
+                secureTextEntry={!this.state.passwordVisible}
+                fontSize={20}
+                tintColor={primaryColor}
+                containerStyle={inputStyle}
+                onChangeText={value => this.onChangeText(value)}
+                ref={input => this.input = input}
               />
+              <Button
+                  raised
+                  primary
+                  text={this.state.passwordVisible ? "Hide" : "Show"}
+                  style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
+                  onPress={() => this.onShowHideButtonPress()}
+                />
+            </View>
           </View>
+          {!this.state.isWaiting && this.state.submitButtonEnabled &&
+            (<Button
+              raised
+              primary
+              text="Submit"
+              style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
+              onPress={() => this.onSubmitButtonPress()}
+            />)
+          }
+          {!this.state.isWaiting && !this.state.submitButtonEnabled &&
+            (<Button
+              disabled
+              raised
+              primary
+              text="Submit"
+              style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
+            />)
+          }
+          {this.state.isWaiting &&
+            <ActivityIndicator
+               animating={this.state.animating}
+               style={[styles.centering, activitySpinnerStyle]}
+               size="large"
+             />
+          }
         </View>
-        {!this.state.isWaiting && this.state.submitButtonEnabled &&
-          (<Button
-            raised
-            primary
-            text="Submit"
-            style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
-            onPress={() => this.onSubmitButtonPress()}
-          />)
-        }
-        {!this.state.isWaiting && !this.state.submitButtonEnabled &&
-          (<Button
-            disabled
-            raised
-            primary
-            text="Submit"
-            style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
-          />)
-        }
-        {this.state.isWaiting &&
-          <ActivityIndicator
-             animating={this.state.animating}
-             style={[styles.centering, activitySpinnerStyle]}
-             size="large"
-           />
-        }
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

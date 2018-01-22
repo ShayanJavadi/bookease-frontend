@@ -3,7 +3,7 @@ import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import { NavigationActions } from "react-navigation";
 import { func, shape } from "prop-types";
-import { Text, Image, View, AsyncStorage, TouchableOpacity } from "react-native";
+import { Text, View, AsyncStorage, TouchableOpacity } from "react-native";
 import { styles, ICON_SIZE, LOGO_ICON_SIZE } from "./styles";
 
 const {
@@ -11,9 +11,6 @@ const {
   headerStyle,
   buttonStyle,
   buttonTextStyle,
-  facebookButtonStyle,
-  googleButtonStyle,
-  emailButtonStyle,
   phoneButtonStyle,
   buttonIconStyle,
   slideLogoStyle,
@@ -96,46 +93,6 @@ export default class AuthScreen extends Component {
   renderAuthButtons() {
     return (
       <View>
-        <Button
-          raised
-          primary
-          upperCase={false}
-          style={{
-            container: [buttonStyle, facebookButtonStyle],
-            text: buttonTextStyle,
-          }}
-          icon={<Entypo name="facebook" size={ICON_SIZE} style={buttonIconStyle} />}
-          text="Sign in with Facebook"
-          onPress={() => this.onFacebookButtonPress()}
-        />
-        <Button
-          raised
-          default
-          upperCase={false}
-          style={{
-            container: [buttonStyle, googleButtonStyle],
-            text: buttonTextStyle,
-          }}
-          icon={
-            <Image
-              style={{ width: ICON_SIZE, height: ICON_SIZE }}
-              source={googleImage}
-            />}
-          text="Sign in with Google"
-          onPress={() => this.onGoogleButtonPress()}
-        />
-        <Button
-          raised
-          primary
-          upperCase={false}
-          style={{
-            container: [buttonStyle, emailButtonStyle],
-            text: buttonTextStyle,
-          }}
-          icon={<MaterialIcons name="email" size={ICON_SIZE} style={buttonIconStyle} />}
-          text="Sign in with Email"
-          onPress={() => this.onEmailButtonPress()}
-        />
         <Button
           raised
           primary

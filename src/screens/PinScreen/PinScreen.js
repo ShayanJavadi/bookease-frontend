@@ -1,20 +1,21 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, ActivityIndicator } from "react-native";
+import { Text, View, TextInput, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { bool, func, string, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
 const {
-  screenStyle,
+  screenStyleWithKeyboard,
+  screenStyleWithoutKeyboard,
   topContainerStyle,
   headerTextStyle,
   inputStyle,
   invalidInputStyle,
   inputContainerStyle,
   invalidPinTextStyle,
-  buttonContainerStyle,
-  disabledButtonContainerStyle,
-  buttonTextStyle,
+  submitButtonContainerStyle,
+  submitButtonDisabledContainerStyle,
+  submitButtonTextStyle,
   activitySpinnerStyle,
  } = styles;
 
@@ -41,6 +42,7 @@ export default class PinScreen extends Component {
   state = {
     pin: "",
     isWaiting: false,
+    keyboardVisible: false,
     invalidPinEntered: false,
     submitButtonEnabled: false
   }
@@ -61,6 +63,24 @@ export default class PinScreen extends Component {
       this.onChangeText("");
       this.setState({ invalidPinEntered: true, isWaiting: false });
     }
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardWillShow() {
+    this.setState({ keyboardVisible: true });
+  }
+
+  keyboardWillHide() {
+    this.setState({ keyboardVisible: false });
   }
 
 
@@ -94,19 +114,27 @@ export default class PinScreen extends Component {
     const isPinInvalid = this.state.invalidPinEntered;
 
     return (
-      <View style={screenStyle}>
-        <View style={topContainerStyle}>
-          <Text style={headerTextStyle}>Enter the PIN you received</Text>
-          <Text style={invalidPinTextStyle}>{isPinInvalid ? "Incorrect PIN" : " "}</Text>
-          <View style={inputContainerStyle}>
-            {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index, isPinInvalid))}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={this.state.keyboardVisible ? screenStyleWithKeyboard : screenStyleWithoutKeyboard}>
+          <View style={topContainerStyle}>
+            <Text style={headerTextStyle}>Enter the PIN you received</Text>
+            <Text style={invalidPinTextStyle}>{isPinInvalid ? "Incorrect PIN" : " "}</Text>
+            <View style={inputContainerStyle}>
+              {Array(PIN_LENGTH).fill().map((n, index) => this.renderPinBox(index, isPinInvalid))}
+            </View>
           </View>
+          <TextInput
+            ref={input => this.hiddenInput = input}
+            onChangeText={text => this.onChangeText(text)}
+            keyboardType="numeric"
+            maxLength={6}
+          />
           {!this.state.isWaiting && this.state.submitButtonEnabled &&
             (<Button
               raised
               primary
               text="Submit"
-              style={{ container: buttonContainerStyle, text: buttonTextStyle }}
+              style={{ container: submitButtonContainerStyle, text: submitButtonTextStyle }}
               onPress={() => this.onSubmitButtonPress()}
             />)
           }
@@ -116,7 +144,7 @@ export default class PinScreen extends Component {
               raised
               primary
               text="Submit"
-              style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
+              style={{ container: submitButtonDisabledContainerStyle, text: submitButtonTextStyle }}
             />)
           }
           {this.state.isWaiting &&
@@ -126,25 +154,24 @@ export default class PinScreen extends Component {
                size="large"
              />
           }
+
         </View>
-        <TextInput
-          ref={input => this.hiddenInput = input}
-          onChangeText={text => this.onChangeText(text)}
-          keyboardType="numeric"
-          maxLength={6}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 
   renderPinBox(index, isPinInvalid) {
     const style = isPinInvalid ? invalidInputStyle : inputStyle;
 
-    return (<TextInput
-        style={style}
-        key={index}
-        editable={false}
-        ref={input => this.pinBox[index] = input}
-    />);
+    return (
+      <TouchableOpacity key={index} activeOpacity={1} onPress={() => this.hiddenInput.focus()}>
+        <TextInput
+          style={style}
+          editable={false}
+          ref={input => this.pinBox[index] = input}
+          pointerEvents="none"
+        />
+      </TouchableOpacity>
+    );
   }
 }

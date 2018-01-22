@@ -7,7 +7,6 @@ import {
 const submitPassword = ({ password, profileData, submitter }) => (dispatch) => {
   return submitter({
     variables: {
-      email: profileData.email,
       phoneNumber: profileData.phoneNumber,
       password: password,
     }

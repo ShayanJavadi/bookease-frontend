@@ -4,10 +4,10 @@ import {
   PASSWORD_NOT_ACCEPTED,
 } from "./consts";
 
-export const submitPassword = ({ password, identifier, submitter }) => (dispatch) => {
+export const submitPassword = ({ password, profileData, submitter }) => (dispatch) => {
   return submitter({
     variables: {
-      identifier: identifier,
+      phoneNumber: profileData.phoneNumber,
       password: password
     }
   })

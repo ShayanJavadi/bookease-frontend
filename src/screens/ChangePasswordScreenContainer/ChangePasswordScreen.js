@@ -12,7 +12,7 @@ const mapStateToProps = ({ changePasswordSubmitReducer }) => ({
 });
 
 const Container = graphql(changePasswordMutation, {
-  options: props => ({ variables: { email: props.email || "", phone: props.phone || "", password: props.password || "" } }),
+  options: props => ({ variables: { email: props.email || "", phoneNumber: props.phoneNumber || "", password: props.password || "" } }),
 });
 
 export default Container(connect(
