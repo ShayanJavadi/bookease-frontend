@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
-import { func, shape, object } from "prop-types";
+import { func, shape, object, bool } from "prop-types";
 import { isEmpty } from "lodash";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
@@ -43,6 +43,7 @@ export default class MyBooksListingsScreen extends Component {
     data: object.isRequired,
     getMyTextbooksQuery: func.isRequired,
     deleteTextbookMutation: func.isRequired,
+    isFocused: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -94,6 +95,18 @@ export default class MyBooksListingsScreen extends Component {
 
    this.setState({ isDeleteConfirmationModalVisible: false })
  }
+
+  checkAuthenticationStatus({ isAuthenticated }) {
+    if (!isAuthenticated) {
+      this.props.navigation.navigate("authScreen", { resetToHomeOnClose: true });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isFocused && nextProps.isFocused) {
+      this.checkAuthenticationStatus(nextProps);
+    }
+  }
 
   renderMyListings(listing) {
     const {

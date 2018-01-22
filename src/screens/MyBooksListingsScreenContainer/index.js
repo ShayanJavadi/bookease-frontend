@@ -2,11 +2,14 @@ import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 import queries from "./graphql/queries";
 import mutations from "./graphql/mutations";
+import { withNavigationFocus } from "react-navigation-is-focused-hoc"
 import MyBooksListingsScreen from "../MyBooksListingsScreen";
 
 const { getMyTextbooksQuery } = queries;
 const { deleteTextbookMutation } = mutations;
-const mapStateToProps = ({ MyBooksListingsReducer }) => ({}); // eslint-disable-line no-unused-vars
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.Session.isAuthenticated
+});
 
 const Container = compose(
   graphql(getMyTextbooksQuery, {
@@ -20,4 +23,4 @@ const Container = compose(
 
 export default Container(connect(
   mapStateToProps,
-)(MyBooksListingsScreen));
+)(withNavigationFocus(MyBooksListingsScreen)));
