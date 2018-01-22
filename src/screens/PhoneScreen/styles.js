@@ -8,6 +8,7 @@ const {
 } = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+export const ICON_SIZE = 35;
 
 export const styles = StyleSheet.create({
   screenStyleWithKeyboard: {
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTextStyle: {
-    fontSize: 29,
+    fontSize: 26,
     fontWeight: "100",
     paddingTop: 70,
     paddingBottom: 40,

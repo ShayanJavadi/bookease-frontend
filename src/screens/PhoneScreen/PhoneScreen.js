@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
+import { NavigationActions } from "react-navigation";
 import { bool, func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles, ICON_SIZE } from "./styles";
@@ -40,7 +41,6 @@ export default class PhoneScreen extends Component {
 
   state = {
     phone: "",
-    phoneInUse: false,
     isWaiting: false,
     keyboardVisible: false,
     maskedValue: "",
@@ -70,6 +70,20 @@ export default class PhoneScreen extends Component {
   }
 
   close() {
+    Keyboard.dismiss();
+
+    if (this.props.navigation.state.params.resetToHomeOnClose) {
+      const closeSuccessScreenAction = NavigationActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+          NavigationActions.navigate({ routeName: "mainScreen" })
+        ]
+      })
+      return this.props.navigation.dispatch(closeSuccessScreenAction);
+    }
+
+    this.props.navigation.goBack(null);
     this.props.navigation.goBack(null);
   }
 
@@ -103,14 +117,15 @@ export default class PhoneScreen extends Component {
   renderInput() {
     return (
       <View style={topContainerStyle}>
-        <Text style={headerTextStyle}>Enter your phone number</Text>
+        <Text style={headerTextStyle}>Sign in with your phone number</Text>
         <Text style={privacyNoticeTextStyle}>
           <MaterialIcons name="lock-outline" size={16} style={lockIconStyle}  /> We will never share this information with anyone unless you ask us to
         </Text>
 
         <View style={inputContainerStyle}>
           <TextInputMask
-            style={this.state.phoneInUse ? invalidInputStyle : inputStyle}
+            style={inputStyle}
+            placeholder="(555)  555 - 5555"
             autoCorrect={false}
             autoCapitalize="none"
             textAlign="center"
@@ -161,7 +176,7 @@ export default class PhoneScreen extends Component {
   renderCloseIcon() {
     return (
       <TouchableOpacity style={closeIconWrapperStyle} onPress={() => this.close()}>
-        <MaterialIcons name="close" size={30} style={closeIconStyle} />
+        <MaterialIcons name="close" size={ICON_SIZE} style={closeIconStyle} />
       </TouchableOpacity>
     )
   }

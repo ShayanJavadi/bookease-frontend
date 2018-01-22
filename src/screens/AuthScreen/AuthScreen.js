@@ -3,7 +3,7 @@ import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
 import { NavigationActions } from "react-navigation";
 import { func, shape } from "prop-types";
-import { Text, Image, View, AsyncStorage, TouchableOpacity } from "react-native";
+import { Text, View, AsyncStorage, TouchableOpacity } from "react-native";
 import { styles, ICON_SIZE, LOGO_ICON_SIZE } from "./styles";
 
 const {
