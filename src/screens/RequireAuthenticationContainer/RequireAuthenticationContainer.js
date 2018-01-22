@@ -1,6 +1,7 @@
 import React from "react";
 import { bool, func, shape } from "prop-types";
 import { connect } from "react-redux";
+import { withNavigationFocus } from "react-navigation-is-focused-hoc"
 
 export default function(ComposedComponent, options) {
   const { resetToHomeOnClose, isNavigator } = options;
@@ -8,23 +9,22 @@ export default function(ComposedComponent, options) {
   class RequireAuthenticationContainer extends ComposedComponent {
     static propTypes = {
       isAuthenticated: bool.isRequired,
+      isFocused: bool.isRequired,
       navigation: shape({
         navigate: func.isRequired
       }).isRequired
     };
 
     checkAuthenticationStatus({ isAuthenticated }) {
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
         this.props.navigation.navigate("authScreen", { resetToHomeOnClose: resetToHomeOnClose });
       }
     }
 
-    componentWillMount() {
-      this.checkAuthenticationStatus(this.props);
-    }
-
-    componentWillUpdate(nextProps) {
-      this.checkAuthenticationStatus(nextProps);
+    componentWillReceiveProps(nextProps) {
+      if (!this.props.isFocused && nextProps.isFocused) {
+        this.checkAuthenticationStatus(nextProps);
+      }
     }
 
     render() {
@@ -42,5 +42,5 @@ export default function(ComposedComponent, options) {
     return RequireAuthenticationContainer;
   }
 
-  return connect(mapStateToProps)(RequireAuthenticationContainer);
+  return connect(mapStateToProps)(withNavigationFocus(RequireAuthenticationContainer));
 }
