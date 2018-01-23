@@ -118,21 +118,6 @@ export default class PhoneScreen extends Component {
     );
   }
 
-  foo() {
-    return <TextField
-      label="Password"
-      autoCorrect={false}
-      autoCapitalize="none"
-      secureTextEntry={!this.state.passwordVisible}
-      fontSize={20}
-      tintColor={primaryColor}
-      containerStyle={inputStyle}
-      onChangeText={value => this.onChangeText(value)}
-      ref={input => this.input = input}
-    />
-  }
-
-
   renderInput() {
     return (
       <View style={topContainerStyle}>
