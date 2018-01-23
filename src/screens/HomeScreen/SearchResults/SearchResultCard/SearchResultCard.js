@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+import { Text, View, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { MaterialIcons } from "@expo/vector-icons";
 import { string, number, shape, func } from "prop-types";
 import { capitalize } from "lodash";
 import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
+import ProgressiveImage from "src/modules/ProgressiveImage";
 
 const {
   searchResultCardWrapper,
@@ -72,27 +73,16 @@ export default class SearchResultCard extends Component {
   }
 
   renderImage() {
+    const uri = this.props.book.images[0].thumbnail;
+    const preview = uri.replace(/(\.[\w\d_-]+)$/i, "-thumbnail$1");
+
     return (
-      <View style={{ flex: 11 }}>
-        <View
-          style={
-            this.state.isImageLoading ? [middleSectionWrapper, { justifyContent: "center", alignItems: "center" }] : { height: 0, opacity: 0 }
-          }
-        >
-          <ActivityIndicator
-            size="large"
-            color="#222"
-          />
-        </View>
-        <Image
-          style={
-            this.state.isImageLoading ? { flex: 0.1 } : middleSectionWrapper
-          }
-          source={{ uri: this.props.book.images[0].thumbnail }}
-          onLoad={() => this.setState({ isImageLoading: false })}
-          onLoadStart={() => this.setState({ isImageLoading: true })}
+        <ProgressiveImage
+          preview={preview}
+          uri={uri}
+          containerStyle={{ flex: 11 }}
+          imageStyle={middleSectionWrapper}
         />
-      </View>
     )
   }
 
