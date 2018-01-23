@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from "react-native-masked-text";
 import { NavigationActions } from "react-navigation";
 import { bool, func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
-import { styles, ICON_SIZE } from "./styles";
+import { styles, palette, ICON_SIZE } from "./styles";
 
 const {
   screenStyleWithKeyboard,
@@ -23,6 +24,10 @@ const {
   closeIconStyle,
   lockIconStyle,
  } = styles;
+
+ const {
+    primaryColor,
+  } = palette;
 
 export default class PhoneScreen extends Component {
   static navigationOptions = {
@@ -113,6 +118,20 @@ export default class PhoneScreen extends Component {
     );
   }
 
+  foo() {
+    return <TextField
+      label="Password"
+      autoCorrect={false}
+      autoCapitalize="none"
+      secureTextEntry={!this.state.passwordVisible}
+      fontSize={20}
+      tintColor={primaryColor}
+      containerStyle={inputStyle}
+      onChangeText={value => this.onChangeText(value)}
+      ref={input => this.input = input}
+    />
+  }
+
 
   renderInput() {
     return (
@@ -124,7 +143,6 @@ export default class PhoneScreen extends Component {
 
         <View style={inputContainerStyle}>
           <TextInputMask
-            style={inputStyle}
             placeholder="(555)  555 - 5555"
             autoCorrect={false}
             autoCapitalize="none"
@@ -135,6 +153,13 @@ export default class PhoneScreen extends Component {
             onChangeText={text => this.onInputChange(text)}
             type="custom"
             options={ { mask: "(999) 999 - 9999" } }
+            customTextInput={TextField}
+            customTextInputProps={{
+              label: "Phone Number",
+              fontSize: 20,
+              tintColor: primaryColor,
+              containerStyle: inputStyle,
+            }}
           />
         </View>
       </View>
