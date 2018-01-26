@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   FULL_NAME_VALID,
   FULL_NAME_INVALID,

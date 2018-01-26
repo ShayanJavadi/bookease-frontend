@@ -1,23 +1,36 @@
 import React from "react";
-import { bool, func, shape } from "prop-types";
+import { AsyncStorage } from "react-native";
+import { bool, func, shape, object } from "prop-types";
 import { connect } from "react-redux";
 import { withNavigationFocus } from "react-navigation-is-focused-hoc"
+import updateUser from "../SessionContainer/actions/updateUser";
 
 export default function(ComposedComponent, options) {
-  const { resetToHomeOnClose, isNavigator } = options;
+  const { resetToHomeOnClose } = options;
 
   class RequireAuthenticationContainer extends ComposedComponent {
     static propTypes = {
-      isAuthenticated: bool.isRequired,
+      currentUser: object,
       isFocused: bool.isRequired,
       navigation: shape({
         navigate: func.isRequired
       }).isRequired
     };
 
-    checkAuthenticationStatus({ isAuthenticated }) {
+    checkAuthenticationStatus({ currentUser }) {
+      const isAuthenticated = currentUser !== undefined;
       if (!isAuthenticated) {
         this.props.navigation.navigate("authScreen", { resetToHomeOnClose: resetToHomeOnClose });
+      }
+    }
+
+    async componentDidMount() {
+      if (this.props.currentUser === undefined) {
+        const savedUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
+
+        if (savedUser) {
+          this.props.updateUser(savedUser);
+        }
       }
     }
 
@@ -34,13 +47,9 @@ export default function(ComposedComponent, options) {
 
   function mapStateToProps(state) {
     return {
-      isAuthenticated: state.Session.isAuthenticated
+      currentUser: state.Session.currentUser,
     };
   }
 
-  if (isNavigator) {
-    return RequireAuthenticationContainer;
-  }
-
-  return connect(mapStateToProps)(withNavigationFocus(RequireAuthenticationContainer));
+  return connect(mapStateToProps, { updateUser })(withNavigationFocus(RequireAuthenticationContainer));
 }

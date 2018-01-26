@@ -32,6 +32,7 @@ export default class ChangeFullNameScreen extends Component {
     validateFullName: func.isRequired,
     submitFullName: func.isRequired,
     mutate: func.isRequired,
+    updateUser: func.isRequired,
     isFullNameValid: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired,
@@ -80,12 +81,15 @@ export default class ChangeFullNameScreen extends Component {
   }
 
   onSubmitButtonPress() {
+    const profileData = this.props.navigation.state.params.profileData;
+
     this.props.submitFullName({
       fullName: this.state.fullName,
-      profileData: this.props.navigation.state.params.profileData,
+      profileData: profileData,
       submitter: this.props.mutate,
     });
-    this.props.navigation.navigate(this.props.nextScreen, { profileData: this.props.navigation.state.params.profileData });
+    this.props.updateUser(profileData);
+    this.props.navigation.navigate(this.props.nextScreen, { profileData: profileData });
   }
 
 

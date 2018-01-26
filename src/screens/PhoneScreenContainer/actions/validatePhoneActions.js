@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   PHONE_VALID,
   PHONE_INVALID,

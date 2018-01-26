@@ -36,6 +36,7 @@ export default class SchoolSelectionScreen extends Component {
     })).isRequired,
     searchForSchool: func.isRequired,
     updateSchool: func.isRequired,
+    updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
       state: shape({
@@ -51,11 +52,14 @@ export default class SchoolSelectionScreen extends Component {
   }
 
   onComplete() {
+    const profileData = this.props.navigation.state.params.profileData;
+
     this.props.updateSchool({
       mutate: this.props.mutate,
-      profileData: this.props.navigation.state.params.profileData,
+      profileData: profileData,
       schoolId: this.state.selectedSchool.id
     });
+    this.props.updateUser(profileData);
     this.props.navigation.navigate("home");
   }
 

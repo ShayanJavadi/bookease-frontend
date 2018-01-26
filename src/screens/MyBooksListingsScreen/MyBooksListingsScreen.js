@@ -96,18 +96,6 @@ export default class MyBooksListingsScreen extends Component {
    this.setState({ isDeleteConfirmationModalVisible: false })
  }
 
-  checkAuthenticationStatus({ isAuthenticated }) {
-    if (!isAuthenticated) {
-      this.props.navigation.navigate("authScreen", { resetToHomeOnClose: true });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isFocused && nextProps.isFocused) {
-      this.checkAuthenticationStatus(nextProps);
-    }
-  }
-
   renderMyListings(listing) {
     const {
       title,

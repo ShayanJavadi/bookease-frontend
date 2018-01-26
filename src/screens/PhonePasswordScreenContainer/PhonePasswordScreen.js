@@ -1,6 +1,6 @@
 import { graphql } from "react-apollo";
 import { connect } from "react-redux";
-import * as actions from "./actions";
+import actions from "./actions";
 import signInWithPhoneNumberMutation from "./graphql/queries/signInWithPhoneNumberMutation";
 import PasswordScreen from "../PasswordScreen";
 

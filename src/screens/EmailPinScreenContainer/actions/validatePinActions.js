@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   PIN_VALID,
   PIN_INVALID,
