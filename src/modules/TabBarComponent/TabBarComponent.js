@@ -17,6 +17,11 @@ const {
   ActionButtonFontStyle,
  } = styles;
 
+ const HOME_TAB = 0;
+ const MY_BOOKS_TAB = 1;
+ const SELL_BOOKS_TAB = 2;
+ const ACCOUNT_TAB = 3;
+
 export default class TabBarComponent extends Component {
   static propTypes = {
     navigation: shape({
@@ -25,7 +30,7 @@ export default class TabBarComponent extends Component {
   };
 
   state = {
-    selectedTab: 0
+    selectedTab: HOME_TAB
   };
 
   onHomePress = () => {
@@ -61,19 +66,19 @@ export default class TabBarComponent extends Component {
       return;
     }
 
-    if (nextState.selectedTab === 0) {
+    if (nextState.selectedTab === HOME_TAB) {
       this.onHomePress();
     }
 
-    if (nextState.selectedTab === 1) {
+    if (nextState.selectedTab === MY_BOOKS_TAB) {
       this.onMyBooksPress();
     }
 
-    if (nextState.selectedTab === 2) {
+    if (nextState.selectedTab === SELL_BOOKS_TAB) {
       this.onNotificationsPress();
     }
 
-    if (nextState.selectedTab === 3) {
+    if (nextState.selectedTab === ACCOUNT_TAB) {
       this.onAccountPress();
     }
   }
@@ -114,7 +119,7 @@ export default class TabBarComponent extends Component {
   }
 
   renderActionButton() {
-    return (
+    return (this.state.selectedTab !== ACCOUNT_TAB) && (
       <View style={sellBooksButtonStyle}>
         <ActionButton
           buttonColor={ACTION_BUTTON_COLOR}
