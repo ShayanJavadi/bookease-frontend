@@ -7,7 +7,7 @@ import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
-import AccountScreen from "../screens/AccountScreen";
+import AccountScreen from "../screens/AccountScreenContainer";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
 import ScanBookScreen from "../screens/ScanBookScreenContainer";
@@ -31,7 +31,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, isNavigator: false }),
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false }),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -48,7 +48,7 @@ const SellBooksNavigator = StackNavigator({
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
-    screen: MyBooksListingsScreen,
+    screen: RequireAuthenticationContainer(MyBooksListingsScreen, { resetToHomeOnClose: true }),
   },
   myBooksOrders: {
     screen: MyBooksOrdersScreen,
@@ -74,13 +74,13 @@ const HomeNavigator = TabNavigator({
     screen: HomeScreen,
   },
   myBooks: {
-    screen: RequireAuthenticationContainer(myBooksNavigator, { resetToHomeOnClose: true, isNavigator: true }),
+    screen: myBooksNavigator,
   },
   notifications: {
-    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true, isNavigator: false }),
+    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true }),
   },
   account: {
-    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, isNavigator: false }),
+    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true }),
   },
   scan: {
     screen: ScanBookScreen
