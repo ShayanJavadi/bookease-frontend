@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   EMAIL_VALID,
   EMAIL_INVALID,

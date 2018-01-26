@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   UPDATE_USER,
 } from "./consts";

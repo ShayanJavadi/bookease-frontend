@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   PASSWORD_ACCEPTED,
   PASSWORD_NOT_ACCEPTED,
