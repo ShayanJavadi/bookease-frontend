@@ -35,9 +35,7 @@ export default class PhoneScreen extends Component {
   }
 
   static propTypes = {
-    isPhoneValid: bool.isRequired,
-    phoneNumber: string.isRequired,
-    validatePhone: func.isRequired,
+    phoneNumber: string,
     mutate: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
@@ -93,27 +91,43 @@ export default class PhoneScreen extends Component {
   }
 
   onInputChange(value) {
-    this.props.validatePhone(value);
+    const cleanPhoneNumber = this.validateAndCleanPhone(value);
 
     this.setState({
       phoneInUse: false,
+      phoneNumber: cleanPhoneNumber,
       maskedValue: value,
     });
   }
 
+  validateAndCleanPhone(value) {
+    const validationRegExp = /-|\s|\(|\)/;
+    const cleanPhoneNumber = value.split(validationRegExp).join("");
+    const isPhoneValid = cleanPhoneNumber.length === 10;
+
+    this.setState({
+      isPhoneValid,
+    });
+
+    return cleanPhoneNumber;
+  }
+
   onSubmitButtonPress() {
     this.setState({ isWaiting: true });
+
+    const phoneNumber = this.state.phoneNumber;
+
     this.props.mutate({
-      variables: { phoneNumber: this.props.phoneNumber }
+      variables: { phoneNumber }
     })
     .then(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("phonePinScreen", { identifier: this.props.phoneNumber });
+        this.props.navigation.navigate("phonePinScreen", { identifier: phoneNumber });
       }
     )
     .catch(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("phonePasswordScreen", { profileData: { phoneNumber: this.props.phoneNumber } });
+        this.props.navigation.navigate("phonePasswordScreen", { profileData: { phoneNumber } });
       }
     );
   }
@@ -153,7 +167,7 @@ export default class PhoneScreen extends Component {
 
   renderSubmitButton() {
     return (!this.state.isWaiting &&
-      (this.props.isPhoneValid ?
+      (this.state.isPhoneValid ?
         (<Button
           raised
           primary

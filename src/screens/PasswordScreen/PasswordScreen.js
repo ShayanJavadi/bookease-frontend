@@ -80,15 +80,39 @@ export default class PasswordScreen extends Component {
     this.setState({ keyboardVisible: false });
   }
 
-  componentWillReceiveProps(props) {
-    if (props.isPasswordValid) {
-      const profileData = props.navigation.state.params.profileData;
+  async componentWillReceiveProps(props) {
+    const isPasswordEmpty = (this.state.password === "");
 
-      this.setState({ isWaiting: false });
+    if (props.isPasswordValid && !isPasswordEmpty) {
+      let profileData;
+      const isNewAccount = (props.data === undefined)
+
+      if (isNewAccount) {
+        profileData = props.navigation.state.params.profileData;
+      }
+      else {
+        const rawResult = await props.data.refetch();
+        const result = rawResult.data.getSession.user;
+        const { displayName, id, phoneNumber, schoolId } = result;
+
+        profileData = {
+          fullName: displayName,
+          id,
+          phoneNumber,
+          schoolId,
+        };
+      }
+
+      this.setState({
+        isWaiting: false,
+        invalidPasswordEntered: false,
+        password: "",
+      });
+
       this.props.updateUser(profileData);
       this.props.navigation.navigate(this.props.nextScreen, { profileData: profileData  });
     }
-    else {
+    else if (!isPasswordEmpty) {
       this.input.clear();
       this.onChangeText("");
       this.setState({ isWaiting: false, invalidPasswordEntered: true });

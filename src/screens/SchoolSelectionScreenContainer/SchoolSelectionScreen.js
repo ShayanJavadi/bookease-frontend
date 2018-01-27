@@ -6,8 +6,9 @@ import SchoolSelectionScreen from "../SchoolSelectionScreen";
 
 const { searchForSchoolsQuery, changeSchoolMutation } = queries;
 
-const mapStateToProps = ({ schoolSelectionReducer }) => ({
+const mapStateToProps = ({ schoolSelectionReducer, Session }) => ({
   schools: schoolSelectionReducer.schools,
+  currentUser: Session.currentUser,
 });
 
 const Container = compose(

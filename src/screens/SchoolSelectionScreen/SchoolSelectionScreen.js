@@ -39,11 +39,6 @@ export default class SchoolSelectionScreen extends Component {
     updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
-      state: shape({
-        params: shape({
-          profileData: object.isRequired
-        }).isRequired
-      }).isRequired
     }).isRequired
   };
 
@@ -51,15 +46,19 @@ export default class SchoolSelectionScreen extends Component {
     this.input.focus();
   }
 
-  onComplete() {
-    const profileData = this.props.navigation.state.params.profileData;
+  onSubmitButtonPress() {
+    const schoolId = this.state.selectedSchool.id;
+    const oldProfileData = this.props.currentUser;
+
+    let newProfileData = Object.assign({}, oldProfileData);
+    newProfileData.schoolId = schoolId;
 
     this.props.updateSchool({
       mutate: this.props.mutate,
-      profileData: profileData,
-      schoolId: this.state.selectedSchool.id
+      profileData: newProfileData,
+      schoolId,
     });
-    this.props.updateUser(profileData);
+    this.props.updateUser(newProfileData);
     this.props.navigation.navigate("home");
   }
 
@@ -110,7 +109,7 @@ export default class SchoolSelectionScreen extends Component {
               text="Select"
               raised
               style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-              onPress={() => this.onComplete()}
+              onPress={() => this.onSubmitButtonPress()}
             />)
         }
         {!validSchoolSelected &&
@@ -118,7 +117,6 @@ export default class SchoolSelectionScreen extends Component {
               text="Select"
               raised
               style={{ text: buttonTextStyle, container: disabledButtonContainerStyle }}
-              onPress={() => this.onComplete()}
             />)
         }
       </View>

@@ -4,6 +4,7 @@ import {
 import { AsyncStorage } from "react-native";
 
 const updateUser = (user) => async (dispatch) => {
+  console.log(user);
   const isAuthenticated = user !== undefined;
   const keyExists = AsyncStorage.getItem("currentUser") !== undefined;
 
