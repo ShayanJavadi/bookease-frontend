@@ -31,7 +31,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false }),
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, needsNavigationFocus: false }),
   },
   scanBook: {
     screen: ScanBookScreen,
@@ -48,7 +48,7 @@ const SellBooksNavigator = StackNavigator({
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
-    screen: RequireAuthenticationContainer(MyBooksListingsScreen, { resetToHomeOnClose: true }),
+    screen: RequireAuthenticationContainer(MyBooksListingsScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
   myBooksOrders: {
     screen: MyBooksOrdersScreen,
@@ -77,10 +77,10 @@ const HomeNavigator = TabNavigator({
     screen: myBooksNavigator,
   },
   notifications: {
-    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true }),
+    screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
   account: {
-    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true }),
+    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
   scan: {
     screen: ScanBookScreen

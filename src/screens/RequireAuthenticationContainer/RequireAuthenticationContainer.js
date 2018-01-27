@@ -6,12 +6,12 @@ import { withNavigationFocus } from "react-navigation-is-focused-hoc"
 import updateUser from "../SessionContainer/actions/updateUser";
 
 export default function(ComposedComponent, options) {
-  const { resetToHomeOnClose } = options;
+  const { resetToHomeOnClose, needsNavigationFocus } = options;
 
   class RequireAuthenticationContainer extends ComposedComponent {
     static propTypes = {
       currentUser: object,
-      isFocused: bool.isRequired,
+      isFocused: bool,
       navigation: shape({
         navigate: func.isRequired
       }).isRequired
@@ -51,5 +51,8 @@ export default function(ComposedComponent, options) {
     };
   }
 
-  return connect(mapStateToProps, { updateUser })(withNavigationFocus(RequireAuthenticationContainer));
+  if (needsNavigationFocus) {
+    return connect(mapStateToProps, { updateUser })(withNavigationFocus(RequireAuthenticationContainer));
+  }
+  return connect(mapStateToProps, { updateUser })(RequireAuthenticationContainer);
 }
