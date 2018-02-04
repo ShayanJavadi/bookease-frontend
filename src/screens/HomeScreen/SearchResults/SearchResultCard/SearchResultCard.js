@@ -47,11 +47,15 @@ export default class SearchResultCard extends Component {
   }
 
   onListingPress() {
-    this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
+    const { navigation, book } = this.props;
+
+    navigation.navigate("singleBook", { textbookId: book.id });
   }
 
   onBuyButtonPress() {
-    this.props.navigation.navigate("buyRequestScreen", { textbookId: this.props.book.id, context: "home" });
+    const { navigation, book } = this.props;
+    
+    navigation.navigate("buyRequestScreen", { textbookId: book.id,  context: "home" });
   }
 
   renderUpperSection() {

@@ -23,7 +23,7 @@ export default class ProgressiveImage extends Component {
     this.setState({ uri }, () => {
       const intensity = new Animated.Value(100);
       this.setState({ intensity });
-      Animated.timing(intensity, { duration: 1500, toValue: 0, useNativeDriver: true }).start();
+      Animated.timing(intensity, { duration: 500, toValue: 0, useNativeDriver: true }).start();
     })
   }
 

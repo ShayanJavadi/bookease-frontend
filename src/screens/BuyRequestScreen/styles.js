@@ -12,7 +12,7 @@ const {
 export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f1f1f1",
     paddingTop: 90,
   },
   messageTextInputStyle: {
@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
      marginLeft: 20,
      borderRadius: 1,
      borderWidth: 0.5,
+     backgroundColor: "#fff",
   },
   messageTextInputContainerStyle: {
     flex: 5,

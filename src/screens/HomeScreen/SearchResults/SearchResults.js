@@ -40,11 +40,12 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
   }
 
   return (
-    <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
+    <View style={{ flex: 6, backgroundColor: "#fff" }}>
       <FlatList
         data={textbooks}
         renderItem={({ item }) => renderSearchResult(item, navigation)}
         keyExtractor={item => item.isbn}
+        initialNumToRender={2}
       />
     </View>
   );

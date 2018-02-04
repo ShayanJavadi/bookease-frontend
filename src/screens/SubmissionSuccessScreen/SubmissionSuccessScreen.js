@@ -35,6 +35,16 @@ export default class SubmissionSuccessScreen extends Component {
     }).isRequired,
   }
 
+  state = {
+    submittedTextbook: this.props.navigation.state.params ?
+    this.props.navigation.state.params.submittedBook :
+    undefined,
+    submittedBuyRequest: this.props.navigation.state.params ?
+    this.props.navigation.state.params.submittedBuyRequest :
+    undefined
+  }
+
+
   closeSuccessScreen() {
     const closeSuccessScreenAction = NavigationActions.reset({
       index: 0,
@@ -63,19 +73,43 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   renderSuccessMessage() {
+    const { submittedTextbook, submittedBuyRequest } = this.state;
+
+    if (submittedTextbook) {
+      return (
+        <View style={successMessageWrapperStyle}>
+          <Text style={successMessageHeaderStyle}>Success!</Text>
+          <Text style={successMessageTextStyle}>Your textbook was posted.</Text>
+        </View>
+      )
+    }
+
+    if (submittedBuyRequest) {
+      return (
+        <View style={successMessageWrapperStyle}>
+          <Text style={successMessageHeaderStyle}>Success!</Text>
+          <Text style={successMessageTextStyle}>Your request was submitted.</Text>
+        </View>
+      )
+    }
+  }
+
+  renderSubmittedBuyRequestButtons() {
     return (
-      <View style={successMessageWrapperStyle}>
-        <Text style={successMessageHeaderStyle}>Success!</Text>
-        <Text style={successMessageTextStyle}>Your textbook was posted.</Text>
+      <View>
+        <Button
+          primary
+          raised
+          upperCase={false}
+          text="View Your Post"
+          onPress={() => alert("coming soon")}
+          style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
+        />
       </View>
     )
   }
 
-  renderButtons() {
-    const scannedTextbook = this.props.navigation.state.params ? // eslint-disable-line no-unused-vars
-    this.props.navigation.state.params.submittedBook :
-    undefined;
-
+  renderSubmittedTextbookButtons() {
     return (
       <View style={buttonsWrapperStyle}>
         <Button
@@ -89,11 +123,23 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           upperCase={false}
           text="View Your Post"
-          onPress={() => this.props.navigation.navigate("singleBook", { textbookId: scannedTextbook.id })}
+          onPress={() => this.props.navigation.navigate("singleBook", { textbookId: this.state.submittedTextbook.id })}
           style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
         />
       </View>
     )
+  }
+
+  renderButtons() {
+    const { submittedTextbook, submittedBuyRequest } = this.state;
+
+    if (submittedTextbook) {
+      return this.renderSubmittedTextbookButtons()
+    }
+
+    if (submittedBuyRequest) {
+      return this.renderSubmittedBuyRequestButtons()
+    }
   }
 
   render() {

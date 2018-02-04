@@ -6,7 +6,7 @@ const getTextbooksQuery = gql`
         id,
         title,
         price,
-        uid,
+        userId,
         edition,
         condition,
         images{

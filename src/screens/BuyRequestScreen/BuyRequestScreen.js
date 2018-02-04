@@ -6,6 +6,7 @@ import { NavigationActions } from "react-navigation"
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Spinner from "react-native-loading-spinner-overlay";
 import Header from "src/modules/Header";
 import BackButton from "src/modules/BackButton";
 import uiTheme from "src/common/styles";
@@ -39,6 +40,7 @@ export default class BuyRequestScreen extends Component {
     messageTextInputSelected: false,
     messageTextInputErrorMessage: undefined,
     message: "",
+    isSubmitting: false,
   }
 
   componentDidMount() {
@@ -82,6 +84,28 @@ export default class BuyRequestScreen extends Component {
     }
   }
 
+  onBuyRequestSubmitPress() {
+    const { navigation, createBuyRequestMutation, getTextbookQuery } = this.props;
+
+    const  buyRequest = {
+      textbookId: getTextbookQuery.getTextbook.id,
+      recipientId: getTextbookQuery.getTextbook.userId,
+      message: this.state.message,
+    }
+
+    this.setState({ isSubmitting: true }, () => {
+      createBuyRequestMutation({
+        variables: {
+          buyRequest
+        }
+      })
+      .then(buyRequest => {
+        this.setState({ isSubmitting: false });
+        this.props.navigation.navigate("submissionSuccessScreen", { submittedBuyRequest: buyRequest })
+      })
+    })
+  }
+
   renderHeader() {
     return (
       <Header
@@ -112,7 +136,7 @@ export default class BuyRequestScreen extends Component {
           tintColor={primaryColor}
           containerStyle={[
             messageTextInputStyle, {
-              borderColor: messageTextInputSelected || messageTextInputErrorMessage ? primaryColor : "#222",
+              borderColor: messageTextInputSelected || messageTextInputErrorMessage ? primaryColor : "#fff",
             }
           ]}
           inputContainerStyle={{ height: 200 }}
@@ -134,6 +158,7 @@ export default class BuyRequestScreen extends Component {
           primary
           text="Send Request"
           style={{ container: buttonContainerStyle, text: buttonTextStyle }}
+          onPress={() => this.onBuyRequestSubmitPress()}
         />
       </View>
     )
@@ -141,6 +166,7 @@ export default class BuyRequestScreen extends Component {
 
   render() {
     const { getTextbookQuery, navigation } = this.props;
+    const { isSubmitting } = this.state;
 
     if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
       return (
@@ -171,6 +197,12 @@ export default class BuyRequestScreen extends Component {
           {this.renderMessageTextInput()}
           {this.renderSubmitButton()}
         </KeyboardAwareScrollView>
+        <Spinner
+          visible={isSubmitting}
+          textContent={"Submitting your request..."}
+          overlayColor="rgba(0, 0, 0, 0.65)"
+          textStyle={{ color: "#FFF" }}
+        />
       </View>
     );
   }
