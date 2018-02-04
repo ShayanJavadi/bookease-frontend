@@ -1,8 +1,6 @@
 import React from "react";
 import { Text, View, TouchableWithoutFeedback, Image } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { object } from "prop-types";
-import { getRelativeTime } from "src/common/lib";
+import { object, func } from "prop-types";
 import { styles } from "./styles";
 
 const {
@@ -16,7 +14,7 @@ const {
 
 const renderImage = (images) => {
   const uri = images[0].thumbnail;
-  
+
   return (
     <View style={imageContainerStyle}>
       <Image
@@ -47,6 +45,7 @@ const TextbookStrip = ({ textbook: { images, price, title }, onPress }) => (
 
 TextbookStrip.propTypes = {
   textbook: object.isRequired,
+  onPress: func.isRequired,
 };
 
 export default TextbookStrip;

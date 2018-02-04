@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { shape, func } from "prop-types";
-import { NavigationActions } from "react-navigation"
+import { View, ActivityIndicator } from "react-native";
+import { shape, func, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -32,6 +30,8 @@ export default class BuyRequestScreen extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    getTextbookQuery: object.isRequired,
+    createBuyRequestMutation: func.isRequired,
   }
 
   state = {
@@ -85,7 +85,7 @@ export default class BuyRequestScreen extends Component {
   }
 
   onBuyRequestSubmitPress() {
-    const { navigation, createBuyRequestMutation, getTextbookQuery } = this.props;
+    const { createBuyRequestMutation, getTextbookQuery } = this.props;
 
     const  buyRequest = {
       textbookId: getTextbookQuery.getTextbook.id,
@@ -165,7 +165,7 @@ export default class BuyRequestScreen extends Component {
   }
 
   render() {
-    const { getTextbookQuery, navigation } = this.props;
+    const { getTextbookQuery } = this.props;
     const { isSubmitting } = this.state;
 
     if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
@@ -184,9 +184,8 @@ export default class BuyRequestScreen extends Component {
         {this.renderHeader()}
         <KeyboardAwareScrollView
           enableResetScrollToCoords={false}
-          contentContainerStyle={{flexGrow: 1, backgroundColor: "#f1f1f1" }}
+          contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f1f1f1" }}
           extraScrollHeight={80}
-
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
         >

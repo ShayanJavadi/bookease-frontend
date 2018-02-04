@@ -6,7 +6,6 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const { palette } = uiTheme;
 const {
   primaryColor,
-  primaryColorLight,
 } = palette;
 
 export const styles = StyleSheet.create({
@@ -33,10 +32,6 @@ export const styles = StyleSheet.create({
   },
   buttonContainerStyle: {
     backgroundColor: primaryColor,
-    height: 50,
-    width: SCREEN_WIDTH * 0.9,
-  },
-  disabledButtonContainerStyle: {
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
