@@ -50,6 +50,10 @@ export default class SearchResultCard extends Component {
     this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
   }
 
+  onBuyButtonPress() {
+    this.props.navigation.navigate("buyRequestScreen", { textbookId: this.props.book.id, context: "home" });
+  }
+
   renderUpperSection() {
     const {
       title,
@@ -111,7 +115,7 @@ export default class SearchResultCard extends Component {
             raised
             style={{ text: buttonTextStyle, container: buttonContainerStyle }}
             text="Buy"
-            onPress={() => alert("buy")}
+            onPress={() => this.onBuyButtonPress()}
           />
         </View>
       </View>

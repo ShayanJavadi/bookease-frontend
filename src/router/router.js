@@ -20,6 +20,8 @@ import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 import TabBarComponent from "../modules/TabBarComponent";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
+import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
+
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
     screen: SubmissionSuccessScreen,
@@ -65,6 +67,9 @@ const SingleBookNavigator = StackNavigator({
   singleBookScreen: {
     screen: SingleBookScreen,
   },
+  buyRequestScreen: {
+    screen: BuyRequestScreen,
+  }
 }, {
   headerMode: "none",
 });

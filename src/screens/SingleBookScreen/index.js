@@ -42,7 +42,9 @@ export default class SingleBookScreen extends Component {
 
   componentDidMount() {
     const { getTextbookQuery, navigation } = this.props;
-    getTextbookQuery.refetch({ textbookId: navigation.state.params.textbookId })
+    if (navigation.state.params) {
+      getTextbookQuery.refetch({ textbookId: navigation.state.params.textbookId });
+    }
   }
 
   onDeleteTextbookPress() {
@@ -76,6 +78,12 @@ export default class SingleBookScreen extends Component {
     this.setState({ deleteTextbookModalVisible: false });
   }
 
+  onBuyButtonPress() {
+    const { navigation, getTextbookQuery } = this.props;
+
+    navigation.navigate("buyRequestScreen", { textbookId: getTextbookQuery.getTextbook.id, context: "singleBookScreen" });
+  }
+
   renderDeleteTextbookModal() {
     return (
       <Modal
@@ -97,7 +105,6 @@ export default class SingleBookScreen extends Component {
         <BookDetails textbook={getTextbook} />
         <AccountDetails textbook={getTextbook} />
         <Questions />
-        <StatusBar hidden />
       </KeyboardAwareScrollView>
     )
   }
@@ -143,6 +150,7 @@ export default class SingleBookScreen extends Component {
             style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
             primary
             raised
+            onPress={() => this.onBuyButtonPress()}
             text="Buy"
           />
         </View>
@@ -152,7 +160,7 @@ export default class SingleBookScreen extends Component {
 
   renderButtons() {
     // TODO: change to use getSession api
-    const isUserOwner = true;
+    const isUserOwner = false;
 
     if (isUserOwner) {
       return this.renderSellerButtons();
