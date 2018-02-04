@@ -101,8 +101,15 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           raised
           upperCase={false}
-          text="View Your Post"
+          text="View Your Request"
           onPress={() => alert("coming soon")}
+          style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
+        />
+        <Button
+          primary
+          upperCase={false}
+          text="Browse Textbooks"
+          onPress={() => this.closeSuccessScreen()}
           style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
         />
       </View>
@@ -143,6 +150,8 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   render() {
+    // TODO: add indicator to help user understand they are sending a message to the seller
+    // IDEA: (user account avatar) => (recipient account avater)
     return (
       <View style={screenStyle}>
         {this.renderCloseIcon()}

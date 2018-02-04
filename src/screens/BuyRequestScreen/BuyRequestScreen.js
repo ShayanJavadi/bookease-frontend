@@ -121,6 +121,7 @@ export default class BuyRequestScreen extends Component {
   }
 
   renderMessageTextInput() {
+    // TODO: prepopulate this text input with a template message (Hi, I'd like to buy textbookName etc etc)
     const { primaryColor } = uiTheme.palette;
     const { messageTextInputSelected, message, messageTextInputErrorMessage } = this.state;
 
