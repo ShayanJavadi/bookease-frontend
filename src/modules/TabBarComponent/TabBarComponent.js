@@ -108,7 +108,6 @@ export default class TabBarComponent extends Component {
           barBackgroundColor={TAB_COLOR}
           label="Notifications"
           icon={<MaterialIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="mail" />}
-          notificationCount={3}
         />
         <Tab
           barBackgroundColor={TAB_COLOR}
