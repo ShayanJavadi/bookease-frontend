@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, TouchableWithoutFeedback, Image } from "react-native";
 import { object, func } from "prop-types";
+import { get, first } from "lodash";
 import { styles } from "./styles";
 
 const {
@@ -13,7 +14,7 @@ const {
 } = styles;
 
 const renderImage = (images) => {
-  const uri = images[0].thumbnail;
+  const uri = get(first(images), "thumbnail");
 
   return (
     <View style={imageContainerStyle}>
