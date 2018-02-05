@@ -27,6 +27,15 @@ export default class ProgressiveImage extends Component {
     })
   }
 
+  onPartialLoadEnd() {
+    const { uri } = this.props;
+    this.setState({ uri }, () => {
+      const intensity = new Animated.Value(100);
+      this.setState({ intensity });
+      Animated.timing(intensity, { duration: 500, toValue: 10, useNativeDriver: true }).start();
+    })
+  }
+
   render() {
     const { containerStyle, imageStyle } = this.props;
     const { uri, intensity } = this.state;
@@ -43,6 +52,7 @@ export default class ProgressiveImage extends Component {
                         source={{ uri }}
                         style={imageStyle}
                         onLoadEnd={() => this.onLoadEnd(uri)}
+                        onPartialLoad={() => this.onPartialLoadEnd(uri)}
                     />
                 )
             }
