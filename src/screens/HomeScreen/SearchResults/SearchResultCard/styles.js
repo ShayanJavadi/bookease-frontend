@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
   searchResultCardWrapper: {
     flex: 1,
     height: 400,
-    shadowColor: "#222",
+    shadowColor: "#999",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
     shadowRadius: 2,
   },
   upperSectionWrapper: {
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     flex: 11,
     height: undefined,
     width: undefined,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#f1f1f1",
   },
   lowerSectionWrapper: {
     flex: 2,
