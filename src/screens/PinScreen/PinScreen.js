@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { bool, func, string, shape, object } from "prop-types";
+import { bool, func, shape, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 
@@ -31,7 +31,6 @@ export default class PinScreen extends Component {
     isPinValid: bool.isRequired,
     profileData: object,
     validatePin: func.isRequired,
-    nextScreen: string.isRequired,
     mutate: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
@@ -56,7 +55,15 @@ export default class PinScreen extends Component {
   componentWillReceiveProps(props) {
     if (props.isPinValid) {
       this.setState({ invalidPinEntered: false, isWaiting: false });
-      this.props.navigation.navigate(this.props.nextScreen, { profileData: props.profileData });
+
+      const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
+      const newNextScreenSequence = nextScreenSequence.slice(1);
+      const nextScreen = nextScreenSequence[0];
+
+      this.props.navigation.navigate(nextScreen, {
+        nextScreenSequence: newNextScreenSequence,
+        profileData: props.profileData,
+      });
     }
     else {
       this.hiddenInput.setNativeProps({ text: "" });

@@ -37,6 +37,7 @@ export default class SchoolSelectionScreen extends Component {
     searchForSchool: func.isRequired,
     updateSchool: func.isRequired,
     updateUser: func.isRequired,
+    currentUser: object,
     navigation: shape({
       navigate: func.isRequired,
     }).isRequired
@@ -48,10 +49,13 @@ export default class SchoolSelectionScreen extends Component {
 
   onSubmitButtonPress() {
     const schoolId = this.state.selectedSchool.id;
+    const schoolName = this.state.selectedSchool.name;
+
     const oldProfileData = this.props.currentUser;
 
     let newProfileData = Object.assign({}, oldProfileData);
     newProfileData.schoolId = schoolId;
+    newProfileData.schoolName = schoolName;
 
     this.props.updateSchool({
       mutate: this.props.mutate,
@@ -59,7 +63,14 @@ export default class SchoolSelectionScreen extends Component {
       schoolId,
     });
     this.props.updateUser(newProfileData);
-    this.props.navigation.navigate("home");
+
+    const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
+    const newNextScreenSequence = nextScreenSequence.slice(1);
+    const nextScreen = nextScreenSequence[0];
+
+    this.props.navigation.navigate(nextScreen, {
+      nextScreenSequence: newNextScreenSequence,
+    });
   }
 
   onChangeText(text) {

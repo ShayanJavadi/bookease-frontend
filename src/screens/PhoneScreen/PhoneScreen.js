@@ -4,7 +4,7 @@ import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWit
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from "react-native-masked-text";
 import { NavigationActions } from "react-navigation";
-import { bool, func, string, shape } from "prop-types";
+import { func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles, palette, ICON_SIZE } from "./styles";
 
@@ -122,12 +122,23 @@ export default class PhoneScreen extends Component {
     })
     .then(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("phonePinScreen", { identifier: phoneNumber });
+
+        this.props.navigation.navigate("phonePinScreen", {
+          identifier: phoneNumber,
+          nextScreenSequence: ["changePasswordScreen", "changeFullNameScreen", "schoolSelectionScreen", "homeScreen"],
+        });
       }
     )
     .catch(() => {
         this.setState({ isWaiting: false });
-        this.props.navigation.navigate("phonePasswordScreen", { profileData: { phoneNumber } });
+
+        const isAuthenticationPopup = this.props.navigation.state.params.isAuthenticationPopup
+
+        this.props.navigation.navigate("phonePasswordScreen", {
+          profileData: { phoneNumber },
+          isAuthenticationPopup,
+          nextScreenSequence: isAuthenticationPopup ? [] : ["homeScreen"],
+        });
       }
     );
   }

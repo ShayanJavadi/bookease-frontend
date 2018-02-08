@@ -40,15 +40,24 @@ export default class AccountScreen extends Component {
   };
 
   editName() {
-    this.props.navigation.navigate("changeFullNameScreen");
+    this.props.navigation.navigate("changeFullNameScreen", {
+      nextScreenSequence: ["account"],
+      profileData: this.props.currentUser,
+    });
   }
 
   editSchool() {
-    this.props.navigation.navigate("changeSchoolScreen");
+    this.props.navigation.navigate("changeSchoolScreen", {
+      nextScreenSequence: ["account"],
+      profileData: this.props.currentUser,
+    });
   }
 
   editPassword() {
-    this.props.navigation.navigate("changePasswordScreen");
+    this.props.navigation.navigate("changePasswordScreen", {
+      nextScreenSequence: ["account"],
+      profileData: this.props.currentUser,
+    });
   }
 
   signOut() {
@@ -116,7 +125,7 @@ export default class AccountScreen extends Component {
       <View style={inputContainerStyle}>
         <TextField
           label="School"
-          value={(this.props.currentUser && this.props.currentUser.schoolId) ? this.props.currentUser.schoolId : ""}
+          value={(this.props.currentUser && this.props.currentUser.schoolName) ? this.props.currentUser.schoolName : ""}
           editable={false}
           fontSize={14}
           tintColor={primaryColor}

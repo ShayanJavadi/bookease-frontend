@@ -6,7 +6,6 @@ import ChangeFullNameScreen from "../ChangeFullNameScreen";
 
 const mapStateToProps = ({ Session }) => ({
   currentUser: Session.currentUser,
-  nextScreen: "schoolSelectionScreen",
 });
 
 const Container = graphql(setFullNameMutation, {

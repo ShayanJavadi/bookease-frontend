@@ -4,7 +4,6 @@ import {
 import { AsyncStorage } from "react-native";
 
 const updateUser = (user) => async (dispatch) => {
-  console.log(user);
   const isAuthenticated = user !== undefined;
   const keyExists = AsyncStorage.getItem("currentUser") !== undefined;
 
@@ -15,7 +14,7 @@ const updateUser = (user) => async (dispatch) => {
     await AsyncStorage.removeItem("currentUser");
   }
 
-  dispatch({ type: UPDATE_USER, payload: user });
+  return dispatch({ type: UPDATE_USER, payload: user });
 };
 
 export default updateUser;

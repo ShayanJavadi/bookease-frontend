@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
-import { func, string, shape, object, bool } from "prop-types";
+import { func, shape, object } from "prop-types";
 import { styles, palette } from "./styles";
 
 const {
@@ -28,7 +28,7 @@ export default class ChangeFullNameScreen extends Component {
   }
 
   static propTypes = {
-    nextScreen: string.isRequired,
+    currentUser: object,
     submitFullName: func.isRequired,
     mutate: func.isRequired,
     updateUser: func.isRequired,
@@ -46,6 +46,10 @@ export default class ChangeFullNameScreen extends Component {
 
   componentDidMount() {
     this.input.focus();
+
+    this.setState({
+      fullName: (this.props.currentUser && this.props.currentUser.fullName) ? this.props.currentUser.fullName : ""
+    });
   }
 
   componentWillMount() {
@@ -84,7 +88,14 @@ export default class ChangeFullNameScreen extends Component {
       submitter: this.props.mutate,
     });
     this.props.updateUser(newProfileData);
-    this.props.navigation.navigate(this.props.nextScreen);
+
+    const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
+    const newNextScreenSequence = nextScreenSequence.slice(1);
+    const nextScreen = nextScreenSequence[0];
+
+    this.props.navigation.navigate(nextScreen, {
+      nextScreenSequence: newNextScreenSequence,
+    });
   }
 
   validateFullName(fullName) {
@@ -108,6 +119,7 @@ export default class ChangeFullNameScreen extends Component {
             <View style={inputContainerStyle}>
               <TextField
                 label="Full name"
+                value={this.state.fullName}
                 autoCorrect={false}
                 autoCapitalize="words"
                 fontSize={20}
