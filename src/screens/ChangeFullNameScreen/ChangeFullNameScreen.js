@@ -47,8 +47,10 @@ export default class ChangeFullNameScreen extends Component {
   componentDidMount() {
     this.input.focus();
 
+    const shouldLoadFullName = (this.props.currentUser && this.props.currentUser.fullName);
+
     this.setState({
-      fullName: (this.props.currentUser && this.props.currentUser.fullName) ? this.props.currentUser.fullName : ""
+      fullName: shouldLoadFullName ? this.props.currentUser.fullName : ""
     });
   }
 
@@ -79,7 +81,7 @@ export default class ChangeFullNameScreen extends Component {
     const fullName = this.state.fullName;
     const oldProfileData = this.props.currentUser;
 
-    let newProfileData = Object.assign({}, oldProfileData);
+    const newProfileData = Object.assign({}, oldProfileData);
     newProfileData.fullName = fullName;
 
     this.props.submitFullName({

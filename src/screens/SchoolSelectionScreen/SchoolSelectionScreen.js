@@ -53,7 +53,7 @@ export default class SchoolSelectionScreen extends Component {
 
     const oldProfileData = this.props.currentUser;
 
-    let newProfileData = Object.assign({}, oldProfileData);
+    const newProfileData = Object.assign({}, oldProfileData);
     newProfileData.schoolId = schoolId;
     newProfileData.schoolName = schoolName;
 

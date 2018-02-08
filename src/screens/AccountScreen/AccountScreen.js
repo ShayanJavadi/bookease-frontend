@@ -39,24 +39,10 @@ export default class AccountScreen extends Component {
     }).isRequired,
   };
 
-  editName() {
-    this.props.navigation.navigate("changeFullNameScreen", {
-      nextScreenSequence: ["account"],
+  editItem(editScreen) {
+    this.props.navigation.navigate(editScreen, {
       profileData: this.props.currentUser,
-    });
-  }
-
-  editSchool() {
-    this.props.navigation.navigate("changeSchoolScreen", {
       nextScreenSequence: ["account"],
-      profileData: this.props.currentUser,
-    });
-  }
-
-  editPassword() {
-    this.props.navigation.navigate("changePasswordScreen", {
-      nextScreenSequence: ["account"],
-      profileData: this.props.currentUser,
     });
   }
 
@@ -114,7 +100,7 @@ export default class AccountScreen extends Component {
           text=" Edit"
           style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
           icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
-          onPress={() => this.editName()}
+          onPress={() => this.editItem("changeFullNameScreen")}
         />
       </View>
     );
@@ -137,7 +123,7 @@ export default class AccountScreen extends Component {
           text=" Edit"
           style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
           icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
-          onPress={() => this.editSchool()}
+          onPress={() => this.editItem("schoolSelectionScreen")}
         />
       </View>
     );
@@ -161,7 +147,7 @@ export default class AccountScreen extends Component {
           text=" Edit"
           style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
           icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
-          onPress={() => this.editPassword()}
+          onPress={() => this.editItem("changePasswordScreen")}
         />
       </View>
     );
