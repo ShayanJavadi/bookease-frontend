@@ -47,7 +47,15 @@ export default class SearchResultCard extends Component {
   }
 
   onListingPress() {
-    this.props.navigation.navigate("singleBook", { textbookId: this.props.book.id });
+    const { navigation, book } = this.props;
+
+    navigation.navigate("singleBook", { textbookId: book.id });
+  }
+
+  onBuyButtonPress() {
+    const { navigation, book } = this.props;
+    
+    navigation.navigate("buyRequestScreen", { textbookId: book.id,  context: "home" });
   }
 
   renderUpperSection() {
@@ -111,7 +119,7 @@ export default class SearchResultCard extends Component {
             raised
             style={{ text: buttonTextStyle, container: buttonContainerStyle }}
             text="Buy"
-            onPress={() => alert("buy")}
+            onPress={() => this.onBuyButtonPress()}
           />
         </View>
       </View>
