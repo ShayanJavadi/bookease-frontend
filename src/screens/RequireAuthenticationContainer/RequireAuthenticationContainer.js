@@ -19,13 +19,19 @@ export default function(ComposedComponent, options) {
 
     checkAuthenticationStatus({ currentUser }) {
       const isAuthenticated = currentUser !== undefined;
+
       if (!isAuthenticated) {
-        this.props.navigation.navigate("authScreen", { resetToHomeOnClose: resetToHomeOnClose });
+        this.props.navigation.navigate("authScreen", {
+          resetToHomeOnClose,
+          isAuthenticationPopup: true,
+        });
       }
     }
 
     async componentDidMount() {
-      if (this.props.currentUser === undefined) {
+      const isAuthenticated = this.props.currentUser !== undefined;
+
+      if (!isAuthenticated) {
         const savedUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
 
         if (savedUser) {

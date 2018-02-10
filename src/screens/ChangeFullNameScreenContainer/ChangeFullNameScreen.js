@@ -4,11 +4,8 @@ import actions from "./actions";
 import setFullNameMutation from "./graphql/queries/setFullNameMutation";
 import ChangeFullNameScreen from "../ChangeFullNameScreen";
 
-
-const mapStateToProps = ({ fullNameSubmitReducer }) => ({
-  isFullNameValid: fullNameSubmitReducer.isFullNameValid,
-  updateCounter: fullNameSubmitReducer.updateCounter,
-  nextScreen: "schoolSelectionScreen",
+const mapStateToProps = ({ Session }) => ({
+  currentUser: Session.currentUser,
 });
 
 const Container = graphql(setFullNameMutation, {

@@ -1,2 +1,0 @@
-export const FULL_NAME_VALID = "FULL_NAME_VALID";
-export const FULL_NAME_INVALID = "FULL_NAME_INVALID";

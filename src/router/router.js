@@ -74,6 +74,23 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
+const AccountNavigator = StackNavigator({
+  account: {
+    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
+  },
+  changeFullNameScreen: {
+    screen: ChangeFullNameScreen,
+  },
+  changePasswordScreen: {
+    screen: ChangePasswordScreen,
+  },
+  changeSchoolScreen: {
+    screen: SchoolSelectionScreen,
+  },
+}, {
+  headerMode: "none",
+});
+
 const HomeNavigator = TabNavigator({
   home: {
     screen: HomeScreen,
@@ -85,7 +102,7 @@ const HomeNavigator = TabNavigator({
     screen: RequireAuthenticationContainer(NotificationScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
   account: {
-    screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
+    screen: AccountNavigator,
   },
   scan: {
     screen: ScanBookScreen

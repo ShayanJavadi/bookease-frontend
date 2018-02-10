@@ -1,20 +1,30 @@
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 import actions from "./actions";
-import signInWithPhoneNumberMutation from "./graphql/queries/signInWithPhoneNumberMutation";
-import PasswordScreen from "../PasswordScreen";
+import queries from "./graphql/queries";
+import EnterPasswordScreen from "../EnterPasswordScreen";
+
+const { getSessionQuery, getSchoolNameQuery, signInWithPhoneNumberMutation } = queries;
 
 const mapStateToProps = ({ phonePasswordValidationReducer }) => ({
   isPasswordValid: phonePasswordValidationReducer.isPasswordValid,
   updateCounter: phonePasswordValidationReducer.updateCounter,
-  nextScreen: "homeScreen",
 });
 
-const Container = graphql(signInWithPhoneNumberMutation, {
-  options: props => ({ variables: { phoneNumber: props.identifier || "", password: props.password || "" } }),
-});
+const Container = compose(
+  graphql(getSessionQuery, {
+    name: "getSessionQuery",
+  }),
+  graphql(getSchoolNameQuery, {
+    name: "getSchoolNameQuery",
+    options: () => ({ variables: { schoolId: "000000" } }),
+  }),
+  graphql(signInWithPhoneNumberMutation, {
+    options: props => ({ variables: { phoneNumber: props.identifier || "", password: props.password || "" } }),
+  })
+);
 
 export default Container(connect(
   mapStateToProps,
   actions,
-)(PasswordScreen));
+)(EnterPasswordScreen));

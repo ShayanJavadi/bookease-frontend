@@ -37,13 +37,9 @@ export default class SchoolSelectionScreen extends Component {
     searchForSchool: func.isRequired,
     updateSchool: func.isRequired,
     updateUser: func.isRequired,
+    currentUser: object,
     navigation: shape({
       navigate: func.isRequired,
-      state: shape({
-        params: shape({
-          profileData: object.isRequired
-        }).isRequired
-      }).isRequired
     }).isRequired
   };
 
@@ -51,16 +47,30 @@ export default class SchoolSelectionScreen extends Component {
     this.input.focus();
   }
 
-  onComplete() {
-    const profileData = this.props.navigation.state.params.profileData;
+  onSubmitButtonPress() {
+    const schoolId = this.state.selectedSchool.id;
+    const schoolName = this.state.selectedSchool.name;
+
+    const oldProfileData = this.props.currentUser;
+
+    const newProfileData = Object.assign({}, oldProfileData);
+    newProfileData.schoolId = schoolId;
+    newProfileData.schoolName = schoolName;
 
     this.props.updateSchool({
       mutate: this.props.mutate,
-      profileData: profileData,
-      schoolId: this.state.selectedSchool.id
+      profileData: newProfileData,
+      schoolId,
     });
-    this.props.updateUser(profileData);
-    this.props.navigation.navigate("home");
+    this.props.updateUser(newProfileData);
+
+    const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
+    const newNextScreenSequence = nextScreenSequence.slice(1);
+    const nextScreen = nextScreenSequence[0];
+
+    this.props.navigation.navigate(nextScreen, {
+      nextScreenSequence: newNextScreenSequence,
+    });
   }
 
   onChangeText(text) {
@@ -110,7 +120,7 @@ export default class SchoolSelectionScreen extends Component {
               text="Select"
               raised
               style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-              onPress={() => this.onComplete()}
+              onPress={() => this.onSubmitButtonPress()}
             />)
         }
         {!validSchoolSelected &&
@@ -118,7 +128,6 @@ export default class SchoolSelectionScreen extends Component {
               text="Select"
               raised
               style={{ text: buttonTextStyle, container: disabledButtonContainerStyle }}
-              onPress={() => this.onComplete()}
             />)
         }
       </View>

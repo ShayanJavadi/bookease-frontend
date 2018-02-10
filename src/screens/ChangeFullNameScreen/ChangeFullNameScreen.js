@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
-import { func, string, shape, object, bool } from "prop-types";
+import { func, shape, object } from "prop-types";
 import { styles, palette } from "./styles";
 
 const {
@@ -28,33 +28,30 @@ export default class ChangeFullNameScreen extends Component {
   }
 
   static propTypes = {
-    nextScreen: string.isRequired,
-    validateFullName: func.isRequired,
+    currentUser: object,
     submitFullName: func.isRequired,
     mutate: func.isRequired,
     updateUser: func.isRequired,
-    isFullNameValid: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired,
-      state: object.isRequired
     }).isRequired
   }
 
   state = {
     fullName: "",
+    isNameValid: false,
     keyboardVisible: false,
-    submitButtonEnabled: false,
     isWaiting: false,
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      submitButtonEnabled: props.isFullNameValid,
-    });
   }
 
   componentDidMount() {
     this.input.focus();
+
+    const shouldLoadFullName = (this.props.currentUser && this.props.currentUser.fullName);
+
+    this.setState({
+      fullName: shouldLoadFullName ? this.props.currentUser.fullName : ""
+    });
   }
 
   componentWillMount() {
@@ -77,19 +74,40 @@ export default class ChangeFullNameScreen extends Component {
 
   onChangeText(text) {
     this.setState({ fullName: text });
-    this.props.validateFullName({ fullName: text });
+    this.validateFullName(text);
   }
 
   onSubmitButtonPress() {
-    const profileData = this.props.navigation.state.params.profileData;
+    const fullName = this.state.fullName;
+    const oldProfileData = this.props.currentUser;
+
+    const newProfileData = Object.assign({}, oldProfileData);
+    newProfileData.fullName = fullName;
 
     this.props.submitFullName({
-      fullName: this.state.fullName,
-      profileData: profileData,
+      fullName,
+      profileData: newProfileData,
       submitter: this.props.mutate,
     });
-    this.props.updateUser(profileData);
-    this.props.navigation.navigate(this.props.nextScreen, { profileData: profileData });
+    this.props.updateUser(newProfileData);
+
+    const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
+    const newNextScreenSequence = nextScreenSequence.slice(1);
+    const nextScreen = nextScreenSequence[0];
+
+    this.props.navigation.navigate(nextScreen, {
+      nextScreenSequence: newNextScreenSequence,
+    });
+  }
+
+  validateFullName(fullName) {
+    const validationRegExp = /\S+\s+\S+/;
+    const isNameValid = validationRegExp.test(fullName);
+
+    this.setState({
+      updateCounter: this.state.updateCounter + 1,
+      isNameValid: isNameValid,
+    });
   }
 
 
@@ -103,6 +121,7 @@ export default class ChangeFullNameScreen extends Component {
             <View style={inputContainerStyle}>
               <TextField
                 label="Full name"
+                value={this.state.fullName}
                 autoCorrect={false}
                 autoCapitalize="words"
                 fontSize={20}
@@ -113,7 +132,7 @@ export default class ChangeFullNameScreen extends Component {
               />
             </View>
           </View>
-          {this.state.submitButtonEnabled &&
+          {this.state.isNameValid &&
             (<Button
               raised
               primary
@@ -122,7 +141,7 @@ export default class ChangeFullNameScreen extends Component {
               onPress={() => this.onSubmitButtonPress()}
             />)
           }
-          {!this.state.submitButtonEnabled &&
+          {!this.state.isNameValid &&
             (<Button
               disabled
               raised

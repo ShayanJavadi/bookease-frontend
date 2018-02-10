@@ -14,7 +14,7 @@ const updateUser = (user) => async (dispatch) => {
     await AsyncStorage.removeItem("currentUser");
   }
 
-  dispatch({ type: UPDATE_USER, payload: user });
+  return dispatch({ type: UPDATE_USER, payload: user });
 };
 
 export default updateUser;
