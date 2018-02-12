@@ -39,6 +39,10 @@ const {
 } = styles;
 
 export default class MyBooksListingsScreen extends Component {
+  static navigationOptions = () => ({
+    gesturesEnabled: false,
+  });
+
   static propTypes = {
     data: object.isRequired,
     getMyTextbooksQuery: func.isRequired,
@@ -170,7 +174,6 @@ export default class MyBooksListingsScreen extends Component {
 
   renderListings() {
     const { loading, getMyTextbooks } = this.props.getMyTextbooksQuery;
-
     if (loading) {
       return (
         <View style={activityIndicatorWrapper}>

@@ -54,7 +54,7 @@ export default class SearchResultCard extends Component {
 
   onBuyButtonPress() {
     const { navigation, book } = this.props;
-    
+
     navigation.navigate("buyRequestScreen", { textbookId: book.id,  context: "home" });
   }
 
