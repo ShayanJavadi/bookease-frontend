@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import ActionButton from "react-native-action-button";
 import { func, shape } from "prop-types";
+import { reduce } from "lodash";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import BottomNavigation, { Tab } from "react-native-material-bottom-navigation"
 import {
@@ -26,7 +27,8 @@ export default class TabBarComponent extends Component {
   static propTypes = {
     navigation: shape({
       navigate: func.isRequired
-    }).isRequired
+    }).isRequired,
+    getMyNotificationsQuery: func.isRequired,
   };
 
   state = {
@@ -83,9 +85,25 @@ export default class TabBarComponent extends Component {
     }
   }
 
+  getMyNotificationCount() {
+    const { getMyNotificationsQuery: { getMyNotifications } } = this.props;
+    const unreadNotifications = reduce(getMyNotifications, (result, notification) => {
+      if (!notification.isRead) {
+        result.push(notification);
+      }
+
+      return result;
+    }, [])
+
+    if (unreadNotifications && unreadNotifications.length !== 0) {
+      return `${unreadNotifications.length}`;
+    }
+
+    return;
+  }
+
   renderBottomNavigation() {
     return (
-
       <BottomNavigation
         activeTab={this.state.selectedTab}
         labelColor="white"
@@ -108,7 +126,8 @@ export default class TabBarComponent extends Component {
           barBackgroundColor={TAB_COLOR}
           label="Notifications"
           icon={<MaterialIcons size={BOTTOM_NAVIGATION_ICON_SIZE} color="white" name="mail" />}
-          notificationCount={3}
+          badgeText={this.getMyNotificationCount()}
+          badgeStyle={{ container: { backgroundColor: "#F50057" } }}
         />
         <Tab
           barBackgroundColor={TAB_COLOR}

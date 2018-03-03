@@ -51,8 +51,8 @@ export default class ProgressiveImage extends Component {
                     <Image
                         source={{ uri }}
                         style={imageStyle}
-                        onLoadEnd={() => this.onLoadEnd(uri)}
-                        onPartialLoad={() => this.onPartialLoadEnd(uri)}
+                        onLoadEnd={() => this.onLoadEnd()}
+                        onPartialLoad={() => this.onPartialLoadEnd()}
                     />
                 )
             }

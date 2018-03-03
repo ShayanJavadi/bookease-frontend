@@ -41,18 +41,19 @@ export const styles = StyleSheet.create({
   },
   listingPictureWrapperStyle: {
     justifyContent: "center",
-    paddingLeft: 5
+    paddingLeft: 5,
+    alignItems: "center",
   },
   listingPictureStyle: {
-    flex: .9,
     width: 75,
+    height: 90,
   },
   listingsWrapperStyle: {
     flex: 1,
     backgroundColor: "#f1f1f1",
   },
   listingWrapperStyle: {
-    height: 100,
+    minHeight: 100,
     marginTop: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
@@ -66,6 +67,7 @@ export const styles = StyleSheet.create({
     color: "#222",
   },
   listingDetailsWrapperStyle: {
+    paddingVertical: 10,
     flex: 6,
     backgroundColor: "#fff",
     justifyContent: "center",

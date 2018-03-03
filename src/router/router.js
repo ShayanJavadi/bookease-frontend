@@ -6,7 +6,7 @@ import SingleBookScreen from "../screens/SingleBookScreenContainer/";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
 import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
 import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
-import NotificationScreen from "../screens/NotificationScreen";
+import NotificationScreen from "../screens/NotificationScreenContainer";
 import AccountScreen from "../screens/AccountScreenContainer";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
 import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
@@ -17,10 +17,11 @@ import PhonePinScreen from "../screens/PhonePinScreenContainer";
 import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
 import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
-import TabBarComponent from "../modules/TabBarComponent";
+import TabBarComponent from "../modules/TabBarContainer";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
+import SingleNotificationScreen from "../screens/SingleNotificationScreen";
 
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
@@ -105,12 +106,13 @@ const HomeNavigator = TabNavigator({
     screen: AccountNavigator,
   },
   scan: {
-    screen: ScanBookScreen
-  }
+    screen: ScanBookScreen,
+  },
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
   lazy: true,
+  swipeEnabled: false,
 });
 
 const AuthNavigator = StackNavigator({
@@ -156,6 +158,9 @@ const createMainNavigator = (isFirstRun = false) => {
     authScreen: {
       screen: AuthNavigator,
     },
+    singleNotificationScreen: {
+      screen: SingleNotificationScreen,
+    }
   }, {
     initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
