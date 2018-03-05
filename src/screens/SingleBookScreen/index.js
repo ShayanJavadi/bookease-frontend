@@ -12,10 +12,10 @@ import AccountDetails from "./AccountDetails";
 import { styles } from "./styles";
 import uiTheme from "src/common/styles";
 import Modal from "src/modules/Modal";
+import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
 
 const {
   screenStyle,
-  buttonsWrapperStyle,
   buttonWrapperStyle,
   askButtonContainerStyle,
   askButtonTextStyle,
@@ -113,7 +113,7 @@ export default class SingleBookScreen extends Component {
     const { navigation, getTextbookQuery } = this.props;
 
     return (
-      <View style={buttonsWrapperStyle}>
+      <FloatingBottomContainer>
         <View style={buttonWrapperStyle}>
           <Button
             style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
@@ -131,13 +131,13 @@ export default class SingleBookScreen extends Component {
             text="Edit"
           />
         </View>
-      </View>
+      </FloatingBottomContainer>
     )
   }
 
   renderBuyerButtons() {
     return (
-      <View style={buttonsWrapperStyle}>
+      <FloatingBottomContainer>
         <View style={buttonWrapperStyle}>
           <Button
             style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
@@ -154,7 +154,7 @@ export default class SingleBookScreen extends Component {
             text="Buy"
           />
         </View>
-      </View>
+      </FloatingBottomContainer>
     )
   }
 

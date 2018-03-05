@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Text, View, FlatList, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
-import { func, shape } from "prop-types";
+import { func, shape, bool } from "prop-types";
 import { isEmpty } from "lodash";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles, palette } from "./styles";
@@ -27,8 +27,9 @@ export default class NotificationScreen extends Component {
     getMyNotificationsQuery: func.isRequired,
     updateNotificationMutation: func.isRequired,
     navigation: shape({
-      navigate: func.isRequired
+      navigate: func.isRequired,
     }).isRequired,
+    isFocused: bool.isRequired,
   };
 
   static navigationOptions = {
@@ -38,6 +39,22 @@ export default class NotificationScreen extends Component {
 
   state = {
     refreshing: false,
+    loading: false,
+  }
+  componentDidMount() {
+    if(this._confettiView) {
+       this._confettiView.startConfetti();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isFocused && !this.props.isFocused) {
+      this.setState({ loading: true })
+      this.props.getMyNotificationsQuery.refetch()
+      .then(() => {
+        this.setState({ loading: false })
+      });
+    }
   }
 
   onScrollViewRefresh() {
@@ -52,14 +69,14 @@ export default class NotificationScreen extends Component {
     return (
       <Header
         text="Notifications"
-       />
+      />
     )
   }
 
   renderNotifications() {
     const { getMyNotificationsQuery: { getMyNotifications, loading } } = this.props;
 
-    if (loading) {
+    if (loading || this.state.loading) {
       return (
         <View style={activityIndicatorWrapper}>
           <ActivityIndicator

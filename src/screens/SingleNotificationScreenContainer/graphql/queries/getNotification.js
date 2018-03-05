@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
-const getMyNotifications = gql`
-  query getMyNotifications($limit:Int){
-      getMyNotifications(limit:$limit){
+const getNotification = gql`
+  query getNotification($id:ID!){
+      getNotification(id:$id){
           id,
           userId,
           textbookId,
@@ -15,9 +15,9 @@ const getMyNotifications = gql`
             id,
             userId,
             textbookId,
-            textbook{
+            textbook {
               title,
-              price
+              price,
             },
             notificationId,
             recipientId,
@@ -28,4 +28,4 @@ const getMyNotifications = gql`
   }
 `;
 
-export default getMyNotifications;
+export default getNotification;
