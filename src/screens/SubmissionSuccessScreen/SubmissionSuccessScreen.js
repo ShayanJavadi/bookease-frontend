@@ -174,7 +174,7 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           upperCase={false}
           text="Schedule Meeting"
-          onPress={() => openSms({ number: 8172260183, message: "temp placeholder"})}
+          onPress={() => openSms({ number: 8172260183, message: "temp placeholder" })}
           style={{ container: primaryButtonContainerStyle, text: primaryButtonTextStyle }}
         />
         <Button
