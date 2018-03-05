@@ -21,7 +21,7 @@ import TabBarComponent from "../modules/TabBarContainer";
 import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
-import SingleNotificationScreen from "../screens/SingleNotificationScreen";
+import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer";
 
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
@@ -94,8 +94,8 @@ const HomeNavigator = TabNavigator({
 }, {
   tabBarPosition: "bottom",
   tabBarComponent: TabBarComponent,
-  lazy: true,
   swipeEnabled: false,
+  animationEnabled: false
 });
 
 const AuthNavigator = StackNavigator({

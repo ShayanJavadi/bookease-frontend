@@ -5,6 +5,7 @@ import { shape, func } from "prop-types";
 import { NavigationActions } from "react-navigation"
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
+import PhoneNumberContainer from "src/modules/PhoneNumberContainer";
 
 const {
   screenStyle,
@@ -41,16 +42,27 @@ export default class SubmissionSuccessScreen extends Component {
     undefined,
     submittedBuyRequest: this.props.navigation.state.params ?
     this.props.navigation.state.params.submittedBuyRequest :
-    undefined
+    undefined,
+    acceptedBuyRequest: this.props.navigation.state.params ?
+    this.props.navigation.state.params.acceptedBuyRequest :
+    undefined,
   }
 
 
   closeSuccessScreen() {
+    const { acceptedBuyRequest } = this.state;
     const closeSuccessScreenAction = NavigationActions.reset({
-      index: 0,
+      index: 1,
       key: null,
       actions: [
-        NavigationActions.navigate({ routeName: "mainScreen" })
+        NavigationActions.navigate({
+          routeName: "mainScreen",
+          action: NavigationActions.navigate({ routeName: "notifications" })
+        }),
+        NavigationActions.navigate({
+          routeName: "singleNotificationScreen",
+          params: { notificationType: "BUY_REQUEST", notificationId: acceptedBuyRequest.notificationId }
+        })
       ]
     })
     this.props.navigation.dispatch(closeSuccessScreenAction)
@@ -73,7 +85,7 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   renderSuccessMessage() {
-    const { submittedTextbook, submittedBuyRequest } = this.state;
+    const { submittedTextbook, submittedBuyRequest, acceptedBuyRequest } = this.state;
 
     if (submittedTextbook) {
       return (
@@ -89,6 +101,22 @@ export default class SubmissionSuccessScreen extends Component {
         <View style={successMessageWrapperStyle}>
           <Text style={successMessageHeaderStyle}>Success!</Text>
           <Text style={successMessageTextStyle}>Your request was submitted.</Text>
+        </View>
+      )
+    }
+
+    if (acceptedBuyRequest) {
+      return (
+        <View style={successMessageWrapperStyle}>
+          <Text style={successMessageHeaderStyle}>Success!</Text>
+          <PhoneNumberContainer
+            showPhoneNumber={true}
+            showIcon={false}
+            text={"Schedule a meeting with Mike to finish the trade."}
+            phoneNumber="(817) 226 - 0183"
+            onPhoneNumberPress={() => alert("open")}
+            styles={{ outerContainerStyles: { flex: undefined, height: 100 }, innerContainerStyles: { paddingBottom: 0 } }}
+          />
         </View>
       )
     }
@@ -137,8 +165,29 @@ export default class SubmissionSuccessScreen extends Component {
     )
   }
 
+  renderAcceptedBuyRequestButtons() {
+    return (
+      <View style={buttonsWrapperStyle}>
+        <Button
+          raised
+          primary
+          upperCase={false}
+          text="Schedule Meeting"
+          style={{ container: primaryButtonContainerStyle, text: primaryButtonTextStyle }}
+        />
+        <Button
+          primary
+          upperCase={false}
+          text="View Buy Request"
+          onPress={() => this.closeSuccessScreen()}
+          style={{ container: secondaryButtonContainerStyle, text: secondaryButtonTextStyle }}
+        />
+      </View>
+    )
+  }
+
   renderButtons() {
-    const { submittedTextbook, submittedBuyRequest } = this.state;
+    const { submittedTextbook, submittedBuyRequest, acceptedBuyRequest } = this.state;
 
     if (submittedTextbook) {
       return this.renderSubmittedTextbookButtons()
@@ -146,6 +195,10 @@ export default class SubmissionSuccessScreen extends Component {
 
     if (submittedBuyRequest) {
       return this.renderSubmittedBuyRequestButtons()
+    }
+
+    if (acceptedBuyRequest) {
+      return this.renderAcceptedBuyRequestButtons()
     }
   }
 

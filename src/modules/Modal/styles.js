@@ -13,6 +13,5 @@ export const styles = StyleSheet.create({
      justifyContent: "center",
      alignItems: "center",
      flexDirection: "row",
-     paddingTop: 35,
   },
 });

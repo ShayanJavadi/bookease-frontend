@@ -101,6 +101,7 @@ export const styles = StyleSheet.create({
   modalButtonWrapperStyle: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingTop: 35,
   },
 });

@@ -1,7 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
 const STICKY_BUTTON_CONTAINER_HEIGHT = 70;
 
 export const styles = StyleSheet.create({
@@ -11,19 +9,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingBottom: STICKY_BUTTON_CONTAINER_HEIGHT,
-  },
-  buttonsWrapperStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
-    top: SCREEN_HEIGHT - STICKY_BUTTON_CONTAINER_HEIGHT,
-    height: STICKY_BUTTON_CONTAINER_HEIGHT,
-    width: SCREEN_WIDTH,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderColor: "rgba(0,0,0,0.1)",
-    zIndex: 9999,
   },
   buttonWrapperStyle: {
     flex: 1,
