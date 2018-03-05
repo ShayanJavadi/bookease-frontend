@@ -6,6 +6,7 @@ import { NavigationActions } from "react-navigation"
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 import PhoneNumberContainer from "src/modules/PhoneNumberContainer";
+import openSms from "src/common/lib/openSms";
 
 const {
   screenStyle,
@@ -173,6 +174,7 @@ export default class SubmissionSuccessScreen extends Component {
           primary
           upperCase={false}
           text="Schedule Meeting"
+          onPress={() => openSms({ number: 8172260183, message: "temp placeholder"})}
           style={{ container: primaryButtonContainerStyle, text: primaryButtonTextStyle }}
         />
         <Button
