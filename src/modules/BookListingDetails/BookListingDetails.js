@@ -134,6 +134,9 @@ const renderAcceptedBuyRequests = ({ buyRequests, navigation }) => {
   if (!isEmpty(buyRequests)) {
     return buyRequests.map((buyRequest) => {
       const { user: { displayName, photoURL }, id } = buyRequest;
+      if (!buyRequest.buyRequest.isAccepted) {
+        return;
+      }
 
       return (
         <TouchableOpacity
