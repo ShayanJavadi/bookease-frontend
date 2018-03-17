@@ -1,12 +1,15 @@
-import React, { Component } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { TextField } from "react-native-material-textfield";
-import { TextInputMask } from "react-native-masked-text";
-import { NavigationActions } from "react-navigation";
-import { func, string, shape } from "prop-types";
-import { Button } from "react-native-material-ui";
-import { styles, palette, ICON_SIZE } from "./styles";
+import React, { Component } from "react"
+import { MaterialIcons } from "@expo/vector-icons"
+import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { TextField } from "react-native-material-textfield"
+import { TextInputMask } from "react-native-masked-text"
+import { NavigationActions } from "react-navigation"
+import { func, string, shape } from "prop-types"
+import { Button } from "react-native-material-ui"
+import firebase from "firebase"
+import Toast from "react-native-root-toast"
+import { delay } from "lodash"
+import { styles, palette, ICON_SIZE } from "./styles"
 
 const {
   screenStyleWithKeyboard,
@@ -23,11 +26,11 @@ const {
   closeIconWrapperStyle,
   closeIconStyle,
   lockIconStyle,
- } = styles;
+ } = styles
 
- const {
+const {
     primaryColor,
-  } = palette;
+  } = palette
 
 export default class PhoneScreen extends Component {
   static navigationOptions = {
@@ -47,33 +50,33 @@ export default class PhoneScreen extends Component {
     isWaiting: false,
     keyboardVisible: false,
     maskedValue: "",
-   }
+  }
 
   componentDidMount() {
-    this.input.getElement().focus();
-    this.onInputChange("");
+    this.input.getElement().focus()
+    this.onInputChange("")
   }
 
   componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this))
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this))
   }
 
   componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
   }
 
   keyboardWillShow() {
-    this.setState({ keyboardVisible: true });
+    this.setState({ keyboardVisible: true })
   }
 
   keyboardWillHide() {
-    this.setState({ keyboardVisible: false });
+    this.setState({ keyboardVisible: false })
   }
 
   close() {
-    Keyboard.dismiss();
+    Keyboard.dismiss()
 
     if (this.props.navigation.state.params.resetToHomeOnClose) {
       const closeSuccessScreenAction = NavigationActions.reset({
@@ -83,69 +86,76 @@ export default class PhoneScreen extends Component {
           NavigationActions.navigate({ routeName: "mainScreen" })
         ]
       })
-      return this.props.navigation.dispatch(closeSuccessScreenAction);
+      return this.props.navigation.dispatch(closeSuccessScreenAction)
     }
 
-    this.props.navigation.goBack(null);
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack(null)
+    this.props.navigation.goBack(null)
   }
 
-  onInputChange(value) {
-    const cleanPhoneNumber = this.validateAndCleanPhone(value);
+  onInputChange = (value) => {
+    const cleanPhoneNumber = this.validateAndCleanPhone(value)
 
     this.setState({
       phoneInUse: false,
       phoneNumber: cleanPhoneNumber,
       maskedValue: value,
-    });
+    })
   }
 
   validateAndCleanPhone(value) {
-    const validationRegExp = /-|\s|\(|\)/;
-    const cleanPhoneNumber = value.split(validationRegExp).join("");
-    const isPhoneValid = cleanPhoneNumber.length === 10;
+    const validationRegExp = /-|\s|\(|\)/
+    const cleanPhoneNumber = value.split(validationRegExp).join("")
+    const isPhoneValid = cleanPhoneNumber.length === 10
 
     this.setState({
       isPhoneValid,
-    });
+    })
 
-    return cleanPhoneNumber;
+    return cleanPhoneNumber
   }
 
-  onSubmitButtonPress() {
-    this.setState({ isWaiting: true });
+  onSubmitButtonPress = async () => {
+    this.setState({ isWaiting: true })
 
-    const phoneNumber = this.state.phoneNumber;
+    const { phoneNumber } = this.state
+    const existingUser = (await firebase.database().ref(`usersByPhoneNumber/${phoneNumber}`).once("value")).val()
 
-    this.props.mutate({
-      variables: { phoneNumber }
+    if( !existingUser ){
+      await firebase.database().ref(`usersByPhoneNumber/${phoneNumber}`).set({
+        createdAt: Date.now()
+      })
+
+      return this.setState({
+        toastMessageVisible: true,
+        toastMessageText: "A verification code will be sent shortly.",
+        isWaiting: false
+      }, () => delay(this.props.navigation.navigate("phonePinScreen", {
+        identifier: phoneNumber,
+        nextScreenSequence: ["changePasswordScreen", "changeFullNameScreen", "schoolSelectionScreen", "homeScreen"],
+      })), 3000)
+    }
+
+    const { isVerified } = existingUser
+    if(!isVerified){
+      return this.props.navigation.navigate("phonePinScreen", {
+        identifier: phoneNumber,
+        nextScreenSequence: ["changePasswordScreen", "changeFullNameScreen", "schoolSelectionScreen", "homeScreen"],
+      })
+    }
+
+    const isAuthenticationPopup = this.props.navigation.state.params.isAuthenticationPopup
+    return this.props.navigation.navigate("phonePasswordScreen", {
+      profileData: { phoneNumber },
+      isAuthenticationPopup,
+      nextScreenSequence: isAuthenticationPopup ? [] : ["homeScreen"],
     })
-    .then(() => {
-        this.setState({ isWaiting: false });
-
-        this.props.navigation.navigate("phonePinScreen", {
-          identifier: phoneNumber,
-          nextScreenSequence: ["changePasswordScreen", "changeFullNameScreen", "schoolSelectionScreen", "homeScreen"],
-        });
-      }
-    )
-    .catch(() => {
-        this.setState({ isWaiting: false });
-
-        const isAuthenticationPopup = this.props.navigation.state.params.isAuthenticationPopup
-
-        this.props.navigation.navigate("phonePasswordScreen", {
-          profileData: { phoneNumber },
-          isAuthenticationPopup,
-          nextScreenSequence: isAuthenticationPopup ? [] : ["homeScreen"],
-        });
-      }
-    );
   }
 
   renderInput() {
     return (
       <View style={topContainerStyle}>
+        {this.renderToastMessage()}
         <Text style={headerTextStyle}>Sign in with your phone number</Text>
         <Text style={privacyNoticeTextStyle}>
           <MaterialIcons name="lock-outline" size={16} style={lockIconStyle}  /> We will never share this information with anyone unless you ask us to
@@ -160,7 +170,7 @@ export default class PhoneScreen extends Component {
             keyboardType="phone-pad"
             value={this.state.maskedValue}
             ref={input => this.input = input}
-            onChangeText={text => this.onInputChange(text)}
+            onChangeText={this.onInputChange}
             type="custom"
             options={ { mask: "(999) 999 - 9999" } }
             customTextInput={TextField}
@@ -173,7 +183,7 @@ export default class PhoneScreen extends Component {
           />
         </View>
       </View>
-    );
+    )
   }
 
   renderSubmitButton() {
@@ -184,7 +194,7 @@ export default class PhoneScreen extends Component {
           primary
           text="Submit"
           style={{ container: buttonContainerStyle, text: buttonTextStyle }}
-          onPress={() => this.onSubmitButtonPress()}
+          onPress={this.onSubmitButtonPress}
         />) :
         (<Button
           disabled
@@ -194,7 +204,7 @@ export default class PhoneScreen extends Component {
           style={{ container: disabledButtonContainerStyle, text: buttonTextStyle }}
           />)
        )
-     );
+    )
   }
 
   renderActivitySpinner() {
@@ -205,7 +215,7 @@ export default class PhoneScreen extends Component {
          style={[styles.centering, activitySpinnerStyle]}
          size="large"
        />
-    );
+    )
   }
 
   renderCloseIcon() {
@@ -213,6 +223,20 @@ export default class PhoneScreen extends Component {
       <TouchableOpacity style={closeIconWrapperStyle} onPress={() => this.close()}>
         <MaterialIcons name="close" size={ICON_SIZE} style={closeIconStyle} />
       </TouchableOpacity>
+    )
+  }
+
+  renderToastMessage() {
+    return (
+      <Toast
+        visible={this.state.toastMessageVisible}
+        position={-120}
+        shadow={true}
+        hideOnPress={true}
+        backgroundColor="#ff003d"
+      >
+        {this.state.toastMessageText}
+      </Toast>
     )
   }
 
@@ -227,6 +251,6 @@ export default class PhoneScreen extends Component {
 
         </View>
       </TouchableWithoutFeedback>
-    );
+    )
   }
 }

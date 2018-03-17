@@ -18,17 +18,16 @@ const {
   ActionButtonFontStyle,
  } = styles;
 
- const HOME_TAB = 0;
- const MY_BOOKS_TAB = 1;
- const SELL_BOOKS_TAB = 2;
- const ACCOUNT_TAB = 3;
+const HOME_TAB = 0;
+const MY_BOOKS_TAB = 1;
+const SELL_BOOKS_TAB = 2;
+const ACCOUNT_TAB = 3;
 
 export default class TabBarComponent extends Component {
   static propTypes = {
     navigation: shape({
       navigate: func.isRequired
-    }).isRequired,
-    getMyNotificationsQuery: func.isRequired,
+    }).isRequired
   };
 
   state = {
@@ -86,20 +85,20 @@ export default class TabBarComponent extends Component {
   }
 
   getMyNotificationCount() {
-    const { getMyNotificationsQuery: { getMyNotifications } } = this.props;
-    const unreadNotifications = reduce(getMyNotifications, (result, notification) => {
-      if (!notification.isRead) {
-        result.push(notification);
-      }
-
-      return result;
-    }, [])
-
-    if (unreadNotifications && unreadNotifications.length !== 0) {
-      return `${unreadNotifications.length}`;
-    }
-
-    return;
+    // const { getMyNotificationsQuery: { getMyNotifications } } = this.props;
+    // const unreadNotifications = reduce(getMyNotifications, (result, notification) => {
+    //   if (!notification.isRead) {
+    //     result.push(notification);
+    //   }
+    //
+    //   return result;
+    // }, [])
+    //
+    // if (unreadNotifications && unreadNotifications.length !== 0) {
+    //   return `${unreadNotifications.length}`;
+    // }
+    //
+    // return;
   }
 
   renderBottomNavigation() {

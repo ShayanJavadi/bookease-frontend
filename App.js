@@ -1,12 +1,14 @@
-import Expo from 'expo';
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar, AsyncStorage } from 'react-native';
-import { TabNavigator, StackNavigator } from 'react-navigation';
-import { updateFocus, getCurrentRouteKey } from 'react-navigation-is-focused-hoc';
-import Provider from './src/store';
-import createMainNavigator from './src/router';
-import { COLOR, ThemeProvider } from 'react-native-material-ui';
-import uiTheme from 'src/common/styles/uiTheme';
+import React, { Component } from "react"
+import { StyleSheet, View, StatusBar } from "react-native"
+import { updateFocus } from "react-navigation-is-focused-hoc"
+import Provider from "./src/store"
+import createMainNavigator from "./src/router"
+import { ThemeProvider } from "react-native-material-ui"
+import uiTheme from "src/common/styles/uiTheme"
+import loadFonts from "./src/common/lib/loadFonts"
+import determineFirstRun from "./src/common/lib/isFirstRun"
+import markFirstRun from "./src/common/lib/markFirstRun"
+import firebase from "src/common/lib/firebase"
 
 export default class App extends Component {
   state = {
@@ -14,32 +16,33 @@ export default class App extends Component {
   }
 
   async componentWillMount() {
-    await Expo.Font.loadAsync({
-      Roboto: require("./assets/fonts/Roboto-Regular.ttf"),
-    });
+    await firebase()
 
-    const isFirstRun = (await AsyncStorage.getItem("hasRunBefore")) !== 'true';
-    await AsyncStorage.setItem("hasRunBefore", "true");
+    await loadFonts()
+    const isFirstRun = await determineFirstRun()
+    await markFirstRun()
 
     this.setState({
       isAppReady: true,
       isFirstRun,
-     });
+    })
   }
+
+  updateFocus = (prevState, currentState) => updateFocus(currentState);
+
   render() {
     if (!this.state.isAppReady) {
       // TODO: loading animation goes here
-      return (null);
+      return (null)
     }
-    else {
-      const Navigator = createMainNavigator(this.state.isFirstRun);
+    const Navigator = createMainNavigator({ isFirstRun: this.state.isFirstRun })
 
-      return (
+    return (
         <Provider>
           <View style={styles.container}>
             <ThemeProvider uiTheme={uiTheme}>
               <Navigator
-                onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState) }}
+                onNavigationStateChange={this.updateFocus}
               />
             </ThemeProvider>
             <StatusBar
@@ -47,15 +50,14 @@ export default class App extends Component {
             />
           </View>
         </Provider>
-      );
-    }
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
-});
+})

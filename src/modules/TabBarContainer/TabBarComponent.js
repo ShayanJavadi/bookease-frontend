@@ -13,6 +13,6 @@ const Container = compose(
   }),
 )
 
-export default Container(connect(
+export default connect(
   mapStateToProps,
-)(TabBarComponent));
+)(TabBarComponent);

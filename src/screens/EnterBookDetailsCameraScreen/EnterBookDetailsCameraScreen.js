@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native";
-import { func, bool, shape, array } from "prop-types";
+import React, { Component } from "react"
+import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native"
+import { func, bool, shape, array } from "prop-types"
 import {
   Camera,
-} from "expo";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Badge } from "react-native-material-ui";
-import BackButton from "src/modules/BackButton";
-import { styles, palette } from "./styles";
-import { FLASH_OPTIONS_ORDER } from "./consts";
-import Toast from "react-native-root-toast";
+} from "expo"
+import { MaterialIcons } from "@expo/vector-icons"
+import { Badge } from "react-native-material-ui"
+import BackButton from "src/modules/BackButton"
+import { styles, palette } from "./styles"
+import { FLASH_OPTIONS_ORDER } from "./consts"
+import Toast from "react-native-root-toast"
 
 const {
   screenStyle,
@@ -21,11 +21,11 @@ const {
   captureButtonInnerStyle,
   topRowWrapperStyle,
   bottomRowWrapperStyle
-} = styles;
+} = styles
 
 const {
   tertiaryColorDark,
-} = palette;
+} = palette
 
 export default class EnterBookDetailsCameraScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -55,27 +55,27 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.createImagesFolder();
-    this.props.updateImages();
+    this.props.createImagesFolder()
+    this.props.updateImages()
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
-      this.setState({ toastMessageVisible: true });
+      this.setState({ toastMessageVisible: true })
       setTimeout(() => this.setState({
-          toastMessageVisible: false
-      }), 2000);
+        toastMessageVisible: false
+      }), 2000)
     }
   }
 
   toggleFlash() {
     this.setState({
       flash: FLASH_OPTIONS_ORDER[this.state.flash],
-    });
+    })
   }
 
   renderFlashIcon() {
-    const { flash } = this.state;
+    const { flash } = this.state
 
     return (
       <View style={flashIconWrapperStyle}>
@@ -92,7 +92,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
   }
 
   renderImagesThumbnail() {
-    const { navigation } = this.props;
+    const { navigation } = this.props
     return (
       <View style={{ justifyContent: "flex-start", marginBottom: 30, marginLeft: 15 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -151,7 +151,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
       <View style={screenStyle}>
         <Camera
           style={{ flex: 1 }}
-          ref={ref => { this.camera = ref; }}
+          ref={ref => { this.camera = ref }}
           flashMode={this.state.flash}
           autoFocus="on"
         >
@@ -165,6 +165,6 @@ export default class EnterBookDetailsCameraScreen extends Component {
             {this.renderToastMessage()}
         </Camera>
       </View>
-    );
+    )
   }
 }

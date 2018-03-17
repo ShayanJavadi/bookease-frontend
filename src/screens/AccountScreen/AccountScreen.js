@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Text, View } from "react-native";
-import { Button } from "react-native-material-ui";
-import { TextField } from "react-native-material-textfield";
-import { NavigationActions } from "react-navigation";
-import { MaterialIcons } from "@expo/vector-icons";
-import { func, object, shape } from "prop-types";
-import { styles, palette, ICON_SIZE } from "./styles";
+import React, { Component } from "react"
+import { Text, View } from "react-native"
+import { Button } from "react-native-material-ui"
+import { TextField } from "react-native-material-textfield"
+import { NavigationActions } from "react-navigation"
+import { MaterialIcons } from "@expo/vector-icons"
+import { func, object, shape } from "prop-types"
+import { styles, palette, ICON_SIZE } from "./styles"
 
 const {
   headerStyle,
@@ -20,11 +20,11 @@ const {
   editButtonIconStyle,
   signOutButtonTextStyle,
   signOutButtonContainerStyle
- } = styles;
+ } = styles
 
- const {
+const {
    primaryColor
- } = palette;
+ } = palette
 
 export default class AccountScreen extends Component {
   static navigationOptions = {
@@ -43,11 +43,11 @@ export default class AccountScreen extends Component {
     this.props.navigation.navigate(editScreen, {
       profileData: this.props.currentUser,
       nextScreenSequence: ["account"],
-    });
+    })
   }
 
   signOut() {
-    this.props.updateUser(undefined);
+    this.props.updateUser(undefined)
 
     const closeSuccessScreenAction = NavigationActions.reset({
       index: 0,
@@ -56,7 +56,7 @@ export default class AccountScreen extends Component {
         NavigationActions.navigate({ routeName: "mainScreen" })
       ]
     })
-    return this.props.navigation.dispatch(closeSuccessScreenAction);
+    return this.props.navigation.dispatch(closeSuccessScreenAction)
   }
 
   render() {
@@ -80,7 +80,7 @@ export default class AccountScreen extends Component {
           />
         </View>
       </View>
-    );
+    )
   }
 
   renderNameInput() {
@@ -103,7 +103,7 @@ export default class AccountScreen extends Component {
           onPress={() => this.editItem("changeFullNameScreen")}
         />
       </View>
-    );
+    )
   }
 
   renderSchoolInput() {
@@ -126,7 +126,7 @@ export default class AccountScreen extends Component {
           onPress={() => this.editItem("schoolSelectionScreen")}
         />
       </View>
-    );
+    )
   }
 
   renderPasswordInput() {
@@ -150,6 +150,6 @@ export default class AccountScreen extends Component {
           onPress={() => this.editItem("changePasswordScreen")}
         />
       </View>
-    );
+    )
   }
 }

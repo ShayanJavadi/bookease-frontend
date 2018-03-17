@@ -1,27 +1,27 @@
-import { StackNavigator, TabNavigator, } from "react-navigation";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
-import HomeScreen from "../screens/HomeScreenContainer";
-import SingleBookScreen from "../screens/SingleBookScreenContainer/";
-import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
-import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
-import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
-import NotificationScreen from "../screens/NotificationScreenContainer";
-import AccountScreen from "../screens/AccountScreenContainer";
-import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
-import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer";
-import ScanBookScreen from "../screens/ScanBookScreenContainer";
-import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
-import PhoneScreen from "../screens/PhoneScreenContainer";
-import PhonePinScreen from "../screens/PhonePinScreenContainer";
-import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
-import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
-import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
-import TabBarComponent from "../modules/TabBarContainer";
-import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
-import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
-import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
-import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer";
+import { StackNavigator, TabNavigator, } from "react-navigation"
+import WelcomeScreen from "../screens/WelcomeScreen"
+import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer"
+import HomeScreen from "../screens/HomeScreenContainer"
+import SingleBookScreen from "../screens/SingleBookScreenContainer/"
+import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer"
+import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen"
+import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen"
+import NotificationScreen from "../screens/NotificationScreenContainer"
+import AccountScreen from "../screens/AccountScreenContainer"
+import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer"
+import EnterBookDetailsCameraScreen from "../screens/EnterBookDetailsCameraScreenContainer"
+import ScanBookScreen from "../screens/ScanBookScreenContainer"
+import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen"
+import PhoneScreen from "../screens/PhoneScreen"
+import PhonePinScreen from "../screens/PhonePinScreenContainer"
+import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer"
+import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer"
+import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer"
+import TabBarComponent from "../modules/TabBarContainer"
+import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent"
+import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer"
+import BuyRequestScreen from "../screens/BuyRequestScreenContainer"
+import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer"
 
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
@@ -30,7 +30,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 }, {
   headerMode: "none",
   mode: "modal",
-});
+})
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
@@ -47,7 +47,7 @@ const SellBooksNavigator = StackNavigator({
   }
 }, {
   mode: "modal",
-});
+})
 
 const myBooksNavigator = TabNavigator({
   myBooksListings: {
@@ -62,7 +62,7 @@ const myBooksNavigator = TabNavigator({
 }, {
   tabBarPosition: "top",
   tabBarComponent: MyBooksTabBarComponent,
-});
+})
 
 const SingleBookNavigator = StackNavigator({
   singleBookScreen: {
@@ -73,7 +73,7 @@ const SingleBookNavigator = StackNavigator({
   }
 }, {
   headerMode: "none",
-});
+})
 
 const AccountNavigator = StackNavigator({
   account: {
@@ -90,7 +90,7 @@ const AccountNavigator = StackNavigator({
   },
 }, {
   headerMode: "none",
-});
+})
 
 const HomeNavigator = TabNavigator({
   home: {
@@ -113,7 +113,7 @@ const HomeNavigator = TabNavigator({
   tabBarComponent: TabBarComponent,
   swipeEnabled: false,
   animationEnabled: false
-});
+})
 
 const AuthNavigator = StackNavigator({
   phoneScreen: {
@@ -139,9 +139,9 @@ const AuthNavigator = StackNavigator({
   },
 }, {
   headerMode: "none",
-});
+})
 
-const createMainNavigator = (isFirstRun = false) => {
+const createMainNavigator = ({ isFirstRun = false }) => {
   return StackNavigator({
     welcomeScreen: {
       screen: WelcomeScreen,
@@ -164,7 +164,7 @@ const createMainNavigator = (isFirstRun = false) => {
   }, {
     initialRouteName: isFirstRun ? "welcomeScreen" : "mainScreen",
     headerMode: "none",
-  });
+  })
 }
 
-export default createMainNavigator;
+export default createMainNavigator

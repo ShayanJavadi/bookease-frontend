@@ -62,9 +62,7 @@ export default class AuthScreen extends Component {
     this.props.navigation.navigate("emailScreen");
   }
 
-  onPhoneButtonPress() {
-    this.props.navigation.navigate("phoneScreen");
-  }
+  onPhoneButtonPress = () => this.props.navigation.navigate("phoneScreen");
 
   closeAuthScreen() {
     if (this.props.navigation.state.params.resetToHomeOnClose) {
@@ -103,7 +101,7 @@ export default class AuthScreen extends Component {
           }}
           icon={<MaterialIcons name="phone" size={ICON_SIZE} style={buttonIconStyle} />}
           text="Sign in with Phone"
-          onPress={() => this.onPhoneButtonPress()}
+          onPress={this.onPhoneButtonPress}
         />
       </View>
     );
