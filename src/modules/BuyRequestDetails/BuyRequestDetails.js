@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
 import { func, object, bool, number } from "prop-types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { styles, BUY_REQUEST_ICON_SIZE } from "./styles";
+import { styles, BUY_REQUEST_ICON_SIZE, READ_OPACITY } from "./styles";
 import { getRelativeTime } from "src/common/lib";
 
 const {
@@ -25,13 +25,15 @@ const {
   expandedNotificationLowerWrapperStyle,
   expandedNotificationAvatarWrapperStyle,
   expandedNotificationAvatarStyle,
+  compactNotificationWrapperStyle,
+  notificationAvatarContentsWrapperStyle,
 } = styles;
 
 const renderNotificationHeader = (createdAt) => {
   return (
     <View style={notificationHeaderWrapperStyle}>
       <MaterialCommunityIcons
-        name="message-text"
+        name="tag"
         size={20}
         style={notificationHeaderIconStyle}
       />
@@ -48,10 +50,10 @@ const renderNotificationDetails = (notification ,navigation, numberOfMessageLine
   return (
     <View style={notificationDetailsWrapperStyle}>
       <Text style={notificatDetailsHeaderStyle}>
-        Mike Johnson requested to purchase
+        {notification.user.displayName} requested to purchase
       </Text>
       <Text style={notificatDetailsTextbookStyle} onPress={() => navigation.navigate("singleBook", { textbookId: textbookId })}>
-        {textbook.title} - ${textbook.price}
+        {textbook.title}
       </Text>
       <Text style={notificatDetailsMessageStyle} numberOfLines={numberOfMessageLines}>
         {message}
@@ -60,30 +62,32 @@ const renderNotificationDetails = (notification ,navigation, numberOfMessageLine
   )
 }
 
-const renderNotificationAvatar = () => {
+const renderNotificationAvatar = (photoURL) => {
   return (
     <View style={notificationAvatarWrapperStyle}>
-      <Image
-        style={notificationAvatarStyle}
-        source={{ uri: "https://media.licdn.com/media/AAEAAQAAAAAAAAR6AAAAJDVjYjI4MDFlLTBkNDAtNDE1Ny04NjYyLWViOWU3YzljNGNhZQ.jpg" }}
-      />
-      <View style={notificationAvatarArrowIconWrapperStyle}>
-        <MaterialCommunityIcons
-          name="reply"
-          size={BUY_REQUEST_ICON_SIZE}
-          style={notificationAvatarArrowIconStyle}
+      <View style={notificationAvatarContentsWrapperStyle}>
+        <Image
+          style={notificationAvatarStyle}
+          source={{ uri: photoURL }}
         />
+        <View style={notificationAvatarArrowIconWrapperStyle}>
+          <MaterialCommunityIcons
+            name="reply"
+            size={BUY_REQUEST_ICON_SIZE}
+            style={notificationAvatarArrowIconStyle}
+          />
+        </View>
       </View>
     </View>
   )
 }
 
-const renderExpandedNotifcationAvatar = () => {
+const renderExpandedNotifcationAvatar = (photoURL) => {
   return (
     <View style={expandedNotificationAvatarWrapperStyle}>
       <Image
         style={expandedNotificationAvatarStyle}
-        source={{ uri: "https://media.licdn.com/media/AAEAAQAAAAAAAAR6AAAAJDVjYjI4MDFlLTBkNDAtNDE1Ny04NjYyLWViOWU3YzljNGNhZQ.jpg" }}
+        source={{ uri: photoURL }}
       />
     </View>
   )
@@ -91,9 +95,9 @@ const renderExpandedNotifcationAvatar = () => {
 
 const renderExpandedBuyRequest = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead) => {
   return (
-    <View style={[notificationWrapperStyle, { opacity: notification.isRead && shouldLowerOpacityOnRead ? 0.5 : 1, flexDirection: "column" }]}>
+    <View style={[notificationWrapperStyle, { opacity: notification.isRead && shouldLowerOpacityOnRead ? READ_OPACITY : 1, flexDirection: "column" }]}>
       <View style={expandedNotificationUpperWrapperStyle}>
-        {renderExpandedNotifcationAvatar()}
+        {renderExpandedNotifcationAvatar(notification.user.photoURL)}
       </View>
       <View style={expandedNotificationLowerWrapperStyle}>
         {renderNotificationHeader(notification.createdAt)}
@@ -103,32 +107,71 @@ const renderExpandedBuyRequest = (notification, navigation, numberOfMessageLines
   )
 }
 
-const renderCompressedBuyRequest = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead) => {
+const renderNormalBuyRequest = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead) => {
   return (
-    <View style={[notificationWrapperStyle, { opacity: notification.isRead && shouldLowerOpacityOnRead ? 0.5 : 1 }]}>
+    <View style={[notificationWrapperStyle, { opacity: notification.isRead && shouldLowerOpacityOnRead ? READ_OPACITY : 1 }]}>
       <View style={notificationUpperWrapperStyle}>
         {renderNotificationHeader(notification.createdAt)}
         {renderNotificationDetails(notification, navigation, numberOfMessageLines)}
       </View>
       <View style={notificationLowerWrapperStyle}>
-        {renderNotificationAvatar()}
+        {renderNotificationAvatar(notification.user.photoURL)}
       </View>
     </View>
   )
 }
 
-const renderBuyRequestContents = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isExpanded) => {
+const renderCompactNotificationDetails = (notification ,navigation, numberOfMessageLines, isReversed) => { // eslint-disable-line no-unused-vars
+  const { buyRequest: { textbook, textbookId } } = notification;
+  return (
+    <View style={notificationDetailsWrapperStyle}>
+      <Text style={notificatDetailsHeaderStyle}>
+        {notification.user.displayName} requested to purchase
+      </Text>
+      <Text style={notificatDetailsTextbookStyle} onPress={() => navigation.navigate("singleBook", { textbookId: textbookId })}>
+        {textbook.title}
+      </Text>
+    </View>
+  )
+}
+
+const renderCompactBuyRequest = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isReversed) => {
+  const calculatedOpacity = notification.isRead && shouldLowerOpacityOnRead ? READ_OPACITY : 1;
+  const calculatedFlexDirection = isReversed ? "row-reverse" : "row";
+  const calculatedRequestDetailsPaddingLeft = isReversed ? 15 : undefined;
+
+  return (
+    <View style={[
+      compactNotificationWrapperStyle,
+      { opacity: calculatedOpacity, flexDirection: calculatedFlexDirection }
+    ]}>
+      <View style={[notificationUpperWrapperStyle, { paddingLeft: calculatedRequestDetailsPaddingLeft }]}>
+        {renderNotificationHeader(notification.createdAt)}
+        {renderCompactNotificationDetails(notification, navigation, numberOfMessageLines, isReversed)}
+      </View>
+      <View style={notificationLowerWrapperStyle}>
+        {renderNotificationAvatar(notification.user.photoURL)}
+      </View>
+    </View>
+  )
+}
+
+const renderBuyRequestContents = (notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isExpanded, isCompact, isReversed) => {
   if (isExpanded) {
     return renderExpandedBuyRequest(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead);
   }
 
-  return renderCompressedBuyRequest(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead);
+  if (isCompact) {
+    return renderCompactBuyRequest(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isReversed);
+  }
+
+  return renderNormalBuyRequest(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead);
 }
 
-const BuyRequestDetails = ({ notification, navigation, onPress, shouldLowerOpacityOnRead, numberOfMessageLines, isExpanded }) => {
+const BuyRequestDetails = ({ notification, navigation, onPress, shouldLowerOpacityOnRead, numberOfMessageLines, isExpanded, isCompact, isReversed }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-        {renderBuyRequestContents(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isExpanded)}
+        {renderBuyRequestContents(notification, navigation, numberOfMessageLines, shouldLowerOpacityOnRead, isExpanded, isCompact, isReversed)}
     </TouchableWithoutFeedback>
   );
 };
@@ -139,7 +182,9 @@ BuyRequestDetails.propTypes = {
   isExpanded: bool,
   onPress: func,
   shouldLowerOpacityOnRead: bool,
-  numberOfMessageLines: number
+  numberOfMessageLines: number,
+  isCompact: bool,
+  isReversed: bool,
 };
 
 

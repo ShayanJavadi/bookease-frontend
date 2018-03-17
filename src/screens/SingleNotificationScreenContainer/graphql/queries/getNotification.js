@@ -11,6 +11,11 @@ const getNotification = gql`
           type,
           isRead,
           createdAt,
+          user{
+            id,
+            displayName,
+            photoURL,
+          },
           buyRequest {
             id,
             userId,
@@ -22,6 +27,7 @@ const getNotification = gql`
             notificationId,
             recipientId,
             isAccepted,
+            isTextbookSold,
             message,
           }
       }

@@ -49,9 +49,22 @@ export default class SubmissionSuccessScreen extends Component {
     undefined,
   }
 
+  navigateToMyBooks() {
+    const closeSuccessScreenAction = NavigationActions.reset({
+      index: 0,
+      key: null,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "mainScreen",
+          action: NavigationActions.navigate({ routeName: "myBooks" })
+        }),
+      ]
+    });
 
-  closeSuccessScreen() {
-    const { acceptedBuyRequest } = this.state;
+    this.props.navigation.dispatch(closeSuccessScreenAction);
+  }
+
+  navigateToSingleBuyRequestScreen(notificationId) {
     const closeSuccessScreenAction = NavigationActions.reset({
       index: 1,
       key: null,
@@ -62,11 +75,27 @@ export default class SubmissionSuccessScreen extends Component {
         }),
         NavigationActions.navigate({
           routeName: "singleNotificationScreen",
-          params: { notificationType: "BUY_REQUEST", notificationId: acceptedBuyRequest.notificationId }
+          params: { notificationType: "BUY_REQUEST", notificationId: notificationId }
         })
       ]
-    })
-    this.props.navigation.dispatch(closeSuccessScreenAction)
+    });
+
+    this.props.navigation.dispatch(closeSuccessScreenAction);
+  }
+
+  closeSuccessScreen() {
+    const { submittedTextbook, submittedBuyRequest, acceptedBuyRequest } = this.state;
+    if (submittedTextbook) {
+      return this.navigateToMyBooks();
+    }
+
+    if (submittedBuyRequest) {
+      return this.navigateToSingleBuyRequestScreen(submittedBuyRequest.notificationId);
+    }
+
+    if (acceptedBuyRequest) {
+      return this.navigateToSingleBuyRequestScreen(acceptedBuyRequest.notificationId);
+    }
   }
 
   renderCloseIcon() {
@@ -113,7 +142,7 @@ export default class SubmissionSuccessScreen extends Component {
           <PhoneNumberContainer
             showPhoneNumber={true}
             showIcon={false}
-            text={"Schedule a meeting with Mike to finish the trade."}
+            text={"Contact Mike to arrange a meetup"}
             phoneNumber="(817) 226 - 0183"
             onPhoneNumberPress={() => alert("open")}
             styles={{ outerContainerStyles: { flex: undefined, height: 100 }, innerContainerStyles: { paddingBottom: 0 } }}
@@ -173,7 +202,7 @@ export default class SubmissionSuccessScreen extends Component {
           raised
           primary
           upperCase={false}
-          text="Schedule Meeting"
+          text="Send Message"
           onPress={() => openSms({ number: 8172260183, message: "temp placeholder" })}
           style={{ container: primaryButtonContainerStyle, text: primaryButtonTextStyle }}
         />

@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
     shadowRadius: 2,
     flex: 1
   },
-
   activityIndicatorWrapper: {
     justifyContent: "center",
     alignItems: "center",

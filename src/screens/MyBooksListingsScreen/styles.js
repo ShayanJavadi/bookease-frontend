@@ -39,91 +39,12 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
   },
-  listingPictureWrapperStyle: {
-    justifyContent: "center",
-    paddingLeft: 5,
-    alignItems: "center",
-  },
-  listingPictureStyle: {
-    width: 75,
-    height: 90,
-  },
   listingsWrapperStyle: {
     flex: 1,
     backgroundColor: "#f1f1f1",
   },
-  listingWrapperStyle: {
-    minHeight: 100,
-    marginTop: 1,
-    backgroundColor: "#fff",
-    flexDirection: "row",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    flex: 1
-  },
   listingTextStyle: {
     color: "#222",
-  },
-  listingDetailsWrapperStyle: {
-    paddingVertical: 10,
-    flex: 6,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-  },
-  listingNameWrapperStyle: {
-    flexDirection: "row",
-    paddingLeft: 15,
-    paddingBottom: 1,
-  },
-  listingDetailsTopWrapperStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingLeft: 18,
-    paddingVertical: 3
-  },
-  listingDetailsBottomWrapperStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingLeft: 18,
-    paddingBottom: 3,
-  },
-  listingDateWrapperStyle: {
-    flexDirection: "row",
-    paddingLeft: 18,
-    paddingTop: 1,
-  },
-  listingPriceWrapperStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1.3,
-  },
-  listingPriceTextStyle: {
-    fontWeight: "100",
-  },
-  listingNameTextStyle: {
-    fontSize: 14,
-    color: "#222",
-  },
-  listingSmallDetailsTextStyle: {
-    color: "#333",
-    fontSize: 12,
-    flex: 1,
-    fontWeight: "100",
-  },
-  listingDateTextStyle: {
-    fontSize: 12,
-    color: "#777",
-  },
-  listingIsbnTextStyle: {
-    flex: 3,
-  },
-  listingStatusTextStyle: {
-    flex: 2,
-  },
-  listingEditionTextStyle: {
-    flex: 1.7,
   },
   swipeOutStyle: {
     flex: 1,

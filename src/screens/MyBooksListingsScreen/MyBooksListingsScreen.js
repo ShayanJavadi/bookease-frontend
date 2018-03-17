@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, Image, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
+import { Text, View, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
 import { func, shape, object, bool } from "prop-types";
 import { isEmpty } from "lodash";
 import { Button } from "react-native-material-ui";
 import Swipeable from "react-native-swipeable";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Modal from "src/modules/Modal";
-import { toOrdinal, getRelativeTime } from "src/common/lib";
+import BookListingDetails from "src/modules/BookListingDetails";
 import { styles, SWIPE_OUT_ICON_SIZE, NO_LISTING_ICON_COLOR, palette } from "./styles";
 
 const {
@@ -15,21 +15,7 @@ const {
 
 const {
   screenStyle,
-  listingPictureWrapperStyle,
-  listingPictureStyle,
   listingsWrapperStyle,
-  listingWrapperStyle,
-  listingDetailsWrapperStyle,
-  listingNameWrapperStyle,
-  listingNameTextStyle,
-  listingDetailsTopWrapperStyle,
-  listingSmallDetailsTextStyle,
-  listingDetailsBottomWrapperStyle,
-  listingDateWrapperStyle,
-  listingDateTextStyle,
-  listingPriceWrapperStyle,
-  listingPriceTextStyle,
-  listingStatusTextStyle,
   swipeOutStyle,
   swipeOutTextStyle,
   noListingWrapperStyle,
@@ -61,6 +47,12 @@ export default class MyBooksListingsScreen extends Component {
     refreshing: false,
     isDeleteConfirmationModalVisible: false,
     selectedTextbookId: "",
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isFocused && !this.props.isFocused) {
+      this.props.getMyTextbooksQuery.refetch();
+    }
   }
 
   onScrollViewRefresh() {
@@ -100,16 +92,12 @@ export default class MyBooksListingsScreen extends Component {
    this.setState({ isDeleteConfirmationModalVisible: false })
  }
 
-  renderMyListings(listing) {
+  renderMyListing(listing) {
     const {
-      title,
-      edition,
-      createdAt,
-      price,
-      authors,
-      images,
       id,
+      buyRequestNotifications,
     } = listing;
+    const { navigation } = this.props;
 
     return (
       <Swipeable
@@ -137,37 +125,12 @@ export default class MyBooksListingsScreen extends Component {
           </TouchableOpacity>,
         ]}
       >
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("singleBook", { textbookId: id })}>
-          <View style={listingWrapperStyle}>
-            <View style={listingPictureWrapperStyle}>
-              <Image
-                style={listingPictureStyle}
-                source={{ uri: images[0].thumbnail }}
-              />
-            </View>
-            <View style={listingDetailsWrapperStyle}>
-              <View style={listingNameWrapperStyle}>
-                <Text style={listingNameTextStyle}>{title}<Text style={{ color: "#444" }}> - {toOrdinal(edition)}</Text></Text>
-              </View>
-              <View style={listingDetailsTopWrapperStyle}>
-                <Text style={[listingSmallDetailsTextStyle, ]}>
-                  <Text style={{ fontWeight: "400" }}>Author:</Text> {authors}
-                </Text>
-              </View>
-              <View style={listingDetailsBottomWrapperStyle}>
-                <Text style={[listingSmallDetailsTextStyle, listingStatusTextStyle]}>
-                  <Text style={{ fontWeight: "400" }}>Status:</Text> Active
-                </Text>
-              </View>
-              <View style={listingDateWrapperStyle}>
-                <Text style={listingDateTextStyle}>{getRelativeTime(createdAt)}</Text>
-              </View>
-            </View>
-            <View style={listingPriceWrapperStyle}>
-              <Text style={listingPriceTextStyle}>${price}</Text>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
+          <BookListingDetails
+            listing={listing}
+            onPress={() => navigation.navigate("singleBook", { textbookId: id })}
+            buyRequests={buyRequestNotifications}
+            navigation={navigation}
+          />
       </Swipeable>
     );
   }
@@ -213,7 +176,7 @@ export default class MyBooksListingsScreen extends Component {
       <View style={listingsWrapperStyle}>
         <FlatList
           data={getMyTextbooks}
-          renderItem={({ item }) => this.renderMyListings(item)}
+          renderItem={({ item }) => this.renderMyListing(item)}
           keyExtractor={getMyTextbooks => getMyTextbooks.id}
         />
       </View>

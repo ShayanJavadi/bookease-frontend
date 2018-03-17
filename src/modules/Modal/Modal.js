@@ -25,7 +25,7 @@ const renderModalContent = (children) => {
   }
 }
 
-const Modal = ({ isVisible, text, textStyle, actions, onActionPress, children }) => {
+const Modal = ({ isVisible, text, textStyle, actions, onActionPress, children, options }) => {
   const { Title, Actions } = Dialog;
 
   return (
@@ -38,6 +38,7 @@ const Modal = ({ isVisible, text, textStyle, actions, onActionPress, children })
         <Actions>
           <DialogDefaultActions
             actions={actions}
+            options={options}
             onActionPress={onActionPress}
           />
         </Actions>
@@ -54,6 +55,7 @@ Modal.propTypes = {
   actions: array,
   onActionPress: func,
   children: node,
+  options: object,
 }
 
 export default Modal;

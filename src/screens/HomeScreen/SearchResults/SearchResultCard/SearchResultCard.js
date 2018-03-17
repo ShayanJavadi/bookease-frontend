@@ -7,6 +7,7 @@ import { capitalize } from "lodash";
 import { toOrdinal, mapNumberToConditions, getRelativeTime } from "src/common/lib";
 import { styles } from "./styles";
 import ProgressiveImage from "src/modules/ProgressiveImage";
+import Chip from "src/modules/Chip";
 
 const {
   searchResultCardWrapper,
@@ -24,7 +25,8 @@ const {
   bookconditionStyle,
   bookOwnerStyle,
   bookCreatedAtStyle,
-  bookPriceStyle,
+  priceChipWrapperStyle,
+  priceChipTextStyle
 } = styles;
 
 export default class SearchResultCard extends Component {
@@ -94,9 +96,17 @@ export default class SearchResultCard extends Component {
     )
   }
 
+  renderPriceChip() {
+    return (
+      <Chip
+        text={`\$${this.props.book.price}`}
+        styles={{ containerStyle: priceChipWrapperStyle, textStyle: priceChipTextStyle }}
+      />
+    )
+  }
+
   renderLowerSection() {
     const {
-      price,
       createdAt,
     } = this.props.book;
 
@@ -104,17 +114,16 @@ export default class SearchResultCard extends Component {
       <View style={lowerSectionWrapper}>
         <TouchableWithoutFeedback onPress={() => alert("go to account page ")}>
           <View style={lowerSectionLeftWrapper}>
-            <View style={{ flex: 1 }}>
+            <View >
               <MaterialIcons name="account-circle" size={51} style={{ color: "#ccc" }} />
             </View>
-            <View style={{ flex: 3.5, paddingBottom: 3, paddingLeft: 6 }}>
+            <View>
               <Text style={bookOwnerStyle}>Joh </Text>
               <Text style={bookCreatedAtStyle}>{getRelativeTime(createdAt, true)}</Text>
             </View>
           </View>
         </TouchableWithoutFeedback>
         <View style={lowerSectionRightWrapper}>
-          <Text style={bookPriceStyle}>${price}</Text>
           <Button
             raised
             style={{ text: buttonTextStyle, container: buttonContainerStyle }}
@@ -134,6 +143,7 @@ export default class SearchResultCard extends Component {
         <View style={searchResultCardWrapper}>
           {this.renderUpperSection()}
           {this.renderImage()}
+          {this.renderPriceChip()}
           {this.renderLowerSection()}
         </View>
       </TouchableWithoutFeedback>

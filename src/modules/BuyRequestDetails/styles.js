@@ -5,7 +5,8 @@ export const { palette } = uiTheme;
 export const SWIPE_OUT_ICON_SIZE = 25;
 export const BUY_REQUEST_ICON_SIZE = 16;
 export const NO_NOTTIFICATION_ICON_COLOR = tertiaryColorDark;
-
+export const READ_OPACITY = 0.65;
+const AVATAR_SIZE = 60;
 const {
   primaryColor,
   tertiaryColorDark,
@@ -19,6 +20,14 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 25,
     paddingVertical: 25,
+    marginTop: 1,
+  },
+  compactNotificationWrapperStyle: {
+    minHeight: 100,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    paddingHorizontal: 25,
+    paddingVertical: 15,
     marginTop: 1,
   },
   notificationUpperWrapperStyle: {
@@ -69,6 +78,9 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "flex-end",
   },
+  notificationAvatarContentsWrapperStyle: {
+    height: AVATAR_SIZE,
+  },
   notificatDetailsHeaderStyle: {
     fontWeight: "500",
     marginBottom: 4,
@@ -90,7 +102,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     position: "relative",
     bottom: 16,
-    right: 0,
+    left: "70%",
   },
   notificationAvatarArrowIconStyle: {
     color: "#fff",

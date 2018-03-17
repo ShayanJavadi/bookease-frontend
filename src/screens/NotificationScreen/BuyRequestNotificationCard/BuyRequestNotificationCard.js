@@ -39,7 +39,7 @@ const renderSwipeOptions = () => ([
 
 const onBuyRequestPress = (notification, navigation, updateNotification) => {
   const { BUY_REQUEST } = NOTIFICATION_CONDITIONS;
-  const readNotification = Object.assign({}, omit(notification, ["buyRequest", "__typename", "createdAt"]), { isRead: true });
+  const readNotification = Object.assign({}, omit(notification, ["buyRequest", "__typename", "createdAt", "user"]), { isRead: true });
 
   return updateNotification({
     variables: {

@@ -11,7 +11,12 @@ const getMyNotifications = gql`
           type,
           isRead,
           createdAt,
-          buyRequest {
+          user{
+            id,
+            displayName,
+            photoURL,
+          },
+          buyRequest{
             id,
             userId,
             textbookId,
@@ -23,7 +28,7 @@ const getMyNotifications = gql`
             recipientId,
             isAccepted,
             message,
-          }
+          },
       }
   }
 `;

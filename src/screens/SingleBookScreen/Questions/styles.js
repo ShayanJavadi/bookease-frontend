@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 25,
     alignItems: "center",
     paddingVertical: 15,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#fff",
   },
   questionsTitleWrapperStyle: {
     paddingTop: 5,
@@ -24,13 +24,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     paddingHorizontal: 20,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#fff",
     zIndex: 9999,
   },
   questionsTitleStyle: {
     textAlign: "left",
     flexWrap: "wrap",
     fontSize: 25,
+    fontWeight: "600",
   },
   questionWrapperStyle: {
     flexDirection: "row",
@@ -44,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   questionUsernameStyle: {
     fontWeight: "600",
-    fontSize: 19,
+    fontSize: 17,
     color: "#333",
     textAlign: "left",
     paddingBottom: 2,
@@ -62,7 +63,7 @@ export const styles = StyleSheet.create({
   questionTextStyle: {
     textAlign: "left",
     color: "#666",
-    fontSize: 17,
+    fontSize: 14,
     lineHeight: 24,
   },
   questionDateWrapperStyle: {
