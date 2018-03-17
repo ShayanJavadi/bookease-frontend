@@ -179,6 +179,7 @@ const renderBuyRequests = (buyRequests) => {
                 size={25}
                 styles={{
                   position: "absolute",
+                  zIndex: 9999 - index,
                   left: `${60 + index * 4}%`
                 }}
                 uri={buyRequest.user.photoURL}
