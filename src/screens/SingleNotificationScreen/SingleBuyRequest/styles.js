@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  cancelMeetingButtonWrapperStyle: {
-    flex: .5,
+  markAsDoneButtonWrapperStyle: {
+    flex: 1,
     paddingHorizontal: 10,
   },
   declineButtonContainerStyle: {
@@ -30,13 +30,13 @@ export const styles = StyleSheet.create({
     borderColor: "#F50057",
   },
   declineButtonTextStyle: {
-    fontSize: 18,
+    fontSize: 17.5,
   },
   acceptButtonContainerStyle: {
     height: 40,
   },
   acceptButtonTextStyle: {
-    fontSize: 18,
+    fontSize: 17.5,
   },
   activityIndicatorWrapper: {
     justifyContent: "center",
@@ -45,4 +45,14 @@ export const styles = StyleSheet.create({
     // TODO: take care of this magic number
     height: SCREEN_HEIGHT / 2 + 150,
   },
+  markAsDoneModalRadioButtonWrapperStyle: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  markAsDoneModalRadioButtonTextStyle: {
+    paddingLeft: 5,
+    fontSize: 16,
+    color: "#666"
+  }
 });

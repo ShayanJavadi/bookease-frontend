@@ -11,9 +11,10 @@ const {
 
 export default class SingleNotificationScreen extends Component {
   static propTypes = {
-    getNotificationQuery: func.isRequired,
-    updateNotificationMutation: func.isRequired,
-    updateBuyRequestMutation: func.isRequired,
+    getNotification: func.isRequired,
+    updateNotification: func.isRequired,
+    updateBuyRequest: func.isRequired,
+    createTextbookSale: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -31,25 +32,25 @@ export default class SingleNotificationScreen extends Component {
 
   componentDidMount() {
     const { BUY_REQUEST } = NOTIFICATION_CONDITIONS;
-    const { getNotificationQuery } = this.props;
+    const { getNotification } = this.props;
     const { notificationType, notificationId } = this.state;
 
     if (notificationType === BUY_REQUEST) {
-      getNotificationQuery.refetch({
+      getNotification.refetch({
         id: notificationId
       })
     }
   }
 
   renderNotificationDetails() {
-    const { getNotificationQuery, navigation, updateBuyRequestMutation } = this.props;
-
+    const { getNotification, navigation, updateBuyRequest, createTextbookSale } = this.props;
     return (
       <SingleBuyRequest
-        notification={getNotificationQuery.getNotification}
+        notification={getNotification.getNotification}
         navigation={navigation}
-        isLoading={getNotificationQuery.loading}
-        updateBuyRequest={updateBuyRequestMutation}
+        isLoading={getNotification.loading}
+        updateBuyRequest={updateBuyRequest}
+        createTextbookSale={createTextbookSale}
       />
     )
   }

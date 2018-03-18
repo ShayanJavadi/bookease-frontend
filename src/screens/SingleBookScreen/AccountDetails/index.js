@@ -10,11 +10,9 @@ const {
   accountDetailsNameStyle,
   accountDetailsPostedStyle,
   bookDetailsLowerSectionWrapper,
-  bookDescriptionWrapperStyle,
-  bookDescriptionStyle,
 } = styles;
 
-const AccountDetails = ({ textbook: { description, createdAt } }) => (
+const AccountDetails = ({ textbook: { createdAt } }) => (
   <TouchableWithoutFeedback onPress={() => alert("go to account page ")}>
     <View style={bookDetailsLowerSectionWrapper}>
       <View style={accountDetailsWrapperStyle}>
@@ -30,9 +28,6 @@ const AccountDetails = ({ textbook: { description, createdAt } }) => (
         <View style={{ flex: .5 }}>
           <MaterialIcons name="navigate-next" size={30} style={{ color: "#ccc" }} />
         </View>
-      </View>
-      <View style={bookDescriptionWrapperStyle}>
-        <Text style={bookDescriptionStyle}>{description}</Text>
       </View>
     </View>
   </TouchableWithoutFeedback>

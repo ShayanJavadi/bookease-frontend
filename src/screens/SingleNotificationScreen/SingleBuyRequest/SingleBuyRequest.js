@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, ActivityIndicator } from "react-native";
+import { Text, View, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Button } from "react-native-material-ui";
 import { object, bool, shape, func } from "prop-types";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Spinner from "react-native-loading-spinner-overlay";
 import { omit } from "lodash";
-import { styles } from "./styles";
+import { MaterialIcons } from "@expo/vector-icons";
+import { styles, palette } from "./styles";
 import Header from "src/modules/Header";
 import BackButton from "src/modules/BackButton";
 import BuyRequestDetails from "src/modules/BuyRequestDetails";
@@ -22,13 +24,16 @@ const {
   acceptButtonTextStyle,
   activityIndicatorWrapper,
   meetingButtonWrapperStyle,
-  cancelMeetingButtonWrapperStyle,
+  markAsDoneButtonWrapperStyle,
+  markAsDoneModalRadioButtonWrapperStyle,
+  markAsDoneModalRadioButtonTextStyle,
 } = styles;
 
 export default class SingleBuyRequest extends Component {
   static propTypes = {
    notification: object.isRequired,
    updateBuyRequest: func.isRequired,
+   createTextbookSale: func.isRequired,
    navigation: shape({
      navigate: func.isRequired
    }).isRequired,
@@ -38,16 +43,28 @@ export default class SingleBuyRequest extends Component {
   state = {
     isAcceptButtonModalVisible: false,
     isDeclineButtonModalVisible: false,
-    isCancelButtonModalVisible: false,
+    isMarkAsDoneModalVisible: false,
+    isDidSellTextbookButtonPressed: false,
+    isDidNotSellTextbookButtonPressed: false,
+    isRedirectingToSMS: false,
+    isCreatingTextbookSale: false,
+    spinnerMessage: "",
   }
 
   onScheduleMeetingPress() {
-    return openSms({ number: 8172260183, message: "Sample message goes here!!!!!!" });
+    this.setState({ isRedirectingToSMS: true });
+
+    return openSms({
+      number: 8172260183, message: "Sample message goes here!!!!!!"
+    })
+    .then(() => {
+      this.setState({ isRedirectingToSMS: false, spinnerMessage: "Redirecting to Messages" })
+    })
   }
 
   updateBuyRequest(valuesToUpdate) {
     const { updateBuyRequest, notification } = this.props;
-    const updatedBuyRequest = Object.assign({}, omit(notification.buyRequest, ["textbook", "__typename"]), valuesToUpdate);
+    const updatedBuyRequest = Object.assign({}, omit(notification.buyRequest, ["textbook", "isTextbookSold", "__typename"]), valuesToUpdate);
 
     return updateBuyRequest({
       variables: {
@@ -68,42 +85,83 @@ export default class SingleBuyRequest extends Component {
     return this.setState({ isAcceptButtonModalVisible: false });
   }
 
-  renderAcceptModal() {
+  renderAcceptModal(displayName) {
     return (
       <Modal
         isVisible={this.state.isAcceptButtonModalVisible}
-        text="Accept Mike's request?"
+        text={`Accept ${displayName}'s request?`}
         actions={["cancel", "accept"]}
         onActionPress={(action) => this.onAcceptModalActionPress(action)}
       >
         <View style={{ paddingTop: 20 }}>
-          <Text>Your phone numbers will be visible to each upon your acceptance.</Text>
+          <Text>Your phone numbers will be visible to each other after you accept.</Text>
         </View>
       </Modal>
     )
   }
 
-  onCancelModalActionPress(action) {
-    if (action === "discard") {
-      this.updateBuyRequest({ isAccepted: false })
-      .then(() => {
-        return this.setState({ isCancelButtonModalVisible: false })
-      })
+  onMarkAsDoneModalActionPress(action) {
+    const { isDidSellTextbookButtonPressed, isDidNotSellTextbookButtonPressed } = this.state;
+    const { notification: { buyRequest }, createTextbookSale } = this.props;
+
+    if (action === "ok") {
+      if (isDidNotSellTextbookButtonPressed) {
+        this.setState({ isMarkAsDoneModalVisible: false });
+        return this.updateBuyRequest({ isAccepted: false });
+      }
+
+      if (isDidSellTextbookButtonPressed) {
+        this.setState({ isMarkAsDoneModalVisible: false, isCreatingTextbookSale: true, spinnerMessage: "" });
+
+        return createTextbookSale({
+          variables: {
+            textbookSale: {
+              buyerId: buyRequest.userId,
+              textbookId: buyRequest.textbookId,
+              buyRequestId: buyRequest.id,
+            }
+          }
+        })
+        .then(() => {
+          this.setState({ isCreatingTextbookSale: true });
+          return;
+        })
+      }
     }
 
-    return this.setState({ isCancelButtonModalVisible: false });
+    return this.setState({ isMarkAsDoneModalVisible: false });
   }
 
-  renderCancelModal() {
+  renderMarkAsDoneModal() {
+    const { primaryColor } = palette;
+    const { isDidSellTextbookButtonPressed, isDidNotSellTextbookButtonPressed } = this.state;
+    const hasUserSelectedButton = isDidSellTextbookButtonPressed || isDidNotSellTextbookButtonPressed;
+
     return (
       <Modal
-        isVisible={this.state.isCancelButtonModalVisible}
-        text="Cancel Mike's request?"
-        actions={["cancel", "discard"]}
-        onActionPress={(action) => this.onCancelModalActionPress(action)}
+        isVisible={this.state.isMarkAsDoneModalVisible}
+        text="Mark as done"
+        actions={["cancel", "ok"]}
+        options={{ ok: { disabled: !hasUserSelectedButton } }}
+        onActionPress={(action) => this.onMarkAsDoneModalActionPress(action)}
       >
-        <View style={{ paddingTop: 0 }}>
-          <Text>This will cancel your acceptance of the request. You can always accept the request again if you change your mind.</Text>
+        <View style={{ paddingTop: 0, flex: 1 }}>
+          <TouchableOpacity onPress={() => this.setState({ isDidSellTextbookButtonPressed: true, isDidNotSellTextbookButtonPressed: false })} style={[markAsDoneModalRadioButtonWrapperStyle, { paddingBottom: 20 }]}>
+            <MaterialIcons
+              size={30}
+              color={isDidSellTextbookButtonPressed ? primaryColor : "#666"}
+              name={isDidSellTextbookButtonPressed ? "radio-button-checked" : "radio-button-unchecked"}
+            />
+            <Text style={markAsDoneModalRadioButtonTextStyle}>I sold my textbook</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.setState({ isDidSellTextbookButtonPressed: false, isDidNotSellTextbookButtonPressed: true })} style={markAsDoneModalRadioButtonWrapperStyle}>
+            <MaterialIcons
+              size={30}
+              color={isDidNotSellTextbookButtonPressed ? primaryColor : "#666"}
+              name={isDidNotSellTextbookButtonPressed ? "radio-button-checked" : "radio-button-unchecked"}
+            />
+            <Text style={markAsDoneModalRadioButtonTextStyle}>I did not sell my textbook</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     )
@@ -143,12 +201,13 @@ export default class SingleBuyRequest extends Component {
     }
 
     const { isAccepted } = notification.buyRequest;
+    const { displayName } = notification.user;
 
     return (
       <FloatingBottomContainer height={250}>
         <PhoneNumberContainer
           showPhoneNumber={isAccepted}
-          text={isAccepted ? "Schedule a meeting with Mike to finish the trade." : "Accept Mike\'s request to access his phone number."}
+          text={isAccepted ? `Message ${displayName} to arrange a meetup` : `Accept ${displayName}\'s request to exchange phone numbers`}
           phoneNumber="(817) 226 - 0183"
           onPhoneNumberPress={() => isAccepted && this.onScheduleMeetingPress()}
         />
@@ -162,12 +221,12 @@ export default class SingleBuyRequest extends Component {
     if (notification && notification.buyRequest.isAccepted) {
       return (
         <FloatingBottomContainer>
-          <View style={cancelMeetingButtonWrapperStyle}>
+          <View style={markAsDoneButtonWrapperStyle}>
             <Button
               style={{ container: declineButtonContainerStyle, text: declineButtonTextStyle }}
               primary
-              onPress={() => this.setState({ isCancelButtonModalVisible: true })}
-              text="Cancel"
+              onPress={() => this.setState({ isMarkAsDoneModalVisible: true })}
+              text="Mark as Done"
             />
           </View>
           <View style={meetingButtonWrapperStyle}>
@@ -176,7 +235,7 @@ export default class SingleBuyRequest extends Component {
               primary
               raised
               onPress={() => this.onScheduleMeetingPress()}
-              text="Schedule Meeting"
+              text="Message"
             />
           </View>
         </FloatingBottomContainer>
@@ -208,20 +267,27 @@ export default class SingleBuyRequest extends Component {
 
   render() {
     const { notification, navigation, isLoading } = this.props;
-
+    const { isCreatingTextbookSale, isRedirectingToSMS, spinnerMessage } = this.state;
+    const shouldShowSpinner = isCreatingTextbookSale || isRedirectingToSMS;
     return (
       <View style={containerStyle}>
         <Header
           leftComponent={<BackButton navigation={navigation}/>}
-          text="Mike's Buy Request"
+          text="Buy Request"
         />
        <KeyboardAwareScrollView>
         {this.renderBuyRequestDetails(notification, navigation, isLoading)}
        </KeyboardAwareScrollView>
        {this.renderPhoneNumber(notification, isLoading)}
        {this.renderButtons(notification)}
-       {this.renderAcceptModal()}
-       {this.renderCancelModal()}
+       {notification && this.renderAcceptModal(notification.user.displayName)}
+       {this.renderMarkAsDoneModal()}
+       <Spinner
+         visible={shouldShowSpinner}
+         textContent={spinnerMessage}
+         overlayColor="rgba(0, 0, 0, 0.65)"
+         textStyle={{ color: "#fff" }}
+       />
       </View>
     )
   }

@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    paddingLeft: 15,
   },
   backButtonHeaderLessWrapperStyle: {
     position: "absolute",
@@ -23,6 +24,5 @@ export const styles = StyleSheet.create({
   },
   backButtonIconStyle: {
     color: "#fff",
-    paddingLeft: 15,
   },
 });

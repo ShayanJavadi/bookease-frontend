@@ -29,14 +29,4 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     zIndex: 9999,
   },
-  bookDescriptionWrapperStyle: {
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-  },
-  bookDescriptionStyle: {
-    fontSize: 18,
-    color: "#666",
-    lineHeight: 25
-  },
-
 });

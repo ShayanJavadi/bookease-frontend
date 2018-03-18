@@ -11,14 +11,16 @@ const mapStateToProps = () => ({}); // eslint-disable-line no-unused-vars
 
 const Container = compose(
   graphql(getTextbookQuery, {
-    options: props => ({ variables: { textbookId: props.textbookId || "" } }),
+    options: props => {
+      return ({ variables: { textbookId: props.textbookId || "" } });
+    },
     name: "getTextbookQuery"
   }),
   graphql(deleteTextbookMutation, {
     options: props => ({ variables: { textbookId: props.textbookId || "" } }),
     name: "deleteTextbookMutation",
   }),
-)
+);
 
 export default Container(connect(
   mapStateToProps,

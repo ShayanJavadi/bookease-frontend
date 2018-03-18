@@ -1,4 +1,5 @@
 import React from "react";
+import { bool } from "prop-types";
 import { View, Text, Image } from "react-native";
 import { styles } from "./styles";
 
@@ -34,7 +35,7 @@ const questions = [
   },
 ];
 
-const fetchQuestions = () => {
+const fetchQuestions = (isUserOwner) => {
   if (questions) {
     return questions.map((question, index) => (
       <View style={questionWrapperStyle} key={index}>
@@ -59,26 +60,34 @@ const fetchQuestions = () => {
     ));
   }
 
+
   return (
     <View style={noQuestionsWrapperStyle}>
-      <Text style={noQuestionsStyle}>{
-        'Have questions\? Press the "ASK" button to ask them.' // eslint-disable-line quotes
-      }</Text>
+      <Text style={noQuestionsStyle}>
+        {
+          isUserOwner ?
+          "Your questions will appear here." :
+          "Have questions\? Press the \"ASK\" button to ask them."
+        }
+      </Text>
     </View>
   );
 }
 
 
-const Questions = () => (
+const Questions = ({ isUserOwner }) => (
   <View style={questionsWrapperStyle}>
     <View style={questionsTitleWrapperStyle}>
       <View style={{ flex: 1 }}>
         <Text style={questionsTitleStyle}>Questions & Answers</Text>
       </View>
     </View>
-   {fetchQuestions()}
+   {fetchQuestions(isUserOwner)}
   </View>
 );
 
+Questions.propTypes = {
+  isUserOwner: bool.isRequired,
+};
 
 export default Questions;

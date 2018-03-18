@@ -22,6 +22,34 @@ const getTextbookQuery = gql`
         createdAt,
         updatedAt,
         publishedAt,
+        buyRequestNotifications {
+          id,
+          userId,
+          textbookId,
+          senderId
+          message
+          type,
+          isRead,
+          createdAt,
+          user{
+            id,
+            displayName,
+            photoURL,
+          },
+          buyRequest{
+            id,
+            userId,
+            textbookId,
+            textbook{
+              title,
+              price
+            },
+            notificationId,
+            recipientId,
+            isAccepted,
+            message,
+          },
+        }
     }
   }
 `;

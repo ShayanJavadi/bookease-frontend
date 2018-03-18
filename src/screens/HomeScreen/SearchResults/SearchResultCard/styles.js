@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const { palette } = uiTheme;
 const {
@@ -44,30 +42,30 @@ export const styles = StyleSheet.create({
     flex: 2,
     backgroundColor: "#fff",
     flexDirection: "row",
+    paddingHorizontal: 15,
   },
   lowerSectionLeftWrapper: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    flex: 2,
-    paddingLeft: 10,
+    flex: 4,
   },
   lowerSectionRightWrapper: {
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
     flexDirection: "row",
-    marginRight: SCREEN_WIDTH * .069,
     flex: 1,
   },
   buttonTextStyle: {
     textAlign: "center",
-    fontSize: 13,
+    fontSize: 12,
     color: "#fff",
     fontWeight: "700",
   },
   buttonContainerStyle: {
     backgroundColor: primaryColor,
-    width: 75,
+    width: 70,
+    height: 35
   },
   bookNameStyle: {
     fontSize: 17,
@@ -96,11 +94,14 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
   },
-  bookPriceStyle: {
-    color: "#666",
-    fontSize: 19,
-    paddingRight: 15,
+  bookPriceWrapperStyle: {},
+  priceChipWrapperStyle: {
+    bottom: "16%",
+    left: 15,
+    minWidth: 50,
+    height: 25,
   },
-  bookPriceWrapperStyle: {
+  priceChipTextStyle: {
+    fontSize: 16
   },
 });

@@ -12,14 +12,14 @@ const PhoneNumberContainer = ({ showPhoneNumber, text, phoneNumber, onPhoneNumbe
   return (
     <View style={[phoneNumberWrapperStyle, outerContainerStyles]}>
       <View style={[phoneNumberDetailsWrapperStyle, innerContainerStyles]}>
-        {showIcon ? <MaterialIcons style={{ color: "#444" }} name={showPhoneNumber ? "phone" : "phone-locked"} size={50} /> : null}
+        {showIcon ? <MaterialIcons style={{ color: "#ccc" }} name={showPhoneNumber ? "sms" : "lock"} size={50} /> : null}
         <Text
           style={{ fontSize: showPhoneNumber ? 23 : 30, paddingBottom: 10, paddingTop: showPhoneNumber ? 7 : 0, color: palette.primaryColor  }}
           onPress={onPhoneNumberPress}
         >
           {showPhoneNumber ? phoneNumber : "(•••) ••• - ••••"}
         </Text>
-        <Text style={{ color: "#555" }}>
+        <Text style={{ color: "#555", textAlign: "center", textAlignVertical: "center" }}>
           {text}
         </Text>
       </View>

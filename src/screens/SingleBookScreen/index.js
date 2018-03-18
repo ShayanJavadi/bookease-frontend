@@ -1,33 +1,35 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
 import { func, shape, object } from "prop-types";
-import BackButton from "src/modules/BackButton";
+import { isEmpty } from "lodash";
 import Questions from "./Questions";
 import BookImages from "./BookImages";
 import BookDetails from "./BookDetails";
 import AccountDetails from "./AccountDetails";
+import BuyRequestDetails from "src/modules/BuyRequestDetails";
 import { styles } from "./styles";
 import uiTheme from "src/common/styles";
 import Modal from "src/modules/Modal";
 import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
+import { NOTIFICATION_CONDITIONS } from "src/common/consts";
 
 const {
   screenStyle,
   buttonWrapperStyle,
-  askButtonContainerStyle,
-  askButtonTextStyle,
-  offerButtonContainerStyle,
-  offerButtonTextStyle,
+  ghostButtonContainerStyle,
+  ghostButtonTextStyle,
+  raisedButtonContainerStyle,
+  raisedButtonTextStyle,
+  buyRequestWrapperStyle,
+  headerTextStyle,
+  noBuyRequestsWrapperStyle,
+  noBuyRequestsStyle,
 } = styles;
 
 export default class SingleBookScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <BackButton navigation={navigation} headerLess={true} />,
-  })
-
   static propTypes = {
     getTextbookQuery: object.isRequired,
     navigation: shape({
@@ -38,12 +40,18 @@ export default class SingleBookScreen extends Component {
 
   state = {
     deleteTextbookModalVisible: false,
+    isUserOwner: true,
+    textbookId: this.props.navigation.state.params ?
+    this.props.navigation.state.params.textbookId :
+    undefined
   }
 
   componentDidMount() {
-    const { getTextbookQuery, navigation } = this.props;
-    if (navigation.state.params) {
-      getTextbookQuery.refetch({ textbookId: navigation.state.params.textbookId });
+    const { getTextbookQuery } = this.props;
+    const { textbookId } = this.state;
+
+    if (textbookId) {
+      getTextbookQuery.refetch({ textbookId: textbookId })
     }
   }
 
@@ -96,15 +104,74 @@ export default class SingleBookScreen extends Component {
     )
   }
 
-  renderListing() {
-    const { getTextbook } = this.props.getTextbookQuery;
+  renderBuyRequestDetails(notifications) {
+    if (!isEmpty(notifications)) {
+      const { BUY_REQUEST } = NOTIFICATION_CONDITIONS;
+      const { navigation } = this.props;
+
+      return notifications.map(notification => {
+        return (
+          <View style={buyRequestWrapperStyle} key={notification.id}>
+            <BuyRequestDetails
+              notification={notification}
+              navigation={navigation}
+              isReversed
+              isCompact
+              onPress={() => navigation.navigate("singleNotificationScreen", { notificationType: BUY_REQUEST, notificationId: notification.id })}
+            />
+          </View>
+        )
+      })
+    }
 
     return (
-      <KeyboardAwareScrollView>
-        <BookImages textbook={getTextbook} />
-        <BookDetails textbook={getTextbook} />
-        <AccountDetails textbook={getTextbook} />
-        <Questions />
+      <View style={noBuyRequestsWrapperStyle}>
+        <Text style={noBuyRequestsStyle}>
+          Your buy requests will appear here.
+        </Text>
+      </View>
+    )
+  }
+
+  renderBuyRequests(notifications) {
+    // TODO: denote that this is only visible to hte owner
+    // "only visible to you "
+    return (
+      <View>
+        <Text style={headerTextStyle}>Buy Requests</Text>
+        {this.renderBuyRequestDetails(notifications)}
+      </View>
+    )
+  }
+
+  renderListing() {
+    const { getTextbookQuery: { getTextbook }, navigation } = this.props;
+    const { isUserOwner } = this.state;
+
+    return (
+      <KeyboardAwareScrollView
+        innerRef={ref => {this.scrollView = ref}}
+      >
+        <BookImages
+          textbook={getTextbook}
+          isUserOwner={isUserOwner}
+          onTopRightIconPress={() => alert("pressed")}
+          navigation={navigation}
+        />
+        <BookDetails
+          textbook={getTextbook}
+          isUserOwner={isUserOwner}
+          onLeftIconPress={() => this.scrollView.scrollTo({ x: 0, y: 450, animated: true })}
+          onRightIconPress={() => this.scrollView.scrollTo({ x: 0, y: 550, animated: true })}
+        />
+        {
+          isUserOwner ?
+          this.renderBuyRequests(getTextbook.buyRequestNotifications) :
+          <AccountDetails textbook={getTextbook} />
+        }
+        <Questions
+          isUserOwner={isUserOwner}
+        />
       </KeyboardAwareScrollView>
     )
   }
@@ -116,19 +183,19 @@ export default class SingleBookScreen extends Component {
       <FloatingBottomContainer>
         <View style={buttonWrapperStyle}>
           <Button
-            style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
+            style={{ container: ghostButtonContainerStyle, text: ghostButtonTextStyle }}
             primary
-            onPress={() => this.onDeleteTextbookPress()}
-            text="Delete"
-          />
-        </View>
-        <View style={buttonWrapperStyle}>
-          <Button
-            style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
-            primary
-            raised
             onPress={() => navigation.navigate("sellBooks", { textbookIdToUpdate: getTextbookQuery.getTextbook.id })}
             text="Edit"
+          />
+        </View>
+        <View style={[buttonWrapperStyle, { flex: 2 }]}>
+          <Button
+            style={{ container: raisedButtonContainerStyle, text: raisedButtonTextStyle }}
+            primary
+            raised
+            onPress={() => this.scrollView.scrollTo({ x: 0, y: 700, animated: true })}
+            text={`Buy Requests (${getTextbookQuery.getTextbook.buyRequestNotifications.length})`}
           />
         </View>
       </FloatingBottomContainer>
@@ -140,14 +207,14 @@ export default class SingleBookScreen extends Component {
       <FloatingBottomContainer>
         <View style={buttonWrapperStyle}>
           <Button
-            style={{ container: askButtonContainerStyle, text: askButtonTextStyle }}
+            style={{ container: ghostButtonContainerStyle, text: ghostButtonTextStyle }}
             primary
             text="Ask"
           />
         </View>
         <View style={buttonWrapperStyle}>
           <Button
-            style={{ container: offerButtonContainerStyle, text: offerButtonTextStyle }}
+            style={{ container: raisedButtonContainerStyle, text: raisedButtonTextStyle }}
             primary
             raised
             onPress={() => this.onBuyButtonPress()}
@@ -160,7 +227,7 @@ export default class SingleBookScreen extends Component {
 
   renderButtons() {
     // TODO: change to use getSession api
-    const isUserOwner = false;
+    const { isUserOwner } = this.state;
 
     if (isUserOwner) {
       return this.renderSellerButtons();
@@ -171,9 +238,9 @@ export default class SingleBookScreen extends Component {
 
   render() {
     const { getTextbookQuery } = this.props;
+    const isTextbookQueryLoading = getTextbookQuery.loading || !getTextbookQuery.getTextbook;
 
-    // TODO: implement optimistic loading
-    if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
+    if (isTextbookQueryLoading) {
       return (
         <View style={{ flex: 1, justifyContent: "center" }}>
           <ActivityIndicator
