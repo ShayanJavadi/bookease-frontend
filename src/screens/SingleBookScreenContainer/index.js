@@ -1,27 +1,21 @@
 import { graphql, compose } from "react-apollo";
-import { connect } from "react-redux";
 import queries from "./graphql/queries";
 import mutations from "./graphql/mutations";
 import SingleBookScreen from "../SingleBookScreen";
 
-const { getTextbookQuery } = queries;
+const { getTextbookQuery, getSessionQuery } = queries;
 const { deleteTextbookMutation } = mutations;
 
-const mapStateToProps = () => ({}); // eslint-disable-line no-unused-vars
-
-const Container = compose(
+export default compose(
+  graphql(getSessionQuery, {
+    name: "getSessionQuery",
+  }),
   graphql(getTextbookQuery, {
-    options: props => {
-      return ({ variables: { textbookId: props.textbookId || "" } });
-    },
-    name: "getTextbookQuery"
+    name: "getTextbookQuery",
+    options: props => ({ variables: { textbookId: props.textbookId || "" } }),
   }),
   graphql(deleteTextbookMutation, {
-    options: props => ({ variables: { textbookId: props.textbookId || "" } }),
     name: "deleteTextbookMutation",
-  }),
-);
-
-export default Container(connect(
-  mapStateToProps,
-)(SingleBookScreen));
+    options: props => ({ variables: { textbookId: props.textbookId || "" } }),
+  })
+)(SingleBookScreen);

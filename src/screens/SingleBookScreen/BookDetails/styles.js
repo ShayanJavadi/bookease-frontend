@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+export const SCREEN_HEIGHT = Dimensions.get("window").height;
+
 import uiTheme from "src/common/styles/uiTheme";
 
 export const { palette } = uiTheme;
@@ -12,7 +14,7 @@ const {
 export const styles = StyleSheet.create({
   bookDetailsWrapperStyle: {
     flex: 1,
-    shadowColor: "#000",
+    shadowColor: "#666",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -50,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   listingFooterWrapperStyle: {
     flexDirection: "row",
-    paddingTop: 12,
+    paddingTop: 14,
     paddingBottom: 3,
     paddingHorizontal: 20,
   },

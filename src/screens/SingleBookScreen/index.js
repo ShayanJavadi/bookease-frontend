@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, Text } from "react-native";
+import ReactNative, { View, ActivityIndicator, Text } from "react-native";
+import ImageViewer from "react-native-image-zoom-viewer";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
@@ -13,6 +14,7 @@ import BuyRequestDetails from "src/modules/BuyRequestDetails";
 import { styles } from "./styles";
 import uiTheme from "src/common/styles";
 import Modal from "src/modules/Modal";
+import PlaceholderView from "src/modules/PlaceholderView";
 import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
 import { NOTIFICATION_CONDITIONS } from "src/common/consts";
 
@@ -36,24 +38,36 @@ export default class SingleBookScreen extends Component {
       navigate: func.isRequired
     }).isRequired,
     deleteTextbookMutation: func.isRequired,
+    getSessionQuery: func.isRequired,
   };
 
   state = {
     deleteTextbookModalVisible: false,
-    isUserOwner: true,
+    isUserOwner: undefined,
+    isImageSlideShowModalVisible: false,
+    slideShowImages: undefined,
+    slideShowImageIndex: 0,
+    isComponentLoading: true,
+    didRefetchAllData: undefined,
     textbookId: this.props.navigation.state.params ?
     this.props.navigation.state.params.textbookId :
     undefined
   }
 
-  componentDidMount() {
-    const { getTextbookQuery } = this.props;
-    const { textbookId } = this.state;
+  componentWillMount = async () => {
+    if (!this.state.didRefetchAllData) {
+      const { data: { getSession } } = await this.props.getSessionQuery.refetch();
+      const { data: { getTextbook } } = await this.props.getTextbookQuery.refetch({ textbookId: this.state.textbookId });
+      const userId = getSession.user && getSession.user.id;
+      const isUserOwner = userId === getTextbook.userId;
+      const slideShowImages = getTextbook.images.reduce((textbookImages, image) => {
+        return [ ...textbookImages, { url: image.thumbnail }]
+      }, []);
 
-    if (textbookId) {
-      getTextbookQuery.refetch({ textbookId: textbookId })
+      this.setState({ slideShowImages, isComponentLoading: false, isUserOwner, didRefetchAllData: true });
     }
   }
+
 
   onDeleteTextbookPress() {
     this.setState({ deleteTextbookModalVisible: true })
@@ -144,35 +158,59 @@ export default class SingleBookScreen extends Component {
     )
   }
 
-  renderListing() {
-    const { getTextbookQuery: { getTextbook }, navigation } = this.props;
-    const { isUserOwner } = this.state;
+  renderListingPlaceholder() {
+    const placeholdersCount = 6;
 
     return (
-      <KeyboardAwareScrollView
-        innerRef={ref => {this.scrollView = ref}}
-      >
+      <View>
+        <PlaceholderView styles={{ height: 350 }}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <ActivityIndicator
+              size="large"
+              color={uiTheme.tertiaryColorDark}
+            />
+          </View>
+        </PlaceholderView>
+        <View style={{ width: 375, height: 375, paddingHorizontal: 20, paddingTop: 53 }}>
+          {[...Array(placeholdersCount)].map((curr, index) => (<PlaceholderView key={index} styles={{ marginBottom: 20 }} />))}
+        </View>
+      </View>
+    )
+  }
+
+  renderListing() {
+    const { getTextbookQuery, navigation, getSessionQuery } = this.props;
+    const  { getTextbook } = getTextbookQuery
+    const { isUserOwner, isComponentLoading } = this.state;
+    const isTextbookQueryLoading = getTextbookQuery.loading || getSessionQuery.loading || !getTextbookQuery.getTextbook || isComponentLoading;
+
+    if (isTextbookQueryLoading) {
+      return this.renderListingPlaceholder();
+    }
+
+    return (
+      <View>
         <BookImages
           textbook={getTextbook}
           isUserOwner={isUserOwner}
           onTopRightIconPress={() => alert("pressed")}
           navigation={navigation}
+          onPress={() => this.setState({ isImageSlideShowModalVisible: true })}
+          onCarouselIndexChange={(index) => this.setState({ slideShowImageIndex: index })}
         />
         <BookDetails
           textbook={getTextbook}
           isUserOwner={isUserOwner}
-          onLeftIconPress={() => this.scrollView.scrollTo({ x: 0, y: 450, animated: true })}
-          onRightIconPress={() => this.scrollView.scrollTo({ x: 0, y: 550, animated: true })}
+          onMiddleIconPress={() => this.scrollView.scrollToEnd()}
+          onRightIconPress={() => this.scrollView.scrollToEnd()}
         />
-        {
-          isUserOwner ?
-          this.renderBuyRequests(getTextbook.buyRequestNotifications) :
-          <AccountDetails textbook={getTextbook} />
-        }
+        <AccountDetails textbook={getTextbook} />
+        {this.renderBuyRequests(getTextbook.buyRequestNotifications)}
         <Questions
+          ref={ref => this.questions = ref}
           isUserOwner={isUserOwner}
         />
-      </KeyboardAwareScrollView>
+      </View>
     )
   }
 
@@ -225,9 +263,24 @@ export default class SingleBookScreen extends Component {
     )
   }
 
+  renderButtonPlaceholders() {
+    return (
+      <FloatingBottomContainer>
+        <PlaceholderView styles={[buttonWrapperStyle, { height: 40, marginHorizontal: 10 }]} />
+        <PlaceholderView styles={[buttonWrapperStyle, { height: 40, marginHorizontal: 10 }]} />
+      </FloatingBottomContainer>
+    )
+  }
+
   renderButtons() {
     // TODO: change to use getSession api
-    const { isUserOwner } = this.state;
+    const { isUserOwner, isComponentLoading } = this.state;
+    const { getTextbookQuery, getSessionQuery } = this.props;
+    const isTextbookQueryLoading = getTextbookQuery.loading || getSessionQuery.loading || !getTextbookQuery.getTextbook || isComponentLoading;
+
+    if (isTextbookQueryLoading) {
+      return this.renderButtonPlaceholders();
+    }
 
     if (isUserOwner) {
       return this.renderSellerButtons();
@@ -236,26 +289,40 @@ export default class SingleBookScreen extends Component {
     return this.renderBuyerButtons();
   }
 
-  render() {
-    const { getTextbookQuery } = this.props;
-    const isTextbookQueryLoading = getTextbookQuery.loading || !getTextbookQuery.getTextbook;
+  renderSlideShowModal() {
+    if (this.state.slideShowImages) {
+      const { Modal } = ReactNative;
 
-    if (isTextbookQueryLoading) {
       return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator
-            size="large"
-            color={uiTheme.tertiaryColorDark}
+        <Modal visible={this.state.isImageSlideShowModalVisible} transparent={true} animated>
+          <ImageViewer
+            imageUrls={this.state.slideShowImages}
+            onSwipeDown={() => {
+              this.setState({ isImageSlideShowModalVisible: false })
+            }}
+            index={this.state.slideShowImageIndex}
           />
-        </View>
+        </Modal>
       )
     }
+  }
+
+  render() {
+    const { getTextbookQuery, getSessionQuery } = this.props;
+    const { isComponentLoading } = this.state;
+    const isTextbookQueryLoading = getTextbookQuery.loading || getSessionQuery.loading || !getTextbookQuery.getTextbook || isComponentLoading;
 
     return (
       <View style={screenStyle}>
-        {this.renderListing()}
+        <KeyboardAwareScrollView
+          innerRef={ref => {this.scrollView = ref}}
+          scrollEnabled={!isTextbookQueryLoading}
+        >
+          {this.renderListing()}
+        </KeyboardAwareScrollView>
         {this.renderButtons()}
         {this.renderDeleteTextbookModal()}
+        {this.renderSlideShowModal()}
       </View>
     );
   }

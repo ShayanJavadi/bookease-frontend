@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, StyleSheet } from "react-native";
 import { number, string, object } from "prop-types";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const createStyles = (size) => {
   return StyleSheet.create({
@@ -14,6 +15,9 @@ const createStyles = (size) => {
 
 const Avatar = ({ size, styles = {}, uri }) => {
   const { imageStyle } = createStyles(size);
+  if (!uri) {
+    return <MaterialIcons name="account-circle" size={75} style={{ color: "#ccc" }} />
+  }
 
   return (
     <Image

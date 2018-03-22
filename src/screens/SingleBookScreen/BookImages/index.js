@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, TouchableHighlight } from "react-native";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,18 +17,18 @@ const {
   bookImageLinearGradientStyle,
 } = styles;
 
-const renderCarouselSlides = (images) => {
+const renderCarouselSlides = (images, onPress) => {
   return images.map((image, index) => (
-      <View style={{ flex: 1 }} key={index}>
+      <TouchableHighlight style={{ flex: 1 }} key={index} onPress={onPress}>
         <Image
           style={bookImageStyle}
           source={{ uri: image.thumbnail }}
         />
-      </View>
+      </TouchableHighlight>
   ));
 }
 
-const renderPictureCarousel = (images) => {
+const renderPictureCarousel = (images, onPress, onCarouselIndexChange) => {
   return (
       <Swiper
         loop={false}
@@ -38,8 +38,9 @@ const renderPictureCarousel = (images) => {
         showsPagination={true}
         showsButtons={false}
         style={{ height: 300, zIndex: 99999 }}
+        onIndexChanged={onCarouselIndexChange}
       >
-        {renderCarouselSlides(images)}
+        {renderCarouselSlides(images, onPress)}
       </Swiper>
   )
 }
@@ -59,9 +60,6 @@ const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation) => {
       <View style={iconsWrapperStyle}>
         {renderBackButton(navigation)}
         <View style={{ justifyContent: "flex-end", flexDirection: "row" }}>
-          <TouchableOpacity onPress={() => alert("share")}>
-            <MaterialCommunityIcons size={30} color="#fff" name="archive" />
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => alert("share")}>
             <MaterialCommunityIcons size={30} color="#fff" name="delete" />
           </TouchableOpacity>
@@ -84,9 +82,9 @@ const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation) => {
 
 }
 
-const BookImages = ({ isUserOwner, buyRequestCount, navigation, textbook: { price, images } }) => (
+const BookImages = ({ isUserOwner, buyRequestCount, navigation, textbook: { price, images }, onPress, onCarouselIndexChange }) => (
   <View style={bookImageWrapperStyle}>
-    {renderPictureCarousel(images)}
+    {renderPictureCarousel(images, onPress, onCarouselIndexChange)}
     {renderOverlayIcons(isUserOwner, buyRequestCount, navigation)}
     <Chip
       text={`\$${price}`}
@@ -106,6 +104,8 @@ BookImages.propTypes = {
   navigation: shape({
     navigate: func.isRequired
   }).isRequired,
+  onPress: func,
+  onCarouselIndexChange: number,
 };
 
 export default BookImages;

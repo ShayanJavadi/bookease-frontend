@@ -1,18 +1,20 @@
 import React from "react";
-import { View, FlatList, ActivityIndicator, Text } from "react-native";
+import { View, ActivityIndicator, Text } from "react-native";
 import { object, bool, array } from "prop-types";
 import { isEmpty } from "lodash";
-import SearchResultCard from "./SearchResultCard";
+import Masonry from "react-native-masonry";
 import uiTheme from "src/common/styles/uiTheme";
+import Chip from "src/modules/Chip";
+import ProgressiveImage from "src/modules/ProgressiveImage";
 
-const renderSearchResult = (book, navigation) => {
-  return (
-    <SearchResultCard
-      navigation={navigation}
-      key={book.id}
-      book={book}
-    />
-  );
+const getBricks = (textbooks, navigation) => {
+  return textbooks.reduce((textbookImages, textbook) => {
+    const uri = textbook.images[0] && textbook.images[0].thumbnail;
+    const onPress = textbook => navigation.navigate("singleBook", { textbookId: textbook.id });
+    const renderFooter = textbook => <Chip text={`\$${textbook.price}`} />
+
+    return [ ... textbookImages, { data: textbook, uri, onPress,renderFooter } ]
+  }, [])
 }
 
 const SearchResults = ({ textbooks, loading, navigation }) => {
@@ -40,12 +42,15 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
   }
 
   return (
-    <View style={{ flex: 6, backgroundColor: "#fff" }}>
-      <FlatList
-        data={textbooks}
-        renderItem={({ item }) => renderSearchResult(item, navigation)}
-        keyExtractor={item => item.isbn}
-        initialNumToRender={2}
+    <View style={{ flex: 6 }}>
+      <Masonry
+        columns={textbooks.length < 3 ? 2 : 3} // optional - Default: 2
+        bricks={getBricks(textbooks, navigation)}
+        customImageComponent={ProgressiveImage}
+        imageContainerStyle={{
+          borderWidth: .5,
+          borderColor: "#eee",
+        }}
       />
     </View>
   );

@@ -374,9 +374,9 @@ export default class EnterBookDetailsScreen extends Component {
 
    return (
      <Form
-      errorsMessages={errorsMessages}
-      formInputValues={formInputValues}
-      updateFormInputValues={(formInputValues) => this.setState(formInputValues)}
+       errorsMessages={errorsMessages}
+       formInputValues={formInputValues}
+       updateFormInputValues={(formInputValues) => this.setState(formInputValues)}
      />
    )
   }

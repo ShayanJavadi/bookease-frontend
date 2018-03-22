@@ -70,6 +70,7 @@ export default class SearchBar extends Component {
             underlineColorAndroid="transparent"
             value={this.state.searchQuery}
             onChangeText={(text) => this.onSearchInputChange(text)}
+            autoCorrect={false}
           />
           <TouchableOpacity onPress={() => this.props.navigation.navigate("scan", { context: "home" })}>
             <MaterialCommunityIcons name="barcode-scan" size={30} style={barCodeIconStyle} />

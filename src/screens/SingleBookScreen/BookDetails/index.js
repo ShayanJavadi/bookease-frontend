@@ -19,7 +19,10 @@ const {
   listingFooterTextStyle,
 } = styles;
 
-const renderIcons = (buyRequestNotifications, onLeftIconPress, onRightIconPress) => {
+const renderIcons = (buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner) => {
+  const buyRequestsCount = buyRequestNotifications.length;
+  const hasMultipleBuyRequests = buyRequestsCount > 1;
+
   return (
     <View style={listingFooterWrapperStyle}>
       <View style={{ flex: 1, flexDirection: "row" }}>
@@ -27,30 +30,47 @@ const renderIcons = (buyRequestNotifications, onLeftIconPress, onRightIconPress)
           style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
           onPress={onLeftIconPress}
         >
-          <MaterialCommunityIcons name="tag" size={21} style={listingFooterIconStyle} />
-          <Text style={listingFooterTextStyle}>{buyRequestNotifications ? buyRequestNotifications.length : 0}</Text>
+          <MaterialCommunityIcons name="heart" size={21} style={listingFooterIconStyle} />
+          <Text style={listingFooterTextStyle}>0</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
-          onPress={onRightIconPress}
+          style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start", marginRight: isUserOwner ? 0 : 30 }]}
+          onPress={onMiddleIconPress}
         >
           <MaterialCommunityIcons name="message" size={21} style={listingFooterIconStyle} />
           <Text style={listingFooterTextStyle}>0</Text>
         </TouchableOpacity>
+        {
+          isUserOwner &&
+          <TouchableOpacity
+            style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
+            onPress={onRightIconPress}
+          >
+            <MaterialCommunityIcons name={hasMultipleBuyRequests ? "tag-multiple" : "tag"} size={hasMultipleBuyRequests ? 23 : 21} style={listingFooterIconStyle} />
+            <Text style={listingFooterTextStyle}>{buyRequestNotifications ? buyRequestsCount : 0}</Text>
+          </TouchableOpacity>
+        }
         <View style={{ flex: 1 }} />
       </View>
-      <View style={{ flex: 1 }} />
+      <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
+        {
+          isUserOwner &&
+          <TouchableOpacity onPress={() => alert("archive")}>
+            <MaterialCommunityIcons size={24} color="#ddd" name="archive" />
+          </TouchableOpacity>
+        }
+      </View>
     </View>
   )
 }
 
-const BookDetails = ({ textbook, onLeftIconPress, onRightIconPress  }) => {
+const BookDetails = ({ textbook, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner }) => {
   const { title, condition, authors, industryIdentifiers, edition, description, buyRequestNotifications } = textbook;
 
   return (
     <View style={bookDetailsWrapperStyle}>
       <View style={{ flex: 2 }}>
-        {renderIcons(buyRequestNotifications, onLeftIconPress, onRightIconPress)}
+        {renderIcons(buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner)}
         <View style={bookDetailsTitleWrapperStyle}>
           <View style={{ flexDirection: "row", flex: 1 }}>
             <Text style={bookDetailsTitleStyle}>{title}</Text>
@@ -71,7 +91,7 @@ const BookDetails = ({ textbook, onLeftIconPress, onRightIconPress  }) => {
           </View>
         </View>
         <View style={bookDetailsTextWrapperStyle}>
-          <View style={{ flexDirection: "row"  }}>
+          <View style={{ flexDirection: "row" }}>
             <Text style={bookDetailsTextKeyStyle}>
               Edition: <Text style={bookDetailsTextValueStyle}>{toOrdinal(edition)}</Text>
             </Text>
@@ -100,6 +120,7 @@ BookDetails.propTypes = {
   textbook: object.isRequired,
   isUserOwner: bool.isRequired,
   onLeftIconPress: func.isRequired,
+  onMiddleIconPress: func.isRequired,
   onRightIconPress: func.isRequired,
 };
 

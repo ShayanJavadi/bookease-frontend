@@ -1,6 +1,3 @@
-import {
-} from "../actions/consts";
-
 const INITIAL_STATE = {
   loading: false,
 };
