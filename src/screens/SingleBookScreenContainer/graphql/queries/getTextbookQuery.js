@@ -22,6 +22,11 @@ const getTextbookQuery = gql`
         createdAt,
         updatedAt,
         publishedAt,
+        user {
+          id,
+          displayName,
+          photoURL,
+        },
         buyRequestNotifications {
           id,
           userId,

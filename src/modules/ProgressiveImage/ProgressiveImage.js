@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image, Animated, StyleSheet, Platform } from "react-native";
 import { BlurView } from "expo";
 import { string, object } from "prop-types";
+import getImagePreviewUri from "src/common/lib/getImagePreviewUri";
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 export default class ProgressiveImage extends Component {
@@ -10,16 +11,21 @@ export default class ProgressiveImage extends Component {
     preview: string,
     imageStyle: object,
     containerStyle: object,
+    source: object,
+    style: object,
   };
 
   async componentWillMount() {
-    const { preview, uri } = this.props;
-    this.setState({ uri: preview, intensity: new Animated.Value(100) });
+    const injectedPropsByMasonry = this.props.source;
+    const uri = injectedPropsByMasonry ? injectedPropsByMasonry.uri : this.props.uri;
+
+    this.setState({ uri: getImagePreviewUri(uri), intensity: new Animated.Value(100) });
     await Image.prefetch(uri);
   }
 
   onLoadEnd() {
-    const { uri } = this.props;
+    const injectedPropsByMasonry = this.props.source;
+    const uri = injectedPropsByMasonry ? injectedPropsByMasonry.uri : this.props.uri;
     this.setState({ uri }, () => {
       const intensity = new Animated.Value(100);
       this.setState({ intensity });
@@ -28,29 +34,31 @@ export default class ProgressiveImage extends Component {
   }
 
   onPartialLoadEnd() {
-    const { uri } = this.props;
+    const injectedPropsByMasonry = this.props.source;
+    const uri = injectedPropsByMasonry ? injectedPropsByMasonry.uri : this.props.uri;
     this.setState({ uri }, () => {
       const intensity = new Animated.Value(100);
       this.setState({ intensity });
-      Animated.timing(intensity, { duration: 500, toValue: 10, useNativeDriver: true }).start();
+      Animated.timing(intensity, { duration: 500, toValue: 5, useNativeDriver: true }).start();
     })
   }
 
   render() {
     const { containerStyle, imageStyle } = this.props;
     const { uri, intensity } = this.state;
+    const masonaryStyleProps = this.props.source && this.props.style;
     const computedStyle = [
         StyleSheet.absoluteFill,
         containerStyle
     ];
 
     return (
-        <View style={containerStyle}>
+        <View style={[containerStyle, { backgroundColor: "#f1f1f1" }]}>
             {
                 uri && (
                     <Image
                         source={{ uri }}
-                        style={imageStyle}
+                        style={[imageStyle, masonaryStyleProps]}
                         onLoadEnd={() => this.onLoadEnd()}
                         onPartialLoad={() => this.onPartialLoadEnd()}
                     />

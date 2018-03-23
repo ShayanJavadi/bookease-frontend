@@ -9,10 +9,6 @@ const {
 export const styles = StyleSheet.create({
   questionsWrapperStyle: {
     flex: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
     paddingBottom: 25,
     alignItems: "center",
     paddingVertical: 15,

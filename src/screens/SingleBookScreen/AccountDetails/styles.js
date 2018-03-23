@@ -12,12 +12,12 @@ export const styles = StyleSheet.create({
     color: "#444",
     fontWeight: "500",
     paddingBottom: 3,
-    fontSize: 18,
+    fontSize: 14,
   },
   accountDetailsPostedStyle: {
     textAlign: "left",
     flexWrap: "wrap",
-    fontSize: 17,
+    fontSize: 14,
     color: "#666",
   },
 

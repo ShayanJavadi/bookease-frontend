@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
   buyRequestWrapperStyle: {
-    shadowColor: "#000",
+    shadowColor: "#666",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -50,10 +50,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 23,
     paddingBottom: 15,
+    height: 50
   },
   noBuyRequestsStyle: {
     textAlign: "left",
     flex: 1,
     color: "#555",
+
   },
 });
