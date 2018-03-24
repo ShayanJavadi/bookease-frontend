@@ -34,7 +34,7 @@ const SubmissionSuccessNavigator = StackNavigator({
 
 const SellBooksNavigator = StackNavigator({
   enterBookDetails: {
-    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, needsNavigationFocus: false }),
+    screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, needsNavigationFocus: true }),
   },
   scanBook: {
     screen: ScanBookScreen,

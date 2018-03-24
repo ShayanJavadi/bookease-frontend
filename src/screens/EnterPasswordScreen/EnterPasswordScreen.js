@@ -37,7 +37,8 @@ export default class EnterPasswordScreen extends Component {
     isAuthenticationPopup: bool,
     isPasswordValid: bool.isRequired,
     submitPassword: func.isRequired,
-    mutate: func.isRequired,
+    signInWithPhoneNumberMutation: func.isRequired,
+    updateProfileMutation: func.isRequired,
     updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
@@ -96,49 +97,46 @@ export default class EnterPasswordScreen extends Component {
       this.setState({ isWaiting: false, invalidPasswordEntered: true });
     }
 
-    if (isPasswordInvalid || isPasswordEmpty) return;
+    if (props.isPasswordValid) {
+      this.isProfileUpdateInProgress = true;
+      const rawSessionData = await props.getSessionQuery.refetch();
+      const sessionData = rawSessionData.data.getSession.user;
+      const rawSchoolData = await props.getSchoolNameQuery.refetch({ schoolId: sessionData.schoolId, });
+      const schoolData = rawSchoolData.data.searchSchools[0];
 
-    this.isProfileUpdateInProgress = true;
+      const profileData = {
+        fullName: sessionData.displayName,
+        id: sessionData.id,
+        phoneNumber: sessionData.phoneNumber,
+        schoolId: sessionData.schoolId,
+        schoolName: schoolData.name,
+      };
 
+      this.setState({
+        isWaiting: false,
+        invalidPasswordEntered: false,
+        password: "",
+      });
 
-    const rawSessionData = await props.getSessionQuery.refetch();
-    const sessionData = rawSessionData.data.getSession.user;
-    const rawSchoolData = await props.getSchoolNameQuery.refetch({ schoolId: sessionData.schoolId, });
-    const schoolData = rawSchoolData.data.searchSchools[0];
+      this.props.updateUser(profileData).then(() => {
+        const { isAuthenticationPopup, nextScreenSequence } = this.props.navigation.state.params;
 
-    const profileData = {
-      fullName: sessionData.displayName,
-      id: sessionData.id,
-      phoneNumber: sessionData.phoneNumber,
-      schoolId: sessionData.schoolId,
-      schoolName: schoolData.name,
-    };
+        if (isAuthenticationPopup) {
+          Keyboard.dismiss();
+          this.props.navigation.goBack(null);
+          this.props.navigation.goBack(null);
+        }
+        else {
+          const newNextScreenSequence = nextScreenSequence.slice(1);
+          const nextScreen = nextScreenSequence[0];
 
-    this.setState({
-      isWaiting: false,
-      invalidPasswordEntered: false,
-      password: "",
-    });
-
-    this.props.updateUser(profileData).then(() =>
-    {
-      const { isAuthenticationPopup, nextScreenSequence } = this.props.navigation.state.params;
-
-      if (isAuthenticationPopup) {
-        Keyboard.dismiss();
-        this.props.navigation.goBack(null);
-        this.props.navigation.goBack(null);
-      }
-      else {
-        const newNextScreenSequence = nextScreenSequence.slice(1);
-        const nextScreen = nextScreenSequence[0];
-
-        this.props.navigation.navigate(nextScreen, {
-          nextScreenSequence: newNextScreenSequence,
-          profileData,
-        });
-      }
-    });
+          this.props.navigation.navigate(nextScreen, {
+            nextScreenSequence: newNextScreenSequence,
+            profileData,
+          });
+        }
+      });
+    }
   }
 
   onChangeText(text) {
@@ -154,7 +152,7 @@ export default class EnterPasswordScreen extends Component {
     this.props.submitPassword({
       password: this.state.password,
       profileData: this.props.navigation.state.params.profileData,
-      submitter: this.props.mutate,
+      submitter: this.props.signInWithPhoneNumberMutation,
     });
   }
 

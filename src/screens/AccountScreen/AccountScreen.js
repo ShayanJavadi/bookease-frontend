@@ -34,6 +34,7 @@ export default class AccountScreen extends Component {
   static propTypes = {
     currentUser: object,
     updateUser: func.isRequired,
+    signOutMutation: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -47,16 +48,19 @@ export default class AccountScreen extends Component {
   }
 
   signOut() {
-    this.props.updateUser(undefined);
+    this.props.signOutMutation()
+    .then(() => {
+      this.props.updateUser(undefined);
 
-    const closeSuccessScreenAction = NavigationActions.reset({
-      index: 0,
-      key: null,
-      actions: [
-        NavigationActions.navigate({ routeName: "mainScreen" })
-      ]
+      const closeSuccessScreenAction = NavigationActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+          NavigationActions.navigate({ routeName: "mainScreen" })
+        ]
+      })
+      return this.props.navigation.dispatch(closeSuccessScreenAction);
     })
-    return this.props.navigation.dispatch(closeSuccessScreenAction);
   }
 
   render() {
