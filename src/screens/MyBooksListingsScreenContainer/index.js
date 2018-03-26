@@ -2,7 +2,7 @@ import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 import queries from "./graphql/queries";
 import mutations from "./graphql/mutations";
-import { withNavigationFocus } from "react-navigation-is-focused-hoc"
+import { withNavigationFocus } from "react-navigation"
 import MyBooksListingsScreen from "../MyBooksListingsScreen";
 
 const { getMyTextbooksQuery } = queries;

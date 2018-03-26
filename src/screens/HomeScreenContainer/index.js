@@ -1,6 +1,7 @@
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
 import queries from "./graphql/queries";
+import updateSessionPushNotificationTokenMutation from "./graphql/mutations/updateSessionPushNotificationToken";
 import HomeScreen from "../HomeScreen";
 
 const { getTextbooksQuery } = queries;
@@ -10,6 +11,10 @@ const Container = compose(
   graphql(getTextbooksQuery, {
     options: props => ({ variables: { query: props.query || "", orderBy: props.orderBy || "relevance" } }),
     name: "getTextbooksQuery",
+  }),
+  graphql(updateSessionPushNotificationTokenMutation, {
+    options: props => ({ variables: { token: props.token || "" } }),
+    name: "updateSessionPushNotificationTokenMutation",
   }),
 );
 

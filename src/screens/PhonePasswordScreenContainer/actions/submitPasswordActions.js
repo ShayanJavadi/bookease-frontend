@@ -10,7 +10,9 @@ const submitPassword = ({ password, profileData, submitter }) => (dispatch) => {
       password: password
     }
   })
-  .then(() => dispatch({ type: PASSWORD_ACCEPTED }))
+  .then(async () => {
+    dispatch({ type: PASSWORD_ACCEPTED })
+  })
   .catch(() => dispatch({ type: PASSWORD_NOT_ACCEPTED }));
 }
 

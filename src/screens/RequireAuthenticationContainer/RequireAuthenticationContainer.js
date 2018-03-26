@@ -2,7 +2,7 @@ import React from "react";
 import { AsyncStorage } from "react-native";
 import { bool, func, shape, object } from "prop-types";
 import { connect } from "react-redux";
-import { withNavigationFocus } from "react-navigation-is-focused-hoc"
+import { withNavigationFocus } from "react-navigation"
 import updateUser from "../SessionContainer/actions/updateUser";
 
 export default function(ComposedComponent, options) {
@@ -29,21 +29,21 @@ export default function(ComposedComponent, options) {
     }
 
     async componentDidMount() {
-      const isAuthenticated = this.props.currentUser !== undefined;
+      if (this.props.isFocused && this.props.navigation.state) {
+        const isAuthenticated = this.props.currentUser !== undefined;
 
-      if (!isAuthenticated) {
-        const savedUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
+        if (!isAuthenticated) {
+          const savedUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
 
-        if (savedUser) {
-          this.props.updateUser(savedUser);
+          if (savedUser) {
+            this.props.updateUser(savedUser);
+            return this.checkAuthenticationStatus({ currentUser: savedUser });
+          }
+
+          this.checkAuthenticationStatus(this.props);
         }
       }
-    }
 
-    componentWillReceiveProps(nextProps) {
-      if (!this.props.isFocused && nextProps.isFocused) {
-        this.checkAuthenticationStatus(nextProps);
-      }
     }
 
     render() {
