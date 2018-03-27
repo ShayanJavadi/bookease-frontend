@@ -15,9 +15,7 @@ const {
   inputGroupStyle,
   inputContainerStyle,
   inputStyle,
-  editButtonTextStyle,
-  editButtonContainerStyle,
-  editButtonIconStyle,
+  editIconStyle,
   signOutButtonTextStyle,
   signOutButtonContainerStyle
  } = styles;
@@ -98,12 +96,10 @@ export default class AccountScreen extends Component {
           tintColor={primaryColor}
           containerStyle={inputStyle}
         />
-        <Button
-          raised
-          primary
-          text=" Edit"
-          style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
-          icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
+        <MaterialIcons
+          name="mode-edit"
+          size={ICON_SIZE}
+          style={editIconStyle}
           onPress={() => this.editItem("changeFullNameScreen")}
         />
       </View>
@@ -121,12 +117,10 @@ export default class AccountScreen extends Component {
           tintColor={primaryColor}
           containerStyle={inputStyle}
         />
-        <Button
-          raised
-          primary
-          text=" Edit"
-          style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
-          icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
+        <MaterialIcons
+          name="mode-edit"
+          size={ICON_SIZE}
+          style={editIconStyle}
           onPress={() => this.editItem("schoolSelectionScreen")}
         />
       </View>
@@ -145,12 +139,10 @@ export default class AccountScreen extends Component {
           tintColor={primaryColor}
           containerStyle={inputStyle}
         />
-        <Button
-          raised
-          primary
-          text=" Edit"
-          style={{ container: editButtonContainerStyle, text: editButtonTextStyle }}
-          icon={<MaterialIcons name="mode-edit" size={ICON_SIZE} style={editButtonIconStyle} />}
+        <MaterialIcons
+          name="mode-edit"
+          size={ICON_SIZE}
+          style={editIconStyle}
           onPress={() => this.editItem("changePasswordScreen")}
         />
       </View>

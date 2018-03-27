@@ -3,6 +3,7 @@ import { Text, View, ActivityIndicator, Keyboard, TouchableWithoutFeedback } fro
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { bool, func, shape, object } from "prop-types";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles, palette } from "./styles";
 
 const {
@@ -16,8 +17,7 @@ const {
   submitButtonContainerStyle,
   submitButtonDisabledContainerStyle,
   submitButtonTextStyle,
-  showHideButtonContainerStyle,
-  showHideButtonTextStyle,
+  showHideIconStyle,
   activitySpinnerStyle,
  } = styles;
 
@@ -25,7 +25,7 @@ const {
    primaryColor,
  } = palette;
 
-const MINIMUM_PASSWORD_LENGTH = 1;
+const MINIMUM_PASSWORD_LENGTH = 6;
 
 
 export default class PasswordScreen extends Component {
@@ -152,6 +152,7 @@ export default class PasswordScreen extends Component {
             <View style={inputContainerStyle}>
               <TextField
                 label="Password"
+                title="At least 6 characters"
                 autoCorrect={false}
                 autoCapitalize="none"
                 secureTextEntry={!this.state.passwordVisible}
@@ -161,13 +162,12 @@ export default class PasswordScreen extends Component {
                 onChangeText={value => this.onChangeText(value)}
                 ref={input => this.input = input}
               />
-              <Button
-                  raised
-                  primary
-                  text={this.state.passwordVisible ? "Hide" : "Show"}
-                  style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
-                  onPress={() => this.onShowHideButtonPress()}
-                />
+              <MaterialCommunityIcons
+                name={this.state.passwordVisible ? "eye" : "eye-off"}
+                size={32}
+                style={showHideIconStyle}
+                onPress={() => this.onShowHideButtonPress()}
+              />
             </View>
           </View>
           {!this.state.isWaiting && this.state.submitButtonEnabled &&
