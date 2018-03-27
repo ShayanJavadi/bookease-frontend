@@ -70,19 +70,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 15,
   },
-  editButtonTextStyle: {
-    color: "#fff",
-    fontSize: 13,
-    fontWeight: "100",
-  },
-  editButtonContainerStyle: {
-    backgroundColor: primaryColor,
-    height: 35,
-    width: SCREEN_WIDTH * 0.2,
-  },
-  editButtonIconStyle: {
-    color: "#fff",
-  },
   inputStyle: {
     width: SCREEN_WIDTH * 0.75,
   },

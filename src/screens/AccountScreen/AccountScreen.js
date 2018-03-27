@@ -16,9 +16,6 @@ const {
   inputContainerStyle,
   inputStyle,
   editIconStyle,
-  editButtonTextStyle,
-  editButtonContainerStyle,
-  editButtonIconStyle,
   signOutButtonTextStyle,
   signOutButtonContainerStyle
  } = styles;
