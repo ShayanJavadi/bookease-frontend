@@ -398,7 +398,7 @@ export default class EnterBookDetailsScreen extends Component {
       <Modal
         isVisible={this.state.cameraModalVisible}
         text="Add Pictures"
-        actions={["Dismiss"]}
+        actions={["Cancel"]}
         onActionPress={() => this.setState({ cameraModalVisible: false })}
       >
         <View style={modalButtonWrapperStyle}>

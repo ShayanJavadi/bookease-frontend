@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { NavigationActions } from "react-navigation";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { func, object, shape } from "prop-types";
+import Modal from "src/modules/Modal";
 import { styles, palette, ICON_SIZE } from "./styles";
 
 const {
@@ -17,7 +18,10 @@ const {
   inputStyle,
   editIconStyle,
   signOutButtonTextStyle,
-  signOutButtonContainerStyle
+  signOutButtonContainerStyle,
+  modalButtonStyle,
+  modalButtonIconStyle,
+  modalButtonWrapperStyle,
  } = styles;
 
  const {
@@ -38,14 +42,28 @@ export default class AccountScreen extends Component {
     }).isRequired,
   };
 
-  editItem(editScreen) {
+  state = {
+    cameraModalVisible: false,
+  }
+
+  onEditPress(editScreen) {
     this.props.navigation.navigate(editScreen, {
       profileData: this.props.currentUser,
       nextScreenSequence: ["account"],
     });
   }
 
-  signOut() {
+  onCameraPress() {
+    this.setState({ cameraModalVisible: false });
+    this.props.navigation.navigate("profilePictureCameraScreen");
+  }
+
+  onImageLibraryPress() {
+    this.props.launchImageLibrary();
+    this.setState({ cameraModalVisible: false });
+  }
+
+  onSignOutPress() {
     this.props.signOutMutation()
     .then(() => {
       this.props.updateUser(undefined);
@@ -67,6 +85,7 @@ export default class AccountScreen extends Component {
         <View style={headerStyle}>
           <Text style={headerTitleStyle}>Account</Text>
         </View>
+        {this.renderPictureInputModal()}
         <View style={contentContainerStyle}>
           <View style={inputGroupStyle}>
             {this.renderNameInput()}
@@ -76,9 +95,16 @@ export default class AccountScreen extends Component {
           <Button
             raised
             primary
+            text="Change profile picture"
+            style={{ container: signOutButtonContainerStyle, text: signOutButtonTextStyle }}
+            onPress={() => this.setState({ cameraModalVisible: true })}
+          />
+          <Button
+            raised
+            primary
             text="Sign Out"
             style={{ container: signOutButtonContainerStyle, text: signOutButtonTextStyle }}
-            onPress={() => this.signOut()}
+            onPress={() => this.onSignOutPress()}
           />
         </View>
       </View>
@@ -100,7 +126,7 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.editItem("changeFullNameScreen")}
+          onPress={() => this.onEditPress("changeFullNameScreen")}
         />
       </View>
     );
@@ -121,7 +147,7 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.editItem("schoolSelectionScreen")}
+          onPress={() => this.onEditPress("schoolSelectionScreen")}
         />
       </View>
     );
@@ -143,9 +169,36 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.editItem("changePasswordScreen")}
+          onPress={() => this.onEditPress("changePasswordScreen")}
         />
       </View>
     );
+  }
+
+  renderPictureInputModal() {
+    return (
+      <Modal
+        isVisible={this.state.cameraModalVisible}
+        text="Change profile picture"
+        actions={["Cancel"]}
+        onActionPress={() => this.setState({ cameraModalVisible: false })}
+      >
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity
+            style={modalButtonStyle}
+            onPress={() => this.onCameraPress()}
+          >
+            <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Camera</Text>
+        </View>
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity style={modalButtonStyle} onPress={() => this.onImageLibraryPress()}>
+            <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Images</Text>
+        </View>
+      </Modal>
+    )
   }
 }

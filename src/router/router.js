@@ -22,6 +22,9 @@ import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
 import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer";
+import ProfilePictureCameraScreen from "../screens/ProfilePictureCameraScreenContainer"
+
+console.reportErrorsAsExceptions = false;
 
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {
@@ -75,6 +78,13 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
+const ProfilePictureCameraNavigator = StackNavigator({
+  profilePictureCameraScreen: {
+    screen: ProfilePictureCameraScreen,
+  },
+}, {
+  mode: "modal",
+});
 const AccountNavigator = StackNavigator({
   account: {
     screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
@@ -87,6 +97,12 @@ const AccountNavigator = StackNavigator({
   },
   changeSchoolScreen: {
     screen: SchoolSelectionScreen,
+  },
+  changeProfilePictureScreen: {
+    screen: EnterBookDetailsCameraScreen,
+  },
+  profilePictureCameraScreen: {
+    screen: ProfilePictureCameraNavigator,
   },
 }, {
   headerMode: "none",

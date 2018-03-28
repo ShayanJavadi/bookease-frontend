@@ -73,5 +73,26 @@ export const styles = StyleSheet.create({
   inputStyle: {
     width: SCREEN_WIDTH * 0.75,
   },
-
+  modalButtonStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: primaryColor,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  modalButtonIconStyle: {
+    color: "#fff",
+    paddingTop: 2,
+  },
+  modalButtonWrapperStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 35,
+  },
 });
