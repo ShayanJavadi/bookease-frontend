@@ -205,7 +205,10 @@ export default class SingleBookScreen extends Component {
           onRightIconPress={() => this.scrollView.scrollToEnd()}
         />
         <AccountDetails textbook={getTextbook} />
-        {this.renderBuyRequests(getTextbook.buyRequestNotifications)}
+        {
+          isUserOwner &&
+          this.renderBuyRequests(getTextbook.buyRequestNotifications)
+        }
         <Questions
           ref={ref => this.questions = ref}
           isUserOwner={isUserOwner}

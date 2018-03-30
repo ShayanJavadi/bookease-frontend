@@ -8,6 +8,10 @@ const getSessionQuery = gql`
         phoneNumber,
         displayName,
         schoolId,
+        school {
+          id,
+          name,
+        },
       }
     }
   }

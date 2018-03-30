@@ -1,5 +1,5 @@
 import searchForSchool from "./searchForSchool";
 import updateSchool from "./updateSchool";
-import updateUser from "../../SessionContainer/actions/updateUser";
+import setStoredUser from "../../SessionContainer/actions/setStoredUser";
 
-export default { searchForSchool, updateSchool, updateUser };
+export default { searchForSchool, updateSchool, setStoredUser };

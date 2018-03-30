@@ -9,6 +9,7 @@ const getTextbooksQuery = gql`
         userId,
         edition,
         condition,
+        schoolId,
         images{
             thumbnail
         },

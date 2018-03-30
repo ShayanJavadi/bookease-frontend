@@ -36,11 +36,11 @@ export default class SchoolSelectionScreen extends Component {
     })).isRequired,
     searchForSchool: func.isRequired,
     updateSchool: func.isRequired,
-    updateUser: func.isRequired,
-    currentUser: object,
+    currentStoredUser: object,
     navigation: shape({
       navigate: func.isRequired,
-    }).isRequired
+    }).isRequired,
+    setStoredUser: func.isRequired,
   };
 
   componentDidMount() {
@@ -50,19 +50,19 @@ export default class SchoolSelectionScreen extends Component {
   onSubmitButtonPress() {
     const schoolId = this.state.selectedSchool.id;
     const schoolName = this.state.selectedSchool.name;
+    const oldProfileData = this.props.currentStoredUser;
 
-    const oldProfileData = this.props.currentUser;
-
-    const newProfileData = Object.assign({}, oldProfileData);
-    newProfileData.schoolId = schoolId;
-    newProfileData.schoolName = schoolName;
+    const newProfileData = {
+      ...oldProfileData,
+      ...{ schoolId: schoolId, schoolName: schoolName },
+    };
 
     this.props.updateSchool({
       mutate: this.props.mutate,
       profileData: newProfileData,
       schoolId,
     });
-    this.props.updateUser(newProfileData);
+    this.props.setStoredUser(newProfileData);
 
     const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
     const newNextScreenSequence = nextScreenSequence.slice(1);

@@ -37,7 +37,6 @@ export default class PasswordScreen extends Component {
     isPasswordValid: bool.isRequired,
     submitPassword: func.isRequired,
     mutate: func.isRequired,
-    updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
       state: object.isRequired
@@ -99,7 +98,6 @@ export default class PasswordScreen extends Component {
 
     this.isProfileUpdateInProgress = true;
 
-
     const profileData = props.navigation.state.params.profileData;
 
     this.setState({
@@ -140,7 +138,6 @@ export default class PasswordScreen extends Component {
       passwordVisible: !this.state.passwordVisible,
     });
   }
-
 
   render() {
     return (
