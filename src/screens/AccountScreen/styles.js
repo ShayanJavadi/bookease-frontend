@@ -7,34 +7,18 @@ const {
   tertiaryColorDark,
 } = palette;
 
-export const ICON_SIZE = 24;
+export const ICON_SIZE = 20;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: tertiaryColorDark,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    zIndex: 9999,
-    width: SCREEN_WIDTH,
-    height: 70,
-  },
-  headerTitleStyle: {
-    color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "600",
-    top: 35
-  },
   screenStyle: {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
+    paddingTop: 90,
   },
   contentContainerStyle: {
     flex: 1,
@@ -65,13 +49,23 @@ export const styles = StyleSheet.create({
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
-  editIconStyle: {
-    color: tertiaryColorDark,
-    paddingLeft: 10,
-    paddingTop: 15,
+  editButtonTextStyle: {
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: "100",
+  },
+  editButtonContainerStyle: {
+    backgroundColor: primaryColor,
+    height: 35,
+    width: SCREEN_WIDTH * 0.2,
+  },
+  editButtonIconStyle: {
+    color: "#fff",
   },
   inputStyle: {
-    width: SCREEN_WIDTH * 0.75,
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: SCREEN_WIDTH * 0.7,
   },
 
 });

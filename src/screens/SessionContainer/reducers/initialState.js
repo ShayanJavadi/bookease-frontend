@@ -1,3 +1,4 @@
 export default {
-  currentUser: undefined,
+  currentStoredUser: undefined,
+  isLoading: undefined,
 };

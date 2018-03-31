@@ -28,13 +28,13 @@ export default class ChangeFullNameScreen extends Component {
   }
 
   static propTypes = {
-    currentUser: object,
+    currentStoredUser: object,
     submitFullName: func.isRequired,
     mutate: func.isRequired,
-    updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
-    }).isRequired
+    }).isRequired,
+    setStoredUser: func.isRequired,
   }
 
   state = {
@@ -47,10 +47,10 @@ export default class ChangeFullNameScreen extends Component {
   componentDidMount() {
     this.input.focus();
 
-    const shouldLoadFullName = (this.props.currentUser && this.props.currentUser.fullName);
+    const shouldLoadFullName = (this.props.currentStoredUser && this.props.currentStoredUser.fullName);
 
     this.setState({
-      fullName: shouldLoadFullName ? this.props.currentUser.fullName : ""
+      fullName: shouldLoadFullName ? this.props.currentStoredUser.fullName : ""
     });
   }
 
@@ -79,17 +79,20 @@ export default class ChangeFullNameScreen extends Component {
 
   onSubmitButtonPress() {
     const fullName = this.state.fullName;
-    const oldProfileData = this.props.currentUser;
+    const oldProfileData = this.props.currentStoredUser;
 
-    const newProfileData = Object.assign({}, oldProfileData);
-    newProfileData.fullName = fullName;
+    const newProfileData = {
+      ...oldProfileData,
+      ...{ fullName: fullName },
+    };
 
     this.props.submitFullName({
       fullName,
       profileData: newProfileData,
       submitter: this.props.mutate,
     });
-    this.props.updateUser(newProfileData);
+
+    this.props.setStoredUser(newProfileData);
 
     const nextScreenSequence = this.props.navigation.state.params.nextScreenSequence;
     const newNextScreenSequence = nextScreenSequence.slice(1);

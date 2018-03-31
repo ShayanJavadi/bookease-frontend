@@ -3,7 +3,6 @@ import { Text, View, ActivityIndicator, Keyboard, TouchableWithoutFeedback } fro
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
 import { bool, func, shape, object } from "prop-types";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles, palette } from "./styles";
 
 const {
@@ -17,7 +16,8 @@ const {
   submitButtonContainerStyle,
   submitButtonDisabledContainerStyle,
   submitButtonTextStyle,
-  showHideIconStyle,
+  showHideButtonContainerStyle,
+  showHideButtonTextStyle,
   activitySpinnerStyle,
  } = styles;
 
@@ -25,7 +25,7 @@ const {
    primaryColor,
  } = palette;
 
-const MINIMUM_PASSWORD_LENGTH = 6;
+const MINIMUM_PASSWORD_LENGTH = 1;
 
 
 export default class EnterPasswordScreen extends Component {
@@ -39,7 +39,6 @@ export default class EnterPasswordScreen extends Component {
     submitPassword: func.isRequired,
     signInWithPhoneNumberMutation: func.isRequired,
     updateProfileMutation: func.isRequired,
-    updateUser: func.isRequired,
     navigation: shape({
       navigate: func.isRequired,
       state: object.isRequired
@@ -47,9 +46,7 @@ export default class EnterPasswordScreen extends Component {
     getSessionQuery: shape({
       refetch: func.isRequired
     }),
-    getSchoolNameQuery: shape({
-      refetch: func.isRequired
-    }),
+    setStoredUser: func.isRequired,
   }
 
   state = {
@@ -58,16 +55,15 @@ export default class EnterPasswordScreen extends Component {
     invalidPasswordEntered: false,
     submitButtonEnabled: false,
     isWaiting: false,
+    isPasswordValid: undefined,
   }
 
-  isProfileUpdateInProgress = false;
 
   componentDidMount() {
     this.input.focus();
   }
 
   componentWillMount() {
-    this.isProfileUpdateInProgress = false;
     this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
   }
@@ -85,60 +81,6 @@ export default class EnterPasswordScreen extends Component {
     this.setState({ keyboardVisible: false });
   }
 
-  async componentWillReceiveProps(props) {
-    if (this.isProfileUpdateInProgress) return;
-
-    const isPasswordEmpty = (this.state.password === "");
-    const isPasswordInvalid = !isPasswordEmpty && !props.isPasswordValid;
-
-    if (isPasswordInvalid) {
-      this.input.clear();
-      this.onChangeText("");
-      this.setState({ isWaiting: false, invalidPasswordEntered: true });
-    }
-
-    if (props.isPasswordValid) {
-      this.isProfileUpdateInProgress = true;
-      const rawSessionData = await props.getSessionQuery.refetch();
-      const sessionData = rawSessionData.data.getSession.user;
-      const rawSchoolData = await props.getSchoolNameQuery.refetch({ schoolId: sessionData.schoolId, });
-      const schoolData = rawSchoolData.data.searchSchools[0];
-
-      const profileData = {
-        fullName: sessionData.displayName,
-        id: sessionData.id,
-        phoneNumber: sessionData.phoneNumber,
-        schoolId: sessionData.schoolId,
-        schoolName: schoolData.name,
-      };
-
-      this.setState({
-        isWaiting: false,
-        invalidPasswordEntered: false,
-        password: "",
-      });
-
-      this.props.updateUser(profileData).then(() => {
-        const { isAuthenticationPopup, nextScreenSequence } = this.props.navigation.state.params;
-
-        if (isAuthenticationPopup) {
-          Keyboard.dismiss();
-          this.props.navigation.goBack(null);
-          this.props.navigation.goBack(null);
-        }
-        else {
-          const newNextScreenSequence = nextScreenSequence.slice(1);
-          const nextScreen = nextScreenSequence[0];
-
-          this.props.navigation.navigate(nextScreen, {
-            nextScreenSequence: newNextScreenSequence,
-            profileData,
-          });
-        }
-      });
-    }
-  }
-
   onChangeText(text) {
     this.setState({
       password: text,
@@ -147,13 +89,67 @@ export default class EnterPasswordScreen extends Component {
     });
   }
 
+  navigateToNextScreen(profileData) {
+    const { isAuthenticationPopup, nextScreenSequence } = this.props.navigation.state.params;
+
+    if (isAuthenticationPopup) {
+      Keyboard.dismiss();
+      this.props.navigation.goBack(null);
+      this.props.navigation.goBack(null);
+    }
+    else {
+      const newNextScreenSequence = nextScreenSequence.slice(1);
+      const nextScreen = nextScreenSequence[0];
+
+      this.props.navigation.navigate(nextScreen, {
+        nextScreenSequence: newNextScreenSequence,
+        profileData,
+      });
+    }
+  }
+
+  async handleValidPassword() {
+    const rawSessionData = await this.props.getSessionQuery.refetch();
+    const sessionData = rawSessionData.data.getSession.user;
+
+    const profileData = {
+      fullName: sessionData.displayName,
+      id: sessionData.id,
+      phoneNumber: sessionData.phoneNumber,
+      schoolId: sessionData.schoolId,
+      schoolName: sessionData.school.name,
+    };
+
+    this.setState({
+      isWaiting: false,
+      invalidPasswordEntered: false,
+      password: "",
+    });
+
+    await this.props.setStoredUser(profileData);
+    this.navigateToNextScreen(profileData);
+  }
+
+  handleInvalidPassword() {
+    this.input.clear();
+    this.onChangeText("");
+    this.setState({ isWaiting: false, invalidPasswordEntered: true });
+  }
+
   onSubmitButtonPress() {
     this.setState({ isWaiting: true });
-    this.props.submitPassword({
-      password: this.state.password,
-      profileData: this.props.navigation.state.params.profileData,
-      submitter: this.props.signInWithPhoneNumberMutation,
-    });
+    const { signInWithPhoneNumberMutation } = this.props;
+
+    signInWithPhoneNumberMutation({
+      variables: {
+        phoneNumber: this.props.navigation.state.params.profileData.phoneNumber,
+        password: this.state.password,
+      }
+    })
+    .then(() => {
+      this.handleValidPassword();
+    })
+    .catch(() => this.handleInvalidPassword())
   }
 
   onShowHideButtonPress() {
@@ -173,7 +169,6 @@ export default class EnterPasswordScreen extends Component {
             <View style={inputContainerStyle}>
               <TextField
                 label="Password"
-                title="At least 6 characters"
                 autoCorrect={false}
                 autoCapitalize="none"
                 secureTextEntry={!this.state.passwordVisible}
@@ -183,12 +178,13 @@ export default class EnterPasswordScreen extends Component {
                 onChangeText={value => this.onChangeText(value)}
                 ref={input => this.input = input}
               />
-              <MaterialCommunityIcons
-                name={this.state.passwordVisible ? "eye" : "eye-off"}
-                size={32}
-                style={showHideIconStyle}
-                onPress={() => this.onShowHideButtonPress()}
-              />
+              <Button
+                  raised
+                  primary
+                  text={this.state.passwordVisible ? "Hide" : "Show"}
+                  style={{ container: showHideButtonContainerStyle, text: showHideButtonTextStyle }}
+                  onPress={() => this.onShowHideButtonPress()}
+                />
             </View>
           </View>
           {!this.state.isWaiting && this.state.submitButtonEnabled &&

@@ -14,7 +14,7 @@ import ScanBookScreen from "../screens/ScanBookScreenContainer";
 import SubmissionSuccessScreen from "../screens/SubmissionSuccessScreen";
 import PhoneScreen from "../screens/PhoneScreenContainer";
 import PhonePinScreen from "../screens/PhonePinScreenContainer";
-import PhonePasswordScreen from "../screens/PhonePasswordScreenContainer";
+import PhonePasswordScreen from "../screens/EnterPasswordScreenContainer";
 import ChangePasswordScreen from "../screens/ChangePasswordScreenContainer";
 import ChangeFullNameScreen from "../screens/ChangeFullNameScreenContainer";
 import TabBarComponent from "../modules/TabBarContainer";

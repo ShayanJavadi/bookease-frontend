@@ -1,5 +1,5 @@
 import submitPassword  from "./submitPassword";
 import validatePassword from "./validatePassword";
-import updateUser from "../../SessionContainer/actions/updateUser";
+import setStoredUser from "../../SessionContainer/actions/setStoredUser";
 
-export default { submitPassword, validatePassword, updateUser };
+export default { submitPassword, validatePassword, setStoredUser };

@@ -8,7 +8,7 @@ const { searchForSchoolsQuery, changeSchoolMutation } = queries;
 
 const mapStateToProps = ({ schoolSelectionReducer, Session }) => ({
   schools: schoolSelectionReducer.schools,
-  currentUser: Session.currentUser,
+  currentStoredUser: Session.currentStoredUser,
 });
 
 const Container = compose(
