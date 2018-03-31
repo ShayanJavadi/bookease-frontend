@@ -5,6 +5,7 @@ export const { palette } = uiTheme;
 const {
   primaryColor,
   primaryColorLight,
+  tertiaryColorDark,
 } = palette;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
   },
   inputStyle: {
     height: 50,
-    width: SCREEN_WIDTH * 0.7,
+    width: SCREEN_WIDTH * 0.75,
     paddingLeft: 5,
   },
   invalidPasswordTextStyle: {
@@ -52,17 +53,10 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 15,
   },
-  showHideButtonContainerStyle: {
-    backgroundColor: primaryColor,
-    height: 40,
-    width: SCREEN_WIDTH * 0.2,
-    marginLeft: 10,
-    marginTop: 30,
-  },
-  showHideButtonTextStyle: {
-    color: "#fff",
-    fontSize: 13,
-    fontWeight: "100",
+  showHideIconStyle: {
+    color: tertiaryColorDark,
+    paddingLeft: 10,
+    paddingTop: 30,
   },
   submitButtonContainerStyle: {
     backgroundColor: primaryColor,

@@ -6,7 +6,7 @@ const {
   primaryColor,
 } = palette;
 
-export const ICON_SIZE = 20;
+export const ICON_SIZE = 24;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -48,23 +48,13 @@ export const styles = StyleSheet.create({
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },
-  editButtonTextStyle: {
-    color: "#fff",
-    fontSize: 13,
-    fontWeight: "100",
-  },
-  editButtonContainerStyle: {
-    backgroundColor: primaryColor,
-    height: 35,
-    width: SCREEN_WIDTH * 0.2,
-  },
-  editButtonIconStyle: {
-    color: "#fff",
+  editIconStyle: {
+    color: tertiaryColorDark,
+    paddingLeft: 10,
+    paddingTop: 15,
   },
   inputStyle: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    width: SCREEN_WIDTH * 0.7,
+    width: SCREEN_WIDTH * 0.75,
   },
 
 });
