@@ -4,7 +4,6 @@ import uiTheme from "src/common/styles/uiTheme";
 export const { palette } = uiTheme;
 const {
   primaryColor,
-  tertiaryColorDark,
 } = palette;
 
 export const ICON_SIZE = 20;
