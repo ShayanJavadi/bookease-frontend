@@ -1,2 +1,1 @@
-export const UPDATE_USER = "UPDATE_USER";
-export const GET_CURRENT_USER = "GET_CURRENT_USER";
+export const UPDATE_STORED_USER = "UPDATE_USER";

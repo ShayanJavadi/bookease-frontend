@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-  loading: false,
+  isPasswordValid: false,
+  updateCounter: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {

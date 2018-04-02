@@ -22,24 +22,45 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 1,
     paddingRight: 2,
-    paddingLeft: 8,
+    paddingLeft: 3,
     width: 90,
     height: 40,
     fontSize: 14,
     backgroundColor: "#fff",
     color: "#424242",
-    borderRightWidth: 0.5,
-    borderRightColor: "rgba(0,0,0,0.3)",
-    marginRight: 8,
   },
   searchIconStyle: {
     color: "#444",
-    marginTop: 10,
-    marginLeft: 7,
+    marginTop: 9,
+    marginLeft: 3,
+  },
+  barCodeScanWrapperStyle: {
+    borderRightWidth: 0.5,
+    borderRightColor: "rgba(0,0,0,0.3)",
   },
   barCodeIconStyle: {
     color: "#444",
-    marginTop: 5,
+    paddingTop: 5,
     marginRight: 8,
   },
+  filterIconStyle: {
+    color: "#444",
+    paddingTop: 5,
+    marginRight: 8,
+    marginLeft: 4
+  },
+  clearSearchIconWrapperStyle: {
+    borderRightWidth: 0.5,
+    borderRightColor: "rgba(0,0,0,0.3)",
+    zIndex: 9999,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 8,
+    flex: .15,
+  },
+  clearSearchIconStyle: {
+    marginTop: 2,
+    marginRight: 5,
+    padding: 5,
+  }
 });

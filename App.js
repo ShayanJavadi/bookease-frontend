@@ -7,6 +7,7 @@ import Provider from './src/store';
 import createMainNavigator from './src/router';
 import { COLOR, ThemeProvider } from 'react-native-material-ui';
 import uiTheme from 'src/common/styles/uiTheme';
+import SessionContainer from 'src/screens/SessionContainer';
 
 export default class App extends Component {
   state = {
@@ -26,6 +27,7 @@ export default class App extends Component {
       isFirstRun,
      });
   }
+
   render() {
     if (!this.state.isAppReady) {
       // TODO: loading animation goes here
@@ -36,7 +38,7 @@ export default class App extends Component {
 
       return (
         <Provider>
-          <View style={styles.container}>
+          <SessionContainer>
             <ThemeProvider uiTheme={uiTheme}>
               <Navigator
                 onNavigationStateChange={(prevState, currentState) => { updateFocus(currentState) }}
@@ -45,17 +47,9 @@ export default class App extends Component {
             <StatusBar
               barStyle="light-content"
             />
-          </View>
+          </SessionContainer>
         </Provider>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-});

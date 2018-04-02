@@ -13,14 +13,14 @@ const CarouselSlide = ({ image, onPress, onDeleteImagePress, index }) => {
   return (
     <View key={index} style={carouselSlidesWrapperStyle}>
       <TouchableOpacity onPress={onDeleteImagePress} style={carouselDeleteButtonWrapperStyle}>
-        <MaterialCommunityIcons name="close-circle-outline" size={25} style={{ color: "#fff" }}/>
+        <MaterialCommunityIcons name="close-circle-outline" size={30} style={{ color: "#fff" }}/>
       </TouchableOpacity>
       <TouchableHighlight
         style={carouselSlidesWrapperStyle}
         onPress={onPress}
       >
         <Image
-          style={{ flex: 1 }}
+          style={{ flex: 1, height: 260 }}
           source={{ uri: image.uri || image.thumbnail  }}
         />
       </TouchableHighlight>

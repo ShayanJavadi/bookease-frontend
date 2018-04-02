@@ -8,16 +8,15 @@ const {
 
 export const styles = StyleSheet.create({
   searchFormWrapperStyle: {
-    flex: 1,
+    flex: 1.1,
     backgroundColor: tertiaryColorDark,
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: 35,
-    paddingBottom: 20,
+    paddingTop: 25,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
     zIndex: 9999,
+    flexDirection: "column"
   },
 });

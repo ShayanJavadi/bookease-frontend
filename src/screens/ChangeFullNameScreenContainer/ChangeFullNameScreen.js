@@ -5,7 +5,7 @@ import setFullNameMutation from "./graphql/queries/setFullNameMutation";
 import ChangeFullNameScreen from "../ChangeFullNameScreen";
 
 const mapStateToProps = ({ Session }) => ({
-  currentUser: Session.currentUser,
+  currentStoredUser: Session.currentStoredUser,
 });
 
 const Container = graphql(setFullNameMutation, {

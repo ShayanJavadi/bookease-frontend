@@ -14,6 +14,8 @@ export default class HomeScreen extends Component {
     navigation: object.isRequired,
     getTextbooksQuery: func.isRequired,
     updateSessionPushNotificationTokenMutation: func.isRequired,
+    getStoredSessionUserInformation: func.isRequired,
+    currentStoredUser: object.isRequired,
   }
 
   static navigationOptions = {
@@ -37,7 +39,6 @@ export default class HomeScreen extends Component {
     }
 
     const token = await Notifications.getExpoPushTokenAsync();
-
     this.notificationSubscription = Notifications.addListener((notification) => handleIOSPushNotifications(notification, this.props.navigation));
 
     this.props.updateSessionPushNotificationTokenMutation({
@@ -49,24 +50,26 @@ export default class HomeScreen extends Component {
 
   async componentWillMount() {
     this.handlePushNotificationToken();
+    this.props.getStoredSessionUserInformation();
   }
 
   render() {
-    const { getTextbooksQuery: { refetch, loading, getTextbooks }, navigation } = this.props;
+    const { getTextbooksQuery: { refetch, loading, getTextbooks }, navigation, currentStoredUser } = this.props;
 
     return (
-      <View style={screenStyle}>
-        <SearchForm
-          searchTextbooks={refetch}
-          resultsCount={getTextbooks ? getTextbooks.length : 0}
-          navigation={navigation}
-        />
-        <SearchResults
-          loading={loading}
-          navigation={navigation}
-          textbooks={getTextbooks}
-        />
-      </View>
+        <View style={screenStyle}>
+          <SearchForm
+            searchTextbooks={refetch}
+            resultsCount={getTextbooks ? getTextbooks.length : 0}
+            navigation={navigation}
+            currentStoredUser={currentStoredUser}
+          />
+          <SearchResults
+            loading={loading}
+            navigation={navigation}
+            textbooks={getTextbooks}
+          />
+        </View>
     )
   }
 }

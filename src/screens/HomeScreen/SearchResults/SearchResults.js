@@ -20,8 +20,8 @@ const getBricks = (textbooks, navigation) => {
 const SearchResults = ({ textbooks, loading, navigation }) => {
   if (loading) {
     return (
-      <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
-        <View style={{ flex: 6, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 7, backgroundColor: "#fafafa" }}>
+        <View style={{ flex: 7, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator
             size="large"
             color={uiTheme.palette.tertiaryColorDark}
@@ -33,8 +33,8 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
 
   if (isEmpty(textbooks)) {
     return (
-      <View style={{ flex: 6, backgroundColor: "#fafafa" }}>
-        <View style={{ flex: 6, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 7, backgroundColor: "#fafafa" }}>
+        <View style={{ flex: 7, justifyContent: "center", alignItems: "center" }}>
           <Text>No results found</Text>
         </View>
       </View>
@@ -42,7 +42,7 @@ const SearchResults = ({ textbooks, loading, navigation }) => {
   }
 
   return (
-    <View style={{ flex: 6 }}>
+    <View style={{ flex: 7 }}>
       <Masonry
         columns={textbooks.length < 3 ? 2 : 3} // optional - Default: 2
         bricks={getBricks(textbooks, navigation)}

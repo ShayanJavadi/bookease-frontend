@@ -1,4 +1,4 @@
 import submitFullName from "./submitFullName";
-import updateUser from "../../SessionContainer/actions/updateUser";
+import setStoredUser from "../../SessionContainer/actions/setStoredUser";
 
-export default { submitFullName, updateUser };
+export default { submitFullName, setStoredUser };

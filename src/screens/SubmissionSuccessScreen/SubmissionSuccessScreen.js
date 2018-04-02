@@ -85,16 +85,17 @@ export default class SubmissionSuccessScreen extends Component {
 
   closeSuccessScreen() {
     const { submittedTextbook, submittedBuyRequest, acceptedBuyRequest } = this.state;
+
     if (submittedTextbook) {
       return this.navigateToMyBooks();
     }
 
     if (submittedBuyRequest) {
-      return this.navigateToSingleBuyRequestScreen(submittedBuyRequest.notificationId);
+      return this.navigateToSingleBuyRequestScreen(submittedBuyRequest.data && submittedBuyRequest.data.createBuyRequest.notificationId);
     }
 
     if (acceptedBuyRequest) {
-      return this.navigateToSingleBuyRequestScreen(acceptedBuyRequest.notificationId);
+      return this.navigateToSingleBuyRequestScreen(submittedBuyRequest.data && submittedBuyRequest.data.createBuyRequest.notificationId);
     }
   }
 

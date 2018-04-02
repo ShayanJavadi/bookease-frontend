@@ -1,18 +1,17 @@
-import { StyleSheet, Dimensions } from "react-native";
-const SCREEN_WIDTH = Dimensions.get("window").width;
+import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
   carouselSlidesWrapperStyle: {
     flex: 1,
-    width: SCREEN_WIDTH - 120,
+    flexDirection: "row"
   },
   carouselDeleteButtonWrapperStyle: {
-    position: "relative",
-    flexDirection: "row",
+    position: "absolute",
+    width: 30,
     top: 39,
     left: 9,
     zIndex: 9999,
-    shadowColor: "#000",
+    shadowColor: "#666",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
