@@ -16,7 +16,6 @@ const {
   screenStyle,
   contentContainerStyle,
   avatarActionButtonStyle,
-  avatarContainerStyle,
   inputGroupStyle,
   inputContainerStyle,
   inputStyle,
@@ -124,7 +123,7 @@ export default class AccountScreen extends Component {
     return (
       <View>
         <Avatar
-          uri={this.props.currentUser ? this.props.currentUser.photoUri : undefined}
+          uri={this.props.currentUser ? this.props.currentUser.photoURL : undefined}
           size={AVATAR_SIZE}
         />
         <ActionButton
@@ -134,7 +133,7 @@ export default class AccountScreen extends Component {
           style={avatarActionButtonStyle}
           icon={
             <MaterialIcons
-              name={(this.props.currentUser && this.props.currentUser.photoUri) ? "mode-edit" : "add"}
+              name={(this.props.currentUser && this.props.currentUser.photoURL) ? "mode-edit" : "add"}
               color="white"
               size={ICON_SIZE}
             />

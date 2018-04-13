@@ -1,11 +1,7 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
 export const { palette } = uiTheme;
-const {
-  primaryColor,
-  primaryColorLight,
-} = palette;
 
 export const styles = StyleSheet.create({
   screenStyle: {

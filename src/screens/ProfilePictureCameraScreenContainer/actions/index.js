@@ -1,4 +1,3 @@
-import { FileSystem } from "expo";
 import {
   TAKE_PICTURE_RQ,
   TAKE_PICTURE_RS,

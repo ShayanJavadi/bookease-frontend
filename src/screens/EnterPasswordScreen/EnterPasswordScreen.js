@@ -110,6 +110,7 @@ export default class EnterPasswordScreen extends Component {
         phoneNumber: sessionData.phoneNumber,
         schoolId: sessionData.schoolId,
         schoolName: schoolData.name,
+        photoURL: sessionData.photoURL,
       };
 
       this.setState({

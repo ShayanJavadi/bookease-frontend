@@ -25,7 +25,7 @@ import SingleNotificationScreen from "../screens/SingleNotificationScreenContain
 import ProfilePictureCameraScreen from "../screens/ProfilePictureCameraScreenContainer"
 import ProfilePictureImageScreen from "../screens/ProfilePictureImageScreenContainer";
 
-console.reportErrorsAsExceptions = false;
+console.reportErrorsAsExceptions = false; // eslint-disable-line no-console
 
 const SubmissionSuccessNavigator = StackNavigator({
   successScreen: {

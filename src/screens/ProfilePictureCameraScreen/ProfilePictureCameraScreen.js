@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator, Image } from "react-native";
-import { func, bool, shape, array, object } from "prop-types";
+import { func, bool, shape, object } from "prop-types";
 import {
   Camera,
 } from "expo";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import Modal from "src/modules/Modal";
 import { styles, palette } from "./styles";
@@ -41,6 +40,7 @@ export default class ProfilePictureCameraScreen extends Component {
   static propTypes = {
     takePicture: func.isRequired,
     image: object,
+    loading: bool.isRequired,
     isTakingPicture: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired
@@ -53,7 +53,7 @@ export default class ProfilePictureCameraScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { image } = nextProps;
+    //const { image } = nextProps;
 
     if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
         this.setState({ isInConfirmationDialog: true });

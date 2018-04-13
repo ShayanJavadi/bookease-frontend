@@ -8,6 +8,7 @@ const getSessionQuery = gql`
         phoneNumber,
         displayName,
         schoolId,
+        photoURL,
       }
     }
   }

@@ -50,13 +50,6 @@ export const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 9999
   },
-  avatarContainerStyle: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: 10,
-  },
   inputGroupStyle: {
     flexDirection: "column",
     justifyContent: "center",
