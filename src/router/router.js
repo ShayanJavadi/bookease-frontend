@@ -23,6 +23,7 @@ import RequireAuthenticationContainer from "../screens/RequireAuthenticationCont
 import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
 import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer";
 import ProfilePictureCameraScreen from "../screens/ProfilePictureCameraScreenContainer"
+import ProfilePictureImageScreen from "../screens/ProfilePictureImageScreenContainer";
 
 console.reportErrorsAsExceptions = false;
 
@@ -83,8 +84,19 @@ const ProfilePictureCameraNavigator = StackNavigator({
     screen: ProfilePictureCameraScreen,
   },
 }, {
+  headerMode: "none",
   mode: "modal",
 });
+
+const ProfilePictureImageNavigator = StackNavigator({
+  profilePictureImageScreen: {
+    screen: ProfilePictureImageScreen,
+  },
+}, {
+  headerMode: "none",
+  mode: "modal",
+});
+
 const AccountNavigator = StackNavigator({
   account: {
     screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
@@ -98,11 +110,11 @@ const AccountNavigator = StackNavigator({
   changeSchoolScreen: {
     screen: SchoolSelectionScreen,
   },
-  changeProfilePictureScreen: {
-    screen: EnterBookDetailsCameraScreen,
-  },
   profilePictureCameraScreen: {
     screen: ProfilePictureCameraNavigator,
+  },
+  profilePictureImageScreen: {
+    screen: ProfilePictureImageNavigator,
   },
 }, {
   headerMode: "none",

@@ -3,7 +3,7 @@ import * as actions from "./actions";
 import ProfilePictureCameraScreen from "../ProfilePictureCameraScreen";
 
 const mapStateToProps = ({ ProfilePictureCameraReducer }) => ({
-  images: ProfilePictureCameraReducer.images,
+  image: ProfilePictureCameraReducer.image,
   isTakingPicture: ProfilePictureCameraReducer.isTakingPicture,
 });
 

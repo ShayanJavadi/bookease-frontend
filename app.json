@@ -4,7 +4,7 @@
     "description": "The painless, no-frills textbook exchange!",
     "slug": "bookease",
     "privacy": "unlisted",
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "version": "0.1.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",

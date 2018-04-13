@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from "react-native";
-import { func, bool, shape, array } from "prop-types";
+import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator, Image } from "react-native";
+import { func, bool, shape, array, object } from "prop-types";
 import {
   Camera,
 } from "expo";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
+import Modal from "src/modules/Modal";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from "./consts";
 
@@ -19,7 +20,8 @@ const {
   captureButtonOuterStyle,
   captureButtonInnerStyle,
   topRowWrapperStyle,
-  bottomRowWrapperStyle
+  bottomRowWrapperStyle,
+  imagePreviewStyle,
 } = styles;
 
 const {
@@ -37,11 +39,8 @@ export default class ProfilePictureCameraScreen extends Component {
   })
 
   static propTypes = {
-    createImagesFolder: func.isRequired,
     takePicture: func.isRequired,
-    updateImages: func.isRequired,
-    images: array.isRequired,
-    loading: bool,
+    image: object,
     isTakingPicture: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired
@@ -50,15 +49,14 @@ export default class ProfilePictureCameraScreen extends Component {
 
   state = {
     flash: "off",
-  }
-
-  componentDidMount() {
-    this.props.createImagesFolder();
-    this.props.updateImages();
+    isInConfirmationDialog: false,
   }
 
   componentWillReceiveProps(nextProps) {
+    const { image } = nextProps;
+
     if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
+        this.setState({ isInConfirmationDialog: true });
     }
   }
 
@@ -66,6 +64,22 @@ export default class ProfilePictureCameraScreen extends Component {
     this.setState({
       flash: FLASH_OPTIONS_ORDER[this.state.flash],
     });
+  }
+
+  renderConfirmationModal() {
+    return (
+      <Modal
+        isVisible={this.state.isInConfirmationDialog}
+        text="Use this picture?"
+        actions={["No", "Yes"]}
+        onActionPress={() => this.setState({ isInConfirmationDialog: false })}
+      >
+        <Image
+          source={this.props.image}
+          style={imagePreviewStyle}
+        />
+      </Modal>
+    )
   }
 
   renderFlashIcon() {
@@ -99,7 +113,7 @@ export default class ProfilePictureCameraScreen extends Component {
   }
 
   render() {
-    if (this.props.loading) {
+    if (this.props.isTakingPicture) {
       return (
         <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
           <ActivityIndicator
@@ -107,7 +121,19 @@ export default class ProfilePictureCameraScreen extends Component {
             color={tertiaryColorDark}
           />
         </View>
-      )
+      );
+    }
+
+    if (this.state.isInConfirmationDialog) {
+      return (
+        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          {this.renderConfirmationModal()}
+          <ActivityIndicator
+            size="large"
+            color={tertiaryColorDark}
+          />
+        </View>
+      );
     }
 
     return (

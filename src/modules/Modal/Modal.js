@@ -25,11 +25,11 @@ const renderModalContent = (children) => {
   }
 }
 
-const Modal = ({ isVisible, text, textStyle, actions, onActionPress, children, options }) => {
+const Modal = ({ isVisible, text, textStyle, actions, onActionPress, children, options, containerStyle }) => {
   const { Title, Actions } = Dialog;
 
   return (
-    <RNModal isVisible={isVisible} style={modalWrapperStyle}>
+    <RNModal isVisible={isVisible} style={containerStyle || modalWrapperStyle}>
       <Dialog>
         <Title>
           <Text style={textStyle}>{text}</Text>

@@ -8,6 +8,7 @@ const {
 } = palette;
 
 export const ICON_SIZE = 24;
+export const AVATAR_SIZE = 150;
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -39,7 +40,20 @@ export const styles = StyleSheet.create({
   contentContainerStyle: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  avatarActionButtonStyle: {
+    right: -38,
+    bottom: -30,
+    position: "absolute",
+    zIndex: 9999
+  },
+  avatarContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
     alignItems: "center",
     marginTop: 10,
   },
@@ -60,8 +74,7 @@ export const styles = StyleSheet.create({
   },
   signOutButtonContainerStyle: {
     backgroundColor: primaryColor,
-    marginTop: 100,
-    marginBottom: 40,
+    marginBottom: 20,
     height: 50,
     width: SCREEN_WIDTH * 0.9,
   },

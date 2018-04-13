@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
 
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CAPTURE_BUTTON_OUTER_WIDTH = 70;
 const CAPTURE_BUTTON_INNER_WIDTH = CAPTURE_BUTTON_OUTER_WIDTH - 10;
@@ -61,5 +62,10 @@ export const styles = StyleSheet.create({
     height: CAPTURE_BUTTON_INNER_WIDTH,
     width: CAPTURE_BUTTON_INNER_WIDTH,
     borderRadius: CAPTURE_BUTTON_INNER_WIDTH / 2
+  },
+  imagePreviewStyle: {
+    width: SCREEN_WIDTH * 0.6,
+    height: SCREEN_HEIGHT * 0.5,
+    resizeMode: "contain",
   },
 });

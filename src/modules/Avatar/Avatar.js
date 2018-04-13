@@ -13,10 +13,10 @@ const createStyles = (size) => {
   });
 }
 
-const Avatar = ({ size, styles = {}, uri }) => {
+const Avatar = ({ size = 75, styles = {}, uri }) => {
   const { imageStyle } = createStyles(size);
   if (!uri) {
-    return <MaterialIcons name="account-circle" size={75} style={{ color: "#ccc" }} />
+    return <MaterialIcons name="account-circle" size={size} style={{ color: "#ccc" }} />
   }
 
   return (
