@@ -1,3 +1,5 @@
 import deleteTextbookMutation from "./deleteTextbookMutation";
+import createBookmarkMutation from "./createBookmarkMutation";
+import deleteBookmarkMutation from "./deleteBookmarkMutation";
 
-export default { deleteTextbookMutation };
+export default { deleteTextbookMutation, createBookmarkMutation, deleteBookmarkMutation };

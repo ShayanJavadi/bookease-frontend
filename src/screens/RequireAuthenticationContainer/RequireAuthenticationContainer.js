@@ -28,7 +28,7 @@ export default function(ComposedComponent, options) {
       }
     }
 
-    async componentDidMount() {
+   componentDidMount() {
       if (this.props.isFocused && this.props.navigation.state) {
         this.checkAuthenticationStatus();
       }

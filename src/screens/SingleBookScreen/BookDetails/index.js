@@ -19,20 +19,39 @@ const {
   listingFooterTextStyle,
 } = styles;
 
-const renderIcons = (buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner) => {
+const renderBookmarkIcon = (isUserOwner, onLeftIconPress, isBookmarkedByCurrentUser, bookmarkCount) => {
+  if (isUserOwner) {
+    return (
+      <View
+        style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
+      >
+        <MaterialCommunityIcons name="heart" size={21} style={isBookmarkedByCurrentUser ? listingFooterIconStyle : { color: "#ccc" }} />
+        <Text style={listingFooterTextStyle}>{bookmarkCount}</Text>
+      </View>
+
+    )
+  }
+
+  return (
+    <TouchableOpacity
+      style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
+      onPress={onLeftIconPress}
+    >
+      <MaterialCommunityIcons name="heart" size={21} style={isBookmarkedByCurrentUser ? listingFooterIconStyle : { color: "#ccc" }} />
+      <Text style={listingFooterTextStyle}>{bookmarkCount}</Text>
+    </TouchableOpacity>
+
+  )
+}
+
+const renderIcons = (buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner, isBookmarkedByCurrentUser, bookmarkCount) => {
   const buyRequestsCount = buyRequestNotifications.length;
   const hasMultipleBuyRequests = buyRequestsCount > 1;
 
   return (
     <View style={listingFooterWrapperStyle}>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <TouchableOpacity
-          style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start" }]}
-          onPress={onLeftIconPress}
-        >
-          <MaterialCommunityIcons name="heart" size={21} style={listingFooterIconStyle} />
-          <Text style={listingFooterTextStyle}>0</Text>
-        </TouchableOpacity>
+        {renderBookmarkIcon(isUserOwner, onLeftIconPress, isBookmarkedByCurrentUser, bookmarkCount)}
         <TouchableOpacity
           style={[listingFooterSectionWrapperStyle, { justifyContent: "flex-start", marginRight: isUserOwner ? 0 : 30 }]}
           onPress={onMiddleIconPress}
@@ -65,12 +84,22 @@ const renderIcons = (buyRequestNotifications, onLeftIconPress, onMiddleIconPress
 }
 
 const BookDetails = ({ textbook, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner }) => {
-  const { title, condition, authors, industryIdentifiers, edition, description, buyRequestNotifications } = textbook;
+  const { 
+    title,
+    condition,
+    authors,
+    industryIdentifiers,
+    edition,
+    description,
+    buyRequestNotifications,
+    isBookmarkedByCurrentUser,
+    bookmarkCount,
+  } = textbook;
 
   return (
     <View style={bookDetailsWrapperStyle}>
       <View style={{ flex: 2 }}>
-        {renderIcons(buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner)}
+        {renderIcons(buyRequestNotifications, onLeftIconPress, onMiddleIconPress, onRightIconPress, isUserOwner, isBookmarkedByCurrentUser, bookmarkCount)}
         <View style={bookDetailsTitleWrapperStyle}>
           <View style={{ flexDirection: "row", flex: 1 }}>
             <Text style={bookDetailsTitleStyle}>{title}</Text>

@@ -4,7 +4,7 @@ import mutations from "./graphql/mutations";
 import SingleBookScreen from "../SingleBookScreen";
 
 const { getTextbookQuery, getSessionQuery } = queries;
-const { deleteTextbookMutation } = mutations;
+const { deleteTextbookMutation, createBookmarkMutation, deleteBookmarkMutation } = mutations;
 
 export default compose(
   graphql(getSessionQuery, {
@@ -17,5 +17,13 @@ export default compose(
   graphql(deleteTextbookMutation, {
     name: "deleteTextbookMutation",
     options: props => ({ variables: { textbookId: props.textbookId || "" } }),
-  })
+  }),
+  graphql(createBookmarkMutation, {
+    name: "createBookmarkMutation",
+    options: props => ({ variables: { bookmark: props.bookmark || {} } }),
+  }),
+  graphql(deleteBookmarkMutation, {
+    name: "deleteBookmarkMutation",
+    options: props => ({ variables: { bookmark: props.bookmark || {} } }),
+  }),
 )(SingleBookScreen);

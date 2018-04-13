@@ -54,13 +54,13 @@ const renderBackButton = (navigation) => {
   )
 }
 
-const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation) => {
+const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation, onBookmarkIconPress, onDeleteIconPress, textbook) => {
   if (isUserOwner) {
     return (
       <View style={iconsWrapperStyle}>
         {renderBackButton(navigation)}
         <View style={{ justifyContent: "flex-end", flexDirection: "row" }}>
-          <TouchableOpacity onPress={() => alert("share")}>
+          <TouchableOpacity onPress={onDeleteIconPress}>
             <MaterialCommunityIcons size={30} color="#fff" name="delete" />
           </TouchableOpacity>
         </View>
@@ -71,8 +71,12 @@ const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation) => {
   return (
     <View style={iconsWrapperStyle}>
       {renderBackButton(navigation)}
-      <TouchableOpacity onPress={() => alert("favorite")}>
-        <MaterialCommunityIcons size={30} color="#fff" name="heart-outline" />
+      <TouchableOpacity onPress={onBookmarkIconPress}>
+        <MaterialCommunityIcons 
+          size={30}
+          color="#fff"
+          name={textbook.isBookmarkedByCurrentUser ? "heart" : "heart-outline"}
+        />
       </TouchableOpacity>
     </View>
   )
@@ -82,12 +86,21 @@ const renderOverlayIcons = (isUserOwner, buyRequestCount, navigation) => {
 
 }
 
-const BookImages = ({ isUserOwner, buyRequestCount, navigation, textbook: { price, images }, onPress, onCarouselIndexChange }) => (
+const BookImages = ({ 
+  isUserOwner,
+  buyRequestCount,
+  navigation,
+  textbook,
+  onPress,
+  onCarouselIndexChange,
+  onBookmarkIconPress,
+  onDeleteIconPress,
+}) => (
   <View style={bookImageWrapperStyle}>
-    {renderPictureCarousel(images, onPress, onCarouselIndexChange)}
-    {renderOverlayIcons(isUserOwner, buyRequestCount, navigation)}
+    {renderPictureCarousel(textbook.images, onPress, onCarouselIndexChange)}
+    {renderOverlayIcons(isUserOwner, buyRequestCount, navigation, onBookmarkIconPress, onDeleteIconPress, textbook)}
     <Chip
-      text={`\$${price}`}
+      text={`\$${textbook.price}`}
       styles={{ containerStyle: priceChipWrapperStyle, textStyle: priceChipTextStyle }}
     />
     <LinearGradient
@@ -105,6 +118,8 @@ BookImages.propTypes = {
     navigate: func.isRequired
   }).isRequired,
   onPress: func,
+  onBookmarkIconPress: func.isRequired,
+  onDeleteIconPress: func.isRequired,
   onCarouselIndexChange: number,
 };
 
