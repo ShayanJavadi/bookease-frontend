@@ -5,6 +5,7 @@ import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NavigationActions } from "react-navigation";
 import { func, shape, object } from "prop-types";
+import Toast from "react-native-root-toast";
 import { isEmpty } from "lodash";
 import Questions from "./Questions";
 import BookImages from "./BookImages";
@@ -49,6 +50,9 @@ export default class SingleBookScreen extends Component {
     slideShowImageIndex: 0,
     isComponentLoading: true,
     didRefetchAllData: undefined,
+    isTogglingBookmark: false,
+    toastMessageVisible: false,
+    toastMessageText: "",
     textbookId: this.props.navigation.state.params ?
     this.props.navigation.state.params.textbookId :
     undefined
@@ -65,6 +69,29 @@ export default class SingleBookScreen extends Component {
       }, []);
 
       this.setState({ slideShowImages, isComponentLoading: false, isUserOwner, didRefetchAllData: true });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.didRefetchAllData) {
+      const isBookmarkedInCurrentProps = this.props.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
+      const isBookmarkedInNewProps = nextProps.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
+      const didUserBookmarkTextbook = !isBookmarkedInCurrentProps && isBookmarkedInNewProps;
+      const didUserRemoveBookmark = isBookmarkedInCurrentProps && !isBookmarkedInNewProps;
+
+      if (didUserBookmarkTextbook) {
+        this.setState({ toastMessageVisible: true, toastMessageText: "Bookmarked textbook!" });
+        setTimeout(() => this.setState({
+          toastMessageVisible: false
+        }), 3000);
+      }
+
+      if (didUserRemoveBookmark) {
+        this.setState({ toastMessageVisible: true, toastMessageText: "Bookmark removed" });
+        setTimeout(() => this.setState({
+          toastMessageVisible: false
+        }), 3000);
+      }
     }
   }
 
@@ -104,6 +131,41 @@ export default class SingleBookScreen extends Component {
     const { navigation, getTextbookQuery } = this.props;
 
     navigation.navigate("buyRequestScreen", { textbookId: getTextbookQuery.getTextbook.id, context: "singleBookScreen" });
+  }
+
+  toggleBookmark = async () => {
+    const { createBookmarkMutation, getTextbookQuery, deleteBookmarkMutation } = this.props;
+    const { getTextbook } = getTextbookQuery;
+
+    this.setState({ isTogglingBookmark: true });
+
+    if (getTextbook.isBookmarkedByCurrentUser) {
+      return await deleteBookmarkMutation({
+        variables: {
+          bookmark: {
+            textbookId: getTextbook.id,
+          }
+        }
+      })
+    }
+
+    return await createBookmarkMutation({
+      variables: {
+        bookmark: {
+          textbookId: getTextbook.id,
+        }
+      }
+    })
+  }
+
+  onBookmarkTextbookButtonPress = async () => {
+    if (this.state.togglingBookmark) {
+      return;
+    }
+
+    await this.toggleBookmark();
+    this.setState({ isTogglingBookmark: false });
+    return this.props.getTextbookQuery.refetch({ textbookId: this.state.textbookId })
   }
 
   renderDeleteTextbookModal() {
@@ -195,12 +257,15 @@ export default class SingleBookScreen extends Component {
           isUserOwner={isUserOwner}
           onTopRightIconPress={() => alert("pressed")}
           navigation={navigation}
+          onDeleteIconPress={() => alert("delete")}
+          onBookmarkIconPress={this.onBookmarkTextbookButtonPress}
           onPress={() => this.setState({ isImageSlideShowModalVisible: true })}
           onCarouselIndexChange={(index) => this.setState({ slideShowImageIndex: index })}
         />
         <BookDetails
           textbook={getTextbook}
           isUserOwner={isUserOwner}
+          onLeftIconPress={this.onBookmarkTextbookButtonPress}
           onMiddleIconPress={() => this.scrollView.scrollToEnd()}
           onRightIconPress={() => this.scrollView.scrollToEnd()}
         />
@@ -310,6 +375,19 @@ export default class SingleBookScreen extends Component {
     }
   }
 
+  renderToastMessage() {
+    return (
+      <Toast
+        visible={this.state.toastMessageVisible}
+        position={-80}
+        hideOnPress={true}
+        backgroundColor="#ff003d"
+      >
+        {this.state.toastMessageText}
+      </Toast>
+    )
+  }
+
   render() {
     const { getTextbookQuery, getSessionQuery } = this.props;
     const { isComponentLoading } = this.state;
@@ -326,6 +404,7 @@ export default class SingleBookScreen extends Component {
         {this.renderButtons()}
         {this.renderDeleteTextbookModal()}
         {this.renderSlideShowModal()}
+        {this.renderToastMessage()}
       </View>
     );
   }

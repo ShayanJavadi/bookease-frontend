@@ -22,6 +22,8 @@ const getTextbookQuery = gql`
         createdAt,
         updatedAt,
         publishedAt,
+        bookmarkCount,
+        isBookmarkedByCurrentUser,
         user {
           id,
           displayName,
