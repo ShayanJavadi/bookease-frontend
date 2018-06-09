@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { func, object, bool, array, shape, string } from "prop-types";
 import { Button } from "react-native-material-ui";
-import { NavigationActions } from "react-navigation";
-import { FileSystem } from "expo";
+import { NavigationActions, StackActions } from "react-navigation";
+import { FileSystem, Permissions } from "expo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ActionButton from "react-native-action-button";
 import { lowerCase, isEqual } from "lodash";
@@ -137,7 +137,7 @@ export default class EnterBookDetailsScreen extends Component {
     const textbookWasUpdated = nextProps.submittedBook && nextProps.submissionType === "updateTextbook";
 
     if (textbookWasUpdated) {
-      const navigateToSingleBookScreenAction = NavigationActions.reset({
+      const navigateToSingleBookScreenAction = StackActions.reset({
         index: 1,
         key: null,
         actions: [
@@ -269,8 +269,10 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   onImageLibraryPress() {
-    this.props.launchImageLibrary();
-    this.setState({ cameraModalVisible: false });
+    Permissions.askAsync(Permissions.CAMERA_ROLL).then(() => {
+      this.props.launchImageLibrary();
+      this.setState({ cameraModalVisible: false });
+    })
   }
 
   onDeleteImageModalActionPress(action) {
@@ -316,7 +318,7 @@ export default class EnterBookDetailsScreen extends Component {
         }
       })
       .then(() => {
-        const resetAction = NavigationActions.reset({
+        const resetAction = StackActions.reset({
           index: 0,
           key: null,
           actions: [

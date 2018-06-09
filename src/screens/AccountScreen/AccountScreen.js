@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { MaterialIcons } from "@expo/vector-icons";
 import { func, object, shape, bool } from "prop-types";
 import { isEmpty } from "lodash";
@@ -76,7 +76,7 @@ export default class AccountScreen extends Component {
   async signOut() {
     await this.props.signOutMutation();
     await this.props.removeStoredUser();
-    const navigateToHomeScreen = NavigationActions.reset({
+    const navigateToHomeScreen = StackActions.reset({
       index: 0,
       key: null,
       actions: [

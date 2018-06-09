@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
+import { View, Text, TouchableWithoutFeedback } from "react-native";
 import { func, object, bool, number } from "prop-types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { styles, BUY_REQUEST_ICON_SIZE, READ_OPACITY } from "./styles";
 import { getRelativeTime } from "src/common/lib";
+import Avatar from "src/modules/Avatar";
 
 const {
   notificationWrapperStyle,
@@ -46,14 +47,23 @@ const renderNotificationHeader = (createdAt) => {
 
 const renderNotificationDetails = (notification ,navigation, numberOfMessageLines) => {
   const { buyRequest: { message, textbook, textbookId } } = notification;
-
+  const isUserRequester = notification.buyRequest.isUserRequester;
+  
   return (
     <View style={notificationDetailsWrapperStyle}>
       <Text style={notificatDetailsHeaderStyle}>
-        {notification.user.displayName} requested to purchase
+        {isUserRequester ? "You" : notification.user.displayName} requested to purchase
       </Text>
-      <Text style={notificatDetailsTextbookStyle} onPress={() => navigation.navigate("singleBook", { textbookId: textbookId })}>
-        {textbook.title}
+      <Text>
+        <Text style={notificatDetailsTextbookStyle} onPress={() => navigation.navigate("singleBook", { textbookId: textbookId })}>
+          {textbook.title}
+        </Text>
+        {
+          isUserRequester &&
+          <Text style={notificatDetailsHeaderStyle}>
+            {" from "}<Text style={notificatDetailsTextbookStyle}>{notification.buyRequest.recipientUser.displayName}</Text>
+          </Text>
+        }
       </Text>
       <Text style={notificatDetailsMessageStyle} numberOfLines={numberOfMessageLines}>
         {message}
@@ -66,9 +76,9 @@ const renderNotificationAvatar = (photoURL) => {
   return (
     <View style={notificationAvatarWrapperStyle}>
       <View style={notificationAvatarContentsWrapperStyle}>
-        <Image
-          style={notificationAvatarStyle}
-          source={{ uri: photoURL }}
+        <Avatar
+          styles={notificationAvatarStyle}
+          uri={photoURL}
         />
         <View style={notificationAvatarArrowIconWrapperStyle}>
           <MaterialCommunityIcons
@@ -85,9 +95,9 @@ const renderNotificationAvatar = (photoURL) => {
 const renderExpandedNotifcationAvatar = (photoURL) => {
   return (
     <View style={expandedNotificationAvatarWrapperStyle}>
-      <Image
-        style={expandedNotificationAvatarStyle}
-        source={{ uri: photoURL }}
+      <Avatar
+        styles={expandedNotificationAvatarStyle}
+        uri={photoURL}
       />
     </View>
   )

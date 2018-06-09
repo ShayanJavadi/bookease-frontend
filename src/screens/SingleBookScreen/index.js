@@ -3,21 +3,22 @@ import ReactNative, { View, ActivityIndicator, Text } from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { Button } from "react-native-material-ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { func, shape, object } from "prop-types";
-import Toast from "react-native-root-toast";
-import { isEmpty } from "lodash";
+import Toast from "react-native-easy-toast"
+import { isEmpty, find } from "lodash";
 import Questions from "./Questions";
 import BookImages from "./BookImages";
 import BookDetails from "./BookDetails";
 import AccountDetails from "./AccountDetails";
 import BuyRequestDetails from "src/modules/BuyRequestDetails";
 import { styles } from "./styles";
-import uiTheme from "src/common/styles";
+import uiTheme from "src/common/styles/uiTheme";
 import Modal from "src/modules/Modal";
 import PlaceholderView from "src/modules/PlaceholderView";
 import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
 import { NOTIFICATION_CONDITIONS } from "src/common/consts";
+import getRelativeTime from "src/common/lib/getRelativeTime";
 
 const {
   screenStyle,
@@ -31,6 +32,8 @@ const {
   noBuyRequestsWrapperStyle,
   noBuyRequestsStyle,
 } = styles;
+
+const { palette } = uiTheme;
 
 export default class SingleBookScreen extends Component {
   static propTypes = {
@@ -51,46 +54,51 @@ export default class SingleBookScreen extends Component {
     isComponentLoading: true,
     didRefetchAllData: undefined,
     isTogglingBookmark: false,
-    toastMessageVisible: false,
-    toastMessageText: "",
+    hasStaleData: false,
     textbookId: this.props.navigation.state.params ?
     this.props.navigation.state.params.textbookId :
     undefined
   }
 
-  componentWillMount = async () => {
-    if (!this.state.didRefetchAllData) {
-      const { data: { getSession } } = await this.props.getSessionQuery.refetch();
-      const { data: { getTextbook } } = await this.props.getTextbookQuery.refetch({ textbookId: this.state.textbookId });
-      const userId = getSession.user && getSession.user.id;
-      const isUserOwner = userId === getTextbook.userId;
-      const slideShowImages = getTextbook.images.reduce((textbookImages, image) => {
-        return [ ...textbookImages, { url: image.thumbnail }]
-      }, []);
+  fetchData = async () =>{
+    const { data: { getSession } } = await this.props.getSessionQuery.refetch();
+    const { data: { getTextbook } } = await this.props.getTextbookQuery.refetch({ textbookId: this.state.textbookId });
+    const userId = getSession.user && getSession.user.id;
+    const isUserOwner = userId === getTextbook.userId;
+    const slideShowImages = getTextbook.images.reduce((textbookImages, image) => {
+      return [...textbookImages, { url: image.thumbnail }]
+    }, []);
 
-      this.setState({ slideShowImages, isComponentLoading: false, isUserOwner, didRefetchAllData: true });
+    this.setState({ slideShowImages, isComponentLoading: false, isUserOwner, didRefetchAllData: true, hasStaleData: false });
+  }
+
+  componentWillMount = () => {
+    if (!this.state.didRefetchAllData) {
+      this.fetchData();
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.navigation.isFocused()) {
+      this.setState({ hasStaleData: true })
+    }
+
+    if (nextProps.navigation.isFocused() && this.state.hasStaleData) {
+      this.fetchData();
+    }
+
     if (this.state.didRefetchAllData) {
-      const isBookmarkedInCurrentProps = this.props.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
-      const isBookmarkedInNewProps = nextProps.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
+      const isBookmarkedInCurrentProps = this.props.getTextbookQuery.getTextbook && this.props.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
+      const isBookmarkedInNewProps = nextProps.getTextbookQuery.getTextbook && nextProps.getTextbookQuery.getTextbook.isBookmarkedByCurrentUser;
       const didUserBookmarkTextbook = !isBookmarkedInCurrentProps && isBookmarkedInNewProps;
       const didUserRemoveBookmark = isBookmarkedInCurrentProps && !isBookmarkedInNewProps;
 
       if (didUserBookmarkTextbook) {
-        this.setState({ toastMessageVisible: true, toastMessageText: "Bookmarked textbook!" });
-        setTimeout(() => this.setState({
-          toastMessageVisible: false
-        }), 3000);
+        this.refs.toast.show("Bookmarked Textbook");
       }
 
       if (didUserRemoveBookmark) {
-        this.setState({ toastMessageVisible: true, toastMessageText: "Bookmark removed" });
-        setTimeout(() => this.setState({
-          toastMessageVisible: false
-        }), 3000);
+        this.refs.toast.show("Removed Bookmark");
       }
     }
   }
@@ -110,7 +118,7 @@ export default class SingleBookScreen extends Component {
         }
       })
       .then(() => {
-        const resetAction = NavigationActions.reset({
+        const resetAction = StackActions.reset({
           index: 0,
           key: null,
           actions: [
@@ -166,6 +174,10 @@ export default class SingleBookScreen extends Component {
     await this.toggleBookmark();
     this.setState({ isTogglingBookmark: false });
     return this.props.getTextbookQuery.refetch({ textbookId: this.state.textbookId })
+  }
+
+  onViewBuyRequestButtonPress = (buyRequest) => {
+    this.props.navigation.navigate("singleNotificationScreen", { notificationType: "BUY_REQUEST", notificationId: buyRequest.id })
   }
 
   renderDeleteTextbookModal() {
@@ -229,7 +241,7 @@ export default class SingleBookScreen extends Component {
           <View style={{ flex: 1, justifyContent: "center" }}>
             <ActivityIndicator
               size="large"
-              color={uiTheme.tertiaryColorDark}
+              color={palette.tertiaryColorDark}
             />
           </View>
         </PlaceholderView>
@@ -340,11 +352,60 @@ export default class SingleBookScreen extends Component {
     )
   }
 
+  renderBuyRequestButtons() {
+    const textbook = this.props.getTextbookQuery && this.props.getTextbookQuery.getTextbook;
+    const currentUserId = this.props.getSessionQuery && this.props.getSessionQuery.getSession.user.id;
+    const buyRequest = find(textbook.buyRequestNotifications, { senderId: currentUserId });
+    return (
+      <FloatingBottomContainer
+        height={110}
+      >
+        <View style={[buttonWrapperStyle, { }]}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+
+            <Text
+              style={{
+                paddingBottom: 11,
+                color: "#444",
+                textAlign: "center",
+                fontSize: 11
+              }}
+            >
+              You requested to purchase
+              <Text style={{ color: palette.tertiaryColorLight, fontWeight: "600" }}>
+                {` ${textbook.title} `}
+              </Text>
+              from
+              <Text style={{ color: "#444", fontWeight: "600" }}>
+                {` ${textbook.user.displayName} `}
+              </Text>
+              {getRelativeTime(buyRequest.createdAt)} ago
+            </Text>
+          </View>
+          <Button
+            style={{ container: raisedButtonContainerStyle, text: raisedButtonTextStyle }}
+            primary
+            raised
+            onPress={() => this.onViewBuyRequestButtonPress(buyRequest)}
+            text="View Buy Request"
+          />
+        </View>
+      </FloatingBottomContainer>
+
+    )
+  }
+
   renderButtons() {
     // TODO: change to use getSession api
     const { isUserOwner, isComponentLoading } = this.state;
     const { getTextbookQuery, getSessionQuery } = this.props;
     const isTextbookQueryLoading = getTextbookQuery.loading || getSessionQuery.loading || !getTextbookQuery.getTextbook || isComponentLoading;
+    const isRequestedByCurrentUser = getTextbookQuery.getTextbook && getTextbookQuery.getTextbook.isRequestedByCurrentUser;
 
     if (isTextbookQueryLoading) {
       return this.renderButtonPlaceholders();
@@ -352,6 +413,10 @@ export default class SingleBookScreen extends Component {
 
     if (isUserOwner) {
       return this.renderSellerButtons();
+    }
+
+    if (isRequestedByCurrentUser) {
+      return this.renderBuyRequestButtons();
     }
 
     return this.renderBuyerButtons();
@@ -375,19 +440,6 @@ export default class SingleBookScreen extends Component {
     }
   }
 
-  renderToastMessage() {
-    return (
-      <Toast
-        visible={this.state.toastMessageVisible}
-        position={-80}
-        hideOnPress={true}
-        backgroundColor="#ff003d"
-      >
-        {this.state.toastMessageText}
-      </Toast>
-    )
-  }
-
   render() {
     const { getTextbookQuery, getSessionQuery } = this.props;
     const { isComponentLoading } = this.state;
@@ -404,7 +456,15 @@ export default class SingleBookScreen extends Component {
         {this.renderButtons()}
         {this.renderDeleteTextbookModal()}
         {this.renderSlideShowModal()}
-        {this.renderToastMessage()}
+        <Toast 
+          ref="toast"
+          opacity={0.8}
+          style={{ backgroundColor: "#ff003d" }}
+          position="bottom"
+          positionValue={100}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+        />
       </View>
     );
   }

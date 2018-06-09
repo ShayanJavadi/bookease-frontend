@@ -21,6 +21,7 @@ const getMyNotifications = gql`
             userId,
             textbookId,
             textbook{
+              id,
               title,
               price
             },

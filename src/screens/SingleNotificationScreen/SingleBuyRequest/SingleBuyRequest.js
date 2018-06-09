@@ -14,6 +14,7 @@ import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
 import PhoneNumberContainer from "src/modules/PhoneNumberContainer";
 import Modal from "src/modules/Modal";
 import openSms from "src/common/lib/openSms";
+import formatPhoneNumber from "src/common/lib/formatPhoneNumber";
 
 const {
   containerStyle,
@@ -64,7 +65,7 @@ export default class SingleBuyRequest extends Component {
 
   updateBuyRequest(valuesToUpdate) {
     const { updateBuyRequest, notification } = this.props;
-    const updatedBuyRequest = Object.assign({}, omit(notification.buyRequest, ["textbook", "isTextbookSold", "__typename"]), valuesToUpdate);
+    const updatedBuyRequest = Object.assign({}, omit(notification.buyRequest, ["textbook", "isTextbookSold", "__typename", "recipientUser"]), valuesToUpdate);
 
     return updateBuyRequest({
       variables: {
@@ -193,14 +194,14 @@ export default class SingleBuyRequest extends Component {
     }
   }
 
-  renderPhoneNumber() {
+  renderRecipientPhoneNumber() {
     const { notification, isLoading } = this.props;
 
     if (isLoading || !notification) {
       return null;
     }
 
-    const { isAccepted } = notification.buyRequest;
+    const { isAccepted, userPhoneNumber } = notification.buyRequest;
     const { displayName } = notification.user;
 
     return (
@@ -208,14 +209,43 @@ export default class SingleBuyRequest extends Component {
         <PhoneNumberContainer
           showPhoneNumber={isAccepted}
           text={isAccepted ? `Message ${displayName} to arrange a meetup` : `Accept ${displayName}\'s request to exchange phone numbers`}
-          phoneNumber="(817) 226 - 0183"
+          phoneNumber={formatPhoneNumber(userPhoneNumber)}
           onPhoneNumberPress={() => isAccepted && this.onScheduleMeetingPress()}
         />
       </FloatingBottomContainer>
     )
   }
 
-  renderButtons() {
+  renderSenderPhoneNumber() {
+    const { notification, isLoading } = this.props;
+
+    if (isLoading || !notification) {
+      return null;
+    }
+
+    const { isAccepted, recipientPhoneNumber } = notification.buyRequest;
+    const { displayName } = notification.buyRequest.recipientUser;
+
+    return (
+      <FloatingBottomContainer height={250}>
+        <PhoneNumberContainer
+          showPhoneNumber={isAccepted}
+          text={isAccepted ? `Message ${displayName} to arrange a meetup` : `${displayName}'s phone number will become avaible upon his acceptance.`}
+          phoneNumber={formatPhoneNumber(recipientPhoneNumber)}
+          onPhoneNumberPress={() => isAccepted && this.onScheduleMeetingPress()}
+        />
+      </FloatingBottomContainer>
+    )
+  }
+
+  renderPhoneNumber(isUserRequester) {
+    if (isUserRequester) {
+      return this.renderSenderPhoneNumber();
+    }
+    return this.renderRecipientPhoneNumber();
+  }
+
+  renderRecipientButtons() {
     const { notification } = this.props;
 
     if (notification && notification.buyRequest.isAccepted) {
@@ -265,10 +295,53 @@ export default class SingleBuyRequest extends Component {
     )
   }
 
+  renderSenderButtons() {
+    const { notification } = this.props;
+
+    return (
+      <FloatingBottomContainer>
+        <View style={buttonWrapperStyle}>
+          <Button
+            style={{ container: declineButtonContainerStyle, text: declineButtonTextStyle }}
+            primary
+            onPress={() => this.setState({ isMarkAsDoneModalVisible: true })}
+            text="Cancel"
+          />
+        </View>
+        <View style={buttonWrapperStyle}>
+          <Button
+            style={{ container: acceptButtonContainerStyle, text: acceptButtonTextStyle }}
+            primary
+            raised
+            onPress={() => this.props.navigation.navigate(
+              "buyRequestScreen", 
+              { 
+                textbookId: notification.buyRequest.textbook.id,
+                updateMode: true,
+                buyRequestToUpdate: notification.buyRequest,
+                message: notification.buyRequest.message,
+              }
+            )}
+            text="Edit"
+          />
+        </View>
+      </FloatingBottomContainer>
+    )
+  }
+
+  renderButtons(isUserRequester) {
+    if (isUserRequester) {
+      return this.renderSenderButtons();
+    }
+    return this.renderRecipientButtons();
+  }
+
   render() {
     const { notification, navigation, isLoading } = this.props;
     const { isCreatingTextbookSale, isRedirectingToSMS, spinnerMessage } = this.state;
     const shouldShowSpinner = isCreatingTextbookSale || isRedirectingToSMS;
+    const isUserRequester = notification && notification.buyRequest.isUserRequester;
+
     return (
       <View style={containerStyle}>
         <Header
@@ -278,8 +351,8 @@ export default class SingleBuyRequest extends Component {
        <KeyboardAwareScrollView>
         {this.renderBuyRequestDetails(notification, navigation, isLoading)}
        </KeyboardAwareScrollView>
-       {this.renderPhoneNumber(notification, isLoading)}
-       {this.renderButtons(notification)}
+       {this.renderPhoneNumber(isUserRequester)}
+       {notification && this.renderButtons(isUserRequester)}
        {notification && this.renderAcceptModal(notification.user.displayName)}
        {this.renderMarkAsDoneModal()}
        <Spinner

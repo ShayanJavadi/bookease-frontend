@@ -48,9 +48,10 @@ export default class HomeScreen extends Component {
     })
   }
 
-  async componentWillMount() {
+
+
+  componentDidMount() {
     this.handlePushNotificationToken();
-    this.props.getStoredSessionUserInformation();
   }
 
   render() {

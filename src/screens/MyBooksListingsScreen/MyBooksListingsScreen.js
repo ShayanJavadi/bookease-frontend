@@ -103,7 +103,7 @@ export default class MyBooksListingsScreen extends Component {
       <Swipeable
         rightButtons={[
           <TouchableOpacity
-            style={[swipeOutStyle, { backgroundColor: "#00BFA5" }]}
+            style={[swipeOutStyle, { backgroundColor: tertiaryColorDark }]}
             key="edit"
             onPress={() => this.onEditButtonPress(id)}
           >

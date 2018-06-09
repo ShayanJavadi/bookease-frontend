@@ -4,7 +4,7 @@
     "description": "The painless, no-frills textbook exchange!",
     "slug": "bookease",
     "privacy": "unlisted",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "27.0.0",
     "version": "0.1.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
@@ -26,6 +26,9 @@
     "android": {
       "package": "com.bookeaseapp",
       "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "READ_CONTACTS"]
+    },
+    "splash": {
+      "image": "./assets/images/splash.png"
     }
   }
 }
