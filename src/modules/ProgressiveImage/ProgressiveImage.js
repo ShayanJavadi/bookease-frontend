@@ -15,7 +15,11 @@ export default class ProgressiveImage extends Component {
     style: object,
   };
 
-  async componentWillMount() {
+  state = {
+    intensity: new Animated.Value(0)
+  }
+
+  async UNSAFE_componentWillMount() {
     const injectedPropsByMasonry = this.props.source;
     const uri = injectedPropsByMasonry ? injectedPropsByMasonry.uri : this.props.uri;
 
@@ -29,7 +33,7 @@ export default class ProgressiveImage extends Component {
     this.setState({ uri }, () => {
       const intensity = new Animated.Value(100);
       this.setState({ intensity });
-      Animated.timing(intensity, { duration: 500, toValue: 0, useNativeDriver: true }).start();
+      Animated.timing(intensity, { duration: 500, toValue: 0 }).start();
     })
   }
 
@@ -39,13 +43,13 @@ export default class ProgressiveImage extends Component {
     this.setState({ uri }, () => {
       const intensity = new Animated.Value(100);
       this.setState({ intensity });
-      Animated.timing(intensity, { duration: 500, toValue: 5, useNativeDriver: true }).start();
+      Animated.timing(intensity, { duration: 500, toValue: 5 }).start();
     })
   }
 
   render() {
     const { containerStyle, imageStyle } = this.props;
-    const { uri, intensity } = this.state;
+    const { uri } = this.state;
     const masonaryStyleProps = this.props.source && this.props.style;
     const computedStyle = [
         StyleSheet.absoluteFill,
@@ -60,12 +64,11 @@ export default class ProgressiveImage extends Component {
                         source={{ uri }}
                         style={[imageStyle, masonaryStyleProps]}
                         onLoadEnd={() => this.onLoadEnd()}
-                        onPartialLoad={() => this.onPartialLoadEnd()}
                     />
                 )
             }
             {
-                Platform.OS === "ios" && <AnimatedBlurView tint="default" style={computedStyle} intensity={intensity} />
+                Platform.OS === "ios" && <AnimatedBlurView tint="default" style={computedStyle} intensity={this.state.intensity} />
             }
         </View>
     );

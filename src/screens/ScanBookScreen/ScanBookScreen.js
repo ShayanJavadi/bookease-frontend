@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { BarCodeScanner, Permissions } from "expo"; // eslint-disable-line no-unused-vars
 import { func, shape, object, bool, string } from "prop-types";
 import BackButton from "src/modules/BackButton";
@@ -39,7 +39,7 @@ class ScanBookScreen extends Component {
   });
 
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.resetQuery();
   }
 
@@ -48,7 +48,7 @@ class ScanBookScreen extends Component {
     const context = this.state.context;
 
     if (context === "enterBookDetails") {
-      const resetAction = NavigationActions.reset({
+      const resetAction = StackActions.reset({
          index: 1,
          key: null,
          actions: [
@@ -66,7 +66,7 @@ class ScanBookScreen extends Component {
     }
 
     if (context === "home") {
-       const resetAction = NavigationActions.reset({
+       const resetAction = StackActions.reset({
             index: 0,
             actions: [{
               type: "Navigation/INIT",
@@ -79,7 +79,7 @@ class ScanBookScreen extends Component {
     }
   }
 
-  componentWillReceiveProps({ navigation, scannedTextbook }) {
+  UNSAFE_componentWillReceiveProps({ navigation, scannedTextbook }) {
     const navigationParams = navigation.state.params;
     const context = navigationParams ? navigationParams.context : undefined;
 

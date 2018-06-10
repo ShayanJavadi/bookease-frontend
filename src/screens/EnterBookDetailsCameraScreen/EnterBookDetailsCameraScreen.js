@@ -9,7 +9,7 @@ import { Badge } from "react-native-material-ui";
 import BackButton from "src/modules/BackButton";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from "./consts";
-import Toast from "react-native-root-toast";
+import Toast from "react-native-easy-toast"
 
 const {
   screenStyle,
@@ -51,7 +51,6 @@ export default class EnterBookDetailsCameraScreen extends Component {
 
   state = {
     flash: "off",
-    toastMessageVisible: false,
   }
 
   componentDidMount() {
@@ -59,12 +58,9 @@ export default class EnterBookDetailsCameraScreen extends Component {
     this.props.updateImages();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
-      this.setState({ toastMessageVisible: true });
-      setTimeout(() => this.setState({
-          toastMessageVisible: false
-      }), 2000);
+      this.refs.toast.show("Image added");
     }
   }
 
@@ -124,14 +120,14 @@ export default class EnterBookDetailsCameraScreen extends Component {
   renderToastMessage() {
     return (
       <Toast
-        visible={this.state.toastMessageVisible}
-        position={-120}
-        shadow={true}
-        hideOnPress={true}
-        backgroundColor="#ff003d"
-      >
-        Image added
-      </Toast>
+        ref="toast"
+        opacity={0.8}
+        style={{ backgroundColor: "#ff003d" }}
+        position="bottom"
+        positionValue={80}
+        fadeInDuration={750}
+        fadeOutDuration={1000}
+      />
     )
   }
 

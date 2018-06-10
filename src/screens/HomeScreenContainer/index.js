@@ -14,7 +14,7 @@ const Container = compose(
     name: "getTextbooksQuery",
   }),
   graphql(updateSessionPushNotificationTokenMutation, {
-    options: props => ({ variables: { token: props.token || "" } }),
+    options: props => ({ variables: { token: props.token || "" }, fetchPolicy: "cache-first" }),
     name: "updateSessionPushNotificationTokenMutation",
   }),
 );

@@ -7,7 +7,6 @@ import addImageFromLibrary from "./addImageFromLibrary";
 
 const launchImageLibrary = () => async (dispatch) => {
   dispatch({ type: IMAGE_GALLERY_OPEN });
-
   let result = await ImagePicker.launchImageLibraryAsync({ base64: true });
 
   if (!result.cancelled) {

@@ -20,7 +20,10 @@ const getNotification = gql`
             id,
             userId,
             textbookId,
+            userPhoneNumber,
+            recipientPhoneNumber,
             textbook {
+              id,
               title,
               price,
             },
@@ -29,6 +32,12 @@ const getNotification = gql`
             isAccepted,
             isTextbookSold,
             message,
+            recipientUser{
+              id,
+              displayName,
+              photoURL,
+            },
+            isUserRequester,
           }
       }
   }

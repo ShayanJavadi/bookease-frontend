@@ -34,7 +34,7 @@ export default class MyBooksTabBarComponent extends Component {
     this.setState({ selectedTab: tabIndex })
   };
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (nextState.selectedTab === this.state.selectedTab) {
       return;
     }

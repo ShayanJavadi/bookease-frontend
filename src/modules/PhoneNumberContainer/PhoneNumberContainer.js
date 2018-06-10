@@ -17,7 +17,7 @@ const PhoneNumberContainer = ({ showPhoneNumber, text, phoneNumber, onPhoneNumbe
           style={{ fontSize: showPhoneNumber ? 23 : 30, paddingBottom: 10, paddingTop: showPhoneNumber ? 7 : 0, color: palette.primaryColor  }}
           onPress={onPhoneNumberPress}
         >
-          {showPhoneNumber ? phoneNumber : "(•••) ••• - ••••"}
+          {showPhoneNumber ? phoneNumber : "(•••) •••-••••"}
         </Text>
         <Text style={{ color: "#555", textAlign: "center", textAlignVertical: "center" }}>
           {text}

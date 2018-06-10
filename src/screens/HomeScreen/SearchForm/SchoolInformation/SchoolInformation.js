@@ -9,7 +9,8 @@ const {
   schoolNameTextStyle,
 } = styles;
 
-const SchoolInformation = ({ currentStoredUser }) => (
+const SchoolInformation = ({ currentStoredUser }) => {
+  return (
   <View style={{ flex: 1, flexDirection: "row" }}>
     <View style={{ flex: 2 }}>
       <TouchableOpacity style={schoolInformationWrapperStyle}>
@@ -22,8 +23,8 @@ const SchoolInformation = ({ currentStoredUser }) => (
       </TouchableOpacity>
     </View>
     <View style={{ flex: 1 }} />
-  </View>
-)
+  </View>)
+}
 
 SchoolInformation.propTypes = {
   currentStoredUser: object,

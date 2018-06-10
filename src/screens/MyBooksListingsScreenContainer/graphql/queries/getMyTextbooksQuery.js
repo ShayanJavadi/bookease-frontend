@@ -42,6 +42,7 @@ const getMyTextbooksQuery = gql`
             userId,
             textbookId,
             textbook{
+              id,
               title,
               price
             },

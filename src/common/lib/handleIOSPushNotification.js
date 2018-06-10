@@ -1,5 +1,5 @@
 import { AlertIOS } from "react-native";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import NOTIFICATION_CONDITIONS from "src/common/consts/notificationConditions";
 
 export default (notification, navigation) => {
@@ -7,7 +7,7 @@ export default (notification, navigation) => {
   const { data } = notification;
 
   if (data.notificationType === BUY_REQUEST) {
-    const navigateToNotificationsAction = NavigationActions.reset({
+    const navigateToNotificationsAction = StackActions.reset({
       index: 1,
       key: null,
       actions: [

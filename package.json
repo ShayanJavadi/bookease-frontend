@@ -16,33 +16,31 @@
   "dependencies": {
     "@expo/samples": "^2.1.1",
     "base-64": "^0.1.0",
-    "expo": "^25.0.0",
+    "expo": "^27.0.0",
     "lodash": "^4.17.5",
     "moment": "^2.19.2",
     "prop-types": "^15.6.1",
-    "react": "16.2.0",
+    "react": "16.3.1",
     "react-apollo": "^1.4.16",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
     "react-native-action-button": "^2.8.4",
-    "react-native-easy-toast": "^1.0.8",
+    "react-native-easy-toast": "^1.1.0",
     "react-native-image-zoom-viewer": "^2.1.0",
     "react-native-in-app-notification": "^2.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.4.4",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-masked-text": "^1.6.5",
-    "react-native-masonry": "^0.4.6",
-    "react-native-material-bottom-navigation": "https://github.com/hammadzz/react-native-material-bottom-navigation",
+    "react-native-masonry": "^0.4.7",
+    "react-native-material-bottom-navigation": "v0.9.0",
     "react-native-material-dropdown": "^0.4.2",
     "react-native-material-tabs": "^3.3.0",
     "react-native-material-textfield": "^0.10.4",
     "react-native-material-ui": "^1.20.0",
     "react-native-modal": "^4.1.1",
     "react-native-modal-selector": "^0.0.24",
-    "react-native-root-toast": "git+https://github.com/ShayanJavadi/react-native-root-toast.git",
     "react-native-swipeable": "^0.6.0",
     "react-native-swiper": "^1.5.13",
-    "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.5.8",
+    "react-navigation": "^2.0.1",
     "react-navigation-is-focused-hoc": "^1.1.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
@@ -89,7 +87,8 @@
       "quotes": [
         "error",
         "double"
-      ]
+      ],
+      "react/no-string-refs": "off"
     }
   }
 }
