@@ -52,7 +52,7 @@ export default class PinScreen extends Component {
     this.hiddenInput.focus();
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (props.isPinValid) {
       this.setState({ invalidPinEntered: false, isWaiting: false });
 
@@ -72,7 +72,7 @@ export default class PinScreen extends Component {
     }
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
   }

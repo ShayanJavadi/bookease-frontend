@@ -72,13 +72,13 @@ export default class SingleBookScreen extends Component {
     this.setState({ slideShowImages, isComponentLoading: false, isUserOwner, didRefetchAllData: true, hasStaleData: false });
   }
 
-  componentWillMount = () => {
+  UNSAFE_componentWillMount = () => {
     if (!this.state.didRefetchAllData) {
       this.fetchData();
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.navigation.isFocused()) {
       this.setState({ hasStaleData: true })
     }

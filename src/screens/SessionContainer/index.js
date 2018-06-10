@@ -44,7 +44,7 @@ class SessionComponent extends Component {
     })   
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.isLoading) {
       this.setState({ isLoading: false });
     }

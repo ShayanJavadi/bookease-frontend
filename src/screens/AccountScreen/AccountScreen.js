@@ -45,7 +45,7 @@ export default class AccountScreen extends Component {
     schoolName: "",
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.isFocused) {
       const { currentStoredUser } = this.props;
       if (!isEmpty(currentStoredUser)) {

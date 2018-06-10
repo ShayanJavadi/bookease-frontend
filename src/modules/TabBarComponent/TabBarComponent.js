@@ -63,7 +63,7 @@ export default class TabBarComponent extends Component {
     this.setState({ selectedTab: tabIndex })
   };
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (nextState.selectedTab === this.state.selectedTab) {
       return;
     }

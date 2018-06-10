@@ -19,7 +19,7 @@ export default class ProgressiveImage extends Component {
     intensity: new Animated.Value(0)
   }
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     const injectedPropsByMasonry = this.props.source;
     const uri = injectedPropsByMasonry ? injectedPropsByMasonry.uri : this.props.uri;
 

@@ -42,7 +42,7 @@ export default class MyBooksBookmarksScreen extends Component {
     hasStaleData: true,
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.navigation.isFocused()) {
       this.setState({ hasStaleData: true })
     }

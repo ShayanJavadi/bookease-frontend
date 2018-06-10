@@ -83,7 +83,7 @@ export default class EnterBookDetailsScreen extends Component {
     scrollView: undefined,
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { navigation } = this.props;
 
     const textbookIdToUpdate = navigation.state.params ?
@@ -126,7 +126,7 @@ export default class EnterBookDetailsScreen extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
     const textbookWasCreated = nextProps.submittedBook && nextProps.submissionType === "createTextbook";
 

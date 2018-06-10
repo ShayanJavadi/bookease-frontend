@@ -58,7 +58,7 @@ export default class EnterBookDetailsCameraScreen extends Component {
     this.props.updateImages();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
       this.refs.toast.show("Image added");
     }

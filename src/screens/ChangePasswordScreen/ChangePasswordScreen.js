@@ -63,7 +63,7 @@ export default class PasswordScreen extends Component {
     this.input.focus();
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.isProfileUpdateInProgress = false;
     this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
@@ -82,7 +82,7 @@ export default class PasswordScreen extends Component {
     this.setState({ keyboardVisible: false });
   }
 
-  async componentWillReceiveProps(props) {
+  async UNSAFE_componentWillReceiveProps(props) {
     if (this.isProfileUpdateInProgress) return;
 
     const isPasswordEmpty = (this.state.password === "");

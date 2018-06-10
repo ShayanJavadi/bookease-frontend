@@ -39,7 +39,7 @@ class ScanBookScreen extends Component {
   });
 
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props.resetQuery();
   }
 
@@ -79,7 +79,7 @@ class ScanBookScreen extends Component {
     }
   }
 
-  componentWillReceiveProps({ navigation, scannedTextbook }) {
+  UNSAFE_componentWillReceiveProps({ navigation, scannedTextbook }) {
     const navigationParams = navigation.state.params;
     const context = navigationParams ? navigationParams.context : undefined;
 

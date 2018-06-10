@@ -28,7 +28,7 @@ class SearchResults extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // fixes issue with bricks getting duplicated
     if (!isEqual(nextProps.textbooks, this.state.textbooks)) {
       this.getBricks(nextProps.textbooks);

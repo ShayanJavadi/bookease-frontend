@@ -40,7 +40,7 @@ export default class AuthScreen extends Component {
     this.onAuthenticated(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.onAuthenticated(nextProps);
   }
 

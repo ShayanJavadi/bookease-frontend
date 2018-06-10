@@ -49,7 +49,7 @@ export default class MyBooksListingsScreen extends Component {
     selectedTextbookId: "",
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.isFocused && !this.props.isFocused) {
       this.props.getMyTextbooksQuery.refetch();
     }
