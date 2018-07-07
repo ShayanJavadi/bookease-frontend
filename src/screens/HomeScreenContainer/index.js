@@ -1,11 +1,12 @@
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
+import actions from "./actions";
 import queries from "./graphql/queries";
-import updateSessionPushNotificationTokenMutation from "./graphql/mutations/updateSessionPushNotificationToken";
 import HomeScreen from "../HomeScreen";
+import updateSessionPushNotificationTokenMutation from "./graphql/mutations/updateSessionPushNotificationToken";
 
 const { getTextbooksQuery } = queries;
-const mapStateToProps = ({ MyBooksListingsReducer }) => ({}); // eslint-disable-line no-unused-vars
+const mapStateToProps = (state) => ({ currentStoredUser: state.Session.currentStoredUser });
 
 const Container = compose(
   graphql(getTextbooksQuery, {
@@ -20,4 +21,5 @@ const Container = compose(
 
 export default Container(connect(
   mapStateToProps,
+  actions,
 )(HomeScreen));

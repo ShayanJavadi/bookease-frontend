@@ -4,7 +4,7 @@ import {
 } from "../actions/consts";
 
 const INITIAL_STATE = {
-  image: undefined,
+  imageUri: undefined,
   isTakingPicture: false,
 };
 
@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
     case TAKE_PICTURE_RQ:
       return { ...state, isTakingPicture: true }
     case TAKE_PICTURE_RS:
-      return { ...state, isTakingPicture: false, image: action.payload }
+      return { ...state, isTakingPicture: false, imageUri: action.payload }
     default:
       return state;
   }

@@ -1,4 +1,4 @@
 import selectImage from "./selectImage";
-import updateUser from "../../SessionContainer/actions/updateUser";
+import setStoredUser from "../../SessionContainer/actions/setStoredUser";
 
-export default { selectImage, updateUser };
+export default { selectImage, setStoredUser };

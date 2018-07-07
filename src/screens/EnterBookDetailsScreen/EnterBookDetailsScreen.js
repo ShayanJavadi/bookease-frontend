@@ -16,6 +16,7 @@ import Header from "src/modules/Header";
 import Modal from "src/modules/Modal";
 import Form from  "./Form";
 import PictureInput from  "./PictureInput";
+import FloatingBottomContainer from "src/modules/FloatingBottomContainer";
 
 const {
   screenStyle,
@@ -79,6 +80,7 @@ export default class EnterBookDetailsScreen extends Component {
     newImages: [],
     allImages: [],
     carouselKey: Math.random(),
+    scrollView: undefined,
   }
 
   componentWillMount() {
@@ -331,10 +333,26 @@ export default class EnterBookDetailsScreen extends Component {
     this.setState({ deleteTextbookModalVisible: false });
   }
 
+  renderHeader = () => (
+    <Header
+      leftComponent={<BackButton navigation={this.props.navigation}/>}
+      text="Enter Book Details"
+     />
+  )
 
   renderPictureInput() {
     const { errorsMessages } = this.props;
     const { allImages, carouselKey } = this.state;
+    if (!this.state.scrollView) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator
+            size="large"
+            color={tertiaryColorDark}
+          />
+        </View>
+      )
+    }
 
     return (
       <PictureInput
@@ -372,24 +390,38 @@ export default class EnterBookDetailsScreen extends Component {
       descriptionTextInputSelected: descriptionTextInputSelected,
     }
 
+    if (!this.state.scrollView) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator
+            size="large"
+            color={tertiaryColorDark}
+          />
+        </View>
+      )
+    }
+
    return (
      <Form
        errorsMessages={errorsMessages}
        formInputValues={formInputValues}
        updateFormInputValues={(formInputValues) => this.setState(formInputValues)}
+       scrollView={this.state.scrollView}
      />
    )
   }
 
   renderConfirmButton() {
     return (
-      <View style={buttonWrapperStyle}>
-        <Button
-          text="Submit"
-          raised
-          style={{ text: buttonTextStyle, container: buttonContainerStyle }}
-          onPress={() => this.onFormSubmit()}/>
-      </View>
+      <FloatingBottomContainer>
+        <View style={buttonWrapperStyle}>
+          <Button
+            text="Submit"
+            raised
+            style={{ text: buttonTextStyle, container: buttonContainerStyle }}
+            onPress={() => this.onFormSubmit()}/>
+        </View>
+      </FloatingBottomContainer>
     );
   }
 
@@ -452,7 +484,7 @@ export default class EnterBookDetailsScreen extends Component {
           () => this.setState({ deleteTextbookModalVisible: true }) :
           () => this.props.navigation.navigate("scanBook", { context: "enterBookDetails" })
         }
-        style={{ right: -15, bottom: -10 }}
+        style={{ right: -15, bottom: 50 }}
         icon={
           this.state.updateMode ?
           <MaterialCommunityIcons name="delete-forever" size={35} style={{ color: "#fff", paddingTop: 4 }} /> :
@@ -466,7 +498,7 @@ export default class EnterBookDetailsScreen extends Component {
   }
 
   render() {
-   const { navigation, data, getTextbookQuery, isSubmitting, loadingMessage } = this.props;
+   const { data, getTextbookQuery, isSubmitting, loadingMessage } = this.props;
    const error =  data ?
    data.error :
    null;
@@ -490,41 +522,21 @@ export default class EnterBookDetailsScreen extends Component {
 
    return (
      <View style={screenStyle}>
+       {this.renderHeader()}
        <KeyboardAwareScrollView
-         enableResetScrollToCoords={false}
          extraScrollHeight={80}
-         style={{ paddingTop: 20 }}
          keyboardShouldPersistTaps="handled"
          keyboardDismissMode="on-drag"
+         ref={ref => this.state.scrollView || this.setState({ scrollView: ref })}
        >
          {this.renderPictureInput()}
          {this.renderForm()}
-         {this.renderConfirmButton()}
          {this.renderPictureInputModal()}
          {this.renderDeleteImageModal()}
          {this.renderDeleteTextbookModal()}
        </KeyboardAwareScrollView>
         {this.renderActionButton()}
-       <Header
-         leftComponent={<BackButton navigation={navigation}/>}
-         rightComponent={
-           <Button
-             text="submit"
-             raised
-             primary
-             style={{
-               container: {
-                 margin: 10,
-               },
-               text: {
-                 color: "#fff",
-               },
-             }}
-             onPress={() => this.onFormSubmit()}
-           />
-         }
-         text="Enter Book Details"
-        />
+        {this.renderConfirmButton()}
        <Spinner
          visible={isSubmitting}
          textContent={loadingMessage}

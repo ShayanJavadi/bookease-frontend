@@ -7,7 +7,7 @@ const checkForFormErrors = (bookDetails, dispatch) => { // eslint-disable-line n
     formHasErrors: false,
   };
 
-  reduce(bookDetails , (errors, bookDetail, key) => {
+  reduce(bookDetails, (errors, bookDetail, key) => {
     const { value, humanizedValue } = bookDetail;
     if (!value && !isNumber(value)) {
       errorsMessages.formHasErrors = true;

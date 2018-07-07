@@ -11,12 +11,12 @@ const {
 export default class ProfilePictureCameraScreen extends Component {
   static propTypes = {
     selectImage: func.isRequired,
-    updateUser: func.isRequired,
+    setStoredUser: func.isRequired,
     mutate: func.isRequired,
     navigation: object.isRequired,
     isImageGalleryOpen: bool.isRequired,
     isUploading: bool.isRequired,
-    currentUser: object.isRequired,
+    currentStoredUser: object.isRequired,
   }
 
   state = {
@@ -41,9 +41,9 @@ export default class ProfilePictureCameraScreen extends Component {
 
   componentWillMount() {
     this.props.selectImage({
-      currentUser: this.props.currentUser,
+      currentStoredUser: this.props.currentStoredUser,
       updatePhotoUrl: this.props.mutate,
-      updateUserData: this.props.updateUser,
+      setStoredUserData: this.props.setStoredUser,
     });
   }
 

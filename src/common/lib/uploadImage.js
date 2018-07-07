@@ -1,7 +1,10 @@
 import { BACKEND_AUTHENTICATION_HEADER, BACKEND_URL } from "src/config.json";
 import base64 from "base-64";
+import extractImageDetails from "./extractImageDetails"
 
-const uploadImage = ({ imageUri, imageName, imageType }) => { // eslint-disable-line no-unused-vars
+export default async (imageUri) => {
+  const { imageType, imageName } = extractImageDetails(imageUri);
+
   const api =`${BACKEND_URL}/upload`;
   const formData = new FormData();
 
@@ -21,7 +24,8 @@ const uploadImage = ({ imageUri, imageName, imageType }) => { // eslint-disable-
     },
   };
 
-  return fetch(api, options);
-}
+  const response = await fetch(api, options);
+  const { url } = await response.json();
 
-export default uploadImage;
+  return url;
+}

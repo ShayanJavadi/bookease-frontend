@@ -47,7 +47,7 @@ export default class NotificationScreen extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.isFocused && !this.props.isFocused) {
       this.setState({ loading: true })
       this.props.getMyNotificationsQuery.refetch()
@@ -73,7 +73,7 @@ export default class NotificationScreen extends Component {
     )
   }
 
-  renderNotifications() {
+  renderNotifications = () => {
     const { getMyNotificationsQuery: { getMyNotifications, loading } } = this.props;
 
     if (loading || this.state.loading) {
@@ -97,7 +97,7 @@ export default class NotificationScreen extends Component {
     )
   }
 
-  renderNotificationFlatList() {
+  renderNotificationFlatList = () => {
     const { getMyNotificationsQuery: { getMyNotifications } } = this.props;
 
     return (
@@ -112,7 +112,7 @@ export default class NotificationScreen extends Component {
     )
   }
 
-  renderMyNotification(notification) {
+  renderMyNotification = (notification) => {
     const { BUY_REQUEST } = NOTIFICATION_CONDITIONS;
     const { updateNotificationMutation, navigation } = this.props;
 

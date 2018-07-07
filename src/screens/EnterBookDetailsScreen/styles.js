@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   screenStyle: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 70,
+    paddingTop: 90,
   },
   formWrapperStyle: {
     flex: 4,
@@ -24,10 +24,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 30,
-    paddingBottom: 120,
+    paddingHorizontal: 10,
   },
   buttonTextStyle: {
     color: "#fff",

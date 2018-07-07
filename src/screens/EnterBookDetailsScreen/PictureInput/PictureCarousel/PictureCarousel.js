@@ -3,7 +3,6 @@ import { View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { func, object, string } from "prop-types";
 import Swiper from "react-native-swiper";
-import ActionButton from "react-native-action-button";
 import { isEmpty } from "lodash";
 import { styles, palette } from "./styles";
 import CarouselSlide from "./CarouselSlide";
@@ -14,7 +13,6 @@ const {
   pictureInputStyleHasErrors,
   pictureCarouselWrapperStyle,
   pictureCarouselStyle,
-  pictureInputActionButtonStyle,
 } = styles;
 
 const {
@@ -50,13 +48,6 @@ const PictureCarousel = ({ errorsMessages, images, carouselKey, onCarouselIndexC
         >
           {renderCarouselSlides(images, onPress, onDeleteImagePress)}
         </Swiper>
-        <ActionButton
-          buttonColor={primaryColor}
-          position="right"
-          size={43}
-          onPress={onPress}
-          style={pictureInputActionButtonStyle}
-        />
       </View>
     )
   }
@@ -69,13 +60,6 @@ const PictureCarousel = ({ errorsMessages, images, carouselKey, onCarouselIndexC
       >
         <MaterialCommunityIcons name="camera" size={50} style={{ color: "#bbb" }}/>
       </TouchableOpacity>
-      <ActionButton
-        buttonColor={primaryColor}
-        position="right"
-        size={43}
-        onPress={onPress}
-        style={pictureInputActionButtonStyle}
-      />
     </View>
   )
 }

@@ -68,4 +68,7 @@ export const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.5,
     resizeMode: "contain",
   },
+  activitySpinnerStyle: {
+    height: 80,
+  },
 });

@@ -5,7 +5,7 @@ import queries from "./graphql/queries";
 import mutations from "./graphql/mutations";
 import EnterPasswordScreen from "../EnterPasswordScreen";
 
-const { getSessionQuery, getSchoolNameQuery } = queries;
+const { getSessionQuery } = queries;
 const { updateProfileMutation, signInWithPhoneNumberMutation } = mutations;
 
 const mapStateToProps = ({ phonePasswordValidationReducer }) => ({
@@ -17,10 +17,6 @@ const Container = compose(
   graphql(getSessionQuery, {
     name: "getSessionQuery",
   }),
-  graphql(getSchoolNameQuery, {
-    name: "getSchoolNameQuery",
-    options: () => ({ variables: { schoolId: "000000" } }),
-  }),
   graphql(updateProfileMutation, {
     name: "updateProfileMutation",
     options: props => ({ variables: { pushNotificationToken: props.pushNotificationToken || "" } }),
@@ -29,7 +25,6 @@ const Container = compose(
     name: "signInWithPhoneNumberMutation",
     options: props => ({ variables: { phoneNumber: props.identifier || "", password: props.password || "" } }),
   }),
-
 );
 
 export default Container(connect(

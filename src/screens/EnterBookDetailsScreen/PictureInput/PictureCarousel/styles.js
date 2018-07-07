@@ -1,6 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import uiTheme from "src/common/styles/uiTheme";
-const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export const { palette } = uiTheme;
 
@@ -10,49 +9,37 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingTop: 20,
-    marginLeft: 70,
-    marginRight: 70,
   },
   pictureInputStyle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 350,
+    height: 260,
     zIndex: 9999,
-    borderColor: "#bbb",
-    borderWidth: 1,
+    flexDirection: "row",
   },
   pictureInputStyleHasErrors: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 350,
+    height: 260,
     zIndex: 9999,
-    borderColor: "#d50000",
-    borderWidth: 2,
-  },
-  pictureCarouselWrapperStyle:{
-    marginLeft: 70,
-    marginRight: 70,
+    flexDirection: "row",
   },
   pictureCarouselStyle: {
-    height: 350,
+    height: 260,
   },
-  pictureInputActionButtonStyle: {
-     right: -38,
-     bottom: -38,
-     position: "absolute",
-     zIndex: 9999
+  pictureCarouselWrapperStyle:{
+    zIndex: 9999,
   },
   carouselSlidesWrapperStyle: {
     flex: 1,
-    width: SCREEN_WIDTH - 120,
+    zIndex: 9999
   },
   carouselDeleteButtonWrapperStyle: {
     position: "relative",
     flexDirection: "row",
-    top: 39,
+    top: 1000,
     left: 9,
     zIndex: 9999,
     shadowColor: "#000",

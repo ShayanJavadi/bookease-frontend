@@ -1,13 +1,12 @@
 import { graphql, compose } from "react-apollo";
 import { connect } from "react-redux";
-import actions from "./actions";
 import AccountScreen from "../AccountScreen";
 import { withNavigationFocus } from "react-navigation";
 import signOutMutation from "./graphql/mutations/signOutMutation"
 
 
 const mapStateToProps = (state) => ({
-    currentUser: state.Session.currentUser,
+    currentStoredUser: state.Session.currentStoredUser,
 });
 
 const Container = compose(
@@ -16,4 +15,5 @@ const Container = compose(
   }),
 )
 
-export default Container(connect(mapStateToProps, actions)(withNavigationFocus(AccountScreen)));
+// pick out actions
+export default Container(connect(mapStateToProps, undefined)(withNavigationFocus(AccountScreen)));

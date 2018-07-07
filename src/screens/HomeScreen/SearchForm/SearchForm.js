@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import { func, number, shape } from "prop-types"
+import { func, number, shape, object } from "prop-types"
 import { debounce } from "lodash";
 import SearchBar from "./SearchBar";
-import SearchFilters from "./SearchFilters";
+import SchoolInformation from "./SchoolInformation";
 import { styles } from "./styles";
 
 const { searchFormWrapperStyle } = styles;
@@ -15,6 +15,7 @@ export default class SearchForm extends Component {
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    currentStoredUser: object,
   };
 
   state = {
@@ -22,7 +23,7 @@ export default class SearchForm extends Component {
   }
 
   render() {
-    const { searchTextbooks, resultsCount, navigation } = this.props;
+    const { searchTextbooks, navigation, currentStoredUser } = this.props;
 
     const textbookSearch = debounce(text => {
       return searchTextbooks({ query: text, orderBy: this.state.filterBy });
@@ -33,12 +34,11 @@ export default class SearchForm extends Component {
         <SearchBar
           search={textbookSearch}
           filterBy={this.state.filterBy}
+          onFilterChange={(filterBy) => this.setState({ filterBy })}
           navigation={navigation}
         />
-        <SearchFilters
-          resultsCount={resultsCount}
-          onFilterChange={(filterBy) => this.setState({ filterBy })}
-          filterBy={this.state.filterBy}
+        <SchoolInformation
+          currentStoredUser={currentStoredUser}
         />
       </View>
     )

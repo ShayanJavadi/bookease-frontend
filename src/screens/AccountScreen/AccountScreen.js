@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
-import { TextField } from "react-native-material-textfield";
 import ActionButton from "react-native-action-button";
+import { TextField } from "react-native-material-textfield";
 import { NavigationActions } from "react-navigation";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { func, object, shape } from "prop-types";
+import { func, object, shape, bool } from "prop-types";
+import { isEmpty } from "lodash";
+import { styles, palette, ICON_SIZE, AVATAR_SIZE } from "./styles";
+import Header from "src/modules/Header";
 import Modal from "src/modules/Modal";
 import Avatar from "src/modules/Avatar";
-import { styles, palette, ICON_SIZE, AVATAR_SIZE } from "./styles";
 
 const {
-  headerStyle,
-  headerTitleStyle,
   screenStyle,
   contentContainerStyle,
   avatarActionButtonStyle,
@@ -37,23 +37,46 @@ export default class AccountScreen extends Component {
   }
 
   static propTypes = {
-    currentUser: object,
-    updateUser: func.isRequired,
-    selectImage: func.isRequired,
+    currentStoredUser: object.isRequired,
+    removeStoredUser: object.isRequired,
     signOutMutation: func.isRequired,
     navigation: shape({
-      navigate: func.isRequired,
+      navigate: func.isRequired
     }).isRequired,
+    isFocused: bool.isRequired,
   };
 
   state = {
+    isLoading: true,
     cameraModalVisible: false,
+    fullName: "",
+    schoolName: "",
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isFocused) {
+      const { currentStoredUser } = this.props;
+      if (!isEmpty(currentStoredUser)) {
+        const { fullName, schoolName } = currentStoredUser;
 
-  onEditPress(editScreen) {
+        return this.setState({
+          fullName: fullName,
+          schoolName: schoolName,
+          isLoading: false,
+        })
+      }
+
+      this.setState({
+        fullName: "",
+        schoolName: "",
+        isLoading: false,
+      })
+    }
+  }
+
+  editItem(editScreen) {
     this.props.navigation.navigate(editScreen, {
-      profileData: this.props.currentUser,
+      profileData: this.props.currentStoredUser,
       nextScreenSequence: ["account"],
     });
   }
@@ -66,64 +89,73 @@ export default class AccountScreen extends Component {
   onImageLibraryPress() {
     this.setState({ cameraModalVisible: false });
     this.props.navigation.navigate("profilePictureImageScreen", { nextScreenSequence: ["account"] });
-
-    //this.props.selectImage(this.props.currentUser, this.props.updateUser);
   }
 
-  onSignOutPress() {
-    this.props.signOutMutation()
-    .then(() => {
-      this.props.updateUser(undefined);
-
-      const closeSuccessScreenAction = NavigationActions.reset({
-        index: 0,
-        key: null,
-        actions: [
-          NavigationActions.navigate({ routeName: "mainScreen" })
-        ]
-      })
-      return this.props.navigation.dispatch(closeSuccessScreenAction);
+  async signOut() {
+    await this.props.signOutMutation();
+    await this.props.removeStoredUser();
+    const navigateToHomeScreen = NavigationActions.reset({
+      index: 0,
+      key: null,
+      actions: [
+        NavigationActions.navigate({ routeName: "mainScreen" })
+      ]
     })
-  }
+    this.setState({ schoolName: "", })
+    return this.props.navigation.dispatch(navigateToHomeScreen);
 
+  }
 
   render() {
     return (
       <View style={screenStyle}>
-        {this.renderHeader()}
         {this.renderPictureInputModal()}
-        <View style={contentContainerStyle}>
-          {this.renderAvatar()}
-          <View style={inputGroupStyle}>
-            {this.renderNameInput()}
-            {this.renderSchoolInput()}
-            {this.renderPasswordInput()}
-          </View>
-        </View>
-        <Button
-          raised
-          primary
-          text="Sign Out"
-          style={{ container: signOutButtonContainerStyle, text: signOutButtonTextStyle }}
-          onPress={() => this.onSignOutPress()}
-        />
+        <Header
+          text="Account"
+         />
+         {
+           this.state.isLoading ?
+           this.renderSpinner() :
+           this.renderAccountInformation()
+         }
       </View>
     );
   }
 
-  renderHeader() {
-    return (
-      <View style={headerStyle}>
-        <Text style={headerTitleStyle}>Account</Text>
+  renderSpinner = () => (
+    <View style={contentContainerStyle}>
+      <ActivityIndicator
+        size="large"
+        color="#222"
+      />
+    </View>
+  )
+
+  renderAccountInformation = () => (
+    <View style={contentContainerStyle}>
+      <View style={contentContainerStyle}>
+        {this.renderAvatar()}
+        <View style={inputGroupStyle}>
+          {this.renderNameInput()}
+          {this.renderSchoolInput()}
+          {this.renderPasswordInput()}
+        </View>
       </View>
-    );
-  }
+      <Button
+        raised
+        primary
+        text="Sign Out"
+        style={{ container: signOutButtonContainerStyle, text: signOutButtonTextStyle }}
+        onPress={() => this.signOut()}
+      />
+    </View>
+  )
 
   renderAvatar() {
     return (
       <View>
         <Avatar
-          uri={this.props.currentUser ? this.props.currentUser.photoURL : undefined}
+          uri={this.props.currentStoredUser ? this.props.currentStoredUser.photoURL : undefined}
           size={AVATAR_SIZE}
         />
         <ActionButton
@@ -133,7 +165,7 @@ export default class AccountScreen extends Component {
           style={avatarActionButtonStyle}
           icon={
             <MaterialIcons
-              name={(this.props.currentUser && this.props.currentUser.photoURL) ? "mode-edit" : "add"}
+              name={(this.props.currentStoredUser && this.props.currentStoredUser.photoURL) ? "mode-edit" : "add"}
               color="white"
               size={ICON_SIZE}
             />
@@ -149,7 +181,7 @@ export default class AccountScreen extends Component {
       <View style={inputContainerStyle}>
         <TextField
           label="Full name"
-          value={(this.props.currentUser && this.props.currentUser.fullName) ? this.props.currentUser.fullName : ""}
+          value={this.state.fullName}
           editable={false}
           fontSize={14}
           tintColor={primaryColor}
@@ -159,7 +191,7 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.onEditPress("changeFullNameScreen")}
+          onPress={() => this.editItem("changeFullNameScreen")}
         />
       </View>
     );
@@ -170,7 +202,7 @@ export default class AccountScreen extends Component {
       <View style={inputContainerStyle}>
         <TextField
           label="School"
-          value={(this.props.currentUser && this.props.currentUser.schoolName) ? this.props.currentUser.schoolName : ""}
+          value={this.state.schoolName}
           editable={false}
           fontSize={14}
           tintColor={primaryColor}
@@ -180,7 +212,7 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.onEditPress("schoolSelectionScreen")}
+          onPress={() => this.editItem("schoolSelectionScreen")}
         />
       </View>
     );
@@ -202,7 +234,7 @@ export default class AccountScreen extends Component {
           name="mode-edit"
           size={ICON_SIZE}
           style={editIconStyle}
-          onPress={() => this.onEditPress("changePasswordScreen")}
+          onPress={() => this.editItem("changePasswordScreen")}
         />
       </View>
     );
@@ -211,29 +243,29 @@ export default class AccountScreen extends Component {
   renderPictureInputModal() {
     return (
       <Modal
-        isVisible={this.state.cameraModalVisible}
-        text="Change profile picture"
-        actions={["Cancel"]}
-        onActionPress={() => this.setState({ cameraModalVisible: false })}
+          isVisible={this.state.cameraModalVisible}
+          text="Change profile picture"
+          actions={["Cancel"]}
+          onActionPress={() => this.setState({ cameraModalVisible: false })}
       >
-        <View style={modalButtonWrapperStyle}>
-          <TouchableOpacity
-            style={modalButtonStyle}
-            onPress={() => this.onCameraPress()}
-          >
-            <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle}/>
-          </TouchableOpacity>
-          <Text style={{ marginTop: 10 }}>Camera</Text>
-        </View>
-        <View style={modalButtonWrapperStyle}>
-          <TouchableOpacity
-            style={modalButtonStyle}
-            onPress={() => this.onImageLibraryPress()}
-          >
-            <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle}/>
-          </TouchableOpacity>
-          <Text style={{ marginTop: 10 }}>Images</Text>
-        </View>
+          <View style={modalButtonWrapperStyle}>
+              <TouchableOpacity
+                  style={modalButtonStyle}
+                  onPress={() => this.onCameraPress()}
+              >
+                  <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle} />
+              </TouchableOpacity>
+              <Text style={{ marginTop: 10 }}>Camera</Text>
+          </View>
+          <View style={modalButtonWrapperStyle}>
+              <TouchableOpacity
+                  style={modalButtonStyle}
+                  onPress={() => this.onImageLibraryPress()}
+              >
+                  <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle} />
+              </TouchableOpacity>
+              <Text style={{ marginTop: 10 }}>Images</Text>
+          </View>
       </Modal>
     )
   }

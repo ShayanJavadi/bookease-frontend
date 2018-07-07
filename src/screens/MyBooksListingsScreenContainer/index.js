@@ -8,7 +8,7 @@ import MyBooksListingsScreen from "../MyBooksListingsScreen";
 const { getMyTextbooksQuery } = queries;
 const { deleteTextbookMutation } = mutations;
 const mapStateToProps = (state) => ({
-    currentUser: state.Session.currentUser,
+    currentStoredUser: state.Session.currentStoredUser,
 });
 
 const Container = compose(

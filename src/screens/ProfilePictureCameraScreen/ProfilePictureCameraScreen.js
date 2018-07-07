@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator, Image } from "react-native";
+import { View, TouchableOpacity, TouchableHighlight, ActivityIndicator, Image, Text } from "react-native";
 import { func, bool, shape, object } from "prop-types";
-import {
-  Camera,
-} from "expo";
+import { Camera } from "expo";
 import { MaterialIcons } from "@expo/vector-icons";
 import BackButton from "src/modules/BackButton";
 import Modal from "src/modules/Modal";
 import { styles, palette } from "./styles";
 import { FLASH_OPTIONS_ORDER } from "./consts";
+import { default as externalUploadImage } from "src/common/lib/uploadImage";
 
 const {
   screenStyle,
@@ -21,6 +20,7 @@ const {
   topRowWrapperStyle,
   bottomRowWrapperStyle,
   imagePreviewStyle,
+  activitySpinnerStyle,
 } = styles;
 
 const {
@@ -39,25 +39,31 @@ export default class ProfilePictureCameraScreen extends Component {
 
   static propTypes = {
     takePicture: func.isRequired,
-    image: object,
+    setStoredUser: func.isRequired,
+    mutate: func.isRequired,
+    imageUri: object,
     loading: bool.isRequired,
     isTakingPicture: bool.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
+    currentStoredUser: object.isRequired,
   }
 
   state = {
     flash: "off",
     isInConfirmationDialog: false,
+    isUploading: false,
   }
 
   componentWillReceiveProps(nextProps) {
-    //const { image } = nextProps;
-
-    if (this.props.isTakingPicture && !nextProps.isTakingPicture) {
-        this.setState({ isInConfirmationDialog: true });
+    if (nextProps.imageUri !== undefined) {
+      this.setState({ isInConfirmationDialog: true });
     }
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
   }
 
   toggleFlash() {
@@ -66,16 +72,85 @@ export default class ProfilePictureCameraScreen extends Component {
     });
   }
 
+  async uploadImage() {
+    const { imageUri, currentStoredUser, navigation } = this.props;
+
+    this.setState({
+      isInConfirmationDialog: false,
+      isUploading: true
+    });
+
+    const uploadedImageUrl = await externalUploadImage(imageUri);
+    const newProfileData = Object.assign({}, currentStoredUser);
+    newProfileData.photoURL = uploadedImageUrl;
+
+    await this.props.mutate({
+      variables: {
+        phoneNumber: currentStoredUser.phoneNumber,
+        photoUrl: uploadedImageUrl,
+      }
+    });
+
+    await this.props.setStoredUser(newProfileData);
+
+    this.setState({ isUploading: false });
+
+    const { nextScreenSequence } = navigation.state.params;
+    const newNextScreenSequence = nextScreenSequence.slice(1);
+    const nextScreen = nextScreenSequence[0];
+
+    navigation.navigate(nextScreen, {
+      nextScreenSequence: newNextScreenSequence,
+    });
+  }
+
+  render() {
+    const { isTakingPicture } = this.props;
+    const { isInConfirmationDialog, isUploading } = this.state;
+
+    if (isTakingPicture || isInConfirmationDialog || isUploading) {
+      return (
+        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          {isInConfirmationDialog && this.renderConfirmationModal()}
+          <ActivityIndicator
+            size="large"
+            color={tertiaryColorDark}
+            style={activitySpinnerStyle}
+          />
+          {isUploading && (<Text>Uploading...</Text>)}
+        </View>
+      );
+    }
+
+    return (
+      <View style={screenStyle}>
+        <Camera
+          style={{ flex: 1 }}
+          ref={ref => { this.camera = ref; }}
+          flashMode={this.state.flash}
+          autoFocus="on"
+        >
+          <View style={topRowWrapperStyle}>
+            {this.renderFlashIcon()}
+          </View>
+          <View style={bottomRowWrapperStyle}>
+            {this.renderCaptureButton()}
+          </View>
+        </Camera>
+      </View>
+    );
+  }
+
   renderConfirmationModal() {
     return (
       <Modal
         isVisible={this.state.isInConfirmationDialog}
         text="Use this picture?"
         actions={["No", "Yes"]}
-        onActionPress={() => this.setState({ isInConfirmationDialog: false })}
+        onActionPress={async () => await this.uploadImage()}
       >
         <Image
-          source={this.props.image}
+          source={{ uri: this.props.imageUri }}
           style={imagePreviewStyle}
         />
       </Modal>
@@ -110,48 +185,5 @@ export default class ProfilePictureCameraScreen extends Component {
         </View>
       </View>
     )
-  }
-
-  render() {
-    if (this.props.isTakingPicture) {
-      return (
-        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-          <ActivityIndicator
-            size="large"
-            color={tertiaryColorDark}
-          />
-        </View>
-      );
-    }
-
-    if (this.state.isInConfirmationDialog) {
-      return (
-        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-          {this.renderConfirmationModal()}
-          <ActivityIndicator
-            size="large"
-            color={tertiaryColorDark}
-          />
-        </View>
-      );
-    }
-
-    return (
-      <View style={screenStyle}>
-        <Camera
-          style={{ flex: 1 }}
-          ref={ref => { this.camera = ref; }}
-          flashMode={this.state.flash}
-          autoFocus="on"
-        >
-          <View style={topRowWrapperStyle}>
-            {this.renderFlashIcon()}
-          </View>
-          <View style={bottomRowWrapperStyle}>
-            {this.renderCaptureButton()}
-          </View>
-        </Camera>
-      </View>
-    );
   }
 }
