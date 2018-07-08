@@ -5,7 +5,7 @@ import mutations from "./graphql/mutations";
 import BuyRequestScreen from "../BuyRequestScreen";
 
 const { getTextbookQuery } = queries;
-const { createBuyRequest } = mutations;
+const { createBuyRequest, updateBuyRequest } = mutations;
 
 const mapStateToProps = () => ({}); // eslint-disable-line no-unused-vars
 
@@ -17,6 +17,10 @@ const Container = compose(
   graphql(createBuyRequest, {
     options: props => ({ variables: { buyRequest: props.buyRequest || {} } }),
     name: "createBuyRequestMutation"
+  }),
+  graphql(updateBuyRequest, {
+    options: props => ({ variables: { buyRequest: props.buyRequest || {} } }),
+    name: "updateBuyRequestMutation"
   }),
 )
 

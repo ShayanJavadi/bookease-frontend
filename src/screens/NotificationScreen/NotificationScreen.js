@@ -47,7 +47,7 @@ export default class NotificationScreen extends Component {
     }
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  UNSAFE_componentWillReceiveProps = (nextProps) => {
     if (nextProps.isFocused && !this.props.isFocused) {
       this.setState({ loading: true })
       this.props.getMyNotificationsQuery.refetch()

@@ -3,7 +3,8 @@ import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Button } from "react-native-material-ui";
 import ActionButton from "react-native-action-button";
 import { TextField } from "react-native-material-textfield";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
+import { ImagePicker } from "expo"
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { func, object, shape, bool } from "prop-types";
 import { isEmpty } from "lodash";
@@ -11,6 +12,8 @@ import { styles, palette, ICON_SIZE, AVATAR_SIZE } from "./styles";
 import Header from "src/modules/Header";
 import Modal from "src/modules/Modal";
 import Avatar from "src/modules/Avatar";
+import uploadImage from "src/common/lib/uploadImage";
+
 
 const {
   screenStyle,
@@ -53,7 +56,31 @@ export default class AccountScreen extends Component {
     schoolName: "",
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillMount() {
+    if (this.props.isFocused) {
+      const { currentStoredUser } = this.props;
+      if (!isEmpty(currentStoredUser)) {
+        const { fullName, schoolName } = currentStoredUser;
+
+        return this.setState({
+          fullName: fullName,
+          schoolName: schoolName,
+          isLoading: false,
+        });
+      }
+
+      this.setState({
+        fullName: "",
+        schoolName: "",
+        isLoading: false,
+      });
+    }
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log("cwrp");
+    console.log(nextProps.currentStoredUser);
+
     if (nextProps.isFocused) {
       const { currentStoredUser } = this.props;
       if (!isEmpty(currentStoredUser)) {
@@ -63,14 +90,14 @@ export default class AccountScreen extends Component {
           fullName: fullName,
           schoolName: schoolName,
           isLoading: false,
-        })
+        });
       }
 
       this.setState({
         fullName: "",
         schoolName: "",
         isLoading: false,
-      })
+      });
     }
   }
 
@@ -86,22 +113,40 @@ export default class AccountScreen extends Component {
     this.props.navigation.navigate("profilePictureCameraScreen", { nextScreenSequence: ["account"] });
   }
 
-  onImageLibraryPress() {
+  async onImageLibraryPress() {
+    const { currentStoredUser, setStoredUser, mutate } = this.props;
+    const { uri, cancelled } = await ImagePicker.launchImageLibraryAsync({ base64: true });
+
     this.setState({ cameraModalVisible: false });
-    this.props.navigation.navigate("profilePictureImageScreen", { nextScreenSequence: ["account"] });
+
+    if (cancelled) return;
+
+    const uploadedPhotoUrl = await uploadImage(uri);
+
+    await mutate({
+      variables: {
+        phoneNumber: currentStoredUser.phoneNumber,
+        photoUrl: uploadedPhotoUrl,
+      }
+    });
+
+    await setStoredUser({
+       ...currentStoredUser,
+       photoURL: uploadedPhotoUrl
+     });
   }
 
   async signOut() {
     await this.props.signOutMutation();
     await this.props.removeStoredUser();
-    const navigateToHomeScreen = NavigationActions.reset({
+    const navigateToHomeScreen = StackActions.reset({
       index: 0,
       key: null,
       actions: [
         NavigationActions.navigate({ routeName: "mainScreen" })
       ]
     })
-    this.setState({ schoolName: "", })
+    this.setState({ schoolName: "", });
     return this.props.navigation.dispatch(navigateToHomeScreen);
 
   }
@@ -243,29 +288,29 @@ export default class AccountScreen extends Component {
   renderPictureInputModal() {
     return (
       <Modal
-          isVisible={this.state.cameraModalVisible}
-          text="Change profile picture"
-          actions={["Cancel"]}
-          onActionPress={() => this.setState({ cameraModalVisible: false })}
+        isVisible={this.state.cameraModalVisible}
+        text="Change profile picture"
+        actions={["Cancel"]}
+        onActionPress={() => this.setState({ cameraModalVisible: false })}
       >
-          <View style={modalButtonWrapperStyle}>
-              <TouchableOpacity
-                  style={modalButtonStyle}
-                  onPress={() => this.onCameraPress()}
-              >
-                  <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle} />
-              </TouchableOpacity>
-              <Text style={{ marginTop: 10 }}>Camera</Text>
-          </View>
-          <View style={modalButtonWrapperStyle}>
-              <TouchableOpacity
-                  style={modalButtonStyle}
-                  onPress={() => this.onImageLibraryPress()}
-              >
-                  <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle} />
-              </TouchableOpacity>
-              <Text style={{ marginTop: 10 }}>Images</Text>
-          </View>
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity
+            style={modalButtonStyle}
+            onPress={() => this.onCameraPress()}
+          >
+          <MaterialCommunityIcons name="camera" size={25} style={modalButtonIconStyle} />
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Camera</Text>
+        </View>
+        <View style={modalButtonWrapperStyle}>
+          <TouchableOpacity
+            style={modalButtonStyle}
+            onPress={() => {try{this.onImageLibraryPress()}catch(ex){console.log(ex)}}}
+          >
+          <MaterialCommunityIcons name="image-multiple" size={25} style={modalButtonIconStyle} />
+          </TouchableOpacity>
+          <Text style={{ marginTop: 10 }}>Images</Text>
+        </View>
       </Modal>
     )
   }

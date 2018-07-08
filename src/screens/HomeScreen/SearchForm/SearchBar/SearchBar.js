@@ -53,7 +53,7 @@ export default class SearchBar extends Component {
     )
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { filterBy, search } = this.props;
 
     if (filterBy !== nextProps.filterBy) {

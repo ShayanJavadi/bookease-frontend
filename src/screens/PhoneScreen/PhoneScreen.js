@@ -3,7 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Text, View, ActivityIndicator, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { TextField } from "react-native-material-textfield";
 import { TextInputMask } from "react-native-masked-text";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { func, string, shape } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { styles, palette, ICON_SIZE } from "./styles";
@@ -54,7 +54,7 @@ export default class PhoneScreen extends Component {
     this.onInputChange("");
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener("keyboardWillShow", this.keyboardWillShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener("keyboardWillHide", this.keyboardWillHide.bind(this));
   }
@@ -76,7 +76,7 @@ export default class PhoneScreen extends Component {
     Keyboard.dismiss();
 
     if (this.props.navigation.state.params.resetToHomeOnClose) {
-      const closeSuccessScreenAction = NavigationActions.reset({
+      const closeSuccessScreenAction = StackActions.reset({
         index: 0,
         key: null,
         actions: [

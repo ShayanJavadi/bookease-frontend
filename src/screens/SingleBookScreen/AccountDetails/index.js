@@ -17,9 +17,9 @@ const AccountDetails = ({ textbook: { createdAt, user: { displayName, photoURL }
   <TouchableWithoutFeedback onPress={() => alert("go to account page ")}>
     <View style={bookDetailsLowerSectionWrapper}>
       <View style={accountDetailsWrapperStyle}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingLeft: 10 }}>
           <Avatar
-            size={35}
+            size={60}
             uri={photoURL}
             styles={{ backgroundColor: "#f1f1f1" }}
           />

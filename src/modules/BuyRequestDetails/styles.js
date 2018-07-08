@@ -64,7 +64,6 @@ export const styles = StyleSheet.create({
   notificatDetailsTextbookStyle: {
     fontWeight: "600",
     color: tertiaryColorLight,
-    marginBottom: 4,
   },
   notificationHeaderTypeStyle: {
     marginLeft: 5,
@@ -83,10 +82,10 @@ export const styles = StyleSheet.create({
   },
   notificatDetailsHeaderStyle: {
     fontWeight: "500",
-    marginBottom: 4,
   },
   notificatDetailsMessageStyle: {
     color: "#666",
+    marginTop: 5,
   },
   notificationAvatarStyle: {
     width: 60,

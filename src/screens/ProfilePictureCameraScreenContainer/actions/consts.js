@@ -1,2 +1,0 @@
-export const TAKE_PICTURE_RQ = "TAKE_PICTURE_RQ";
-export const TAKE_PICTURE_RS = "TAKE_PICTURE_RS";

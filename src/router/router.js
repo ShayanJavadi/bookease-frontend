@@ -1,11 +1,11 @@
-import { StackNavigator, TabNavigator, } from "react-navigation";
+import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SchoolSelectionScreen from "../screens/SchoolSelectionScreenContainer";
 import HomeScreen from "../screens/HomeScreenContainer";
 import SingleBookScreen from "../screens/SingleBookScreenContainer/";
 import MyBooksListingsScreen from "../screens/MyBooksListingsScreenContainer";
-import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreen";
-import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreen";
+import MyBooksOrdersScreen from "../screens/MyBooksOrdersScreenContainer";
+import MyBooksBookmarksScreen from "../screens/MyBooksBookmarksScreenContainer";
 import NotificationScreen from "../screens/NotificationScreenContainer";
 import AccountScreen from "../screens/AccountScreenContainer";
 import EnterBookDetailsScreen from "../screens/EnterBookDetailsScreenContainer";
@@ -22,12 +22,10 @@ import MyBooksTabBarComponent from "../modules/MyBooksTabBarComponent";
 import RequireAuthenticationContainer from "../screens/RequireAuthenticationContainer/RequireAuthenticationContainer";
 import BuyRequestScreen from "../screens/BuyRequestScreenContainer";
 import SingleNotificationScreen from "../screens/SingleNotificationScreenContainer";
-import ProfilePictureCameraScreen from "../screens/ProfilePictureCameraScreenContainer"
-import ProfilePictureImageScreen from "../screens/ProfilePictureImageScreenContainer";
 
 console.reportErrorsAsExceptions = false; // eslint-disable-line no-console
 
-const SubmissionSuccessNavigator = StackNavigator({
+const SubmissionSuccessNavigator = createStackNavigator({
   successScreen: {
     screen: SubmissionSuccessScreen,
   },
@@ -36,7 +34,7 @@ const SubmissionSuccessNavigator = StackNavigator({
   mode: "modal",
 });
 
-const SellBooksNavigator = StackNavigator({
+const SellBooksNavigator = createStackNavigator({
   enterBookDetails: {
     screen: RequireAuthenticationContainer(EnterBookDetailsScreen, { resetToHomeOnClose: false, needsNavigationFocus: true }),
   },
@@ -53,7 +51,7 @@ const SellBooksNavigator = StackNavigator({
   mode: "modal",
 });
 
-const myBooksNavigator = TabNavigator({
+const myBooksNavigator = createMaterialTopTabNavigator({
   myBooksListings: {
     screen: RequireAuthenticationContainer(MyBooksListingsScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
@@ -66,9 +64,10 @@ const myBooksNavigator = TabNavigator({
 }, {
   tabBarPosition: "top",
   tabBarComponent: MyBooksTabBarComponent,
+  swipeEnabled: "false",
 });
 
-const SingleBookNavigator = StackNavigator({
+const SingleBookNavigator = createStackNavigator({
   singleBookScreen: {
     screen: SingleBookScreen,
   },
@@ -79,25 +78,7 @@ const SingleBookNavigator = StackNavigator({
   headerMode: "none",
 });
 
-const ProfilePictureCameraNavigator = StackNavigator({
-  profilePictureCameraScreen: {
-    screen: ProfilePictureCameraScreen,
-  },
-}, {
-  headerMode: "none",
-  mode: "modal",
-});
-
-const ProfilePictureImageNavigator = StackNavigator({
-  profilePictureImageScreen: {
-    screen: ProfilePictureImageScreen,
-  },
-}, {
-  headerMode: "none",
-  mode: "modal",
-});
-
-const AccountNavigator = StackNavigator({
+const AccountNavigator = createStackNavigator({
   account: {
     screen: RequireAuthenticationContainer(AccountScreen, { resetToHomeOnClose: true, needsNavigationFocus: true }),
   },
@@ -110,17 +91,11 @@ const AccountNavigator = StackNavigator({
   changeSchoolScreen: {
     screen: SchoolSelectionScreen,
   },
-  profilePictureCameraScreen: {
-    screen: ProfilePictureCameraNavigator,
-  },
-  profilePictureImageScreen: {
-    screen: ProfilePictureImageNavigator,
-  },
 }, {
   headerMode: "none",
 });
 
-const HomeNavigator = TabNavigator({
+const HomeNavigator = createBottomTabNavigator({
   home: {
     screen: HomeScreen,
   },
@@ -143,7 +118,7 @@ const HomeNavigator = TabNavigator({
   animationEnabled: false
 });
 
-const AuthNavigator = StackNavigator({
+const AuthNavigator = createStackNavigator({
   phoneScreen: {
     screen: PhoneScreen,
   },
@@ -170,7 +145,7 @@ const AuthNavigator = StackNavigator({
 });
 
 const createMainNavigator = (isFirstRun = false) => {
-  return StackNavigator({
+  return createStackNavigator({
     welcomeScreen: {
       screen: WelcomeScreen,
     },

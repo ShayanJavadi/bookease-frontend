@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-material-ui";
-import { NavigationActions } from "react-navigation";
+import { NavigationActions, StackActions } from "react-navigation";
 import { func, shape } from "prop-types";
 import { Text, View, AsyncStorage, TouchableOpacity } from "react-native";
 import { styles, ICON_SIZE, LOGO_ICON_SIZE } from "./styles";
@@ -40,7 +40,7 @@ export default class AuthScreen extends Component {
     this.onAuthenticated(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.onAuthenticated(nextProps);
   }
 
@@ -68,7 +68,7 @@ export default class AuthScreen extends Component {
 
   closeAuthScreen() {
     if (this.props.navigation.state.params.resetToHomeOnClose) {
-      const closeSuccessScreenAction = NavigationActions.reset({
+      const closeSuccessScreenAction = StackActions.reset({
         index: 0,
         key: null,
         actions: [

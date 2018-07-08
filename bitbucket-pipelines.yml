@@ -1,4 +1,4 @@
-image: node:6.11.2
+image: node:8.11.2
 
 pipelines:
   default:
@@ -9,5 +9,5 @@ pipelines:
           - npm install
           - npm run lint
           - export PATH=$PATH:$BITBUCKET_CLONE_DIR/node_modules/.bin
-          - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-          - exp doctor
+          # - exp login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+          # - exp doctor

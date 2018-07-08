@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, ActivityIndicator } from "react-native";
+import { StackActions, NavigationActions } from "react-navigation";
 import { shape, func, object } from "prop-types";
 import { Button } from "react-native-material-ui";
 import { TextField } from "react-native-material-textfield";
@@ -27,6 +28,7 @@ export default class BuyRequestScreen extends Component {
   });
 
   static propTypes = {
+    updateBuyRequestMutation: func.isRequired,
     navigation: shape({
       navigate: func.isRequired
     }).isRequired,
@@ -41,6 +43,10 @@ export default class BuyRequestScreen extends Component {
     messageTextInputErrorMessage: undefined,
     message: "",
     isSubmitting: false,
+    isUpdating: false,
+    buyRequestToUpdate: undefined,
+    spinnerMessage: "",
+    updateMode: false,
   }
 
   componentDidMount() {
@@ -48,9 +54,9 @@ export default class BuyRequestScreen extends Component {
     const params = navigation.state.params;
 
     if (params) {
-      const { context, textbookId } = params;
+      const { context, textbookId, message = "", updateMode = false, buyRequestToUpdate } = params;
 
-      this.setState({ context, textbookId });
+      this.setState({ context, textbookId, message, updateMode, buyRequestToUpdate });
       getTextbookQuery.refetch({ textbookId: textbookId });
     }
   }
@@ -69,6 +75,10 @@ export default class BuyRequestScreen extends Component {
       navigation.goBack(null);
       return;
     }
+
+    navigation.goBack(null);
+    navigation.goBack(null);
+    return;
   }
 
   onTextbookStripPress() {
@@ -85,23 +95,62 @@ export default class BuyRequestScreen extends Component {
   }
 
   onBuyRequestSubmitPress() {
-    const { createBuyRequestMutation, getTextbookQuery } = this.props;
+    const { createBuyRequestMutation, updateBuyRequestMutation, getTextbookQuery } = this.props;
+    if (this.state.updateMode) {
+      const { buyRequestToUpdate } = this.state;
+      const { id, textbookId, recipientId, notificationId } = buyRequestToUpdate;
+      const valuesToUpdate = { id, textbookId, recipientId, message: this.state.message };
 
-    const  buyRequest = {
+      return this.setState({ isSubmitting: true, spinnerMessage: "Updating your request..." }, () => {
+        updateBuyRequestMutation({
+          variables: {
+            buyRequest: valuesToUpdate
+          }
+        })
+          .then(() => {
+            this.setState({ isSubmitting: false, spinnerMessage: "" });
+            const resetAction = StackActions.reset({
+              index: 2,
+              key: null,
+              actions: [
+                NavigationActions.navigate({
+                  routeName: "mainScreen",
+                }),
+                NavigationActions.navigate({
+                  routeName: "singleBook",
+                  params: {
+                    textbookId: textbookId
+                  }
+                }),
+                NavigationActions.navigate({
+                  routeName: "singleNotificationScreen",
+                  params: {
+                    notificationType: "BUY_REQUEST", notificationId: notificationId
+                  }
+                })
+              ],
+            })
+
+            this.props.navigation.dispatch(resetAction);
+          })
+      })
+    }
+
+    const buyRequestToCreate = {
       textbookId: getTextbookQuery.getTextbook.id,
       recipientId: getTextbookQuery.getTextbook.userId,
       message: this.state.message,
     }
 
-    this.setState({ isSubmitting: true }, () => {
+    this.setState({ isSubmitting: true, spinnerMessage: "Submitting your request..." }, () => {
       createBuyRequestMutation({
         variables: {
-          buyRequest
+          buyRequest: buyRequestToCreate
         }
       })
-      .then(buyRequest => {
-        this.setState({ isSubmitting: false });
-        this.props.navigation.navigate("submissionSuccessScreen", { submittedBuyRequest: buyRequest })
+      .then(createdBuyRequest => {
+        this.setState({ isSubmitting: false, spinnerMessage: "" });
+        this.props.navigation.navigate("submissionSuccessScreen", { submittedBuyRequest: createdBuyRequest })
       })
     })
   }
@@ -157,7 +206,7 @@ export default class BuyRequestScreen extends Component {
         <Button
           raised
           primary
-          text="Send Request"
+          text={this.state.updateMode ? "Update Request" : "Send Request"}
           style={{ container: buttonContainerStyle, text: buttonTextStyle }}
           onPress={() => this.onBuyRequestSubmitPress()}
         />
@@ -167,7 +216,7 @@ export default class BuyRequestScreen extends Component {
 
   render() {
     const { getTextbookQuery } = this.props;
-    const { isSubmitting } = this.state;
+    const { isSubmitting, isUpdating, spinnerMessage } = this.state;
 
     if (getTextbookQuery.loading || !getTextbookQuery.getTextbook) {
       return (
@@ -198,8 +247,8 @@ export default class BuyRequestScreen extends Component {
           {this.renderSubmitButton()}
         </KeyboardAwareScrollView>
         <Spinner
-          visible={isSubmitting}
-          textContent={"Submitting your request..."}
+          visible={isSubmitting || isUpdating}
+          textContent={spinnerMessage}
           overlayColor="rgba(0, 0, 0, 0.65)"
           textStyle={{ color: "#FFF" }}
         />

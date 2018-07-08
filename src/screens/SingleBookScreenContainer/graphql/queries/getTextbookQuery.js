@@ -22,6 +22,9 @@ const getTextbookQuery = gql`
         createdAt,
         updatedAt,
         publishedAt,
+        bookmarkCount,
+        isBookmarkedByCurrentUser,
+        isRequestedByCurrentUser,
         user {
           id,
           displayName,
@@ -46,6 +49,7 @@ const getTextbookQuery = gql`
             userId,
             textbookId,
             textbook{
+              id,
               title,
               price
             },

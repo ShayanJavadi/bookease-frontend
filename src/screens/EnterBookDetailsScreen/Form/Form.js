@@ -25,7 +25,7 @@ export default class form extends Component {
   }
   inputs = {}
 
-  componentWillReceiveProps({ errorsMessages }) {
+  UNSAFE_componentWillReceiveProps({ errorsMessages }) {
     if (errorsMessages.formHasErrors) {
       const errors = omit(errorsMessages, ["formHasErrors"]);
       const inputId = findLastKey(errors);

@@ -1,3 +1,4 @@
 import createBuyRequest from "./createBuyRequest";
+import updateBuyRequest from "./updateBuyRequest";
 
-export default { createBuyRequest };
+export default { updateBuyRequest, createBuyRequest };

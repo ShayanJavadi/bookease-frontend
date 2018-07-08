@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, StatusBar } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { shape, func } from "prop-types";
-import { NavigationActions } from "react-navigation"
+import { NavigationActions, StackActions } from "react-navigation"
 import { Button } from "react-native-material-ui";
 import { styles } from "./styles";
 import PhoneNumberContainer from "src/modules/PhoneNumberContainer";
@@ -50,7 +50,7 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   navigateToMyBooks() {
-    const closeSuccessScreenAction = NavigationActions.reset({
+    const closeSuccessScreenAction = StackActions.reset({
       index: 0,
       key: null,
       actions: [
@@ -65,7 +65,7 @@ export default class SubmissionSuccessScreen extends Component {
   }
 
   navigateToSingleBuyRequestScreen(notificationId) {
-    const closeSuccessScreenAction = NavigationActions.reset({
+    const closeSuccessScreenAction = StackActions.reset({
       index: 1,
       key: null,
       actions: [
@@ -95,7 +95,7 @@ export default class SubmissionSuccessScreen extends Component {
     }
 
     if (acceptedBuyRequest) {
-      return this.navigateToSingleBuyRequestScreen(submittedBuyRequest.data && submittedBuyRequest.data.createBuyRequest.notificationId);
+      return this.navigateToSingleBuyRequestScreen(acceptedBuyRequest.notificationId);
     }
   }
 
@@ -144,7 +144,7 @@ export default class SubmissionSuccessScreen extends Component {
             showPhoneNumber={true}
             showIcon={false}
             text={"Contact Mike to arrange a meetup"}
-            phoneNumber="(817) 226 - 0183"
+            phoneNumber={acceptedBuyRequest.userPhoneNumber}
             onPhoneNumberPress={() => alert("open")}
             styles={{ outerContainerStyles: { flex: undefined, height: 100 }, innerContainerStyles: { paddingBottom: 0 } }}
           />

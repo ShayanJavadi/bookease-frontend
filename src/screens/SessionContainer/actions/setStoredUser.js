@@ -1,13 +1,13 @@
 import {
   UPDATE_STORED_USER,
+  STORED_USER_STORAGE_KEY,
 } from "./consts";
 import { AsyncStorage } from "react-native";
 
 const setStoredUser = (user) => async (dispatch) => {
   try {
-    const currenUser = JSON.stringify(user)
-    await AsyncStorage.setItem("currentUser", currenUser);
-    return dispatch({ type: UPDATE_STORED_USER, payload: { user: user } });
+    await AsyncStorage.setItem(STORED_USER_STORAGE_KEY, JSON.stringify(user));
+    return dispatch({ type: UPDATE_STORED_USER, payload: { user } });
   } catch (error) {
     return error.message;
   }
