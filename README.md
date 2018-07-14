@@ -1,7 +1,6 @@
-# My project's README
+The front end repo for Bookease. Bookease is an upcoming college textbook trading iOS/Android app staged to release this fall.
 
-install Expo
+tools we use: Expo, React Native, React, Redux
 
-run ```npm install```
-
-open project folder through Expo
+Backend repo:
+https://github.com/ShayanJavadi/bookease-backend
